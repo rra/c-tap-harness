@@ -2,9 +2,10 @@ AC_INIT(config.h.in)
 AC_PROG_CC
 AC_PROG_RANLIB
 AC_HEADER_STDC
-AC_CHECK_HEADERS(stdarg.h varargs.h)
-AC_TYPE_SIZE_T
+AC_CHECK_HEADERS(fcntl.h unistd.h)
 AC_C_CONST
+AC_TYPE_SIZE_T
+AC_CHECK_TYPE(ssize_t, int)
 AC_CHECK_FUNCS(memcpy strerror)
 AC_CONFIG_HEADER(config.h)
 AC_OUTPUT(Makefile)
