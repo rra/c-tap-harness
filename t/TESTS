@@ -1,6 +1,9 @@
 replace/inet_aton
 replace/inet_ntoa
 replace/memcmp
+replace/pread
+replace/pwrite
+replace/setenv
 replace/strerror
 util/concat
 util/error
