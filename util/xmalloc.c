@@ -44,7 +44,11 @@
    The default error handler, if none is set by the caller, prints an error
    message to stderr and exits with exit status 1.  An error handler must
    take a const char * (function name), size_t (bytes allocated), const
-   char * (file), and int (line). */
+   char * (file), and int (line).
+
+   xmalloc will return a pointer to a valid memory region on an xmalloc of 0
+   bytes, ensuring this by allocating space for one character instead of 0
+   bytes. */
 
 #include "config.h"
 #include "xmalloc.h"
@@ -74,33 +78,35 @@ xmalloc_fail(const char *function, size_t size, const char *file, int line)
 xmalloc_handler_t xmalloc_error_handler = xmalloc_fail;
 
 void *
-_xmalloc(size_t size, const char *file, int line)
+x_malloc(size_t size, const char *file, int line)
 {
     void *p;
+    size_t real_size;
 
-    p = malloc(size);
+    real_size = (size > 0) ? size : 1;
+    p = malloc(real_size);
     while (!p) {
         (*xmalloc_error_handler)("malloc", size, file, line);
-        p = malloc(size);
+        p = malloc(real_size);
     }
     return p;
 }
 
 void *
-_xrealloc(void *p, size_t size, const char *file, int line)
+x_realloc(void *p, size_t size, const char *file, int line)
 {
     void *newp;
 
     newp = realloc(p, size);
-    while (!newp) {
-        (*xmalloc_error_handler)("remalloc", size, file, line);
+    while (!newp && size > 0) {
+        (*xmalloc_error_handler)("realloc", size, file, line);
         newp = realloc(p, size);
     }
     return newp;
 }
 
 char *
-_xstrdup(const char *s, const char *file, int line)
+x_strdup(const char *s, const char *file, int line)
 {
     char *p;
     size_t len;
