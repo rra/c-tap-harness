@@ -9,6 +9,7 @@ AC_CHECK_TYPE(ssize_t, int)
 AC_FUNC_MEMCMP
 AC_CHECK_FUNCS(memcpy)
 AC_REPLACE_FUNCS(strerror)
+RRA_FUNC_SNPRINTF
 
 # Fix LIBOBJS to look for any replacement functions in replace/.
 if test x"$LIBOBJS" != x ; then
