@@ -17,9 +17,10 @@
 
 #include "config.h"
 
+/* BSDI needs sys/types.h before netinet/in.h. */
+#include <sys/types.h>
 #include <netinet/in.h>
 #include <stdio.h>
-#include <sys/types.h>
 
 /* If we're running the test suite, rename inet_ntoa to avoid conflicts with
    the system version. */
