@@ -18,7 +18,7 @@
    Usage:
 
         #include <stdlib.h>
-        #include "xmalloc.h"
+        #include "librutil.h"
 
         extern xmalloc_handler_t memory_error;
         extern const char *string;
@@ -51,20 +51,16 @@
    bytes. */
 
 #include "config.h"
-#include "xmalloc.h"
+#include "librutil.h"
 
 #include <stdlib.h>
 #include <sys/types.h>
 
 #if STDC_HEADERS
 # include <string.h>
-#else
-# if !HAVE_MEMCPY
-#  define memcpy(d, s, n)       bcopy((s), (d), (n))
-# endif
+#elif !HAVE_MEMCPY
+# define memcpy(d, s, n)        bcopy((s), (d), (n))
 #endif
-
-#include "error.h"
 
 /* The default error handler. */
 static void
