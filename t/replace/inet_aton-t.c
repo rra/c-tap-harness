@@ -1,5 +1,5 @@
 /* $Id$ */
-/* inet_aton() test suite. */
+/* inet_aton test suite. */
 
 #include "config.h"
 

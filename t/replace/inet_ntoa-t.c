@@ -1,5 +1,5 @@
 /* $Id$ */
-/* inet_ntoa() test suite. */
+/* inet_ntoa test suite. */
 
 #include "config.h"
 
