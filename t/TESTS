@@ -1,4 +1,4 @@
-t/concat
-t/error
-t/xmalloc
-t/xwrite
+util/concat
+util/error
+util/xmalloc
+util/xwrite
