@@ -32,9 +32,9 @@ const char *
 inet_ntoa(const struct in_addr in)
 {
     static char buf[16];
-    const char *p;
+    const unsigned char *p;
 
-    p = (const char *) &in.s_addr;
+    p = (const unsigned char *) &in.s_addr;
     sprintf(buf, "%u.%u.%u.%u",
             (unsigned int) (p[0] & 0xff), (unsigned int) (p[1] & 0xff),
             (unsigned int) (p[2] & 0xff), (unsigned int) (p[3] & 0xff));
