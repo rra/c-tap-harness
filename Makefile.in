@@ -10,7 +10,7 @@ VPATH		= @srcdir@
 
 RANLIB		= @RANLIB@
 
-OBJS		= concat.o error.o xmalloc.o
+OBJS		= concat.o error.o xmalloc.o xwrite.o
 
 WARNINGS	= -ansi -pedantic -Wall -W -Wno-unused -Wshadow \
 		  -Wpointer-arith -Wbad-function-cast -Wcast-qual \
@@ -37,11 +37,15 @@ t/error.t: t/error-t.o librutil.a
 t/xmalloc: t/xmalloc.o librutil.a
 	$(CC) -o $@ t/xmalloc.o librutil.a $(LDFLAGS) $(LIBS)
 
-check test: runtests t/concat.t t/error.t t/xmalloc
+t/xwrite.t: t/xwrite-t.o t/fakewrite.o librutil.a
+	$(CC) -o $@ t/xwrite-t.o t/fakewrite.o librutil.a $(LDFLAGS) $(LIBS)
+
+check test: runtests t/concat.t t/error.t t/xmalloc t/xwrite.t
 	./runtests t/TESTS
 
 clean:
 	rm -f *.o t/*.o librutil.a runtests t/concat.t t/error.t t/xmalloc
+	rm -f t/xwrite.t
 
 distclean: clean
 	rm -f Makefile config.cache config.h config.log config.status
