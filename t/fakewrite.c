@@ -6,6 +6,8 @@
 #include <errno.h>
 #include <sys/types.h>
 
+#include "librutil.h"
+
 /* We need the definition of struct iovec, but if we allow the system to
    prototype writev, it could conflict with our definition.  So mask it. */
 #define writev system_writev
@@ -28,7 +30,7 @@ int write_fail = 0;
 /* Accept a write request and write only the first 32 bytes of it into
    write_buffer (or as much as will fit), returning the amount written. */
 ssize_t
-write(int fd, const void *data, size_t n)
+write(int fd UNUSED, const void *data, size_t n)
 {
     size_t total;
 
@@ -47,10 +49,9 @@ write(int fd, const void *data, size_t n)
 /* Accept an xwrite request and write only the first 32 bytes of it into
    write_buffer (or as much as will fit), returning the amount written. */
 ssize_t
-writev(int fd, const struct iovec *iov, int iovcnt)
+writev(int fd UNUSED, const struct iovec *iov, int iovcnt)
 {
-    size_t left, total, n;
-    int i;
+    int left, total, n, i;
 
     if (write_fail) return 0;
     if (write_interrupt && (write_interrupt++ % 2) == 0) {
