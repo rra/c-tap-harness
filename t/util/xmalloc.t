@@ -13,7 +13,7 @@ printcount () {
 
 # Run a program expected to succeed, and print ok if it does.
 runsuccess () {
-    output=`t/xmalloc "$1" "$2" 2>&1 >/dev/null`
+    output=`$xmalloc "$1" "$2" 2>&1 >/dev/null`
     if test $? = 0 && test -z "$output" ; then
         printcount "ok"
     else
@@ -26,7 +26,7 @@ runsuccess () {
 # of 2 and the right failure message.  Strip the colon and everything after
 # it off the error message since it's system-specific.
 runfailure () {
-    output=`t/xmalloc "$1" "$2" 2>&1 >/dev/null`
+    output=`$xmalloc "$1" "$2" 2>&1 >/dev/null`
     status=$?
     output=`echo "$output" | sed 's/:.*//'`
     if test $status = 1 && test x"$output" = x"$3" ; then
@@ -37,6 +37,12 @@ runfailure () {
         echo "  not: $3"
     fi
 }
+
+# Find where the helper program is.
+xmalloc=xmalloc
+for file in ./xmalloc t/xmalloc ../xmalloc ; do
+    [ -x $file ] && xmalloc=$file
+done
 
 # Total tests.
 echo 16
