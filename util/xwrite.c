@@ -8,20 +8,6 @@
    LICENSE which should have accompanied this file for exact terms and
    conditions.
 
-   %AUTOCONF%
-   AC_C_CONST
-   AC_CHECK_HEADERS(unistd.h)
-   AC_TYPE_SIZE_T
-   AC_CHECK_TYPE(ssize_t, int)
-   %%
-
-   Usage:
-
-       #include "librutil.h"
-
-       ssize_t xwrite(int fildes, void *buf, size_t nbyte);
-       ssize_t xwritev(int fildes, const struct iovec *iov, int iovcnt);
-
    xwrite and xwritev behave exactly like their C library counterparts
    except that, if write or writev succeeds but returns a number of bytes
    written less than the total bytes, the write is repeated picking up where
@@ -37,6 +23,7 @@
    lost. */
 
 #include "config.h"
+#include "librutil.h"
 
 #include <errno.h>
 #include <stdlib.h>
@@ -46,7 +33,11 @@
 # include <unistd.h>
 #endif
 
-#include "librutil.h"
+#if STDC_HEADERS
+# include <string.h>
+#elif !HAVE_MEMCPY
+# define memcpy(d, s, n)        bcopy((s), (d), (n))
+#endif
 
 ssize_t
 xwrite(int fd, const void *buffer, size_t size)
