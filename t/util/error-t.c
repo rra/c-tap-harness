@@ -108,7 +108,7 @@ static void test11(void) {
     sysdie("fatal");
 }
 
-static int log(int len, const char *format, va_list args, int error) {
+static void log(int len, const char *format, va_list args, int error) {
     fprintf(stderr, "%d %d ", len, error);
     vfprintf(stderr, format, args);
     fprintf(stderr, "\n");
