@@ -4,8 +4,8 @@ aclocal.m4, concat.c, and concat.h are in the public domain.  You may do
 anything you like with that code, although I would strongly prefer that
 any improvements or modifications be sent to me (rra@stanford.edu).
 
-error.c, error.h, mkusage, xmalloc.c, and xmalloc.h are covered by the
-following license:
+error.c, error.h, mkusage, runtests.c, xmalloc.c, and xmalloc.h are
+covered by the following license:
 
   Copyright 2000 Russ Allbery <rra@stanford.edu>
 
