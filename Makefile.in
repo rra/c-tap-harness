@@ -10,13 +10,15 @@ VPATH		= @srcdir@
 
 RANLIB		= @RANLIB@
 
-OBJS		= util/concat.o util/error.o util/xmalloc.o util/xwrite.o
+OBJS		= @LIBOBJS@ \
+		  util/concat.o util/error.o util/xmalloc.o util/xwrite.o
 
 WARNINGS	= -ansi -pedantic -Wall -W -Wunused -Wshadow \
 		  -Wpointer-arith -Wbad-function-cast -Wcast-qual \
 		  -Wcast-align -Wwrite-strings -Wstrict-prototypes
 
-TESTS		= t/util/concat.t t/util/error.t t/util/xwrite.t
+TESTS		= t/replace/strerror.t \
+		  t/util/concat.t t/util/error.t t/util/xwrite.t
 
 TESTEXTRA	= t/runtests t/xmalloc
 
@@ -36,23 +38,29 @@ libs/librutil.a: libs $(OBJS)
 	$(RANLIB) $@
 
 t/runtests: t/runtests.o libs/librutil.a
-	$(CC) -o $@ t/runtests.o $(LDFLAGS) -lrutil $(LIBS)
+	$(CC) -o $@ t/runtests.o $(LDFLAGS) -lrutil
 
 t/xmalloc: t/xmalloc.o libs/librutil.a
-	$(CC) -o $@ t/xmalloc.o $(LDFLAGS) -lrutil $(LIBS)
+	$(CC) -o $@ t/xmalloc.o $(LDFLAGS) -lrutil
+
+t/replace/strerror.o: replace/strerror.c
+	$(CC) $(CFLAGS) -DTESTING $(CPPFLAGS) -c replace/strerror.c -o $@
+
+t/replace/strerror.t: t/replace/strerror.o t/replace/strerror-t.o
+	$(CC) -o $@ t/replace/strerror.o t/replace/strerror-t.o
 
 t/util/concat.t: t/util/concat-t.o libs/librutil.a
-	$(CC) -o $@ t/util/concat-t.o $(LDFLAGS) -lrutil $(LIBS)
+	$(CC) -o $@ t/util/concat-t.o $(LDFLAGS) -lrutil
 
 t/util/error.t: t/util/error-t.o libs/librutil.a
-	$(CC) -o $@ t/util/error-t.o $(LDFLAGS) -lrutil $(LIBS)
+	$(CC) -o $@ t/util/error-t.o $(LDFLAGS) -lrutil
 
 t/util/xwrite.t: t/util/xwrite-t.o t/fakewrite.o libs/librutil.a
-	$(CC) -o $@ t/util/xwrite-t.o t/fakewrite.o $(LDFLAGS) -lrutil $(LIBS)
+	$(CC) -o $@ t/util/xwrite-t.o t/fakewrite.o $(LDFLAGS) -lrutil
 
 clean:
 	rm -rf libs
-	rm -f util/*.o t/*.o t/util/*.o $(TESTS) $(TESTEXTRA)
+	rm -f util/*.o t/*.o t/*/*.o $(TESTS) $(TESTEXTRA)
 
 distclean: clean
 	rm -f Makefile config.cache config.log config.status include/config.h
