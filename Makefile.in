@@ -19,8 +19,8 @@ OBJS		= @LIBOBJS@ \
 
 WARNINGS	= -ansi -pedantic -Wall -W -Wunused -Wshadow \
 		  -Wpointer-arith -Wbad-function-cast -Wcast-qual \
-		  -Wcast-align -Wwrite-strings -Wconversion \
-		  -Wstrict-prototypes -Wtraditional -Werror
+		  -Wcast-align -Wwrite-strings -Wstrict-prototypes \
+		  -Wtraditional -Werror
 
 TESTS		= t/replace/hstrerror.t t/replace/inet_aton.t \
 		  t/replace/inet_ntoa.t t/replace/memcmp.t \
