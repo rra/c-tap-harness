@@ -7,5 +7,6 @@ replace/setenv
 replace/strerror
 util/concat
 util/error
+util/runtests
 util/xmalloc
 util/xwrite
