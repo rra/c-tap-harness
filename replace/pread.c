@@ -33,8 +33,10 @@
 #endif
 
 /* If we're running the test suite, rename pread to avoid conflicts with the
-   system version. */
+   system version.  #undef first because large file support may define a
+   macro pread (pointing to pread64) on some platforms (e.g. Solaris). */
 #if TESTING
+# undef pread
 # define pread test_pread
 #endif
 
