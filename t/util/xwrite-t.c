@@ -9,7 +9,7 @@
 #include "librutil.h"
 
 /* The data array we'll use to do testing. */
-unsigned char data[256];
+char data[256];
 
 /* These come from fakewrite. */
 extern char write_buffer[];
