@@ -5,15 +5,9 @@
    Written by Russ Allbery <rra@stanford.edu>
    This work is hereby placed in the public domain by its author.
 
-   %AUTOCONF%
-   AC_CHECK_HEADERS(unistd.h)
-   AC_TYPE_OFF_T
-   AC_CHECK_TYPE(ssize_t, int)
-   %%
-
-   Provides the same functionality as the standard library routine pread
-   for those platforms that don't have it.  Note that pread requires that
-   the file pointer not move and without the library function, we can't copy
+   Provides the same functionality as the standard library routine pread for
+   those platforms that don't have it.  Note that pread requires that the
+   file pointer not move and without the library function, we can't copy
    that behavior; instead, we approximate it by moving the file pointer and
    then moving it back.  This may break threaded programs. */
 

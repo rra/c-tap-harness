@@ -5,13 +5,6 @@
    Written by Russ Allbery <rra@stanford.edu>
    This work is hereby placed in the public domain by its author.
 
-   %AUTOCONF%
-   AC_CHECK_HEADERS(unistd.h)
-   AC_C_CONST
-   AC_TYPE_OFF_T
-   AC_CHECK_TYPE(ssize_t, int)
-   %%
-
    Provides the same functionality as the standard library routine pwrite
    for those platforms that don't have it.  Note that pwrite requires that
    the file pointer not move and without the library function, we can't copy

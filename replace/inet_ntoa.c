@@ -5,10 +5,6 @@
    Written by Russ Allbery <rra@stanford.edu>
    This work is hereby placed in the public domain by its author.
 
-   %AUTOCONF%
-   AC_C_CONST
-   %%
-
    Provides the same functionality as the standard library routine inet_ntoa
    for those platforms that don't have it or where it doesn't work right
    (such as on IRIX when using gcc to compile).  inet_ntoa is not

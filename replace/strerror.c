@@ -5,14 +5,9 @@
    Written by Russ Allbery <rra@stanford.edu>
    This work is hereby placed in the public domain by its author.
 
-   %AUTOCONF%
-   AC_C_CONST
-   AC_HEADER_STDC
-   %%
-
    Provides the same functionality as the standard library routine strerror
-   for those platforms that don't have it (e.g. Ultrix).  Assume that we
-   have sys_nerr and sys_errlist available to use instead.  Calling strerror
+   for those platforms that don't have it (e.g. SunOS).  Assume that we have
+   sys_nerr and sys_errlist available to use instead.  Calling strerror
    should be thread-safe unless it is called for an unknown errno. */
 
 #include "config.h"

@@ -5,10 +5,6 @@
    Written by Russ Allbery <rra@stanford.edu>
    This work is hereby placed in the public domain by its author.
 
-   %AUTOCONF%
-   AC_C_CONST
-   %%
-
    Provides the same functionality as the standard library routine inet_aton
    for those platforms that don't have it.  inet_aton is thread-safe. */
 

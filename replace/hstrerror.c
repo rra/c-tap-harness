@@ -5,10 +5,6 @@
    Written by Russ Allbery <rra@stanford.edu>
    This work is hereby placed in the public domain by its author.
 
-   %AUTOCONF%
-   AC_C_CONST
-   %%
-
    Provides hstrerror (strerror, but for h_errno from the resolver
    libraries) on those platforms that don't have it (most non-BSD).  This
    function is thread-safe unless called with an unknown h_errno.  */

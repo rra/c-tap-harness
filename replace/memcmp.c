@@ -5,11 +5,6 @@
    Written by Russ Allbery <rra@stanford.edu>
    This work is hereby placed in the public domain by its author.
 
-   %AUTOCONF%
-   AC_C_CONST
-   AC_TYPE_SIZE_T
-   %%
-
    Provides the same functionality as the standard library routine memcmp
    for those platforms that don't have it or where it doesn't work right
    (such as on SunOS where it can't deal with eight-bit characters). */
