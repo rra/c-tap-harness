@@ -96,7 +96,7 @@ int vsnprintf (char *str, size_t count, const char *fmt, va_list arg);
 static int dopr (char *buffer, size_t maxlen, const char *format, 
                  va_list args);
 static int fmtstr (char *buffer, size_t *currlen, size_t maxlen,
-		   char *value, int flags, int min, int max);
+		   const char *value, int flags, int min, int max);
 static int fmtint (char *buffer, size_t *currlen, size_t maxlen,
 		   long value, int base, int min, int max, int flags);
 static int fmtfp (char *buffer, size_t *currlen, size_t maxlen,
@@ -198,7 +198,7 @@ static int dopr (char *buffer, size_t maxlen, const char *format, va_list args)
       }
       break;
     case DP_S_MIN:
-      if (isdigit(ch)) 
+      if (isdigit((unsigned char) ch)) 
       {
 	min = 10*min + char_to_int (ch);
 	ch = *format++;
@@ -222,7 +222,7 @@ static int dopr (char *buffer, size_t maxlen, const char *format, va_list args)
 	state = DP_S_MOD;
       break;
     case DP_S_MAX:
-      if (isdigit(ch)) 
+      if (isdigit((unsigned char) ch)) 
       {
 	if (max < 0)
 	  max = 0;
@@ -394,7 +394,7 @@ static int dopr (char *buffer, size_t maxlen, const char *format, va_list args)
 }
 
 static int fmtstr (char *buffer, size_t *currlen, size_t maxlen,
-                   char *value, int flags, int min, int max)
+                   const char *value, int flags, int min, int max)
 {
   int padlen, strln;     /* amount to pad */
   int cnt = 0;
