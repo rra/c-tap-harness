@@ -66,11 +66,8 @@
 # include <string.h>
 #endif
 
-/* The default logging function, which prints to stderr. */
-static int logerr(int length, const char *format, va_list args, int error);
-
 /* The default handler list. */
-static error_handler_t default_handlers[2] = { logerr, 0 };
+static error_handler_t default_handlers[2] = { error_log_stderr, 0 };
 
 /* The list of logging functions currently in effect. */
 static error_handler_t *die_handlers  = default_handlers;
@@ -114,8 +111,8 @@ die_set_handlers(int count, ...)
 }
 
 
-static int
-logerr(int length, const char *format, va_list args, int error)
+int
+error_log_stderr(int length, const char *format, va_list args, int error)
 {
     fflush(stdout);
     if (error_program_name) fprintf(stderr, "%s: ", error_program_name);
