@@ -3,7 +3,7 @@
    Concatenate strings with dynamic memory allocation.
 
    Written by Russ Allbery <rra@stanford.edu>
-   Copyright abandoned 1999 by author.  This work is in the public domain.
+   This work is hereby placed in the public domain by its author.
 
    %AUTOCONF%
    AC_C_CONST
