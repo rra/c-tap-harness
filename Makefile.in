@@ -22,8 +22,9 @@ WARNINGS	= -ansi -pedantic -Wall -W -Wunused -Wshadow \
 		  -Wcast-align -Wwrite-strings -Wconversion \
 		  -Wstrict-prototypes -Wtraditional -Werror
 
-TESTS		= t/replace/inet_aton.t t/replace/inet_ntoa.t \
-		  t/replace/memcmp.t t/replace/pread.t t/replace/pwrite.t \
+TESTS		= t/replace/hstrerror.t t/replace/inet_aton.t \
+		  t/replace/inet_ntoa.t t/replace/memcmp.t \
+		  t/replace/pread.t t/replace/pwrite.t \
 		  t/replace/strerror.t \
 		  t/util/concat.t t/util/error.t t/util/xwrite.t
 
@@ -46,6 +47,12 @@ libs/librutil.a: libs $(OBJS)
 
 t/runtests: t/runtests.o
 	$(CC) -o $@ t/runtests.o
+
+t/replace/hstrerror.o: replace/hstrerror.c
+	$(CC) $(CFLAGS) -DTESTING $(CPPFLAGS) -c replace/hstrerror.c -o $@
+
+t/replace/hstrerror.t: t/replace/hstrerror.o t/replace/hstrerror-t.o
+	$(CC) -o $@ t/replace/hstrerror.o t/replace/hstrerror-t.o
 
 t/replace/inet_aton.o: replace/inet_aton.c
 	$(CC) $(CFLAGS) -DTESTING $(CPPFLAGS) -c replace/inet_aton.c -o $@
