@@ -30,10 +30,13 @@ struct iovec;
    could you use the __format__ form of the attributes, which is what we use
    (to avoid confusion with other macros). */
 #ifndef __attribute__
-# if __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 7) || __STRICT_ANSI__
+# if __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 7)
 #  define __attribute__(spec)   /* empty */
 # endif
 #endif
+
+/* Used for unused parameters to silence gcc warnings. */
+#define UNUSED  __attribute__((__unused__))
 
 BEGIN_DECLS
 
