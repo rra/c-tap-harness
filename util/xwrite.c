@@ -124,7 +124,7 @@ xwritev(int fd, const struct iovec iov[], int iovcnt)
             left -= status;
             count = 0;
         }
-    } while (left > 0 || status >= 0 || errno == EINTR);
+    } while (left > 0 && (status >= 0 || errno == EINTR));
 
     /* We're either done or got an error; if we're done, left is now 0. */
     free(tmpiov);
