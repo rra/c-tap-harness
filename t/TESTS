@@ -1,3 +1,4 @@
+replace/hstrerror
 replace/inet_aton
 replace/inet_ntoa
 replace/memcmp
