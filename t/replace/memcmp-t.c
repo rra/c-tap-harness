@@ -1,5 +1,5 @@
 /* $Id$ */
-/* memcmp() test suite. */
+/* memcmp test suite. */
 
 #include "config.h"
 
@@ -17,7 +17,7 @@ ok(int n, int success)
 int
 main(void)
 {
-    puts("14");
+    puts("15");
     ok( 1, test_memcmp("",             "",             0) == 0);
     ok( 2, test_memcmp("",             "",             1) == 0);
     ok( 3, test_memcmp("alpha",        "alpha",        6) == 0);
