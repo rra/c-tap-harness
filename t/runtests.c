@@ -4,9 +4,24 @@
 
    Copyright 2000 Russ Allbery <rra@stanford.edu>
 
-   This program is free software under an MIT-style license.  See the file
-   LICENSE which should have accompanied this file for exact terms and
-   conditions.
+   Permission is hereby granted, free of charge, to any person obtaining a
+   copy of this software and associated documentation files (the
+   "Software"), to deal in the Software without restriction, including
+   without limitation the rights to use, copy, modify, merge, publish,
+   distribute, sublicense, and/or sell copies of the Software, and to
+   permit persons to whom the Software is furnished to do so, subject to
+   the following conditions:
+
+   The above copyright notice and this permission notice shall be included
+   in all copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    Usage:
 
@@ -24,12 +39,19 @@
 
    where <number> is the number of the test.  ok indicates success, not ok
    indicates failure, and "# skip" indicates the test was skipped for some
-   reason (maybe because it doesn't apply to this platform). */
+   reason (maybe because it doesn't apply to this platform).
+
+   This program is part of librutil and ideally should use die(), sysdie(),
+   xmalloc(), and other related utility functions from it.  For now,
+   however, it's completely standalone and contains its own license to allow
+   inclusion in other projects such as INN. */
 
 #include "config.h"
 
 #include <ctype.h>
+#include <errno.h>
 #include <fcntl.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -41,9 +63,6 @@
 
 /* sys/time.h must be included before sys/resource.h on some platforms. */
 #include <sys/resource.h>
-
-#include "error.h"
-#include "xmalloc.h"
 
 /* Test status codes. */
 enum test_status {
@@ -100,6 +119,22 @@ static pid_t test_start(const char *path, int *fd);
 static double tv_diff(const struct timeval *, const struct timeval *);
 static double tv_seconds(const struct timeval *);
 static double tv_sum(const struct timeval *, const struct timeval *);
+
+
+/* This should ideally come from a library. */
+void
+sysdie(const char * format, ...)
+{
+    va_list args;
+    int error = errno;
+
+    fflush(stdout);
+    va_start(args, format);
+    vfprintf(stderr, format, args);
+    va_end(args);
+    fprintf(stderr, ": %s\n", strerror(error));
+    exit(1);
+}
 
 
 /* Given a struct timeval, return the number of seconds it represents as a
@@ -431,8 +466,10 @@ test_batch(const char *testlist)
     while (fgets(buffer, sizeof(buffer), tests)) {
         line++;
         length = strlen(buffer) - 1;
-        if (buffer[length] != '\n')
-            die("%s:%d: line too long", testlist, line);
+        if (buffer[length] != '\n') {
+            fprintf(stderr, "%s:%d: line too long\n", testlist, line);
+            exit(1);
+        }
         if (length > longest) longest = length;
     }
     if (fseek(tests, 0, SEEK_SET) == -1)
@@ -452,8 +489,10 @@ test_batch(const char *testlist)
     while (fgets(buffer, sizeof(buffer), tests)) {
         line++;
         length = strlen(buffer) - 1;
-        if (buffer[length] != '\n')
-            die("%s:%d: line too long", testlist, line);
+        if (buffer[length] != '\n') {
+            fprintf(stderr, "%s:%d: line too long\n", testlist, line);
+            exit(1);
+        }
         buffer[length] = '\0';
         fputs(buffer, stdout);
         for (i = length; i < longest; i++) putchar('.');
@@ -517,7 +556,10 @@ test_batch(const char *testlist)
 int
 main(int argc, char *argv[])
 {
-    if (argc != 2) die("Usage: runtests <test-list>\n");
+    if (argc != 2) {
+        fprintf(stderr, "Usage: runtests <test-list>\n");
+        exit(1);
+    }
     printf(banner, argv[1]);
     exit(test_batch(argv[1]) ? 0 : 1);
 }
