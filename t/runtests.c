@@ -101,7 +101,8 @@ struct testlist {
    of tests. */
 static const char banner[] = "\n\
 Running all tests listed in %s.  If any tests fail, run the failing\n\
-test program by hand to see more details.\n\n";
+test program by hand to see more details.  The test program will have the\n\
+same name as the test set but with \".t\" appended.\n\n";
 
 /* Header for reports of failed tests. */
 static const char header[] = "\n\
@@ -121,7 +122,7 @@ static double tv_seconds(const struct timeval *);
 static double tv_sum(const struct timeval *, const struct timeval *);
 
 
-/* This should ideally come from a library. */
+/* These should ideally come from a library. */
 void
 sysdie(const char * format, ...)
 {
@@ -134,6 +135,16 @@ sysdie(const char * format, ...)
     va_end(args);
     fprintf(stderr, ": %s\n", strerror(error));
     exit(1);
+}
+
+void *
+xmalloc(size_t size)
+{
+    void *p;
+
+    p = malloc(size);
+    if (!p) sysdie("can't allocate memory");
+    return p;
 }
 
 
@@ -184,8 +195,7 @@ test_init(const char *line, struct testset *ts)
         return 0;
     }
     ts->count = i;
-    ts->results = malloc(ts->count * sizeof(enum test_status));
-    if (!ts->results) sysdie("can't allocate memory");
+    ts->results = xmalloc(ts->count * sizeof(enum test_status));
     for (i = 0; i < ts->count; i++) ts->results[i] = TEST_INVALID;
     return 1;
 }
@@ -359,10 +369,15 @@ test_run(struct testset *ts)
     int outfd, i, status;
     FILE *output;
     char buffer[BUFSIZ];
+    char *file;
 
     /* Initialize the test and our data structures, flagging this set in
        error if the initialization fails. */
-    testpid = test_start(ts->file, &outfd);
+    file = xmalloc(strlen(ts->file) + 3);
+    strcpy(file, ts->file);
+    strcat(file, ".t");
+    testpid = test_start(file, &outfd);
+    free(file);
     output = fdopen(outfd, "r");
     if (!output) sysdie("fdopen failed");
     if (!fgets(buffer, sizeof(buffer), output)) ts->aborted = 1;
@@ -497,21 +512,17 @@ test_batch(const char *testlist)
         fputs(buffer, stdout);
         for (i = length; i < longest; i++) putchar('.');
         memset(&ts, 0, sizeof(ts));
-        ts.file = buffer;
+        ts.file = strdup(buffer);
         if (!test_run(&ts)) {
-            tmp = malloc(sizeof(struct testset));
-            if (!tmp) sysdie("can't allocate memory");
+            tmp = xmalloc(sizeof(struct testset));
             memcpy(tmp, &ts, sizeof(struct testset));
-            tmp->file = strdup(ts.file);
             if (!failhead) {
-                failhead = malloc(sizeof(struct testset));
-                if (!failhead) sysdie("can't allocate memory");
+                failhead = xmalloc(sizeof(struct testset));
                 failhead->ts = tmp;
                 failhead->next = 0;
                 failtail = failhead;
             } else {
-                failtail->next = malloc(sizeof(struct testset));
-                if (!failtail->next) sysdie("can't allocate memory");
+                failtail->next = xmalloc(sizeof(struct testset));
                 failtail = failtail->next;
                 failtail->ts = tmp;
                 failtail->next = 0;
