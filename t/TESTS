@@ -1,3 +1,4 @@
 t/concat
 t/error
 t/xmalloc
+t/xwrite
