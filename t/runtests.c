@@ -366,7 +366,7 @@ static void
 test_fail_summary(const struct testlist *fails)
 {
     const struct testset *ts;
-    int i, chars;
+    int i, chars, total;
 
     puts(header);
 
@@ -374,12 +374,12 @@ test_fail_summary(const struct testlist *fails)
        -------------------------- -------------- ---- ----  -------------- */
     for (; fails; fails = fails->next) {
         ts = fails->ts;
+        total = ts->count - ts->skipped;
         printf("%-26.26s %4d/%-4d %3.0f%% %4d %4d  ", ts->file, ts->failed,
-               ts->count - ts->skipped,
-               (ts->failed * 100.0) / (ts->count - ts->skipped),
+               total, total ? (ts->failed * 100.0) / total : 0,
                ts->skipped, ts->status);
         if (ts->aborted) {
-            fputs("aborted", stdout);
+            puts("aborted");
             continue;
         }
         chars = 0;
@@ -463,6 +463,7 @@ test_batch(const char *testlist)
             tmp = malloc(sizeof(struct testset));
             if (!tmp) sysdie("can't allocate memory");
             memcpy(tmp, &ts, sizeof(struct testset));
+            tmp->file = strdup(ts.file);
             if (!failhead) {
                 failhead = malloc(sizeof(struct testset));
                 if (!failhead) sysdie("can't allocate memory");
