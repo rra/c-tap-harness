@@ -81,7 +81,7 @@ test program by hand to see more details.\n\n";
 /* Internal prototypes. */
 static int test_analyze(const struct testset *);
 static int test_batch(const char *testlist);
-static enum test_status test_checkline(const char *line, struct testset *);
+static void test_checkline(const char *line, struct testset *);
 static int test_init(const char *line, struct testset *);
 static void test_summarize(const struct testset *, int status);
 static pid_t test_start(const char *path, int *fd);
@@ -177,39 +177,50 @@ test_start(const char *path, int *fd)
 
 
 /* Given a single line of output from a test, parse it and return the
-   success status of that test.  Print an error followed by a newline to
-   stdout and return TEST_INVALID in the case of some parsing error.  Sets
-   current to the test number that just reported status. */
-static enum test_status
+   success status of that test.  Anything printed to stdout not matching the
+   form /^(not )?ok \d+/ is ignored.  Sets ts->current to the test number
+   that just reported status. */
+static void
 test_checkline(const char *line, struct testset *ts)
 {
-    enum test_status status = TEST_INVALID;
+    enum test_status status;
     int failed, current;
 
     /* If the given line isn't newline-terminated, it was too big for an
-       fgets(), which means invalid output. */
-    if (line[strlen(line) - 1] != '\n') {
-        puts("excessive output");
-    } else if (sscanf(line, "not ok %d", &current) == 1) {
+       fgets(), which means ignore it. */
+    if (line[strlen(line) - 1] != '\n') return;
+
+    /* Check for the lines we're expecting, ignore anything else. */
+    if (sscanf(line, "not ok %d", &current) == 1) {
         status = TEST_FAIL;
     } else if (sscanf(line, "ok %d", &current) == 1) {
         status = strstr(line, "# skip") ? TEST_SKIP : TEST_PASS;
     } else {
-        puts("invalid output");
+        return;
     }
 
-    if (status == TEST_INVALID) return status;
-
+    /* Make sure that the test number is in range and not a duplicate. */
     if (current < 1 || current > ts->count) {
         printf("invalid test number %d\n", current);
-        status = TEST_INVALID;
+        ts->aborted = 1;
+        ts->reported = 1;
+        return;
     }
     if (ts->results[current - 1] != TEST_INVALID) {
         printf("duplicate test number %d\n", current);
-        status = TEST_INVALID;
+        ts->aborted = 1;
+        ts->reported = 1;
+        return;
+    }
+
+    /* Good results.  Increment our various counters. */
+    switch (status) {
+        case TEST_PASS: ts->passed++;   break;
+        case TEST_FAIL: ts->failed++;   break;
+        case TEST_SKIP: ts->skipped++;  break;
     }
     ts->current = current;
-    return status;
+    ts->results[current - 1] = status;
 }
 
 
@@ -293,7 +304,6 @@ test_run(struct testset *ts)
     int outfd;
     FILE *output;
     char buffer[BUFSIZ];
-    enum test_status result;
 
     /* Initialize the test and our data structures. */
     testpid = test_start(ts->file, &outfd);
@@ -308,15 +318,8 @@ test_run(struct testset *ts)
 
     /* Read each line the test prints to stdout, checking it for ok or not
        ok and failing the test set if we see anything odd. */
-    while (!ts->aborted && fgets(buffer, sizeof(buffer), output)) {
-        result = test_checkline(buffer, ts);
-        switch (result) {
-            case TEST_PASS:     ts->passed++;   break;
-            case TEST_FAIL:     ts->failed++;   break;
-            case TEST_SKIP:     ts->skipped++;  break;
-        }
-        ts->results[ts->current - 1] = result;
-    }
+    while (!ts->aborted && fgets(buffer, sizeof(buffer), output))
+        test_checkline(buffer, ts);
     if (ferror(output)) ts->aborted = 1;
 
     /* Close the output descriptor, retrieve the exit status, and print out
