@@ -39,30 +39,40 @@
 
    where <number> is the number of the test.  ok indicates success, not ok
    indicates failure, and "# skip" indicates the test was skipped for some
-   reason (maybe because it doesn't apply to this platform).
-
-   This program is part of librutil and ideally should use die(), sysdie(),
-   xmalloc(), and other related utility functions from it.  For now,
-   however, it's completely standalone and contains its own license to allow
-   inclusion in other projects such as INN. */
+   reason (maybe because it doesn't apply to this platform). */
 
 #include "config.h"
 
 #include <ctype.h>
 #include <errno.h>
-#include <fcntl.h>
+#if HAVE_FCNTL_H
+# include <fcntl.h>
+#endif
 #include <stdarg.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#if STDC_HEADERS
+# include <string.h>
+#endif
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <unistd.h>
+#if HAVE_UNISTD_H
+# include <unistd.h>
+#endif
 
 /* sys/time.h must be included before sys/resource.h on some platforms. */
 #include <sys/resource.h>
+
+/* Some systems (Solaris, Linux) need _POSIX_SOURCE defined so that the
+   definition of fdopen() will be visible in stdio.h.  Include stdio.h last,
+   though, since defining _POSIX_C_SOURCE can hide a bunch of other stuff we
+   do use in other headers and once you've defined it on some systems, it's
+   practically impossible to undefine it. */
+#define _POSIX_C_SOURCE
+#include <stdio.h>
+
+#include "librutil.h"
 
 /* Test status codes. */
 enum test_status {
@@ -120,32 +130,6 @@ static pid_t test_start(const char *path, int *fd);
 static double tv_diff(const struct timeval *, const struct timeval *);
 static double tv_seconds(const struct timeval *);
 static double tv_sum(const struct timeval *, const struct timeval *);
-
-
-/* These should ideally come from a library. */
-void
-sysdie(const char * format, ...)
-{
-    va_list args;
-    int error = errno;
-
-    fflush(stdout);
-    va_start(args, format);
-    vfprintf(stderr, format, args);
-    va_end(args);
-    fprintf(stderr, ": %s\n", strerror(error));
-    exit(1);
-}
-
-void *
-xmalloc(size_t size)
-{
-    void *p;
-
-    p = malloc(size);
-    if (!p) sysdie("can't allocate memory");
-    return p;
-}
 
 
 /* Given a struct timeval, return the number of seconds it represents as a
@@ -283,6 +267,7 @@ test_checkline(const char *line, struct testset *ts)
         case TEST_PASS: ts->passed++;   break;
         case TEST_FAIL: ts->failed++;   break;
         case TEST_SKIP: ts->skipped++;  break;
+        default:                        break;
     }
     ts->current = current;
     ts->results[current - 1] = status;
@@ -373,9 +358,7 @@ test_run(struct testset *ts)
 
     /* Initialize the test and our data structures, flagging this set in
        error if the initialization fails. */
-    file = xmalloc(strlen(ts->file) + 3);
-    strcpy(file, ts->file);
-    strcat(file, ".t");
+    file = concat(ts->file, ".t", (char *) 0);
     testpid = test_start(file, &outfd);
     free(file);
     output = fdopen(outfd, "r");
@@ -457,12 +440,11 @@ test_fail_summary(const struct testlist *fails)
 static int
 test_batch(const char *testlist)
 {
-    char *p;
     FILE *tests;
-    size_t length;
+    size_t length, i;
     size_t longest = 0;
     char buffer[BUFSIZ];
-    int line, i;
+    int line;
     struct testset ts, *tmp;
     struct timeval start, end;
     struct rusage stats;
@@ -513,7 +495,7 @@ test_batch(const char *testlist)
         fputs(buffer, stdout);
         for (i = length; i < longest; i++) putchar('.');
         memset(&ts, 0, sizeof(ts));
-        ts.file = strdup(buffer);
+        ts.file = xstrdup(buffer);
         if (!test_run(&ts)) {
             tmp = xmalloc(sizeof(struct testset));
             memcpy(tmp, &ts, sizeof(struct testset));
