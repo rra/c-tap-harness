@@ -1,8 +1,8 @@
 # aclocal.m4 -- Some useful autoconf macros.
 # $Id$
 #
-# Written by Russ Allbery <rra@stanford.edu>
-# Copyright abandoned 2000 by author.  This work is in the public domain.
+# Copyright 2000 Russ Allbery <rra@stanford.edu>
+# This work is hereby placed in the public domain by its author.
 #
 # This is a collection of miscellaneous autoconf macros that I've written
 # and found generally useful.
@@ -52,3 +52,49 @@ AC_DEFUN([RRA_NETWORK_LIBS],
 [AC_SEARCH_LIBS(gethostbyname, nsl)
 AC_SEARCH_LIBS(socket, socket, ,
     [AC_CHECK_LIB(nsl, socket, LIBS="$LIBS -lsocket -lnsl", , -lsocket)])])
+
+# _RRA_FUNC_SNPRINTF_SOURCE
+# -------------------------
+define([_RRA_FUNC_SNPRINTF_SOURCE],
+[[#include <stdio.h>
+#include <stdarg.h>
+
+char buf[2];
+
+int
+test (char *format, ...)
+{
+  va_list args;
+  int count;
+
+  va_start (args, format);
+  count = vsnprintf (buf, sizeof buf, format, args);
+  va_end (args);
+  return count;
+}
+
+int
+main ()
+{
+  return ((test ("%s", "abcd") == 4 && buf[0] == 'a' && buf[1] == '\0'
+           && snprintf(NULL, 0, "%s", "abcd") == 4) ? 0 : 1);
+}]])
+
+# RRA_FUNC_SNPRINTF
+# -----------------
+# Check for a working snprintf.  Some systems have snprintf, but it doesn't
+# null-terminate if the buffer isn't large enough or it returns -1 if the
+# string doesn't fit instead of returning the number of characters that
+# would have been formatted.
+AC_DEFUN([RRA_FUNC_SNPRINTF],
+[AC_CACHE_CHECK(for working snprintf, rra_cv_func_snprintf_works,
+[AC_TRY_RUN(_RRA_FUNC_SNPRINTF_SOURCE(),
+            [rra_cv_func_snprintf_works=yes],
+            [rra_cv_func_snprintf_works=no],
+            [rra_cv_func_snprintf_works=no])])
+if test "$rra_cv_func_snprintf_works" = yes ; then
+    AC_DEFINE([HAVE_SNPRINTF], 1,
+        [Define if your system has a working snprintf function.])
+else
+    LIBOBJS="$LIBOBJS snprintf.${ac_objext}"
+fi])
