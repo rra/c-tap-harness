@@ -28,15 +28,8 @@
 #include "concat.h"
 #include "xmalloc.h"
 
-#ifdef STDC_HEADERS
+#if STDC_HEADERS
 # include <string.h>
-#endif
-
-/* If we're testing, use regular malloc. */
-#ifdef TEST
-# include <stdlib.h>
-# undef xmalloc
-# define xmalloc malloc
 #endif
 
 /* varargs implementation based on Solaris 2.6 man page. */
@@ -44,14 +37,12 @@
 # include <stdarg.h>
 # define VA_PARAM(type, param)  (type param, ...)
 # define VA_START(args, param)  (va_start(args, param))
+#elif HAVE_VARARGS_H
+# include <varargs.h>
+# define VA_PARAM(type, param)  (param, va_alist) type param; va_dcl
+# define VA_START(args, param)  (va_start(args))
 #else
-# ifdef HAVE_VARARGS_H
-#  include <varargs.h>
-#  define VA_PARAM(type, param) (param, va_alist) type param; va_dcl
-#  define VA_START(args, param) (va_start(args))
-# else
-#  error "No variadic argument mechanism available."
-# endif
+# error "No variadic argument mechanism available."
 #endif
 
 /* Abbreviation for cleaner code. */
@@ -80,7 +71,7 @@ concat VA_PARAM(const char *, first)
     result = xmalloc(length);
     p = result;
     VA_START(args, first);
-    for (string = first; string != 0; VA_NEXT(string, const char *))
+    for (string = first; string; VA_NEXT(string, const char *))
         while (*string != '\0')
             *p++ = *string++;
     va_end(args);
@@ -88,29 +79,3 @@ concat VA_PARAM(const char *, first)
 
     return result;
 }
-
-
-/* Some simple testing code to create memory leaks. */
-#ifdef TEST
-
-#include <stdio.h>
-
-int
-main ()
-{
-#if STDC_HEADERS || HAVE_STDARG_H
-    printf("Using stdargs:\n\n");
-#else
-    printf("Using varargs:\n\n");
-#endif
-    printf("a\t%s\n",     concat("a",                          (char *) 0));
-    printf("ab\t%s\n",    concat("a", "b",                     (char *) 0));
-    printf("ab\t%s\n",    concat("ab", "",                     (char *) 0));
-    printf("ab\t%s\n",    concat("", "ab",                     (char *) 0));
-    printf("\t%s\n",      concat("",                           (char *) 0));
-    printf("abcde\t%s\n", concat("ab", "c", "", "de",          (char *) 0));
-    printf("abcde\t%s\n", concat("abc", "de", (char *) 0, "f", (char *) 0));
-    return 0;
-}
-
-#endif /* TEST */
