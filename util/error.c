@@ -11,7 +11,6 @@
    %AUTOCONF%
    AC_C_CONST
    AC_HEADER_STDC
-   AC_CHECK_FUNCS(strerror)
    %%
 
    Usage:
@@ -62,28 +61,6 @@ int (*error_fatal_cleanup)(void) = 0;
 
 /* If non-NULL, prepended (followed by ": ") to all error messages. */
 const char *error_program_name = 0;
-
-/* If we don't have strerror, assume that we do have sys_nerr and
-   sys_errlist to use instead and provide a replacement.  Note that this
-   replacement is not thraed-safe. */
-#if !HAVE_STRERROR
-const char *
-strerror(int error)
-{
-    extern int sys_nerr;
-    extern char *sys_errlist[];
-    static char buff[32];
-
-    if (error >= 0 && error < sys_nerr) return sys_errlist[error];
-
-    /* Paranoia.  If an int is very large (like 128 bytes) one could
-       overflow the buffer here, so refuse to process particularly large
-       values of error. */
-    if (error > 30000) return "";
-    sprintf(buff, "Error code %d", error);
-    return buff;
-}
-#endif /* !HAVE_STRERROR */
 
 void
 warn(const char *format, ...)
