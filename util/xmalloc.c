@@ -8,28 +8,6 @@
    LICENSE which should have accompanied this file for exact terms and
    conditions.
 
-   %AUTOCONF%
-   AC_C_CONST
-   AC_HEADER_STDC
-   AC_CHECK_FUNCS(memcpy)
-   AC_TYPE_SIZE_T
-   %%
-
-   Usage:
-
-        #include <stdlib.h>
-        #include "librutil.h"
-
-        extern xmalloc_handler_t memory_error;
-        extern const char *string;
-        char *buffer;
-
-        xmalloc_error_handler = memory_error;
-        buffer = xmalloc(1024);
-        xrealloc(buffer, 2048);
-        free(buffer);
-        buffer = xstrdup(string);
-
    xmalloc, xrealloc, and xstrdup behave exactly like their C library
    counterparts without the leading x except that they will never return
    NULL.  Instead, on error, they call xmalloc_error_handler, passing it the
@@ -41,10 +19,10 @@
    interrupted memory allocation function will try its allocation again
    (calling the handler again if it still fails).
 
-   The default error handler, if none is set by the caller, prints an error
-   message to stderr and exits with exit status 1.  An error handler must
-   take a const char * (function name), size_t (bytes allocated), const
-   char * (file), and int (line).
+   The default error handler, if none is set by the caller, calls sysdie
+   (and therefore goes through the standard error handles for the *die
+   functions).  An error handler must take a const char * (function name),
+   size_t (bytes allocated), const char * (file), and int (line).
 
    xmalloc will return a pointer to a valid memory region on an xmalloc of 0
    bytes, ensuring this by allocating space for one character instead of 0
@@ -62,6 +40,12 @@
 # define memcpy(d, s, n)        bcopy((s), (d), (n))
 #endif
 
+/* Internal prototypes. */
+static void xmalloc_fail(const char *, size_t, const char *, int);
+
+/* Assign to this variable to choose a handler other than the default. */
+xmalloc_handler_t xmalloc_error_handler = xmalloc_fail;
+
 /* The default error handler. */
 static void
 xmalloc_fail(const char *function, size_t size, const char *file, int line)
@@ -69,9 +53,6 @@ xmalloc_fail(const char *function, size_t size, const char *file, int line)
     sysdie("failed to %s %lu bytes at %s line %d", function,
            (unsigned long) size, file, line);
 }
-
-/* Assign to this variable to choose a handler other than the default. */
-xmalloc_handler_t xmalloc_error_handler = xmalloc_fail;
 
 void *
 x_malloc(size_t size, const char *file, int line)
