@@ -1,0 +1,10 @@
+
+Running all tests listed in pass.list.  If any tests fail, run the failing
+test program by hand to see more details.  The test program will have the
+same name as the test set but with ".t" appended.
+
+pass....ok
+order...ok
+
+All tests successful.
+Files=2,  Tests=14

@@ -1,0 +1,11 @@
+fail
+missing
+hup
+segv
+status
+skip
+pass
+abort
+nocount
+badnum
+duplicate

@@ -1,0 +1,31 @@
+
+Running all tests listed in abort.list.  If any tests fail, run the failing
+test program by hand to see more details.  The test program will have the
+same name as the test set but with ".t" appended.
+
+fail............FAILED 2-3, 5-8
+missing.........MISSED 1, 6, 10, 12, 14, 18; FAILED 8, 16
+hup.............dubious (killed by signal 1)
+segv............MISSED 1-3 (killed by signal 6, core dumped)
+status..........dubious (exit status 1)
+skip............ok (skipped 3 tests)
+pass............ok
+abort...........MISSED 3-4
+nocount.........invalid test count
+badnum..........invalid test number 5
+duplicate.......duplicate test number 4
+
+Failed Set                 Fail/Total (%) Skip Stat  Failing Tests
+-------------------------- -------------- ---- ----  ------------------------
+fail                          6/8     75%    1    0  2-3, 5-8
+missing                       8/19    42%    0    0  1, 6, 8, 10, 12, 14, ...
+hup                           0/4      0%    0   --  
+segv                          3/4     75%    0   --  1-3
+status                        0/4      0%    0    1  
+abort                         2/4     50%    0    0  3-4
+nocount                       0/0      0%    0    0  aborted
+badnum                        2/4     50%    0    0  aborted
+duplicate                     0/4      0%    0    0  aborted
+
+Aborted 3 test sets, passed 46/67 tests.
+Files=11,  Tests=67
