@@ -103,6 +103,7 @@ warn VA_PARAM(const char *, format)
 {
     va_list args;
 
+    fflush(stdout);
     if (error_program_name) fprintf(stderr, "%s: ", error_program_name);
     VA_START(args, format);
     vfprintf(stderr, format, args);
@@ -116,6 +117,7 @@ syswarn VA_PARAM(const char *, format)
     va_list args;
     int error = errno;
 
+    fflush(stdout);
     if (error_program_name) fprintf(stderr, "%s: ", error_program_name);
     VA_START(args, format);
     vfprintf(stderr, format, args);
@@ -128,6 +130,7 @@ die VA_PARAM(const char *, format)
 {
     va_list args;
 
+    fflush(stdout);
     if (error_program_name) fprintf(stderr, "%s: ", error_program_name);
     va_start(args, format);
     vfprintf(stderr, format, args);
@@ -142,6 +145,7 @@ sysdie VA_PARAM(const char *, format)
     va_list args;
     int error = errno;
 
+    fflush(stdout);
     if (error_program_name) fprintf(stderr, "%s: ", error_program_name);
     va_start(args, format);
     vfprintf(stderr, format, args);
