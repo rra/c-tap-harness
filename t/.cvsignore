@@ -1,4 +1,2 @@
-concat.t
-error.t
+runtests
 xmalloc
-xwrite.t
