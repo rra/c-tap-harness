@@ -1,3 +1,5 @@
+$Id$
+
 aclocal.m4, concat.c, and concat.h are in the public domain.  You may do
 anything you like with that code, although I would strongly prefer that
 any improvements or modifications be sent to me (rra@stanford.edu).
