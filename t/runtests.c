@@ -72,16 +72,28 @@ struct testset {
     int status;                 /* The exit status of the test. */
 };
 
+/* Structure to hold a linked list of test sets. */
+struct testlist {
+    struct testset *ts;
+    struct testlist *next;
+};
+
 /* Header used for test output.  %s is replaced by the file name of the list
    of tests. */
 static const char banner[] = "\n\
 Running all tests listed in %s.  If any tests fail, run the failing\n\
 test program by hand to see more details.\n\n";
 
+/* Header for reports of failed tests. */
+static const char header[] = "\n\
+Failed Set                 Fail/Total (%) Skip Stat  Failing Tests\n\
+-------------------------- -------------- ---- ----  ------------------------";
+
 /* Internal prototypes. */
 static int test_analyze(const struct testset *);
 static int test_batch(const char *testlist);
 static void test_checkline(const char *line, struct testset *);
+static void test_fail_summary(const struct testlist *);
 static int test_init(const char *line, struct testset *);
 static void test_summarize(const struct testset *, int status);
 static pid_t test_start(const char *path, int *fd);
@@ -205,6 +217,7 @@ test_checkline(const char *line, struct testset *ts)
         ts->reported = 1;
         return;
     }
+    while (isdigit((unsigned char)(*line))) line++;
     while (isspace((unsigned char)(*line))) line++;
     if (*line == '#') {
         line++;
@@ -308,7 +321,7 @@ static int
 test_run(struct testset *ts)
 {
     pid_t testpid, child;
-    int outfd;
+    int outfd, i, status;
     FILE *output;
     char buffer[BUFSIZ];
 
@@ -335,7 +348,55 @@ test_run(struct testset *ts)
     child = waitpid(testpid, &ts->status, 0);
     if (child == (pid_t) -1)
         sysdie("waitpid for %u failed", (unsigned int) testpid);
-    return test_analyze(ts);
+    status = test_analyze(ts);
+
+    /* Convert missing tests to failed tests. */
+    for (i = 0; i < ts->count; i++) {
+        if (ts->results[i] == TEST_INVALID) {
+            ts->failed++;
+            ts->results[i] = TEST_FAIL;
+        }
+    }
+    return status;
+}
+
+
+/* Summarize a list of test failures. */
+static void
+test_fail_summary(const struct testlist *fails)
+{
+    const struct testset *ts;
+    int i, chars;
+
+    puts(header);
+
+    /* Failed Set                 Fail/Total (%) Skip Stat  Failing (25)
+       -------------------------- -------------- ---- ----  -------------- */
+    for (; fails; fails = fails->next) {
+        ts = fails->ts;
+        printf("%-26.26s %4d/%-4d %3.0f%% %4d %4d  ", ts->file, ts->failed,
+               ts->count - ts->skipped,
+               (ts->failed * 100.0) / (ts->count - ts->skipped),
+               ts->skipped, ts->status);
+        if (ts->aborted) {
+            fputs("aborted", stdout);
+            continue;
+        }
+        chars = 0;
+        for (i = 0; i < ts->count; i++) {
+            if (ts->results[i] == TEST_FAIL) {
+                if (chars > 21) {
+                    fputs(", ...", stdout);
+                    break;
+                } else if (chars > 0) {
+                    fputs(", ", stdout);
+                    chars += 2;
+                }
+                chars += printf("%d", i + 1);
+            }
+        }
+        putchar('\n');
+    }
 }
 
 
@@ -351,9 +412,11 @@ test_batch(const char *testlist)
     size_t longest = 0;
     char buffer[BUFSIZ];
     int line, i;
-    struct testset ts;
+    struct testset ts, *tmp;
     struct timeval start, end;
     struct rusage stats;
+    struct testlist *failhead = 0;
+    struct testlist *failtail = 0;
     int total = 0;
     int passed = 0;
     int skipped = 0;
@@ -396,7 +459,24 @@ test_batch(const char *testlist)
         for (i = length; i < longest; i++) putchar('.');
         memset(&ts, 0, sizeof(ts));
         ts.file = buffer;
-        test_run(&ts);
+        if (!test_run(&ts)) {
+            tmp = malloc(sizeof(struct testset));
+            if (!tmp) sysdie("can't allocate memory");
+            memcpy(tmp, &ts, sizeof(struct testset));
+            if (!failhead) {
+                failhead = malloc(sizeof(struct testset));
+                if (!failhead) sysdie("can't allocate memory");
+                failhead->ts = tmp;
+                failhead->next = 0;
+                failtail = failhead;
+            } else {
+                failtail->next = malloc(sizeof(struct testset));
+                if (!failtail->next) sysdie("can't allocate memory");
+                failtail = failtail->next;
+                failtail->ts = tmp;
+                failtail->next = 0;
+            }
+        }
         aborted += ts.aborted;
         total += ts.count;
         passed += ts.passed;
@@ -410,12 +490,15 @@ test_batch(const char *testlist)
     getrusage(RUSAGE_CHILDREN, &stats);
 
     /* Print out our final results. */
+    if (failhead) test_fail_summary(failhead);
     putchar('\n');
     if (aborted) {
         printf("Aborted %d test sets, passed %d/%d tests.\n", aborted,
                passed, total);
     } else if (failed == 0) {
-        puts("All tests successful.");
+        fputs("All tests successful", stdout);
+        if (skipped) printf(", %d tests skipped", skipped);
+        puts(".");
     } else {
         printf("Failed %d/%d tests, %.2f%% okay.\n", failed, total,
                (total - failed) * 100.0 / total);
