@@ -22,7 +22,7 @@ librutil.a: $(OBJS)
 	$(CC) $(CFLAGS) -I$(srcdir) $(CPPFLAGS) -c $*.c -o $@
 
 runtests: runtests.o librutil.a
-	$(CC) -o $@ runtests.o librutil.a $(LDFLAGS) $(LIBS)
+	$(CC) -o $@ runtests.o $(LDFLAGS) $(LIBS)
 
 t/concat: t/concat.o librutil.a
 	$(CC) -o $@ t/concat.o librutil.a $(LDFLAGS) $(LIBS)
