@@ -12,7 +12,7 @@ RANLIB		= @RANLIB@
 
 OBJS		= concat.o error.o xmalloc.o xwrite.o
 
-WARNINGS	= -ansi -pedantic -Wall -W -Wno-unused -Wshadow \
+WARNINGS	= -ansi -pedantic -Wall -W -Wunused -Wshadow \
 		  -Wpointer-arith -Wbad-function-cast -Wcast-qual \
 		  -Wcast-align -Wwrite-strings -Wstrict-prototypes
 
@@ -26,7 +26,7 @@ librutil.a: $(OBJS)
 	$(CC) $(CFLAGS) -I$(srcdir) $(CPPFLAGS) -c $*.c -o $@
 
 runtests: runtests.o librutil.a
-	$(CC) -o $@ runtests.o $(LDFLAGS) $(LIBS)
+	$(CC) -o $@ runtests.o librutil.a $(LDFLAGS) $(LIBS)
 
 t/concat.t: t/concat-t.o librutil.a
 	$(CC) -o $@ t/concat-t.o librutil.a $(LDFLAGS) $(LIBS)
