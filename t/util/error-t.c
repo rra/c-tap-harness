@@ -1,13 +1,22 @@
 /* $Id$ */
 /* Test suite for error handling routines. */
 
+#include "config.h"
+
 #include <errno.h>
-#include <fcntl.h>
+#if HAVE_FCNTL_H
+# include <fcntl.h>
+#endif
 #include <stdio.h>
+#if STDC_HEADERS
+# include <string.h>
+#endif
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <unistd.h>
+#if HAVE_UNISTD_H
+# include <unistd.h>
+#endif
 
 #include "librutil.h"
 
@@ -51,8 +60,8 @@ run_test(test_function_t function, char *buf, size_t buflen)
         buf[count < 0 ? 0 : count] = '\0';
         if (waitpid(child, &status, 0) == (pid_t) -1)
             sysdie("waitpid failed");
-        return status;
     }
+    return status;
 }
 
 /* Test functions. */
@@ -102,7 +111,7 @@ static void test11(void) {
 /* Given the test number, intended exit status and message, and the actual
    exit status and message, print ok or not ok. */
 static void
-ok(int n, int status, char *output, test_function_t function)
+ok(int n, int status, const char *output, test_function_t function)
 {
     int real_status;
     char buf[256];
