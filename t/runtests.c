@@ -68,6 +68,7 @@ struct testset {
     int skipped;                /* Count of skipped tests (passed). */
     enum test_status *results;  /* Table of results by test number. */
     int aborted;                /* Whether the set as aborted. */
+    int reported;               /* Whether the results were reported. */
     int status;                 /* The exit status of the test. */
 };
 
@@ -78,14 +79,15 @@ Running all tests listed in %s.  If any tests fail, run the failing\n\
 test program by hand to see more details.\n\n";
 
 /* Internal prototypes. */
+static int test_analyze(const struct testset *);
 static int test_batch(const char *testlist);
 static enum test_status test_checkline(const char *line, struct testset *);
 static int test_init(const char *line, struct testset *);
+static void test_summarize(const struct testset *, int status);
 static pid_t test_start(const char *path, int *fd);
 static double tv_diff(const struct timeval *, const struct timeval *);
 static double tv_seconds(const struct timeval *);
 static double tv_sum(const struct timeval *, const struct timeval *);
-static void wstat_print(int status);
 
 
 /* Given a struct timeval, return the number of seconds it represents as a
@@ -111,33 +113,6 @@ tv_sum(const struct timeval *tv1, const struct timeval *tv2)
 }
 
 
-/* Given a return status from waitpid(), print to stdout a human-readable
-   description of the exit status. */
-static void
-wstat_print(int status)
-{
-    if (WIFEXITED(status)) {
-        switch (WEXITSTATUS(status)) {
-        case CHILDERR_DUP:
-            puts("dup of file descriptors failed");
-            break;
-        case CHILDERR_EXEC:
-            puts("Execution of test script failed");
-            break;
-        case CHILDERR_STDERR:
-            puts("Unable to open /dev/null");
-            break;
-        default:
-            printf("Test exited with status %d\n", WEXITSTATUS(status));
-            break;
-        }
-    } else if (WIFSIGNALED(status)) {
-        printf("Test terminated with signal %d%s\n", WTERMSIG(status),
-               WCOREDUMP(status) ? " (core dumped)" : "");
-    }
-}
-
-
 /* Read the first line of test output, which should contain the range of
    test numbers, and initialize the testset structure.  Assume it was zeroed
    before being passed in.  Return true if initialization succeeds, false
@@ -158,6 +133,7 @@ test_init(const char *line, struct testset *ts)
     if (i <= 0) {
         puts("invalid test count");
         ts->aborted = 1;
+        ts->reported = 1;
         return 0;
     }
     ts->count = i;
@@ -237,30 +213,93 @@ test_checkline(const char *line, struct testset *ts)
 }
 
 
-/* Runs a single test set, redirecting stderr to harness.err and parsing
-   stdout looking for "ok" and "not ok" lines.  Any other line on stdout is
-   treated as a fatal error.  Takes the test set to run.  Returns true if
-   the test set was successfully run (even if some tests failed), false
-   otherwise. */
+/* Summarize a single test set.  The second argument is 0 if the set exited
+   cleanly, a positive integer representing the exit status if it exited
+   with a non-zero status, and a negative integer representing the signal
+   that terminated it if it was killed by a signal. */
+static void
+test_summarize(const struct testset *ts, int status)
+{
+    int i;
+    int missing = 0;
+    int failed = 0;
+
+    if (ts->aborted) {
+        fputs("aborted", stdout);
+        if (ts->count > 0)
+            printf(", passed %d/%d", ts->passed, ts->count - ts->skipped);
+    } else {
+        for (i = 0; i < ts->count; i++)
+            if (ts->results[i] == TEST_INVALID)
+                printf("%s%d", missing++ ? ", " : "MISSED ", i + 1);
+        for (i = 0; i < ts->count; i++) {
+            if (ts->results[i] == TEST_FAIL) {
+                if (missing && !failed) fputs("; ", stdout);
+                printf("%s%d", failed++ ? ", " : "FAILED ", i + 1);
+            }
+        }
+        if (!missing && !failed) fputs(!status ? "ok" : "dubious", stdout);
+    }
+    if (status > 0) {
+        printf(" (exit status %d)", status);
+    } else if (status < 0) {
+        printf(" (killed by signal %d%s)", -status,
+               WCOREDUMP(ts->status) ? ", core dumped" : "");
+    }
+    putchar('\n');
+}
+
+
+/* Given a test set, analyze the results, classify the exit status, handle a
+   few special error messages, and then pass it along to test_summarize()
+   for the regular output. */
+static int
+test_analyze(const struct testset *ts)
+{
+    if (ts->reported) return 0;
+    if (WIFEXITED(ts->status) && WEXITSTATUS(ts->status) != 0) {
+        switch (WEXITSTATUS(ts->status)) {
+        case CHILDERR_DUP:
+            if (!ts->reported) puts("can't dup file descriptors");
+            break;
+        case CHILDERR_EXEC:
+            if (!ts->reported) puts("execution failed (not found?)");
+            break;
+        case CHILDERR_STDERR:
+            if (!ts->reported) puts("can't open /dev/null");
+            break;
+        default:
+            test_summarize(ts, WEXITSTATUS(ts->status));
+            break;
+        }
+        return 0;
+    } else if (WIFSIGNALED(ts->status)) {
+        test_summarize(ts, -WTERMSIG(ts->status));
+        return 0;
+    } else {
+        test_summarize(ts, 0);
+        return (ts->failed == 0);
+    }
+}
+
+
+/* Runs a single test set, accumulating and then reporting the results.
+   Returns true if the test set was successfully run and all tests passed,
+   false otherwise. */
 static int
 test_run(struct testset *ts)
 {
-    char buffer[BUFSIZ];
-    FILE *output;
     pid_t testpid, child;
+    int outfd;
+    FILE *output;
+    char buffer[BUFSIZ];
     enum test_status result;
-    int outfd, status, i;
-    int missing = 0;
-    int failed = 0;
 
     /* Initialize the test and our data structures. */
     testpid = test_start(ts->file, &outfd);
     output = fdopen(outfd, "r");
     if (!output) sysdie("fdopen failed");
-    if (!fgets(buffer, sizeof(buffer), output)) {
-        puts("read failure");
-        ts->aborted = 1;
-    }
+    if (!fgets(buffer, sizeof(buffer), output)) ts->aborted = 1;
     if (!ts->aborted && !test_init(buffer, ts)) {
         while (fgets(buffer, sizeof(buffer), output))
             ;
@@ -278,10 +317,7 @@ test_run(struct testset *ts)
         }
         ts->results[ts->current - 1] = result;
     }
-    if (ferror(output)) {
-        puts("read error");
-        ts->aborted = 1;
-    }
+    if (ferror(output)) ts->aborted = 1;
 
     /* Close the output descriptor, retrieve the exit status, and print out
        the status if appropriate. */
@@ -289,27 +325,7 @@ test_run(struct testset *ts)
     child = waitpid(testpid, &ts->status, 0);
     if (child == (pid_t) -1)
         sysdie("waitpid for %u failed", (unsigned int) testpid);
-    if (!WIFEXITED(ts->status) || WEXITSTATUS(ts->status) != 0) {
-        if (!ts->aborted) puts("dubious");
-        fputs("  ", stdout);
-        wstat_print(ts->status);
-        return 0;
-    }
-    if (ts->aborted) return 0;
-
-    /* Summarize the results of the test set to stdout. */
-    for (i = 0; i < ts->count; i++)
-        if (ts->results[i] == TEST_INVALID)
-            printf("%s%d", missing++ ? ", " : "MISSED ", i + 1);
-    for (i = 0; i < ts->count; i++) {
-        if (ts->results[i] == TEST_FAIL) {
-            if (missing && !failed) fputs("; ", stdout);
-            printf("%s%d", failed++ ? ", " : "FAILED ", i + 1);
-        }
-    }
-    if (!missing && !failed) fputs("ok", stdout);
-    putchar('\n');
-    return (!missing && !failed);
+    return test_analyze(ts);
 }
 
 
@@ -330,6 +346,7 @@ test_batch(const char *testlist)
     struct rusage stats;
     int total = 0;
     int passed = 0;
+    int skipped = 0;
     int failed = 0;
     int aborted = 0;
 
@@ -373,8 +390,10 @@ test_batch(const char *testlist)
         aborted += ts.aborted;
         total += ts.count;
         passed += ts.passed;
+        skipped += ts.skipped;
         failed += ts.failed;
     }
+    total -= skipped;
 
     /* Stop the timer and get our child resource statistics. */
     gettimeofday(&end, NULL);
@@ -396,7 +415,7 @@ test_batch(const char *testlist)
     printf(" (%.2f usr + %.2f sys = %.2f CPU)\n",
            tv_seconds(&stats.ru_utime), tv_seconds(&stats.ru_stime),
            tv_sum(&stats.ru_utime, &stats.ru_stime));
-    return (failed != 0);
+    return (failed || aborted);
 }
 
 
@@ -406,5 +425,5 @@ main(int argc, char *argv[])
 {
     if (argc != 2) die("Usage: runtests <test-list>\n");
     printf(banner, argv[1]);
-    return test_batch(argv[1]);
+    exit(test_batch(argv[1]) ? 0 : 1);
 }
