@@ -40,16 +40,6 @@ struct iovec;
 
 BEGIN_DECLS
 
-/* Log handler functions take the length of the resulting message, the
-   format, the arguments, and the errno if any. */
-typedef int (*error_handler_t)(int, const char *, va_list, int);
-
-/* If non-NULL, called before exit and its return value passed to exit. */
-extern int (*error_fatal_cleanup)(void);
-
-/* If non-NULL, prepended (followed by ": ") to all error messages. */
-extern const char *error_program_name;
-
 /* Error handling function prototypes. */
 extern void warn(const char *, ...)
     __attribute__((__format__(printf, 1, 2)));
@@ -61,14 +51,25 @@ extern void sysdie(const char *, ...)
     __attribute__((__noreturn__, __format__(printf, 1, 2)));
 extern void warn_set_handlers(int count, ...);
 extern void die_set_handlers(int count, ...);
-extern int error_log_stderr(int length, const char *, va_list, int error);
+
+/* Handlers intended to be passed to *_set_handlers.  error_log_stderr is
+   the only handler enabled by default. */
+extern void error_log_stderr(int, const char *, va_list, int);
+extern void error_log_syslog_err(int, const char *, va_list, int);
+extern void error_log_syslog_warning(int, const char *, va_list, int);
+
+/* Log handling functions take the length of the resulting message, the
+   format, the arguments, and the errno if any. */
+typedef void (*error_handler_t)(int, const char *, va_list, int);
 
 /* Failure handler takes the function, the size, the file, and the line. */
 typedef void (*xmalloc_handler_t)(const char *, size_t, const char *, int);
 
-/* Assign to this variable to choose a handler other than the default, which
-   just calls sysdie. */
-extern xmalloc_handler_t xmalloc_error_handler;
+/* If non-NULL, called before exit and its return value passed to exit. */
+extern int (*error_fatal_cleanup)(void);
+
+/* If non-NULL, prepended (followed by ": ") to all error messages. */
+extern const char *error_program_name;
 
 /* The xmalloc, xrealloc, and xstrdup functions are actually macros so that
    we can pick up the file and line number information for debugging error
@@ -86,6 +87,10 @@ extern xmalloc_handler_t xmalloc_error_handler;
 extern void *x_malloc(size_t, const char *, int);
 extern void *x_realloc(void *, size_t, const char *, int);
 extern char *x_strdup(const char *, const char *, int);
+
+/* Assign to this variable to choose a handler other than the default, which
+   just calls sysdie. */
+extern xmalloc_handler_t xmalloc_error_handler;
 
 /* Miscellaneous utility functions. */
 extern void *concat(const char *, ...);
