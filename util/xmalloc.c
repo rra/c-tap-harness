@@ -66,8 +66,8 @@
 static void
 xmalloc_fail(const char *function, size_t size, const char *file, int line)
 {
-    sysdie("failed to %s %lu bytes at %s line %d", function, size, file,
-           line);
+    sysdie("failed to %s %lu bytes at %s line %d", function,
+           (unsigned long) size, file, line);
 }
 
 /* Assign to this variable to choose a handler other than the default. */
