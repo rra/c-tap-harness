@@ -5,6 +5,7 @@ replace/memcmp
 replace/pread
 replace/pwrite
 replace/setenv
+replace/snprintf
 replace/strerror
 util/concat
 util/error
