@@ -53,9 +53,6 @@
 # include <string.h>
 #endif
 
-/* Abbreviation for cleaner code. */
-#define VA_NEXT(var, type)      ((var) = (type) va_arg(args, type))
-
 /* If non-NULL, called before exit and its return value passed to exit. */
 int (*error_fatal_cleanup)(void) = 0;
 
