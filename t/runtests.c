@@ -405,6 +405,7 @@ test_run(struct testset *ts)
         if (ts->results[i] == TEST_INVALID) {
             ts->failed++;
             ts->results[i] = TEST_FAIL;
+            status = 0;
         }
     }
     return status;
@@ -559,7 +560,7 @@ test_batch(const char *testlist)
     printf(" (%.2f usr + %.2f sys = %.2f CPU)\n",
            tv_seconds(&stats.ru_utime), tv_seconds(&stats.ru_stime),
            tv_sum(&stats.ru_utime, &stats.ru_stime));
-    return (failed || aborted);
+    return !(failed || aborted);
 }
 
 
