@@ -8,13 +8,12 @@
    %AUTOCONF%
    AC_C_CONST
    AC_HEADER_STDC
-   AC_CHECK_HEADERS(stdarg.h varargs.h)
    AC_TYPE_SIZE_T
    %%
 
    Usage:
 
-        #include "concat.h"
+        #include "librutil.h"
 
         string = concat(string1, string2, ..., (char *) 0);
 
@@ -25,32 +24,20 @@
    (to a char *, if you actually find a platform where it matters). */
 
 #include "config.h"
-#include "concat.h"
-#include "xmalloc.h"
 
+#include <stdarg.h>
 #if STDC_HEADERS
 # include <string.h>
 #endif
 
-/* varargs implementation based on Solaris 2.6 man page. */
-#if STDC_HEADERS || HAVE_STDARG_H
-# include <stdarg.h>
-# define VA_PARAM(type, param)  (type param, ...)
-# define VA_START(args, param)  (va_start(args, param))
-#elif HAVE_VARARGS_H
-# include <varargs.h>
-# define VA_PARAM(type, param)  (param, va_alist) type param; va_dcl
-# define VA_START(args, param)  (va_start(args))
-#else
-# error "No variadic argument mechanism available."
-#endif
+#include "librutil.h"
 
 /* Abbreviation for cleaner code. */
 #define VA_NEXT(var, type)      ((var) = (type) va_arg(args, type))
 
 /* ANSI C requires at least one named parameter. */
 void *
-concat VA_PARAM(const char *, first)
+concat(const char *first, ...)
 {
     va_list args;
     char *result, *p;
@@ -58,7 +45,7 @@ concat VA_PARAM(const char *, first)
     size_t length = 0;
 
     /* Find the total memory required. */
-    VA_START(args, first);
+    va_start(args, first);
     for (string = first; string != 0; VA_NEXT(string, const char *))
         length += strlen(string);
     va_end(args);
@@ -70,7 +57,7 @@ concat VA_PARAM(const char *, first)
        optimization of strcat if any. */
     result = xmalloc(length);
     p = result;
-    VA_START(args, first);
+    va_start(args, first);
     for (string = first; string; VA_NEXT(string, const char *))
         while (*string != '\0')
             *p++ = *string++;

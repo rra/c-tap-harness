@@ -11,13 +11,12 @@
    %AUTOCONF%
    AC_C_CONST
    AC_HEADER_STDC
-   AC_CHECK_HEADERS(stdarg.h varargs.h)
    AC_CHECK_FUNCS(strerror)
    %%
 
    Usage:
 
-        #include "error.h"
+        #include "librutil.h"
 
         extern int cleanup(void);
 
@@ -45,31 +44,18 @@
    char *. */
 
 #include "config.h"
-#include "error.h"
+#include "librutil.h"
 
 #include <errno.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-/* FIXME: Assumes we have strerror.  Should provide a copy of we don't. */
 #if STDC_HEADERS
 # include <string.h>
 #endif
 
-/* varargs implementation based on Solaris 2.6 man page. */
-#if STDC_HEADERS || HAVE_STDARG_H
-# include <stdarg.h>
-# define VA_PARAM(type, param)  (type param, ...)
-# define VA_START(args, param)  (va_start(args, param))
-#else
-# if HAVE_VARARGS_H
-#  include <varargs.h>
-#  define VA_PARAM(type, param) (param, va_alist) type param; va_dcl
-#  define VA_START(args, param) (va_start(args))
-# else
-#  error "No variadic argument mechanism available."
-# endif
-#endif
+/* Abbreviation for cleaner code. */
+#define VA_NEXT(var, type)      ((var) = (type) va_arg(args, type))
 
 /* If non-NULL, called before exit and its return value passed to exit. */
 int (*error_fatal_cleanup)(void) = 0;
@@ -78,7 +64,8 @@ int (*error_fatal_cleanup)(void) = 0;
 const char *error_program_name = 0;
 
 /* If we don't have strerror, assume that we do have sys_nerr and
-   sys_errlist to use instead and provide a replacement. */
+   sys_errlist to use instead and provide a replacement.  Note that this
+   replacement is not thraed-safe. */
 #if !HAVE_STRERROR
 const char *
 strerror(int error)
@@ -99,34 +86,34 @@ strerror(int error)
 #endif /* !HAVE_STRERROR */
 
 void
-warn VA_PARAM(const char *, format)
+warn(const char *format, ...)
 {
     va_list args;
 
     fflush(stdout);
     if (error_program_name) fprintf(stderr, "%s: ", error_program_name);
-    VA_START(args, format);
+    va_start(args, format);
     vfprintf(stderr, format, args);
     va_end(args);
     fprintf(stderr, "\n");
 }
 
 void
-syswarn VA_PARAM(const char *, format)
+syswarn(const char *format, ...)
 {
     va_list args;
     int error = errno;
 
     fflush(stdout);
     if (error_program_name) fprintf(stderr, "%s: ", error_program_name);
-    VA_START(args, format);
+    va_start(args, format);
     vfprintf(stderr, format, args);
     va_end(args);
     fprintf(stderr, ": %s\n", strerror(error));
 }
 
 void
-die VA_PARAM(const char *, format)
+die(const char *format, ...)
 {
     va_list args;
 
@@ -140,7 +127,7 @@ die VA_PARAM(const char *, format)
 }
 
 void
-sysdie VA_PARAM(const char *, format)
+sysdie(const char *format, ...)
 {
     va_list args;
     int error = errno;
