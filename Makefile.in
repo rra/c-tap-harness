@@ -1,0 +1,37 @@
+# $Id$
+
+CC		= @CC@
+CFLAGS		= @CFLAGS@
+CPPFLAGS	= @CPPFLAGS@
+LDFLAGS		= @LDFLAGS@
+
+srcdir		= @srcdir@
+VPATH		= @srcdir@
+
+RANLIB		= @RANLIB@
+
+OBJS		= concat.o error.o xmalloc.o
+
+all: librutil.a
+
+librutil.a: $(OBJS)
+	ar rv $@ $(OBJS)
+	$(RANLIB) $@
+
+.c.o: $*.c
+	$(CC) $(CFLAGS) -I$(srcdir) $(CPPFLAGS) -c $*.c -o $@
+
+runtests: runtests.o librutil.a
+	$(CC) -o $@ runtests.o librutil.a $(LDFLAGS) $(LIBS)
+
+t/concat: t/concat.o librutil.a
+	$(CC) -o $@ t/concat.o librutil.a $(LDFLAGS) $(LIBS)
+
+check test: runtests t/concat
+	./runtests t/TESTS
+
+clean:
+	rm *.o t/*.o librutil.a runtests t/concat
+
+distclean: clean
+	rm Makefile config.cache config.h config.log config.status
