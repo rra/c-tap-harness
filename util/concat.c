@@ -5,18 +5,6 @@
    Written by Russ Allbery <rra@stanford.edu>
    This work is hereby placed in the public domain by its author.
 
-   %AUTOCONF%
-   AC_C_CONST
-   AC_HEADER_STDC
-   AC_TYPE_SIZE_T
-   %%
-
-   Usage:
-
-        #include "librutil.h"
-
-        string = concat(string1, string2, ..., (char *) 0);
-
    Dynamically allocates (using xmalloc) sufficient memory to hold all of
    the strings given and then concatenates them together into that allocated
    memory, returning a pointer to it.  Caller is responsible for freeing.
@@ -24,18 +12,17 @@
    (to a char *, if you actually find a platform where it matters). */
 
 #include "config.h"
+#include "librutil.h"
 
 #include <stdarg.h>
 #if STDC_HEADERS
 # include <string.h>
 #endif
 
-#include "librutil.h"
-
 /* Abbreviation for cleaner code. */
 #define VA_NEXT(var, type)      ((var) = (type) va_arg(args, type))
 
-/* ANSI C requires at least one named parameter. */
+/* ISO C requires at least one named parameter. */
 void *
 concat(const char *first, ...)
 {
