@@ -7,8 +7,7 @@
 #include <string.h>
 #include <sys/types.h>
 
-#include "error.h"
-#include "xmalloc.h"
+#include "librutil.h"
 
 /* A customized error handler for checking xmalloc's support of them.
    Prints out the error message and exits with status 1. */

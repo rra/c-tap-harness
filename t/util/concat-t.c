@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "concat.h"
+#include "librutil.h"
 
 #define END     (char *) 0
 

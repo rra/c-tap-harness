@@ -9,8 +9,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#include "concat.h"
-#include "error.h"
+#include "librutil.h"
 
 #define END     (char *) 0
 
