@@ -110,9 +110,8 @@ static void test11(void) {
 
 static int log(int len, const char *format, va_list args, int error) {
     fprintf(stderr, "%d %d ", len, error);
-    len = vfprintf(stderr, format, args);
+    vfprintf(stderr, format, args);
     fprintf(stderr, "\n");
-    return len;
 }
 
 static void test12(void) {
@@ -156,8 +155,8 @@ ok(int n, int status, const char *output, test_function_t function)
         succeeded = 0;
     }
     if (strcmp(output, buf)) {
-        printf("  unexpected output: %s", buf);
-        printf("    expected output: %s", output);
+        printf("  unexpected output: %s\n", buf);
+        printf("    expected output: %s\n", output);
         succeeded = 0;
     }
     printf("%sok %d\n", succeeded ? "" : "not ", n);
@@ -183,14 +182,14 @@ main(void)
     ok(10, 10, concat("fatal perm: ", strerror(EPERM), "\n", END), test10);
     ok(11, 10, concat("1st test11: fatal: ", strerror(EPERM), "\n", END),
        test11);
-    ok(12, 0, "0 0 warning\n", test12);
-    ok(13, 1, "0 0 fatal\n", test13);
+    ok(12, 0, "7 0 warning\n", test12);
+    ok(13, 1, "5 0 fatal\n", test13);
 
     sprintf(buff, "%d", EPERM);
 
-    ok(14, 0, concat("0 ", buff, " warning\n7 ", buff, " warning\n", END),
+    ok(14, 0, concat("7 ", buff, " warning\n7 ", buff, " warning\n", END),
        test14);
-    ok(15, 10, concat("0 ", buff, " fatal\n5 ", buff, " fatal\n", END),
+    ok(15, 10, concat("5 ", buff, " fatal\n5 ", buff, " fatal\n", END),
        test15);
     ok(16, 0, concat("test16: warning: ", strerror(EPERM), "\n7 ", buff,
                      " warning\n", END),
