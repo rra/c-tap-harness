@@ -44,8 +44,8 @@ libs/librutil.a: libs $(OBJS)
 	ar r $@ $(OBJS)
 	$(RANLIB) $@
 
-t/runtests: t/runtests.o libs/librutil.a
-	$(CC) -o $@ t/runtests.o $(LDFLAGS) -lrutil
+t/runtests: t/runtests.o
+	$(CC) -o $@ t/runtests.o
 
 t/replace/inet_aton.o: replace/inet_aton.c
 	$(CC) $(CFLAGS) -DTESTING $(CPPFLAGS) -c replace/inet_aton.c -o $@
@@ -68,19 +68,19 @@ t/replace/memcmp.t: t/replace/memcmp.o t/replace/memcmp-t.o
 t/replace/pread.o: replace/pread.c
 	$(CC) $(CFLAGS) -DTESTING $(CPPFLAGS) -c replace/pread.c -o $@
 
-t/replace/pread.t: t/replace/pread.o t/replace/pread-t.o
+t/replace/pread.t: t/replace/pread.o t/replace/pread-t.o libs/librutil.a
 	$(CC) -o $@ t/replace/pread.o t/replace/pread-t.o $(LDFLAGS) -lrutil
 
 t/replace/pwrite.o: replace/pwrite.c
 	$(CC) $(CFLAGS) -DTESTING $(CPPFLAGS) -c replace/pwrite.c -o $@
 
-t/replace/pwrite.t: t/replace/pwrite.o t/replace/pwrite-t.o
+t/replace/pwrite.t: t/replace/pwrite.o t/replace/pwrite-t.o libs/librutil.a
 	$(CC) -o $@ t/replace/pwrite.o t/replace/pwrite-t.o $(LDFLAGS) -lrutil
 
 t/replace/setenv.o: replace/setenv.c
 	$(CC) $(CFLAGS) -DTESTING $(CPPFLAGS) -c replace/setenv.c -o $@
 
-t/replace/setenv.tr: t/replace/setenv.o t/replace/setenv-t.o
+t/replace/setenv.tr: t/replace/setenv.o t/replace/setenv-t.o libs/librutil.a
 	$(CC) -o $@ t/replace/setenv.o t/replace/setenv-t.o $(LDFLAGS) -lrutil
 
 t/replace/strerror.o: replace/strerror.c
@@ -103,7 +103,8 @@ t/util/xwrite.t: t/util/xwrite-t.o t/fakewrite.o libs/librutil.a
 
 clean:
 	rm -rf libs
-	rm -f util/*.o t/*.o t/*/*.o $(TESTS) $(TESTEXTRA)
+	rm -f */*.o t/*/*.o t/util/runtests/*.result t/util/runtests/core
+	rm -f $(TESTS) $(TESTEXTRA)
 
 distclean: clean
 	rm -f Makefile config.cache config.log config.status include/config.h
