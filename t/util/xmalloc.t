@@ -53,14 +53,14 @@ runsuccess "s" "128000"
 # Now limit our memory to 96KB and then try the large ones again, all of
 # which should fail.
 ulimit -d 96
-runfailure "m" "128000" "failed to malloc 128000 bytes at t/xmalloc.c line 30"
-runfailure "r" "128000" "failed to realloc 128000 bytes at t/xmalloc.c line 51"
-runfailure "s" "64000" "failed to strdup 64000 bytes at t/xmalloc.c line 75"
+runfailure "m" "128000" "failed to malloc 128000 bytes at t/xmalloc.c line 29"
+runfailure "r" "128000" "failed to realloc 128000 bytes at t/xmalloc.c line 50"
+runfailure "s" "64000" "failed to strdup 64000 bytes at t/xmalloc.c line 74"
 
 # Check our custom error handler.
-runfailure "M" "128000" "malloc 128000 t/xmalloc.c 30"
-runfailure "R" "128000" "realloc 128000 t/xmalloc.c 51"
-runfailure "S" "64000" "strdup 64000 t/xmalloc.c 75"
+runfailure "M" "128000" "malloc 128000 t/xmalloc.c 29"
+runfailure "R" "128000" "realloc 128000 t/xmalloc.c 50"
+runfailure "S" "64000" "strdup 64000 t/xmalloc.c 74"
 
 # Check the smaller ones again just for grins.
 runsuccess "m" "21"
