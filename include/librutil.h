@@ -40,12 +40,9 @@ struct iovec;
 
 BEGIN_DECLS
 
-/* Additional log function takes the length of the resulting message, the
+/* Log handler functions take the length of the resulting message, the
    format, the arguments, and the errno if any. */
-typedef void (*error_log_t)(int, const char *, va_list, int);
-
-/* If non-NULL, called after printing to stderr and passed the message. */
-extern error_log_t error_log_function;
+typedef int (*error_handler_t)(int, const char *, va_list, int);
 
 /* If non-NULL, called before exit and its return value passed to exit. */
 extern int (*error_fatal_cleanup)(void);
@@ -70,6 +67,8 @@ extern void die(const char *, ...)
     __attribute__((__noreturn__, __format__(printf, 1, 2)));
 extern void sysdie(const char *, ...)
     __attribute__((__noreturn__, __format__(printf, 1, 2)));
+extern void warn_set_handlers(int count, ...);
+extern void die_set_handlers(int count, ...);
 ssize_t xwrite(int fd, const void *buffer, size_t size);
 ssize_t xwritev(int fd, const struct iovec iov[], int iovcnt);
 
