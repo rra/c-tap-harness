@@ -15,7 +15,6 @@
    (such as on SunOS where it can't deal with eight-bit characters). */
 
 #include "config.h"
-
 #include <sys/types.h>
 
 /* If we're running the test suite, rename memcmp to avoid conflicts with
