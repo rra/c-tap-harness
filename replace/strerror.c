@@ -15,6 +15,8 @@
    have sys_nerr and sys_errlist available to use instead.  Calling strerror
    should be thread-safe unless it is called for an unknown errno. */
 
+#include "config.h"
+
 #include <errno.h>
 #include <stdio.h>
 
