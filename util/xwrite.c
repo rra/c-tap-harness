@@ -10,6 +10,7 @@
 
    %AUTOCONF%
    AC_C_CONST
+   AC_CHECK_HEADERS(unistd.h)
    AC_TYPE_SIZE_T
    AC_CHECK_TYPE(ssize_t, int)
    %%
@@ -38,6 +39,7 @@
 #include "config.h"
 
 #include <errno.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/uio.h>
 #if HAVE_UNISTD_H
@@ -49,13 +51,14 @@
 ssize_t
 xwrite(int fd, const void *buffer, size_t size)
 {
-    ssize_t total, status;
+    size_t total;
+    ssize_t status;
     int count = 0;
 
     /* Abort the write if we try ten times with no forward progress. */
     for (total = 0; total < size; total += status) {
         if (++count > 10) break;
-        status = write(fd, buffer + total, size - total);
+        status = write(fd, (const char *) buffer + total, size - total);
         if (status > 0) count = 0;
         if (status < 0) {
             if (errno != EINTR) break;
@@ -112,7 +115,7 @@ xwritev(int fd, const struct iovec iov[], int iovcnt)
         if (status < 0) status = 0;
         for (; status >= tmpiov[i].iov_len && iovleft > 0; i++, iovleft--)
             status -= tmpiov[i].iov_len;
-        tmpiov[i].iov_base = ((char *) tmpiov[i].iov_base + status);
+        tmpiov[i].iov_base = (char *) tmpiov[i].iov_base + status;
         tmpiov[i].iov_len -= status;
 
         /* Write out what's left and return success if it's all written. */
