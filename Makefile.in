@@ -1,4 +1,8 @@
 # $Id$
+#
+# Yes, this makefile builds everything in the source tree.  Recursive make
+# is inherently evil.  If your compiler doesn't support both -c and -o at
+# the same time, please upgrade your compiler.
 
 CC		= @CC@
 CFLAGS		= @CFLAGS@
@@ -19,10 +23,11 @@ WARNINGS	= -ansi -pedantic -Wall -W -Wunused -Wshadow \
 		  -Wstrict-prototypes -Wtraditional -Werror
 
 TESTS		= t/replace/inet_aton.t t/replace/inet_ntoa.t \
-		  t/replace/memcmp.t t/replace/strerror.t \
+		  t/replace/memcmp.t t/replace/pread.t t/replace/pwrite.t \
+		  t/replace/strerror.t \
 		  t/util/concat.t t/util/error.t t/util/xwrite.t
 
-TESTEXTRA	= t/runtests t/xmalloc
+TESTEXTRA	= t/replace/setenv.tr t/runtests t/xmalloc
 
 all: libs/librutil.a
 
@@ -42,9 +47,6 @@ libs/librutil.a: libs $(OBJS)
 t/runtests: t/runtests.o libs/librutil.a
 	$(CC) -o $@ t/runtests.o $(LDFLAGS) -lrutil
 
-t/xmalloc: t/xmalloc.o libs/librutil.a
-	$(CC) -o $@ t/xmalloc.o $(LDFLAGS) -lrutil
-
 t/replace/inet_aton.o: replace/inet_aton.c
 	$(CC) $(CFLAGS) -DTESTING $(CPPFLAGS) -c replace/inet_aton.c -o $@
 
@@ -63,6 +65,24 @@ t/replace/memcmp.o: replace/memcmp.c
 t/replace/memcmp.t: t/replace/memcmp.o t/replace/memcmp-t.o
 	$(CC) -o $@ t/replace/memcmp.o t/replace/memcmp-t.o
 
+t/replace/pread.o: replace/pread.c
+	$(CC) $(CFLAGS) -DTESTING $(CPPFLAGS) -c replace/pread.c -o $@
+
+t/replace/pread.t: t/replace/pread.o t/replace/pread-t.o
+	$(CC) -o $@ t/replace/pread.o t/replace/pread-t.o $(LDFLAGS) -lrutil
+
+t/replace/pwrite.o: replace/pwrite.c
+	$(CC) $(CFLAGS) -DTESTING $(CPPFLAGS) -c replace/pwrite.c -o $@
+
+t/replace/pwrite.t: t/replace/pwrite.o t/replace/pwrite-t.o
+	$(CC) -o $@ t/replace/pwrite.o t/replace/pwrite-t.o $(LDFLAGS) -lrutil
+
+t/replace/setenv.o: replace/setenv.c
+	$(CC) $(CFLAGS) -DTESTING $(CPPFLAGS) -c replace/setenv.c -o $@
+
+t/replace/setenv.tr: t/replace/setenv.o t/replace/setenv-t.o
+	$(CC) -o $@ t/replace/setenv.o t/replace/setenv-t.o $(LDFLAGS) -lrutil
+
 t/replace/strerror.o: replace/strerror.c
 	$(CC) $(CFLAGS) -DTESTING $(CPPFLAGS) -c replace/strerror.c -o $@
 
@@ -74,6 +94,9 @@ t/util/concat.t: t/util/concat-t.o libs/librutil.a
 
 t/util/error.t: t/util/error-t.o libs/librutil.a
 	$(CC) -o $@ t/util/error-t.o $(LDFLAGS) -lrutil
+
+t/xmalloc: t/xmalloc.o libs/librutil.a
+	$(CC) -o $@ t/xmalloc.o $(LDFLAGS) -lrutil
 
 t/util/xwrite.t: t/util/xwrite-t.o t/fakewrite.o libs/librutil.a
 	$(CC) -o $@ t/util/xwrite-t.o t/fakewrite.o $(LDFLAGS) -lrutil
