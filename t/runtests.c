@@ -71,6 +71,12 @@ struct testset {
     int status;                 /* The exit status of the test. */
 };
 
+/* Header used for test output.  %s is replaced by the file name of the list
+   of tests. */
+static const char banner[] = "\n\
+Running all tests listed in %s.  If any tests fail, run the failing\n\
+test program by hand to see more details.\n\n";
+
 /* Internal prototypes. */
 static int test_batch(const char *testlist);
 static enum test_status test_checkline(const char *line, struct testset *);
@@ -323,7 +329,9 @@ test_batch(const char *testlist)
     struct timeval start, end;
     struct rusage stats;
     int total = 0;
+    int passed = 0;
     int failed = 0;
+    int aborted = 0;
 
     /* Open our file of tests to run and scan it, checking for lines that
        are too long and searching for the longest line. */
@@ -361,10 +369,11 @@ test_batch(const char *testlist)
         for (i = length; i < longest; i++) putchar('.');
         memset(&ts, 0, sizeof(ts));
         ts.file = buffer;
-        if (test_run(&ts)) {
-            total += ts.count;
-            failed += ts.failed;
-        }
+        test_run(&ts);
+        aborted += ts.aborted;
+        total += ts.count;
+        passed += ts.passed;
+        failed += ts.failed;
     }
 
     /* Stop the timer and get our child resource statistics. */
@@ -372,7 +381,11 @@ test_batch(const char *testlist)
     getrusage(RUSAGE_CHILDREN, &stats);
 
     /* Print out our final results. */
-    if (failed == 0) {
+    putchar('\n');
+    if (aborted) {
+        printf("Aborted %d test sets, passed %d/%d tests.\n", aborted,
+               passed, total);
+    } else if (failed == 0) {
         puts("All tests successful.");
     } else {
         printf("Failed %d/%d tests, %.2f%% okay.\n", failed, total,
@@ -392,5 +405,6 @@ int
 main(int argc, char *argv[])
 {
     if (argc != 2) die("Usage: runtests <test-list>\n");
+    printf(banner, argv[1]);
     return test_batch(argv[1]);
 }
