@@ -15,9 +15,11 @@ OBJS		= @LIBOBJS@ \
 
 WARNINGS	= -ansi -pedantic -Wall -W -Wunused -Wshadow \
 		  -Wpointer-arith -Wbad-function-cast -Wcast-qual \
-		  -Wcast-align -Wwrite-strings -Wstrict-prototypes
+		  -Wcast-align -Wwrite-strings -Wconversion \
+		  -Wstrict-prototypes -Wtraditional -Werror
 
-TESTS		= t/replace/strerror.t \
+TESTS		= t/replace/inet_aton.t t/replace/inet_ntoa.t \
+		  t/replace/memcmp.t t/replace/strerror.t \
 		  t/util/concat.t t/util/error.t t/util/xwrite.t
 
 TESTEXTRA	= t/runtests t/xmalloc
@@ -42,6 +44,24 @@ t/runtests: t/runtests.o libs/librutil.a
 
 t/xmalloc: t/xmalloc.o libs/librutil.a
 	$(CC) -o $@ t/xmalloc.o $(LDFLAGS) -lrutil
+
+t/replace/inet_aton.o: replace/inet_aton.c
+	$(CC) $(CFLAGS) -DTESTING $(CPPFLAGS) -c replace/inet_aton.c -o $@
+
+t/replace/inet_aton.t: t/replace/inet_aton.o t/replace/inet_aton-t.o
+	$(CC) -o $@ t/replace/inet_aton.o t/replace/inet_aton-t.o
+
+t/replace/inet_ntoa.o: replace/inet_ntoa.c
+	$(CC) $(CFLAGS) -DTESTING $(CPPFLAGS) -c replace/inet_ntoa.c -o $@
+
+t/replace/inet_ntoa.t: t/replace/inet_ntoa.o t/replace/inet_ntoa-t.o
+	$(CC) -o $@ t/replace/inet_ntoa.o t/replace/inet_ntoa-t.o
+
+t/replace/memcmp.o: replace/memcmp.c
+	$(CC) $(CFLAGS) -DTESTING $(CPPFLAGS) -c replace/memcmp.c -o $@
+
+t/replace/memcmp.t: t/replace/memcmp.o t/replace/memcmp-t.o
+	$(CC) -o $@ t/replace/memcmp.o t/replace/memcmp-t.o
 
 t/replace/strerror.o: replace/strerror.c
 	$(CC) $(CFLAGS) -DTESTING $(CPPFLAGS) -c replace/strerror.c -o $@
