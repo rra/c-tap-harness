@@ -183,29 +183,36 @@ test_start(const char *path, int *fd)
 static void
 test_checkline(const char *line, struct testset *ts)
 {
-    enum test_status status;
-    int failed, current;
+    enum test_status status = TEST_PASS;
+    int current;
 
     /* If the given line isn't newline-terminated, it was too big for an
        fgets(), which means ignore it. */
     if (line[strlen(line) - 1] != '\n') return;
 
-    /* Check for the lines we're expecting, ignore anything else. */
-    if (sscanf(line, "not ok %d", &current) == 1) {
+    /* Parse the line, ignoring something we can't parse. */
+    if (!strncmp(line, "not ", 4)) {
         status = TEST_FAIL;
-    } else if (sscanf(line, "ok %d", &current) == 1) {
-        status = strstr(line, "# skip") ? TEST_SKIP : TEST_PASS;
-    } else {
-        return;
+        line += 4;
     }
-
-    /* Make sure that the test number is in range and not a duplicate. */
-    if (current < 1 || current > ts->count) {
+    if (strncmp(line, "ok ", 3)) return;
+    line += 3;
+    current = atoi(line);
+    if (current == 0) return;
+    if (current < 0 || current > ts->count) {
         printf("invalid test number %d\n", current);
         ts->aborted = 1;
         ts->reported = 1;
         return;
     }
+    while (isspace((unsigned char)(*line))) line++;
+    if (*line == '#') {
+        line++;
+        while (isspace((unsigned char)(*line))) line++;
+        if (!strncmp(line, "skip", 4)) status = TEST_SKIP;
+    }
+
+    /* Make sure that the test number is in range and not a duplicate. */
     if (ts->results[current - 1] != TEST_INVALID) {
         printf("duplicate test number %d\n", current);
         ts->aborted = 1;
@@ -305,7 +312,8 @@ test_run(struct testset *ts)
     FILE *output;
     char buffer[BUFSIZ];
 
-    /* Initialize the test and our data structures. */
+    /* Initialize the test and our data structures, flagging this set in
+       error if the initialization fails. */
     testpid = test_start(ts->file, &outfd);
     output = fdopen(outfd, "r");
     if (!output) sysdie("fdopen failed");
@@ -316,14 +324,13 @@ test_run(struct testset *ts)
         ts->aborted = 1;
     }
 
-    /* Read each line the test prints to stdout, checking it for ok or not
-       ok and failing the test set if we see anything odd. */
+    /* Pass each line of output to test_checkline(). */
     while (!ts->aborted && fgets(buffer, sizeof(buffer), output))
         test_checkline(buffer, ts);
     if (ferror(output)) ts->aborted = 1;
 
-    /* Close the output descriptor, retrieve the exit status, and print out
-       the status if appropriate. */
+    /* Close the output descriptor, retrieve the exit status, and pass that
+       information to test_analyze() for eventual output. */
     fclose(output);
     child = waitpid(testpid, &ts->status, 0);
     if (child == (pid_t) -1)
