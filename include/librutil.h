@@ -8,8 +8,8 @@
 #ifndef LIBRUTIL_H
 #define LIBRUTIL_H 1
 
-/* Needed for size_t and ssize_t. */
-#include <sys/types.h>
+#include <stdarg.h>             /* va_list */
+#include <sys/types.h>          /* size_t and ssize_t */
 
 /* Forward declaration rather than including sys/uio.h. */
 struct iovec;
@@ -39,6 +39,13 @@ struct iovec;
 #define UNUSED  __attribute__((__unused__))
 
 BEGIN_DECLS
+
+/* Additional log function takes the length of the resulting message, the
+   format, the arguments, and the errno if any. */
+typedef void (*error_log_t)(int, const char *, va_list, int);
+
+/* If non-NULL, called after printing to stderr and passed the message. */
+extern error_log_t error_log_function;
 
 /* If non-NULL, called before exit and its return value passed to exit. */
 extern int (*error_fatal_cleanup)(void);
