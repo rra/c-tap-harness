@@ -2,50 +2,57 @@
 
 CC		= @CC@
 CFLAGS		= @CFLAGS@
-CPPFLAGS	= @CPPFLAGS@
-LDFLAGS		= @LDFLAGS@
+CPPFLAGS	= -I$(srcdir)/include @CPPFLAGS@
+LDFLAGS		= -Llibs @LDFLAGS@
 
 srcdir		= @srcdir@
 VPATH		= @srcdir@
 
 RANLIB		= @RANLIB@
 
-OBJS		= concat.o error.o xmalloc.o xwrite.o
+OBJS		= util/concat.o util/error.o util/xmalloc.o util/xwrite.o
 
 WARNINGS	= -ansi -pedantic -Wall -W -Wunused -Wshadow \
 		  -Wpointer-arith -Wbad-function-cast -Wcast-qual \
 		  -Wcast-align -Wwrite-strings -Wstrict-prototypes
 
-all: librutil.a
+TESTS		= t/util/concat.t t/util/error.t t/util/xwrite.t
 
-librutil.a: $(OBJS)
-	ar rv $@ $(OBJS)
-	$(RANLIB) $@
+TESTEXTRA	= t/runtests t/xmalloc
+
+all: libs/librutil.a
+
+check test: $(TESTS) $(TESTEXTRA)
+	cd t && ./runtests TESTS
 
 .c.o: $*.c
-	$(CC) $(CFLAGS) -I$(srcdir) $(CPPFLAGS) -c $*.c -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $*.c -o $@
 
-runtests: runtests.o librutil.a
-	$(CC) -o $@ runtests.o librutil.a $(LDFLAGS) $(LIBS)
+libs:
+	mkdir libs
 
-t/concat.t: t/concat-t.o librutil.a
-	$(CC) -o $@ t/concat-t.o librutil.a $(LDFLAGS) $(LIBS)
+libs/librutil.a: libs $(OBJS)
+	ar r $@ $(OBJS)
+	$(RANLIB) $@
 
-t/error.t: t/error-t.o librutil.a
-	$(CC) -o $@ t/error-t.o librutil.a $(LDFLAGS) $(LIBS)
+t/runtests: t/runtests.o libs/librutil.a
+	$(CC) -o $@ t/runtests.o $(LDFLAGS) -lrutil $(LIBS)
 
-t/xmalloc: t/xmalloc.o librutil.a
-	$(CC) -o $@ t/xmalloc.o librutil.a $(LDFLAGS) $(LIBS)
+t/xmalloc: t/xmalloc.o libs/librutil.a
+	$(CC) -o $@ t/xmalloc.o $(LDFLAGS) -lrutil $(LIBS)
 
-t/xwrite.t: t/xwrite-t.o t/fakewrite.o librutil.a
-	$(CC) -o $@ t/xwrite-t.o t/fakewrite.o librutil.a $(LDFLAGS) $(LIBS)
+t/util/concat.t: t/util/concat-t.o libs/librutil.a
+	$(CC) -o $@ t/util/concat-t.o $(LDFLAGS) -lrutil $(LIBS)
 
-check test: runtests t/concat.t t/error.t t/xmalloc t/xwrite.t
-	./runtests t/TESTS
+t/util/error.t: t/util/error-t.o libs/librutil.a
+	$(CC) -o $@ t/util/error-t.o $(LDFLAGS) -lrutil $(LIBS)
+
+t/util/xwrite.t: t/util/xwrite-t.o t/fakewrite.o libs/librutil.a
+	$(CC) -o $@ t/util/xwrite-t.o t/fakewrite.o $(LDFLAGS) -lrutil $(LIBS)
 
 clean:
-	rm -f *.o t/*.o librutil.a runtests t/concat.t t/error.t t/xmalloc
-	rm -f t/xwrite.t
+	rm -rf libs
+	rm -f util/*.o t/*.o t/util/*.o $(TESTS) $(TESTEXTRA)
 
 distclean: clean
-	rm -f Makefile config.cache config.h config.log config.status
+	rm -f Makefile config.cache config.log config.status include/config.h
