@@ -12,6 +12,10 @@ RANLIB		= @RANLIB@
 
 OBJS		= concat.o error.o xmalloc.o
 
+WARNINGS	= -ansi -pedantic -Wall -W -Wno-unused -Wshadow \
+		  -Wpointer-arith -Wbad-function-cast -Wcast-qual \
+		  -Wcast-align -Wwrite-strings -Wstrict-prototypes
+
 all: librutil.a
 
 librutil.a: $(OBJS)
@@ -27,11 +31,17 @@ runtests: runtests.o librutil.a
 t/concat.t: t/concat-t.o librutil.a
 	$(CC) -o $@ t/concat-t.o librutil.a $(LDFLAGS) $(LIBS)
 
-check test: runtests t/concat.t
+t/error.t: t/error-t.o librutil.a
+	$(CC) -o $@ t/error-t.o librutil.a $(LDFLAGS) $(LIBS)
+
+t/xmalloc: t/xmalloc.o librutil.a
+	$(CC) -o $@ t/xmalloc.o librutil.a $(LDFLAGS) $(LIBS)
+
+check test: runtests t/concat.t t/error.t t/xmalloc
 	./runtests t/TESTS
 
 clean:
-	rm *.o t/*.o librutil.a runtests t/concat
+	rm -f *.o t/*.o librutil.a runtests t/concat.t t/error.t t/xmalloc
 
 distclean: clean
-	rm Makefile config.cache config.h config.log config.status
+	rm -f Makefile config.cache config.h config.log config.status
