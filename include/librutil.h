@@ -50,15 +50,7 @@ extern int (*error_fatal_cleanup)(void);
 /* If non-NULL, prepended (followed by ": ") to all error messages. */
 extern const char *error_program_name;
 
-/* Failure handler takes the function, the size, the file, and the line. */
-typedef void (*xmalloc_handler_t)(const char *, size_t, const char *, int);
-
-/* Assign to this variable to choose a handler other than the default, which
-   just calls sysdie. */
-extern xmalloc_handler_t xmalloc_error_handler;
-
-/* Function prototypes. */
-extern void *concat(const char *, ...);
+/* Error handling function prototypes. */
 extern void warn(const char *, ...)
     __attribute__((__format__(printf, 1, 2)));
 extern void syswarn(const char *, ...)
@@ -69,8 +61,14 @@ extern void sysdie(const char *, ...)
     __attribute__((__noreturn__, __format__(printf, 1, 2)));
 extern void warn_set_handlers(int count, ...);
 extern void die_set_handlers(int count, ...);
-ssize_t xwrite(int fd, const void *buffer, size_t size);
-ssize_t xwritev(int fd, const struct iovec iov[], int iovcnt);
+extern int error_log_stderr(int length, const char *, va_list, int error);
+
+/* Failure handler takes the function, the size, the file, and the line. */
+typedef void (*xmalloc_handler_t)(const char *, size_t, const char *, int);
+
+/* Assign to this variable to choose a handler other than the default, which
+   just calls sysdie. */
+extern xmalloc_handler_t xmalloc_error_handler;
 
 /* The xmalloc, xrealloc, and xstrdup functions are actually macros so that
    we can pick up the file and line number information for debugging error
@@ -88,6 +86,11 @@ ssize_t xwritev(int fd, const struct iovec iov[], int iovcnt);
 extern void *x_malloc(size_t, const char *, int);
 extern void *x_realloc(void *, size_t, const char *, int);
 extern char *x_strdup(const char *, const char *, int);
+
+/* Miscellaneous utility functions. */
+extern void *concat(const char *, ...);
+extern ssize_t xwrite(int fd, const void *buffer, size_t size);
+extern ssize_t xwritev(int fd, const struct iovec iov[], int iovcnt);
 
 END_DECLS
 
