@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include <netdb.h>
+#include <stdio.h>
 
 const char *test_hstrerror(int);
 
