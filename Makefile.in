@@ -24,10 +24,10 @@ librutil.a: $(OBJS)
 runtests: runtests.o librutil.a
 	$(CC) -o $@ runtests.o $(LDFLAGS) $(LIBS)
 
-t/concat: t/concat.o librutil.a
-	$(CC) -o $@ t/concat.o librutil.a $(LDFLAGS) $(LIBS)
+t/concat.t: t/concat-t.o librutil.a
+	$(CC) -o $@ t/concat-t.o librutil.a $(LDFLAGS) $(LIBS)
 
-check test: runtests t/concat
+check test: runtests t/concat.t
 	./runtests t/TESTS
 
 clean:
