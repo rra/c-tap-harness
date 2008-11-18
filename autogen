@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# Run this shell script to bootstrap as necessary after a fresh checkout.
+
+set -e
+
+autoreconf -i --force
+rm -rf autom4te.cache
