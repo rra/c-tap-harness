@@ -1,0 +1,7 @@
+                    User-Visible C TAP Driver Changes
+
+C Tap Driver 1.0
+
+    Initial public release based on the version of runtests.c and the
+    libtest library that shipped with remctl 2.13.  The changes below are
+    relative to that version.
