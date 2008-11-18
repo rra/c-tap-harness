@@ -31,10 +31,11 @@ for dir in ./t/basic . ./basic ; do
 done
 
 # Total tests.
-echo 4
+echo 5
 
 # First run the tests expected to succeed.
 runsuccess pass
 runsuccess skip
 runsuccess fail
 runsuccess abort
+runsuccess abort-one
