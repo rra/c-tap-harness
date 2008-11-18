@@ -44,16 +44,19 @@
  * DEALINGS IN THE SOFTWARE.
 */
 
-#include <config.h>
-#include <portable/system.h>
-
 #include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <sys/time.h>
+#include <sys/types.h>
 #include <sys/wait.h>
 #include <time.h>
+#include <unistd.h>
 
 /* sys/time.h must be included before sys/resource.h on some platforms. */
 #include <sys/resource.h>
