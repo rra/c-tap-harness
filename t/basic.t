@@ -1,7 +1,6 @@
 #! /bin/sh
-# $Id$
 #
-# Test suite for runtests.
+# Test suite for basic runtests functionality.
 
 # The count starts at 1 and is updated each time ok is printed.  printcount
 # takes "ok" or "not ok".
@@ -12,7 +11,8 @@ printcount () {
 }
 
 # Run runtests on a list and compare the output to the expected output,
-# printing ok if it matches.
+# printing ok if it matches.  Strip out the time information from the runtests
+# result since it changes for each run.
 runsuccess () {
     ../../runtests "$1".list | sed 's/\(Tests=[0-9]*\),  .*/\1/' > "$1".result
     cmp "$1".out "$1".result > /dev/null 2>&1
@@ -26,7 +26,7 @@ runsuccess () {
 }
 
 # Find where our test cases are.
-for dir in ./t/runtests . ./runtests ; do
+for dir in ./t/basic . ./basic ; do
     [ -f $dir/pass.list ] && cd $dir
 done
 

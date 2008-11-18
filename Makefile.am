@@ -7,13 +7,12 @@
 # The list of files needed by the test suite.  They're listed here to be added
 # to EXTRA_DIST and so that they can be copied over properly for builddir !=
 # srcdir builds.
-TEST_FILES = t/runtests.t t/runtests/abort.list t/runtests/abort.out \
-	t/runtests/abort.t t/runtests/badnum.t t/runtests/duplicate.t \
-	t/runtests/fail.list t/runtests/fail.out t/runtests/fail.t \
-	t/runtests/hup.t t/runtests/missing.t t/runtests/nocount.t \
-	t/runtests/order.t t/runtests/pass.list t/runtests/pass.out \
-	t/runtests/pass.t t/runtests/segv.t t/runtests/skip.list \
-	t/runtests/skip.out t/runtests/skip.t t/runtests/status.t
+TEST_FILES = t/runtests.t t/basic/abort.list t/basic/abort.out \
+	t/basic/abort.t t/basic/badnum.t t/basic/duplicate.t \
+	t/basic/fail.list t/basic/fail.out t/basic/fail.t t/basic/hup.t \
+	t/basic/missing.t t/basic/nocount.t t/basic/order.t \
+	t/basic/pass.list t/basic/pass.out t/basic/pass.t t/basic/segv.t \
+	t/basic/skip.list t/basic/skip.out t/basic/skip.t t/basic/status.t
 
 AUTOMAKE_OPTIONS = foreign subdir-objects
 EXTRA_DIST = LICENSE autogen
