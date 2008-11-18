@@ -8,7 +8,6 @@ missing.........MISSED 1, 6, 10, 12, 14, 18; FAILED 8, 16
 hup.............dubious (killed by signal 1)
 segv............MISSED 1-3 (killed by signal 6, core dumped)
 status..........dubious (exit status 1)
-skip............ok (skipped 3 tests)
 pass............ok
 abort...........MISSED 3-4
 nocount.........invalid test count
@@ -27,5 +26,5 @@ nocount                       0/0      0%    0    0  aborted
 badnum                        2/4     50%    0    0  aborted
 duplicate                     0/4      0%    0    0  aborted
 
-Aborted 3 test sets, passed 46/67 tests.
-Files=11,  Tests=67
+Aborted 3 test sets, passed 40/61 tests, 1 test skipped.
+Files=10,  Tests=61

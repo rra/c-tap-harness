@@ -3,7 +3,6 @@ missing
 hup
 segv
 status
-skip
 pass
 abort
 nocount

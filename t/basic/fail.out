@@ -17,5 +17,5 @@ missing                       8/19    42%    0    0  1, 6, 8, 10, 12, 14, ...
 hup                           0/4      0%    0   --  
 status                        0/4      0%    0    1  
 
-Failed 14/51 tests, 72.55% okay.
+Failed 14/51 tests, 72.55% okay, 4 tests skipped.
 Files=6,  Tests=51
