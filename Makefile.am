@@ -4,6 +4,17 @@
 #
 # See LICENSE for licensing terms.
 
+# The list of files needed by the test suite.  They're listed here to be added
+# to EXTRA_DIST and so that they can be copied over properly for builddir !=
+# srcdir builds.
+TEST_FILES = t/runtests.t t/runtests/abort.list t/runtests/abort.out \
+	t/runtests/abort.t t/runtests/badnum.t t/runtests/duplicate.t \
+	t/runtests/fail.list t/runtests/fail.out t/runtests/fail.t \
+	t/runtests/hup.t t/runtests/missing.t t/runtests/nocount.t \
+	t/runtests/order.t t/runtests/pass.list t/runtests/pass.out \
+	t/runtests/pass.t t/runtests/segv.t t/runtests/skip.list \
+	t/runtests/skip.out t/runtests/skip.t t/runtests/status.t
+
 AUTOMAKE_OPTIONS = foreign subdir-objects
 EXTRA_DIST = LICENSE autogen
 
@@ -24,3 +35,12 @@ WARNINGS = -g -O -DDEBUG=1 -Wall -W -Wendif-labels -Wpointer-arith \
 
 warnings:
 	$(MAKE) CFLAGS='$(WARNINGS)'
+
+# The bits below are for the test suite.
+check-local:
+	set -e; if [ x"$(builddir)" != x"$(srcdir)" ] ; then \
+	    for f in $(TEST_FILES) ; do \
+		cp "$(srcdir)/$$f" "$(builddir)/$$f" ; \
+	    done \
+	fi
+	cd t && ../runtests TESTS

@@ -26,7 +26,7 @@ runsuccess () {
 }
 
 # Find where our test cases are.
-for dir in ./t/util/runtests . ./runtests ./util/runtests ; do
+for dir in ./t/runtests . ./runtests ; do
     [ -f $dir/pass.list ] && cd $dir
 done
 
