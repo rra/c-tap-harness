@@ -107,7 +107,7 @@ struct testlist {
 static const char banner[] = "\n\
 Running all tests listed in %s.  If any tests fail, run the failing\n\
 test program by hand to see more details.  The test program will have the\n\
-same name as the test set but with \"-t\" appended.\n\n";
+same name as the test set but with \"-t\" or \".t\" appended.\n\n";
 
 /* Header for reports of failed tests. */
 static const char header[] = "\n\
@@ -573,6 +573,10 @@ test_run(struct testset *ts)
     file = xmalloc(strlen(ts->file) + 3);
     strcpy(file, ts->file);
     strcat(file, "-t");
+    if (access(file, X_OK) != 0) {
+        strcpy(file, ts->file);
+        strcat(file, ".t");
+    }
     testpid = test_start(file, &outfd);
     free(file);
     output = fdopen(outfd, "r");

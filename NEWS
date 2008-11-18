@@ -6,6 +6,8 @@ C Tap Driver 1.0
     libtest library that shipped with remctl 2.13.  The changes below are
     relative to that version.
 
+    Support either "-t" or ".t" as the ending of test cases.
+
     Remove the dependency on both config.h and the general portability
     framework and instead include the necessary C headers directly.  This
     requires ANSI C.
