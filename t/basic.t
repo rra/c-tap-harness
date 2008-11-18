@@ -15,7 +15,7 @@ printcount () {
 # result since it changes for each run.
 runsuccess () {
     ../../runtests "$1".list | sed 's/\(Tests=[0-9]*\),  .*/\1/' > "$1".result
-    cmp "$1".out "$1".result > /dev/null 2>&1
+    diff -u "$1".out "$1".result 2>&1
     if test $? = 0 ; then
         printcount "ok"
         rm "$1".result
