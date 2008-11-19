@@ -1,5 +1,5 @@
 #!/bin/sh
-echo 1..9
+echo 9
 echo 'ok   4'
 echo ok 2
 echo ok 1
