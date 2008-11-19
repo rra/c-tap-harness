@@ -7,7 +7,7 @@
 # The list of files needed by the test suite.  They're listed here to be added
 # to EXTRA_DIST and so that they can be copied over properly for builddir !=
 # srcdir builds.
-TEST_FILES = t/runtests.t t/basic/abort.list t/basic/abort.out \
+TEST_FILES = t/basic.t t/basic/abort.list t/basic/abort.out \
 	t/basic/abort.t t/basic/badnum.t t/basic/duplicate.t \
 	t/basic/fail.list t/basic/fail.out t/basic/fail.t t/basic/hup.t \
 	t/basic/missing.t t/basic/nocount.t t/basic/order.t \
