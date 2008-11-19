@@ -31,7 +31,7 @@ for dir in ./t/basic . ./basic ; do
 done
 
 # Total tests.
-echo 5
+echo 1..5
 
 # First run the tests expected to succeed.
 runsuccess pass
