@@ -12,12 +12,15 @@ TEST_FILES = t/basic.t t/basic/abort.list t/basic/abort.out \
 	t/basic/fail.list t/basic/fail.out t/basic/fail.t t/basic/hup.t \
 	t/basic/missing.t t/basic/nocount.t t/basic/order.t \
 	t/basic/pass.list t/basic/pass.out t/basic/pass.t t/basic/segv.t \
-	t/basic/skip.list t/basic/skip.out t/basic/skip.t t/basic/status.t
+	t/basic/skip.list t/basic/skip.out t/basic/skip.t t/basic/status.t \
+	t/libtest.t
 
 AUTOMAKE_OPTIONS = foreign subdir-objects
 EXTRA_DIST = LICENSE autogen
 
 bin_PROGRAMS = runtests
+noinst_LIBRARIES = libtest.a
+libtest_a_SOURCES = libtest.c libtest.h
 
 # Work around the GNU Coding Standards, which leave all the Autoconf and
 # Automake stuff around after make maintainer-clean, thus making that command
@@ -34,9 +37,13 @@ WARNINGS = -g -O -DDEBUG=1 -Wall -W -Wendif-labels -Wpointer-arith \
 
 warnings:
 	$(MAKE) CFLAGS='$(WARNINGS)'
+	$(MAKE) CFLAGS='$(WARNINGS)' $(check_PROGRAMS)
 
 # The bits below are for the test suite.
-check-local:
+check_PROGRAMS = t/libtest/c-basic
+t_libtest_c_basic_LDADD = libtest.a
+
+check-local: $(check_PROGRAMS)
 	set -e; if [ x"$(builddir)" != x"$(srcdir)" ] ; then \
 	    for f in $(TEST_FILES) ; do \
 		cp "$(srcdir)/$$f" "$(builddir)/$$f" ; \

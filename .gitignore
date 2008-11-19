@@ -7,5 +7,8 @@
 /config.status
 /configure
 /runtests
+/t/libtest/c-basic
 .deps/
+.dirstamp
+*.a
 *.o

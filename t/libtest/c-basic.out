@@ -1,0 +1,39 @@
+1..29
+ok 1
+not ok 2
+ok 3
+ok 4
+ok 5
+not ok 6
+#  wanted: -1
+#    seen: 1
+ok 7
+ok 8
+not ok 9
+#  wanted: 0.1
+#    seen: -0.1
+ok 10
+ok 11
+ok 12
+ok 13
+not ok 14
+#  wanted: yes
+#    seen: yes no
+ok 15
+not ok 16
+#  wanted: yes
+#    seen: (null)
+not ok 17
+#  wanted: (null)
+#    seen: yes
+ok 18 # skip testing skip
+ok 19
+ok 20
+not ok 21
+not ok 22
+not ok 23
+not ok 24
+ok 25 # skip testing skip block
+ok 26 # skip testing skip block
+ok 27 # skip testing skip block
+ok 28 # skip testing skip block
