@@ -1,6 +1,11 @@
 #! /bin/sh
 #
 # Test suite for libtest functionality.
+#
+# Written by Russ Allbery <rra@stanford.edu>
+# Copyright 2008 Board of Trustees, Leland Stanford Jr. University
+#
+# See LICENSE for licensing terms.
 
 # The count starts at 1 and is updated each time ok is printed.  printcount
 # takes "ok" or "not ok".

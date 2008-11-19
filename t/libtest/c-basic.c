@@ -1,6 +1,7 @@
 /*
  * Calls libtest functions for testing.
  *
+ * Written by Russ Allbery <rra@stanford.edu>
  * Copyright 2008 Board of Trustees, Leland Stanford Jr. University
  *
  * See LICENSE for licensing terms.
