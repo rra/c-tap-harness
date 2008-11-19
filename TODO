@@ -1,0 +1,35 @@
+                         C TAP Driver To-Do List
+
+Protocol:
+
+ * Support giving the plan at the end of the test suite instead of the
+   beginning.  This will require dynamically tracking test results without
+   pre-allocating space and then checking against the plan for missing
+   tests at the end.
+
+ * Support omitting the test number in "ok" and "not ok" lines.  The
+   driver should maintain its own counter and increment with each test.
+
+ * Support todo tests ("# todo" on the test line).  The driver should
+   report such tests as successful if they're not ok and failure if
+   they're ok (although probably with different detail).
+
+ * Report the text after the "# skip" directive as the reason for the
+   skipping of the test.  We should accumulate reasons and the count of
+   tests that had that reason and report how many tests were skipped for
+   each reason.
+
+ * Support skipping the entire file with "1..0 # skip" (which seems to
+   be a slightly different syntax).
+
+ * If the test script prints "Bail out!" followed by some message, the
+   test case should be aborted and the following reason reported as the
+   reason for bailing out.
+
+Extra Driver Features:
+
+ * Support a verbose mode that shows the result of each test as it's
+   running instead of just the test counts.
+
+ * Support displaying diagnostic lines (lines beginning with "#") in a
+   verbose mode.
