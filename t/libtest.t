@@ -17,7 +17,7 @@ printcount () {
 
 # Run a binary, saving its output, and then compare that output to the
 # corresponding *.out file.
-runsuccess () {
+runprogram () {
     ./"$1" > "$1".result
     diff -u "$1".out "$1".result 2>&1
     if test $? = 0 ; then
@@ -34,7 +34,8 @@ for dir in ./t/libtest . ./libtest ; do
 done
 
 # Total tests.
-echo 1..1
+echo 1..2
 
-# First run the tests expected to succeed.
-runsuccess c-basic
+# Run the individual tests.
+runprogram c-basic
+runprogram sh-basic 

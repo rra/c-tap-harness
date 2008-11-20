@@ -1,0 +1,34 @@
+#! /bin/sh
+#
+# Calls libtest functions for testing the shell library.
+#
+# Written by Russ Allbery <rra@stanford.edu>
+# Copyright 2008 Board of Trustees, Leland Stanford Jr. University
+#
+# See LICENSE for licensing terms.
+
+# Load the test library.
+. "@abs_top_srcdir@/libtest.sh"
+
+# printcount tests.
+printcount ok
+printcount 'not ok'
+printcount ok 'foo test'
+printcount 'not ok' 'bar test'
+
+# runsuccess tests.
+runsuccess '' /bin/true
+runsuccess 'test is successful' echo test is successful
+runsuccess '' /bin/false
+runsuccess 'test is successful' sh -c 'echo test is successful; exit 1'
+runsuccess 'test is successful' echo test failed
+
+# runfailure tests.
+runfailure 1 'yay' sh -c 'echo yay; exit 1'
+runfailure 10 'yay' sh -c 'echo yay; exit 10'
+runfailure 10 'yay' sh -c 'echo yay; exit 9'
+runfailure 1 test echo test
+runfailure 1 test sh -c 'echo yay; exit 1'
+
+# skip tests.
+skip 15 17 'skip testing'
