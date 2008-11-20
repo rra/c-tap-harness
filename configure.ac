@@ -1,8 +1,8 @@
-dnl Minimal Autoconf configuration for runtests.
+dnl Autoconf configuration for C TAP Driver.
 dnl
-dnl runtests is written in maximally portable C, so Autoconf is used here
-dnl mostly for consistency in build process and to handle Automake, not for
-dnl any portability of the code itself.
+dnl The C TAP driver is written in maximally portable C, so Autoconf is used
+dnl here mostly for consistency in build process and to handle Automake, not
+dnl for any portability of the code itself.
 dnl
 dnl Copyright 2008 Russ Allbery <rra@stanford.edu>
 dnl
