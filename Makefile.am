@@ -1,4 +1,4 @@
-# Automake makefile for runtests.
+# Automake makefile for C TAP Harness.
 #
 # Copyright 2008 Russ Allbery <rra@stanford.edu>
 #
