@@ -7,13 +7,14 @@
 # The list of files needed by the test suite.  They're listed here to be added
 # to EXTRA_DIST and so that they can be copied over properly for builddir !=
 # srcdir builds.
-TEST_FILES = t/basic.t t/basic/abort.list t/basic/abort.out \
-	t/basic/abort.t t/basic/badnum.t t/basic/duplicate.t \
-	t/basic/fail.list t/basic/fail.out t/basic/fail.t t/basic/hup.t \
-	t/basic/missing.t t/basic/nocount.t t/basic/order.t \
-	t/basic/pass.list t/basic/pass.out t/basic/pass.t t/basic/segv.t \
-	t/basic/skip.list t/basic/skip.out t/basic/skip.t t/basic/status.t \
-	t/libtest.t
+TEST_FILES = tests/basic.t tests/basic/abort.list tests/basic/abort.out \
+	tests/basic/abort.t tests/basic/badnum.t tests/basic/duplicate.t \
+	tests/basic/fail.list tests/basic/fail.out tests/basic/fail.t \
+	tests/basic/hup.t tests/basic/missing.t tests/basic/nocount.t \
+	tests/basic/order.t tests/basic/pass.list tests/basic/pass.out \
+	tests/basic/pass.t tests/basic/segv.t tests/basic/skip.list \
+	tests/basic/skip.out tests/basic/skip.t tests/basic/status.t \
+	tests/libtest.t
 
 AUTOMAKE_OPTIONS = foreign subdir-objects
 EXTRA_DIST = LICENSE autogen
@@ -40,8 +41,8 @@ warnings:
 	$(MAKE) CFLAGS='$(WARNINGS)' $(check_PROGRAMS)
 
 # The bits below are for the test suite.
-check_PROGRAMS = t/libtest/c-basic
-t_libtest_c_basic_LDADD = libtest.a
+check_PROGRAMS = tests/libtest/c-basic
+tests_libtest_c_basic_LDADD = libtest.a
 
 check-local: $(check_PROGRAMS)
 	set -e; if [ x"$(builddir)" != x"$(srcdir)" ] ; then \
@@ -49,4 +50,4 @@ check-local: $(check_PROGRAMS)
 		cp "$(srcdir)/$$f" "$(builddir)/$$f" ; \
 	    done \
 	fi
-	cd t && ../runtests TESTS
+	cd tests && ../runtests TESTS
