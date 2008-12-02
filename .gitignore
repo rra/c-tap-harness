@@ -7,8 +7,8 @@
 /config.status
 /configure
 /runtests
-/tests/libtest/c-basic
-/tests/libtest/sh-basic
+/tests/libtap/c-basic
+/tests/libtap/sh-basic
 .deps/
 .dirstamp
 *.a

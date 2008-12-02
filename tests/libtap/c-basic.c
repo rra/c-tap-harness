@@ -1,5 +1,5 @@
 /*
- * Calls libtest functions for testing.
+ * Calls libtap basic functions for testing.
  *
  * Written by Russ Allbery <rra@stanford.edu>
  * Copyright 2008 Board of Trustees, Leland Stanford Jr. University
@@ -9,12 +9,12 @@
 
 #include <stdlib.h>
 
-#include <libtest.h>
+#include <tap/basic.h>
 
 int
 main(void)
 {
-    test_init(29);
+    plan(29);
     ok(1, 1);
     ok(2, 0);
     ok_int(3, 0, 0);

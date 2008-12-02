@@ -19,5 +19,5 @@ AC_PROG_INSTALL
 AC_PROG_RANLIB
 
 AC_CONFIG_FILES([Makefile])
-AC_CONFIG_FILES([tests/libtest/sh-basic], [chmod +x tests/libtest/sh-basic])
+AC_CONFIG_FILES([tests/libtap/sh-basic], [chmod +x tests/libtap/sh-basic])
 AC_OUTPUT

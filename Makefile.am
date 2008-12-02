@@ -14,14 +14,14 @@ TEST_FILES = tests/basic.t tests/basic/abort.list tests/basic/abort.out \
 	tests/basic/order.t tests/basic/pass.list tests/basic/pass.out \
 	tests/basic/pass.t tests/basic/segv.t tests/basic/skip.list \
 	tests/basic/skip.out tests/basic/skip.t tests/basic/status.t \
-	tests/libtest.t
+	tests/libtap.t
 
 AUTOMAKE_OPTIONS = foreign subdir-objects
 EXTRA_DIST = LICENSE autogen
 
 bin_PROGRAMS = runtests
-noinst_LIBRARIES = libtest.a
-libtest_a_SOURCES = libtest.c libtest.h
+noinst_LIBRARIES = tap/libtap.a
+tap_libtap_a_SOURCES = tap/basic.c tap/basic.h
 
 # Work around the GNU Coding Standards, which leave all the Autoconf and
 # Automake stuff around after make maintainer-clean, thus making that command
@@ -41,8 +41,8 @@ warnings:
 	$(MAKE) CFLAGS='$(WARNINGS)' $(check_PROGRAMS)
 
 # The bits below are for the test suite.
-check_PROGRAMS = tests/libtest/c-basic
-tests_libtest_c_basic_LDADD = libtest.a
+check_PROGRAMS = tests/libtap/c-basic
+tests_libtap_c_basic_LDADD = tap/libtap.a
 
 check-local: $(check_PROGRAMS)
 	set -e; if [ x"$(builddir)" != x"$(srcdir)" ] ; then \

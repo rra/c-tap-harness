@@ -1,5 +1,5 @@
 /*
- * Some utility routines for writing tests.
+ * Basic utility routines for the TAP protocol.
  *
  * Copyright 2006, 2007, 2008
  *     Board of Trustees, Leland Stanford Jr. University
@@ -24,8 +24,8 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef LIBTEST_H
-#define LIBTEST_H 1
+#ifndef TAP_BASIC_H
+#define TAP_BASIC_H 1
 
 #include <sys/types.h>          /* pid_t */
 
@@ -56,7 +56,7 @@ void ok_block(int n, int count, int success);
 void skip_block(int n, int count, const char *reason);
 
 /* Print out the number of tests and set standard output to line buffered. */
-void test_init(int count);
+void plan(int count);
 
 END_DECLS
 

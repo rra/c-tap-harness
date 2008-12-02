@@ -36,7 +36,7 @@
 #include <sys/time.h>
 #include <sys/wait.h>
 
-#include <libtest.h>
+#include <tap/basic.h>
 
 
 /*
@@ -44,7 +44,7 @@
  * the number of tests in the test suite.
  */
 void
-test_init(int count)
+plan(int count)
 {
     if (setvbuf(stdout, NULL, _IOLBF, BUFSIZ) != 0)
         fprintf(stderr, "cannot set stdout to line buffered: %s\n",

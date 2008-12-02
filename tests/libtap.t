@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# Test suite for libtest functionality.
+# Test suite for libtap functionality.
 #
 # Written by Russ Allbery <rra@stanford.edu>
 # Copyright 2008 Board of Trustees, Leland Stanford Jr. University
@@ -29,7 +29,7 @@ runprogram () {
 }
 
 # Find where our test cases are.
-for dir in ./t/libtest . ./libtest ; do
+for dir in ./tests/libtap . ./libtap ; do
     [ -f $dir/c-basic.out ] && cd $dir
 done
 
