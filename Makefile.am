@@ -17,11 +17,12 @@ TEST_FILES = tests/basic.t tests/basic/abort.list tests/basic/abort.out \
 	tests/libtap.t
 
 AUTOMAKE_OPTIONS = foreign subdir-objects
-EXTRA_DIST = LICENSE autogen
+EXTRA_DIST = LICENSE autogen runtests.pod
 
 bin_PROGRAMS = runtests
 noinst_LIBRARIES = tap/libtap.a
 tap_libtap_a_SOURCES = tap/basic.c tap/basic.h
+man_MANS = runtests.1
 
 # Work around the GNU Coding Standards, which leave all the Autoconf and
 # Automake stuff around after make maintainer-clean, thus making that command

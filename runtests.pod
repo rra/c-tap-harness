@@ -1,0 +1,99 @@
+=head1 NAME
+
+runtests - Harness for running TAP-compliant test scripts
+
+=head1 SYNOPSIS
+
+B<runtests> I<test-list>
+
+=head1 DESCRIPTION
+
+B<runtests> is a pure C implementation of a harness for test scripts using
+TAP (the Test Anything Protocol).  This is the text-based protocol used by
+Perl's test suite and implemented in Perl by Test::Harness.  B<runtests>
+is a pure C reimplementation of Test::Harness that supports some
+additional features useful for C-based software packages that use
+Automake.
+
+The first argument to B<runtests> should be a list of tests to run, one
+per line.  Each test must be an executable ending in either C<-t> or
+C<.t>, and the line in the test list must be the name of the executable
+with the extension removed.  B<runtests> will run each test script in the
+order listed in the file and summarize the results.
+
+=head1 TEST PROTOCOL
+
+The canonical documentation for TAP is Test::Harness::TAP(3).  This is a
+brief summary.
+
+Every individual test done by a test script must get a unique number.  The
+output of each test executable should start with:
+
+    1..<last>
+
+where <last> is the number of the last test.  For each test, the script
+must output a line in one of these three formats:
+
+    ok <number>
+    not ok <number>
+    ok <number> # skip <reason>
+
+where <number> is the test number.  The last form indicates a skipped
+test; <reason> should be some brief reason for why the test was skipped.
+
+=head1 NOTES
+
+Consider using prove(1) instead of this test suite harness if you don't
+mind a Perl dependency for testing, as that harness is more mature.
+B<runtests> will eventually have features that will make it more useful
+with packages using Automake, but it doesn't yet.
+
+=head1 BUGS
+
+The following features of TAP are not yet implemented by this harness:
+
+=over 2
+
+=item *
+
+The plan (the initial C<< 1..<last> >> line) may be the last line of the
+output instead of the first line.
+
+=item *
+
+The test number may be omitted in C<ok> and C<not ok> lines, in which case
+the test number should be assumed to be one more than the previous test
+number.
+
+=item *
+
+The todo directive indicates a test that's not expected to succeed and
+should be reported if it does succeed.
+
+=item *
+
+The text after C<# skip> should be reported as the reason for the skipped
+test.
+
+=item *
+
+The test plan (the first line) may be C<1..0 # skip> to skip the entire
+test script.
+
+=item *
+
+An output line starting with C<Bail out!> aborts the test script and
+provides a reason for why it was aborted.
+
+=back
+
+=head1 SEE ALSO
+
+prove(1), Test::Harness(3), Test::Harness::TAP(3)
+
+The current version of this program is available from its web page at
+L<http://www.eyrie.org/~eagle/software/c-tap-driver/>.
+
+=head1 AUTHOR
+
+Russ Allbery <rra@stanford.edu>

@@ -6,3 +6,8 @@ set -e
 
 autoreconf -i --force
 rm -rf autom4te.cache
+
+# Generate manual pages.
+version=`grep '^C TAP Harness' NEWS | head -1 | cut -d' ' -f4`
+pod2man --release="$version" --center="C TAP Harness" runtests.pod \
+    > runtests.1

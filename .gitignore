@@ -7,6 +7,7 @@
 /config.status
 /configure
 /runtests
+/runtests.1
 /tests/libtap/c-basic
 /tests/libtap/sh-basic
 .deps/
