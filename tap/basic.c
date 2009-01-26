@@ -52,52 +52,6 @@ ok(int n, int success)
 
 
 /*
- * Takes an expected integer and a seen integer and assumes the test passes
- * if those two numbers match.
- */
-void
-ok_int(int n, int wanted, int seen)
-{
-    if (wanted == seen)
-        printf("ok %d\n", n);
-    else
-        printf("not ok %d\n#  wanted: %d\n#    seen: %d\n", n, wanted, seen);
-}
-
-
-/*
- * Takes a string and what the string should be, and assumes the test passes
- * if those strings match (using strcmp).
- */
-void
-ok_string(int n, const char *wanted, const char *seen)
-{
-    if (wanted == NULL)
-        wanted = "(null)";
-    if (seen == NULL)
-        seen = "(null)";
-    if (strcmp(wanted, seen) != 0)
-        printf("not ok %d\n#  wanted: %s\n#    seen: %s\n", n, wanted, seen);
-    else
-        printf("ok %d\n", n);
-}
-
-
-/*
- * Takes an expected integer and a seen integer and assumes the test passes if
- * those two numbers match.
- */
-void
-ok_double(int n, double wanted, double seen)
-{
-    if (wanted == seen)
-        printf("ok %d\n", n);
-    else
-        printf("not ok %d\n#  wanted: %g\n#    seen: %g\n", n, wanted, seen);
-}
-
-
-/*
  * Skip a test.
  */
 void
@@ -133,4 +87,50 @@ skip_block(int n, int count, const char *reason)
 
     for (i = 0; i < count; i++)
         skip(n++, reason);
+}
+
+
+/*
+ * Takes an expected integer and a seen integer and assumes the test passes
+ * if those two numbers match.
+ */
+void
+is_int(int n, int wanted, int seen)
+{
+    if (wanted == seen)
+        printf("ok %d\n", n);
+    else
+        printf("# wanted: %d\n#   seen: %d\nnot ok %d\n", wanted, seen, n);
+}
+
+
+/*
+ * Takes a string and what the string should be, and assumes the test passes
+ * if those strings match (using strcmp).
+ */
+void
+is_string(int n, const char *wanted, const char *seen)
+{
+    if (wanted == NULL)
+        wanted = "(null)";
+    if (seen == NULL)
+        seen = "(null)";
+    if (strcmp(wanted, seen) != 0)
+        printf("# wanted: %s\n#   seen: %s\nnot ok %d\n", wanted, seen, n);
+    else
+        printf("ok %d\n", n);
+}
+
+
+/*
+ * Takes an expected integer and a seen integer and assumes the test passes if
+ * those two numbers match.
+ */
+void
+is_double(int n, double wanted, double seen)
+{
+    if (wanted == seen)
+        printf("ok %d\n", n);
+    else
+        printf("# wanted: %g\n#   seen: %g\nnot ok %d\n", wanted, seen, n);
 }
