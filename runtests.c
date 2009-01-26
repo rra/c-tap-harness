@@ -17,12 +17,13 @@
  *
  * where <number> is the number of the test.  ok indicates success, not ok
  * indicates failure, and "# skip" indicates the test was skipped for some
- * reason (maybe because it doesn't apply to this platform).
+ * reason (maybe because it doesn't apply to this platform).  This is a subset
+ * of TAP as documented in Test::Harness::TAP, which comes with Perl.
  *
  * Any bug reports, bug fixes, and improvements are very much welcome and
  * should be sent to the e-mail address below.
  *
- * Copyright 2000, 2001, 2004, 2006, 2007, 2008
+ * Copyright 2000, 2001, 2004, 2006, 2007, 2008, 2009
  *     Russ Allbery <rra@stanford.edu>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a

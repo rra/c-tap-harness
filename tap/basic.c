@@ -7,6 +7,7 @@
  * arguments, and print out something appropriate for that test number.  Other
  * utility routines help in constructing more complex tests.
  *
+ * Copyright 2009 Russ Allbery <rra@stanford.edu>
  * Copyright 2006, 2007, 2008
  *     Board of Trustees, Leland Stanford Jr. University
  * Copyright (c) 2004, 2005, 2006
