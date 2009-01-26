@@ -1,5 +1,3 @@
-# $Id: libtest.sh 3800 2008-01-05 00:01:54Z rra $
-#
 # Shell function library for test cases.
 #
 # Written by Russ Allbery <rra@stanford.edu>
