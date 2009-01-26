@@ -14,8 +14,13 @@ C TAP Harness 1.0
     Show mismatch output from the is_*() functions before the "not ok"
     line instead of after it.
 
+    Add the initial "1.." to plan() output for better TAP compliance.
+
     Support either "-t" or ".t" as the ending of test cases.
 
     Remove the dependency on both config.h and the general portability
     framework and instead include the necessary C headers directly.  This
     requires ANSI C.
+
+    Remove the functions from libtap that assume libutil from rra-c-util.
+    Those library functions will be provided by that package.
