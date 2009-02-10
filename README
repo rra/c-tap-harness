@@ -1,0 +1,154 @@
+                            C TAP Harness 1.0
+               (C harness for running TAP-compliant tests)
+
+                Written by Russ Allbery <rra@stanford.edu>
+
+  Copyright 2000, 2001, 2004, 2006, 2007, 2008, 2009 Russ Allbery
+  <rra@stanford.edu>.  This software is distributed under a BSD-style
+  license.  Please see the file LICENSE in the distribution for more
+  information.
+
+BLURB
+
+  C TAP Harness is a pure-C implementation of TAP, the Test Anything
+  Protocol.  TAP is the text-based protocol used by Perl's test suite.
+  This package provides a harness similar to Perl's Test::Harness for
+  running tests and C and shell libraries to make writing TAP-compliant
+  test programs easier.
+
+DESCRIPTION
+
+  This package started as the runtests program I wrote for INN in 2000 to
+  serve as the basis for a new test suite using a test protocol similar to
+  that used for Perl modules.  When I started maintaining additional C
+  packages, I adopted runtests for the test suite driver of those as well,
+  resulting in further improvements but also separate copies of the same
+  program in different distributions.  The C TAP Harness distribution
+  merges all the various versions into a single code base that all my
+  packages can pull from.
+
+  C TAP Harness doesn't yet implement the full TAP specification and
+  currently does not have any notable features that Test::Harness doesn't
+  have.  It's therefore currently mostly useful because it doesn't assume
+  or require Perl.  My future intention is to complete the implementation
+  of the TAP specification and add additional features that make C TAP
+  Harness particularly suited to testing packages using non-recursive
+  Automake.
+
+  Also included in this package are C and shell libraries that provide
+  utility functions for writing test scripts that use TAP to report
+  exists.
+
+REQUIREMENTS
+
+  C TAP Harness requires a C compiler to build.  The test suite and shell
+  library require a Bourne-compatible shell.  It has no other requirements
+  or prerequisites and should build with any ISO C89 or later C compiler.
+
+  If you change the Automake files and need to regenerate Makefile.in, you
+  will need Automake 1.10 or later.  If you change configure.ac and need
+  to regenerate configure or config.h.in, you will need Autoconf 2.61 or
+  later.
+
+BUILDING AND TESTING
+
+  You can build C TAP Harness and run its internal test suite with:
+
+      ./configure
+      make
+      make check
+
+  While there is a configure script, it exists just to drive the build
+  system and do some path substitution and isn't doing portability
+  probes.
+
+USING THE HARNESS
+
+  While there is an install target that installs runtests in the default
+  binary directory (/usr/local/bin by default) because Automake provides
+  it automatically, one normally wouldn't install anything from this
+  package.  Instead, the code is intended to be copied into your package
+  and refreshed from the latest release of C TAP Harness for each release.
+
+  You can obviously copy the code and integrate it however works best for
+  your package and your build system.  Here's how I do it for my packages
+  as an example:
+
+  * Create a tests directory and copy runtests.c into it.  Create a
+    tests/tap subdirectory and copy the portions of the TAP library that I
+    need for that package into it.  The TAP library is designed to let you
+    drop in additional source and header files for additional utility
+    functions that are useful in your package.
+
+  * Add code to my top-level Makefile.am (I always use a non-recursive
+    Makefile with subdir-objects set) to build runtests and the test
+    library:
+
+        check_PROGRAMS = tests/runtests
+        check_LIBRARIES = tests/tap/libtap.a
+        tests_tap_libtap_a_SOURCES = tests/tap/basic.c tests/tap/basic.h
+
+    Add additional source files and headers that should go into the TAP
+    library if you added extra utility functions for your package.
+
+  * Add code to Makefile.am to run the test suite.  Currently, you need to
+    copy any test files into the build tree if doing an out-of-tree
+    build.  I do this by listing all the support files in TEST_FILES and
+    then add that variable to EXTRA_DIST, then add a local check hook
+    like:
+
+        check-local: $(check_PROGRAMS)
+              set -e; if [ x"$(builddir)" != x"$(srcdir)" ] ; then \
+                  for f in $(TEST_FILES) ; do \
+                      cp "$(srcdir)/$$f" "$(builddir)/$$f" ; \
+                  done \
+              fi
+              cd tests && ./runtests TESTS
+
+    See the Makefile.am in this package for an example (although note that
+    it keeps runtests in an unusual location).
+
+  * List the test programs in the TESTS file.  This should have the name
+    of the test executable with the trailing "-t" or ".t" (you can use
+    either extension as you prefer) omitted.  For any test programs that
+    need to be compiled, add build rules for them in Makefile.am, simliar
+    to:
+
+        tests_libtap_c_basic_LDADD = tap/libtap.a
+
+    and add them to check_PROGRAMS.  A more complex example from the
+    remctl package that needs additional libraries:
+
+        tests_client_open_t_LDFLAGS = $(GSSAPI_LDFLAGS)
+        tests_client_open_t_LDADD = client/libremctl.la tests/tap/libtap.a \
+                util/libutil.la $(GSSAPI_LIBS)
+
+    If the test program doesn't need to be compiled, add it to TEST_FILES
+    so that it will be included in the distribution and copied into the
+    build directory as needed.
+
+  If you have data files that your test cases use, conventionally they go
+  into tests/data.  Later versions of this package will have code in
+  runtests for finding such test data and ensuring that tests are run with
+  the proper working directory.  Currently, if your configure script
+  doesn't create the directories into which test data needs to be copied,
+  you'll also need to add mkdir lines to your check-local hook before
+  copying over TEST_FILES.
+
+HOMEPAGE AND SOURCE REPOSITORY
+
+  The C TAP Harness web page at:
+
+      http://www.eyrie.org/~eagle/software/c-tap-harness/
+
+  will always have the current version of this package, the current
+  documentation, and pointers to any additional resources.
+
+  C TAP Harness is maintained using Git.  You can access the current
+  source by cloning the repository at:
+
+      git://git.eyrie.org/devel/c-tap-harness.git
+
+  or view the repository via the web at:
+
+      http://git.eyrie.org/?p=devel/c-tap-harness.git
