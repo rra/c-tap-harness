@@ -3,7 +3,7 @@ Running all tests listed in abort-one.list.  If any tests fail, run the failing
 test program by hand to see more details.  The test program will have the
 same name as the test set but with "-t" or ".t" appended.
 
-badnum..invalid test number 5
+badnum..ABORTED (invalid test number 5)
 
 Failed Set                 Fail/Total (%) Skip Stat  Failing Tests
 -------------------------- -------------- ---- ----  ------------------------

@@ -278,7 +278,7 @@ test_init(const char *line, struct testset *ts)
         }
     }
     if (i <= 0) {
-        puts("invalid test count");
+        puts("ABORTED (invalid test count)");
         ts->aborted = 1;
         ts->reported = 1;
         return 0;
@@ -405,7 +405,7 @@ test_checkline(const char *line, struct testset *ts)
         return;
     if (current < 0 || current > ts->count) {
         test_backspace(ts);
-        printf("invalid test number %d\n", current);
+        printf("ABORTED (invalid test number %d)\n", current);
         ts->aborted = 1;
         ts->reported = 1;
         return;
@@ -427,7 +427,7 @@ test_checkline(const char *line, struct testset *ts)
     /* Make sure that the test number is in range and not a duplicate. */
     if (ts->results[current - 1] != TEST_INVALID) {
         test_backspace(ts);
-        printf("duplicate test number %d\n", current);
+        printf("ABORTED (duplicate test number %d)\n", current);
         ts->aborted = 1;
         ts->reported = 1;
         return;

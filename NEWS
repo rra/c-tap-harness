@@ -12,6 +12,9 @@ C TAP Harness 1.0
     Add support for aborting a test case with "Bail out!" and reporting
     the reason given on that line.
 
+    Change the reporting of reasons to abort the test case to use ABORTED
+    and the abort reason in parentheses for more consistent output.
+
     Rename test_init() to plan() and ok_int(), ok_double(), and
     ok_string() to is_int(), is_double(), and is_string() in the C TAP
     library to more closely match the function names in Perl's test

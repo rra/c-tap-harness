@@ -10,9 +10,9 @@ segv............MISSED 1-3 (killed by signal 6, core dumped)
 status..........dubious (exit status 1)
 pass............ok
 abort...........MISSED 3-4
-nocount.........invalid test count
-badnum..........invalid test number 5
-duplicate.......duplicate test number 4
+nocount.........ABORTED (invalid test count)
+badnum..........ABORTED (invalid test number 5)
+duplicate.......ABORTED (duplicate test number 4)
 bail............ABORTED (stopping now)
 bail-silent.....ABORTED (passed 1/2)
 
