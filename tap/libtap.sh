@@ -1,67 +1,79 @@
 # Shell function library for test cases.
 #
 # Written by Russ Allbery <rra@stanford.edu>
+# Copyright 2009 Russ Allbery <rra@stanford.edu>
 # Copyright 2006, 2007, 2008 Board of Trustees, Leland Stanford Jr. University
 #
 # See LICENSE for licensing terms.
 
-# The count starts at 1 and is updated each time ok is printed.  printcount
-# takes "ok" or "not ok".
-count=1
-printcount () {
-    if [ -n "$2" ] ; then
-        echo "$1 $count $2"
+# Print out the number of test cases we expect to run.
+plan () {
+    count=1
+    echo "1..$1"
+}
+
+# ok takes a command to run and prints success if that command is successful,
+# false otherwise.  The count starts at 1 and is updated each time ok is
+# printed.
+ok () {
+    if "$@" ; then
+        echo ok $count
     else
-        echo "$1 $count"
+        echo not ok $count
     fi
     count=`expr $count + 1`
 }
 
-# Run a program expected to succeed, and print ok if it does and produces
-# the correct output.  Takes the output as the first argument, the command to
-# run as the second argument, and then all subsequent arguments are arguments
-# to the command.
-runsuccess () {
-    w_output="$1"
-    shift
-    output=`"$@" 2>&1`
-    status=$?
-    if [ $status = 0 ] && [ x"$output" = x"$w_output" ] ; then
-        printcount 'ok'
-    else
-        printcount 'not ok'
-        echo "#  saw: $output"
-        echo "#  not: $w_output"
-    fi
+# Skip the next test.  Takes the reason why the test is skipped.
+skip () {
+    echo "ok $count # skip $*"
+    count=`expr $count + 1`
 }
 
-# Run a program expected to fail and make sure it fails with the correct exit
-# status and the correct failure message.  Takes the expected status, the
-# expected output, and then everything else is the command and arguments.
-# Strip the second colon and everything after it off the error message since
-# it's system-specific.
-runfailure () {
+# Report the same status on a whole set of tests.
+ok_block () {
+    local start end
+    i=$count
+    end=`expr $count + $1`
+    shift
+    while [ "$i" -lt "$end" ] ; do
+        ok "$@"
+        i=`expr $i + 1`
+    done
+}
+
+# Skip a whole set of tests.
+skip_block () {
+    local start end
+    i=$count
+    end=`expr $count + $1`
+    shift
+    while [ "$i" -lt "$end" ] ; do
+        skip "$@"
+        i=`expr $i + 1`
+    done
+}
+
+# Run a program expected to succeed, and print ok if it does and produces the
+# correct output.  Takes the expected exit status, the expected output, the
+# command to run, and then any arguments for that command.  Strip the second
+# colon and everything after it off the output if the expected status is
+# non-zero, since this is probably a system-specific error message.
+ok_program () {
     w_status="$1"
     shift
     w_output="$1"
     shift
     output=`"$@" 2>&1`
     status=$?
-    output=`echo "$output" | sed 's/\(:[^:]*\):.*/\1/'`
+    if [ "$w_status" -ne 0 ] ; then
+        output=`echo "$output" | sed 's/\(:[^:]*\):.*/\1/'`
+    fi
     if [ $status = $w_status ] && [ x"$output" = x"$w_output" ] ; then
-        printcount 'ok'
+        ok true
     else
-        printcount 'not ok'
         echo "#  saw: ($status) $output"
         echo "#  not: ($w_status) $w_output"
+        ok false
     fi
-}
-
-# Skip tests from $1 to $2 inclusive with reason $3.
-skip () {
-    n="$1"
-    while [ "$n" -le "$2" ] ; do
-        echo ok "$n # skip $3"
-        n=`expr "$n" + 1`
-    done
 }

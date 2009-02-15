@@ -3,28 +3,22 @@
 # Test suite for libtap functionality.
 #
 # Written by Russ Allbery <rra@stanford.edu>
+# Copyright 2009 Russ Allbery <rra@stanford.edu>
 # Copyright 2008 Board of Trustees, Leland Stanford Jr. University
 #
 # See LICENSE for licensing terms.
 
-# The count starts at 1 and is updated each time ok is printed.  printcount
-# takes "ok" or "not ok".
-count=1
-printcount () {
-    echo "$1 $count"
-    count=`expr $count + 1`
-}
+. "@abs_top_srcdir@/tap/libtap.sh"
 
 # Run a binary, saving its output, and then compare that output to the
 # corresponding *.out file.
-runprogram () {
+ok_result () {
     ./"$1" > "$1".result
     diff -u "$1".out "$1".result 2>&1
-    if test $? = 0 ; then
-        printcount "ok"
+    status=$?
+    ok [ $status -eq 0 ]
+    if [ $status -eq 0 ] ; then
         rm "$1".result
-    else
-        printcount "not ok"
     fi
 }
 
@@ -34,8 +28,8 @@ for dir in ./tests/libtap . ./libtap ; do
 done
 
 # Total tests.
-echo 1..2
+plan 2
 
 # Run the individual tests.
-runprogram c-basic
-runprogram sh-basic 
+ok_result c-basic
+ok_result sh-basic 

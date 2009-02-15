@@ -1,41 +1,38 @@
 #! /bin/sh
 #
 # Test suite for basic runtests functionality.
+#
+# Copyright 2008, 2009 Russ Allbery <rra@stanford.edu>
+#
+# See LICENSE for licensing terms.
 
-# The count starts at 1 and is updated each time ok is printed.  printcount
-# takes "ok" or "not ok".
-count=1
-printcount () {
-    echo "$1 $count"
-    count=`expr $count + 1`
-}
+. "@abs_top_srcdir@/tap/libtap.sh"
 
 # Run runtests on a list and compare the output to the expected output,
 # printing ok if it matches.  Strip out the time information from the runtests
 # result since it changes for each run.
-runsuccess () {
+ok_runtests () {
     ../../runtests "$1".list | sed 's/\(Tests=[0-9]*\),  .*/\1/' > "$1".result
     diff -u "$1".out "$1".result 2>&1
-    if test $? = 0 ; then
-        printcount "ok"
+    status=$?
+    ok [ $status -eq 0 ]
+    if [ $status -eq 0 ] ; then
         rm "$1".result
-    else
-        printcount "not ok"
     fi
     rm -f core
 }
 
 # Find where our test cases are.
-for dir in ./t/basic . ./basic ; do
+for dir in ./tests/basic . ./basic ; do
     [ -f $dir/pass.list ] && cd $dir
 done
 
 # Total tests.
-echo 1..5
+plan 5
 
 # First run the tests expected to succeed.
-runsuccess pass
-runsuccess skip
-runsuccess fail
-runsuccess abort
-runsuccess abort-one
+ok_runtests pass
+ok_runtests skip
+ok_runtests fail
+ok_runtests abort
+ok_runtests abort-one

@@ -1,29 +1,38 @@
+1..25
 ok 1
 not ok 2
-ok 3 foo test
-not ok 4 bar test
-ok 5
-ok 6
-not ok 7
-#  saw: 
-#  not: 
-not ok 8
-#  saw: test is successful
-#  not: test is successful
+ok 3
+not ok 4
+ok 5 # skip no idea why
+not ok 6
+ok 7
+ok 8
 not ok 9
-#  saw: test failed
-#  not: test is successful
-ok 10
-ok 11
-not ok 12
+not ok 10
+not ok 11
+ok 12 # skip some reason
+ok 13 # skip some other reason
+ok 14 # skip some other reason
+ok 15
+#  saw: (1) 
+#  not: (0) 
+not ok 16
+ok 17
+ok 18
+#  saw: (1) test fails
+#  not: (0) test fails
+not ok 19
+#  saw: (0) test failed
+#  not: (0) test fails
+not ok 20
+ok 21
+ok 22
 #  saw: (9) yay
 #  not: (10) yay
-not ok 13
+not ok 23
 #  saw: (0) test
 #  not: (1) test
-not ok 14
+not ok 24
 #  saw: (1) yay
 #  not: (1) test
-ok 15 # skip skip testing
-ok 16 # skip skip testing
-ok 17 # skip skip testing
+not ok 25

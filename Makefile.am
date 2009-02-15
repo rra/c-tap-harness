@@ -1,20 +1,19 @@
 # Automake makefile for C TAP Harness.
 #
-# Copyright 2008 Russ Allbery <rra@stanford.edu>
+# Copyright 2008, 2009 Russ Allbery <rra@stanford.edu>
 #
 # See LICENSE for licensing terms.
 
 # The list of files needed by the test suite.  They're listed here to be added
 # to EXTRA_DIST and so that they can be copied over properly for builddir !=
 # srcdir builds.
-TEST_FILES = tests/basic.t tests/basic/abort.list tests/basic/abort.out \
+TEST_FILES = tests/basic/abort.list tests/basic/abort.out \
 	tests/basic/abort.t tests/basic/badnum.t tests/basic/duplicate.t \
 	tests/basic/fail.list tests/basic/fail.out tests/basic/fail.t \
 	tests/basic/hup.t tests/basic/missing.t tests/basic/nocount.t \
 	tests/basic/order.t tests/basic/pass.list tests/basic/pass.out \
 	tests/basic/pass.t tests/basic/segv.t tests/basic/skip.list \
-	tests/basic/skip.out tests/basic/skip.t tests/basic/status.t \
-	tests/libtap.t
+	tests/basic/skip.out tests/basic/skip.t tests/basic/status.t
 
 AUTOMAKE_OPTIONS = foreign subdir-objects
 EXTRA_DIST = LICENSE autogen runtests.pod

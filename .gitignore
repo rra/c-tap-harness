@@ -8,6 +8,8 @@
 /configure
 /runtests
 /runtests.1
+/tests/basic.t
+/tests/libtap.t
 /tests/libtap/c-basic
 /tests/libtap/sh-basic
 .deps/
