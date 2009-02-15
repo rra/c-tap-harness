@@ -586,15 +586,15 @@ test_analyze(struct testset *ts)
         switch (WEXITSTATUS(ts->status)) {
         case CHILDERR_DUP:
             if (!ts->reported)
-                puts("can't dup file descriptors");
+                puts("ABORTED (can't dup file descriptors)");
             break;
         case CHILDERR_EXEC:
             if (!ts->reported)
-                puts("execution failed (not found?)");
+                puts("ABORTED (execution failed -- not found?)");
             break;
         case CHILDERR_STDERR:
             if (!ts->reported)
-                puts("can't open /dev/null");
+                puts("ABORTED (can't open /dev/null)");
             break;
         default:
             test_summarize(ts, WEXITSTATUS(ts->status));
