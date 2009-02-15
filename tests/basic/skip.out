@@ -4,8 +4,7 @@ test program by hand to see more details.  The test program will have the
 same name as the test set but with "-t" or ".t" appended.
 
 skip............ok (skipped 3 tests)
-skip-all........skipped
-	all skipped: some reason
+skip-all........skipped (some reason)
 skip-all-quiet..skipped
 pass............ok
 order...........ok

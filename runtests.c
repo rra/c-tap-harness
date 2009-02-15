@@ -82,7 +82,7 @@ enum test_status {
 
 /* Structure to hold data for a set of tests. */
 struct testset {
-    const char *file;           /* The file name of the test. */
+    char *file;                 /* The file name of the test. */
     int count;                  /* Expected count of tests. */
     int current;                /* The last seen test number. */
     int length;                 /* The length of the last status message. */
@@ -94,7 +94,7 @@ struct testset {
     int reported;               /* Whether the results were reported. */
     int status;                 /* The exit status of the test. */
     int all_skipped;            /* Whether all tests were skipped. */
-    char *all_skipped_reason;   /* Why all tests were skipped. */
+    char *reason;               /* Why all tests were skipped. */
 };
 
 /* Structure to hold a linked list of test sets. */
@@ -269,8 +269,10 @@ test_init(const char *line, struct testset *ts)
             line = skip_whitespace(line + 1);
             if (strncmp(line, "skip", 4) == 0) {
                 line = skip_whitespace(line + 4);
-                if (*line != '\0')
-                    ts->all_skipped_reason = xstrdup(line);
+                if (*line != '\0') {
+                    ts->reason = xstrdup(line);
+                    ts->reason[strlen(ts->reason) - 1] = '\0';
+                }
                 ts->all_skipped = 1;
                 ts->aborted = 1;
                 return 0;
@@ -575,9 +577,10 @@ test_analyze(struct testset *ts)
     if (ts->reported)
         return 0;
     if (ts->all_skipped) {
-        puts("skipped");
-        if (ts->all_skipped_reason != NULL)
-            printf("\tall skipped: %s", ts->all_skipped_reason);
+        if (ts->reason == NULL)
+            puts("skipped");
+        else
+            printf("skipped (%s)\n", ts->reason);
         return 1;
     } else if (WIFEXITED(ts->status) && WEXITSTATUS(ts->status) != 0) {
         switch (WEXITSTATUS(ts->status)) {
@@ -805,8 +808,12 @@ test_batch(const char *testlist)
             fflush(stdout);
         memset(&ts, 0, sizeof(ts));
         ts.file = xstrdup(buffer);
-        ts.all_skipped_reason = NULL;
-        if (!test_run(&ts)) {
+        ts.reason = NULL;
+        if (test_run(&ts)) {
+            free(ts.file);
+            if (ts.reason != NULL)
+                free(ts.reason);
+        } else {
             tmp = xmalloc(sizeof(struct testset));
             memcpy(tmp, &ts, sizeof(struct testset));
             if (!failhead) {
