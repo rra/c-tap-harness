@@ -6,6 +6,9 @@ C TAP Harness 1.0
     libtest library that shipped with remctl 2.13.  The changes below are
     relative to that version.
 
+    Add support for 0..1 # skip <reason> plan lines, indicating that the
+    entire test case should be skipped.
+
     Rename test_init() to plan() and ok_int(), ok_double(), and
     ok_string() to is_int(), is_double(), and is_string() in the C TAP
     library to more closely match the function names in Perl's test

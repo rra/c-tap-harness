@@ -93,6 +93,8 @@ struct testset {
     int aborted;                /* Whether the set as aborted. */
     int reported;               /* Whether the results were reported. */
     int status;                 /* The exit status of the test. */
+    int all_skipped;            /* Whether all tests were skipped. */
+    char *all_skipped_reason;   /* Why all tests were skipped. */
 };
 
 /* Structure to hold a linked list of test sets. */
@@ -223,6 +225,19 @@ tv_sum(const struct timeval *tv1, const struct timeval *tv2)
 
 
 /*
+ * Given a pointer to a string, skip any leading whitespace and return a
+ * pointer to the first non-whitespace character.
+ */
+static const char *
+skip_whitespace(const char *p)
+{
+    while (isspace((unsigned char)(*p)))
+        p++;
+    return p;
+}
+
+
+/*
  * Read the first line of test output, which should contain the range of
  * test numbers, and initialize the testset structure.  Assume it was zeroed
  * before being passed in.  Return true if initialization succeeds, false
@@ -238,13 +253,30 @@ test_init(const char *line, struct testset *ts)
      * such as 1..10, accept that too for compatibility with Perl's
      * Test::Harness.
      */
-    while (isspace((unsigned char)(*line)))
-        line++;
+    line = skip_whitespace(line);
     if (strncmp(line, "1..", 3) == 0)
         line += 3;
 
-    /* Get the count, check it for validity, and initialize the struct. */
-    i = atoi(line);
+    /*
+     * Get the count, check it for validity, and initialize the struct.  If we
+     * have something of the form "1..0 # skip foo", the whole file was
+     * skipped; record that.
+     */
+    i = strtol(line, (char **) &line, 10);
+    if (i == 0) {
+        line = skip_whitespace(line);
+        if (*line == '#') {
+            line = skip_whitespace(line + 1);
+            if (strncmp(line, "skip", 4) == 0) {
+                line = skip_whitespace(line + 4);
+                if (*line != '\0')
+                    ts->all_skipped_reason = xstrdup(line);
+                ts->all_skipped = 1;
+                ts->aborted = 1;
+                return 0;
+            }
+        }
+    }
     if (i <= 0) {
         puts("invalid test count");
         ts->aborted = 1;
@@ -524,7 +556,12 @@ test_analyze(struct testset *ts)
 {
     if (ts->reported)
         return 0;
-    if (WIFEXITED(ts->status) && WEXITSTATUS(ts->status) != 0) {
+    if (ts->all_skipped) {
+        puts("skipped");
+        if (ts->all_skipped_reason != NULL)
+            printf("\tall skipped: %s", ts->all_skipped_reason);
+        return 1;
+    } else if (WIFEXITED(ts->status) && WEXITSTATUS(ts->status) != 0) {
         switch (WEXITSTATUS(ts->status)) {
         case CHILDERR_DUP:
             if (!ts->reported)
@@ -591,7 +628,6 @@ test_run(struct testset *ts)
     if (!ts->aborted && !test_init(buffer, ts)) {
         while (fgets(buffer, sizeof(buffer), output))
             ;
-        ts->aborted = 1;
     }
 
     /* Pass each line of output to test_checkline(). */
@@ -608,10 +644,14 @@ test_run(struct testset *ts)
     fclose(output);
     child = waitpid(testpid, &ts->status, 0);
     if (child == (pid_t) -1) {
-        puts("ABORTED");
-        fflush(stdout);
+        if (!ts->reported) {
+            puts("ABORTED");
+            fflush(stdout);
+        }
         sysdie("waitpid for %u failed", (unsigned int) testpid);
     }
+    if (ts->all_skipped)
+        ts->aborted = 0;
     status = test_analyze(ts);
 
     /* Convert missing tests to failed tests. */
@@ -749,6 +789,7 @@ test_batch(const char *testlist)
             fflush(stdout);
         memset(&ts, 0, sizeof(ts));
         ts.file = xstrdup(buffer);
+        ts.all_skipped_reason = NULL;
         if (!test_run(&ts)) {
             tmp = xmalloc(sizeof(struct testset));
             memcpy(tmp, &ts, sizeof(struct testset));
@@ -765,9 +806,9 @@ test_batch(const char *testlist)
             }
         }
         aborted += ts.aborted;
-        total += ts.count;
+        total += ts.count + ts.all_skipped;
         passed += ts.passed;
-        skipped += ts.skipped;
+        skipped += ts.skipped + ts.all_skipped;
         failed += ts.failed;
     }
     total -= skipped;

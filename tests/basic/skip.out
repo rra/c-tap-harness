@@ -3,9 +3,12 @@ Running all tests listed in skip.list.  If any tests fail, run the failing
 test program by hand to see more details.  The test program will have the
 same name as the test set but with "-t" or ".t" appended.
 
-skip....ok (skipped 3 tests)
-pass....ok
-order...ok
+skip............ok (skipped 3 tests)
+skip-all........skipped
+	all skipped: some reason
+skip-all-quiet..skipped
+pass............ok
+order...........ok
 
-All tests successful, 3 tests skipped.
-Files=3,  Tests=20
+All tests successful, 5 tests skipped.
+Files=5,  Tests=20

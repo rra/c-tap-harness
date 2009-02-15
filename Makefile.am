@@ -12,8 +12,9 @@ TEST_FILES = tests/basic/abort.list tests/basic/abort.out \
 	tests/basic/fail.list tests/basic/fail.out tests/basic/fail.t \
 	tests/basic/hup.t tests/basic/missing.t tests/basic/nocount.t \
 	tests/basic/order.t tests/basic/pass.list tests/basic/pass.out \
-	tests/basic/pass.t tests/basic/segv.t tests/basic/skip.list \
-	tests/basic/skip.out tests/basic/skip.t tests/basic/status.t
+	tests/basic/pass.t tests/basic/segv.t tests/basic/skip-all-quiet.t \
+	tests/basic/skip-all.t tests/basic/skip.list tests/basic/skip.out \
+	tests/basic/skip.t tests/basic/status.t
 
 AUTOMAKE_OPTIONS = foreign subdir-objects
 EXTRA_DIST = LICENSE autogen runtests.pod
