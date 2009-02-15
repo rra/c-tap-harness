@@ -19,10 +19,6 @@ Protocol:
    tests that had that reason and report how many tests were skipped for
    each reason.
 
- * If the test script prints "Bail out!" followed by some message, the
-   test case should be aborted and the following reason reported as the
-   reason for bailing out.
-
 Extra Harness Features:
 
  * Support a verbose mode that shows the result of each test as it's

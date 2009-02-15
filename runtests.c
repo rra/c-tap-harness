@@ -365,7 +365,25 @@ static void
 test_checkline(const char *line, struct testset *ts)
 {
     enum test_status status = TEST_PASS;
+    const char *bail;
     int current;
+
+    /* Before anything, check for a test abort. */
+    bail = strstr(line, "Bail out!");
+    if (bail != NULL) {
+        bail = skip_whitespace(bail + strlen("Bail out!"));
+        if (*bail != '\0') {
+            int length;
+
+            length = strlen(bail);
+            if (bail[length - 1] == '\n')
+                length--;
+            printf("ABORTED (%.*s)\n", length, bail);
+            ts->reported = 1;
+        }
+        ts->aborted = 1;
+        return;
+    }
 
     /*
      * If the given line isn't newline-terminated, it was too big for an
@@ -485,9 +503,9 @@ test_summarize(struct testset *ts, int status)
     int last = 0;
 
     if (ts->aborted) {
-        fputs("aborted", stdout);
+        fputs("ABORTED", stdout);
         if (ts->count > 0)
-            printf(", passed %d/%d", ts->passed, ts->count - ts->skipped);
+            printf(" (passed %d/%d)", ts->passed, ts->count - ts->skipped);
     } else {
         for (i = 0; i < ts->count; i++) {
             if (ts->results[i] == TEST_INVALID) {
@@ -625,10 +643,8 @@ test_run(struct testset *ts)
     }
     if (!fgets(buffer, sizeof(buffer), output))
         ts->aborted = 1;
-    if (!ts->aborted && !test_init(buffer, ts)) {
-        while (fgets(buffer, sizeof(buffer), output))
-            ;
-    }
+    if (!ts->aborted && !test_init(buffer, ts))
+        ts->aborted = 1;
 
     /* Pass each line of output to test_checkline(). */
     while (!ts->aborted && fgets(buffer, sizeof(buffer), output))

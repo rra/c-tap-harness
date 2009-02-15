@@ -9,6 +9,9 @@ C TAP Harness 1.0
     Add support for 0..1 # skip <reason> plan lines, indicating that the
     entire test case should be skipped.
 
+    Add support for aborting a test case with "Bail out!" and reporting
+    the reason given on that line.
+
     Rename test_init() to plan() and ok_int(), ok_double(), and
     ok_string() to is_int(), is_double(), and is_string() in the C TAP
     library to more closely match the function names in Perl's test

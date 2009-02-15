@@ -75,16 +75,6 @@ should be reported if it does succeed.
 The text after C<# skip> should be reported as the reason for the skipped
 test.
 
-=item *
-
-The test plan (the first line) may be C<1..0 # skip> to skip the entire
-test script.
-
-=item *
-
-An output line starting with C<Bail out!> aborts the test script and
-provides a reason for why it was aborted.
-
 =back
 
 =head1 SEE ALSO

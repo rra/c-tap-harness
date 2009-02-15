@@ -13,6 +13,8 @@ abort...........MISSED 3-4
 nocount.........invalid test count
 badnum..........invalid test number 5
 duplicate.......duplicate test number 4
+bail............ABORTED (stopping now)
+bail-silent.....ABORTED (passed 1/2)
 
 Failed Set                 Fail/Total (%) Skip Stat  Failing Tests
 -------------------------- -------------- ---- ----  ------------------------
@@ -25,6 +27,8 @@ abort                         2/4     50%    0    0  3-4
 nocount                       0/0      0%    0    0  aborted
 badnum                        2/4     50%    0    0  aborted
 duplicate                     0/4      0%    0    0  aborted
+bail                          1/2     50%    0    0  aborted
+bail-silent                   1/2     50%    0    0  aborted
 
-Aborted 3 test sets, passed 40/61 tests, 1 test skipped.
-Files=10,  Tests=61
+Aborted 5 test sets, passed 42/65 tests, 1 test skipped.
+Files=12,  Tests=65
