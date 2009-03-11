@@ -8,7 +8,7 @@ dnl Copyright 2008, 2009 Russ Allbery <rra@stanford.edu>
 dnl
 dnl See LICENSE for licensing terms.
 
-AC_PREREQ([2.61])
+AC_PREREQ([2.63])
 AC_INIT([runtests], [1.0], [rra@stanford.edu])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([1.10])
