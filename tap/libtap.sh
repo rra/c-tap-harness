@@ -77,3 +77,9 @@ ok_program () {
         ok false
     fi
 }
+
+# Bail out with an error message.
+bail () {
+    echo 'Bail out!' "$@"
+    exit 1
+}

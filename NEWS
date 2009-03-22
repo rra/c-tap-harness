@@ -40,7 +40,8 @@ C TAP Harness 1.0
 
     Stop exporting the printcount interface in the shell version of the
     TAP library.  Instead, provide plan, ok, skip, ok_block, skip_block,
-    and ok_program shell functions, similar to the C library interface.
+    ok_program, and bail shell functions, similar to the C library
+    interface.
 
     Show mismatch output from the is_*() functions before the "not ok"
     line instead of after it.
