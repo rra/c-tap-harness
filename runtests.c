@@ -377,6 +377,7 @@ test_checkline(const char *line, struct testset *ts)
             length = strlen(bail);
             if (bail[length - 1] == '\n')
                 length--;
+            test_backspace(ts);
             printf("ABORTED (%.*s)\n", length, bail);
             ts->reported = 1;
         }
