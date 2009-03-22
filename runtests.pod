@@ -4,7 +4,9 @@ runtests - Harness for running TAP-compliant test scripts
 
 =head1 SYNOPSIS
 
-B<runtests> I<test-list>
+B<runtests> [B<-b> I<builddir>] [B<-s> I<srcdir>] I<test-list>
+
+B<runtests> B<-o> [B<-b> I<builddir>] [B<-s> I<srcdir>] I<test>
 
 =head1 DESCRIPTION
 
@@ -15,11 +17,63 @@ is a pure C reimplementation of Test::Harness that supports some
 additional features useful for C-based software packages that use
 Automake.
 
-The first argument to B<runtests> should be a list of tests to run, one
-per line.  Each test must be an executable ending in either C<-t> or
-C<.t>, and the line in the test list must be the name of the executable
-with the extension removed.  B<runtests> will run each test script in the
-order listed in the file and summarize the results.
+When run normally, the first argument to B<runtests> should be a list of
+tests to run, one per line.  Each test must be an executable ending in
+either C<-t> or C<.t>, and the line in the test list must be the name of
+the executable with the extension removed.  The program name should
+normally be given as a relative path (see below for source and build
+directory handling).  B<runtests> will run each test program in the order
+listed in the file and summarize the results.
+
+If B<runtests> is given the B<-o> option, it instead runs a single test
+program given on the command line.  This is equivalent to running the
+program directly except that the program will be searched for in the
+SOURCE and BUILD directories and the environment will be set up as
+described below.
+
+When B<runtests> is built, if the C preprocessor symbols SOURCE and BUILD
+are defined, they're taken to be paths to the source and build directory
+for the test suite (normally a subdirectory of the main source or build
+directory for the package).  These paths can also be set with the B<-s>
+and B<-b> options, respectively.  If these paths are set, via either
+means, they're exported in the SOURCE and BUILD environment variables to
+all test programs.
+
+If set, the SOURCE and BUILD directories are also used to find test
+programs.  If a test program named in I<test-list> or given on the command
+line with B<-o> is not found relative to the current directory, it is
+looked for in the BUILD directory and then in the SOURCE directory (if
+either is set).  This only applies to tests that are not absolute paths.
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-b> I<builddir>
+
+Sets the build directory, overriding a BUILD preprocessor directive set at
+build time.  This directory will be put into the BUILD environment
+variable, and test programs not found relative to the current working
+directory of B<runtests> will be searched for relative to this directory
+next.
+
+=item B<-o>
+
+Rather than running all tests listed in a test list, run the single test
+program named on the command line.  This program will be searched for
+using the same algorithm used for test programs listed in a test list and
+will have the same environment setup, but all of its output will be
+displayed and the exit status will match its exit status.
+
+=item B<-s> I<srcdir>
+
+Sets the source directory, overriding a SOURCE preprocessor directive set
+at build time.  This directory will be put into the SOURCE environment
+variable and test programs not found relative to the current working
+directory of B<runtests> or the BUILD directory will be searched for
+relative to this directory.
+
+=back
 
 =head1 TEST PROTOCOL
 
@@ -41,12 +95,28 @@ must output a line in one of these three formats:
 where <number> is the test number.  The last form indicates a skipped
 test; <reason> should be some brief reason for why the test was skipped.
 
+=head1 ENVIRONMENT
+
+=over 4
+
+=item BUILD
+
+Set to the value of the C preprocessor symbol BUILD when B<runtests> was
+built or the B<-b> option, if either was set.
+
+=item SOURCE
+
+Set to the value of the C preprocessor symbol SOURCE when B<runtests> was
+built or the B<-s> option, if either was set.
+
+=back
+
 =head1 NOTES
 
-Consider using prove(1) instead of this test suite harness if you don't
-mind a Perl dependency for testing, as that harness is more mature.
-B<runtests> will eventually have features that will make it more useful
-with packages using Automake, but it doesn't yet.
+Consider using prove(1) instead of this test suite harness if you're
+testing Perl packages.  It has more features for handling Perl test
+scripts.  It does not, however, have the BUILD and SOURCE search and
+environment handling, and it assumes all test cases are written in Perl.
 
 =head1 BUGS
 
@@ -87,3 +157,5 @@ L<http://www.eyrie.org/~eagle/software/c-tap-driver/>.
 =head1 AUTHOR
 
 Russ Allbery <rra@stanford.edu>
+
+=cut
