@@ -17,6 +17,10 @@ C TAP Harness 1.0
     at run time by runtests, even if the build directory is not the source
     directory.
 
+    Support running a single test program with the -o command-line option.
+    This is mostly interesting to take advantage of the environment
+    variables and test searching algorithm described above.
+
     Add support for 0..1 # skip <reason> plan lines, indicating that the
     entire test case should be skipped.
 

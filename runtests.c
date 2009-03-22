@@ -905,6 +905,22 @@ test_batch(const char *testlist, const char *source, const char *build)
 
 
 /*
+ * Run a single test case.  This involves just running the test program after
+ * having done the environment setup and finding the test program.
+ */
+static void
+test_single(const char *program, const char *source, const char *build)
+{
+    struct testset ts;
+
+    memset(&ts, 0, sizeof(ts));
+    find_test(program, &ts, source, build);
+    if (execl(ts.path, ts.path, (char *) 0) == -1)
+        sysdie("cannot exec %s", ts.path);
+}
+
+
+/*
  * Main routine.  Set the SOURCE and BUILD environment variables and then,
  * given a file listing tests, run each test listed.
  */
@@ -912,14 +928,18 @@ int
 main(int argc, char *argv[])
 {
     int option;
+    int single = 0;
     char *setting;
     const char *source = SOURCE;
     const char *build = BUILD;
 
-    while ((option = getopt(argc, argv, "b:s:")) != EOF) {
+    while ((option = getopt(argc, argv, "b:os:")) != EOF) {
         switch (option) {
         case 'b':
             build = optarg;
+            break;
+        case 'o':
+            single = 1;
             break;
         case 's':
             source = optarg;
@@ -948,6 +968,11 @@ main(int argc, char *argv[])
             sysdie("cannot set BUILD in the environment");
     }
 
-    printf(banner, argv[0]);
-    exit(test_batch(argv[0], source, build) ? 0 : 1);
+    if (single) {
+        test_single(argv[0], source, build);
+        exit(0);
+    } else {
+        printf(banner, argv[0]);
+        exit(test_batch(argv[0], source, build) ? 0 : 1);
+    }
 }
