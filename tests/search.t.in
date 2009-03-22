@@ -18,7 +18,7 @@ cd "@abs_top_srcdir@/tests/search"
 "@abs_top_builddir@/runtests" -b build -s source search.list \
     | sed 's/\(Tests=[0-9]*\),  .*/\1/' \
     > "@abs_top_builddir@/tests/search.result"
-diff -u search.out "@abs_top_builddir@/tests/search.result" 2>&1
+diff -u search.output "@abs_top_builddir@/tests/search.result" 2>&1
 status=$?
 ok [ $status -eq 0 ]
 if [ $status -eq 0 ] ; then

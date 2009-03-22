@@ -15,7 +15,7 @@ plan 1
 # Run runtests on the env test list.
 "../../runtests" "${SOURCE}/env/env.list" \
     | sed 's/\(Tests=[0-9]*\),  .*/\1/' > env.result
-diff -u "${SOURCE}/env/env.out" env.result 2>&1
+diff -u "${SOURCE}/env/env.output" env.result 2>&1
 status=$?
 ok [ $status -eq 0 ]
 if [ $status -eq 0 ] ; then

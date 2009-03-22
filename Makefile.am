@@ -6,21 +6,22 @@
 
 AUTOMAKE_OPTIONS = foreign subdir-objects
 EXTRA_DIST = LICENSE autogen runtests.pod tap/libtap.sh tests/TESTS \
-	tests/basic/abort-one.list tests/basic/abort-one.out \
-	tests/basic/abort.list tests/basic/abort.out tests/basic/abort.t \
+	tests/basic/abort-one.list tests/basic/abort-one.output \
+	tests/basic/abort.list tests/basic/abort.output tests/basic/abort.t \
 	tests/basic/badnum.t tests/basic/bail-silent.t tests/basic/bail.t \
-	tests/basic/duplicate.t tests/basic/fail.list tests/basic/fail.out \
-	tests/basic/fail.t tests/basic/hup.t tests/basic/missing.t \
-	tests/basic/nocount.t tests/basic/order.t tests/basic/pass.list \
-	tests/basic/pass.out tests/basic/pass.t tests/basic/segv.t \
-	tests/basic/skip-all-quiet.t tests/basic/skip-all.t \
-	tests/basic/skip.list tests/basic/skip.out tests/basic/skip.t \
-	tests/basic/status.t tests/basic.t tests/env/env.list \
-	tests/env/env.out tests/env.t tests/libtap/c-basic.out \
-	tests/libtap/sh-basic tests/libtap/sh-basic.out tests/libtap.t \
+	tests/basic/duplicate.t tests/basic/fail.list \
+	tests/basic/fail.output tests/basic/fail.t tests/basic/hup.t \
+	tests/basic/missing.t tests/basic/nocount.t tests/basic/order.t \
+	tests/basic/pass.list tests/basic/pass.output tests/basic/pass.t \
+	tests/basic/segv.t tests/basic/skip-all-quiet.t \
+	tests/basic/skip-all.t tests/basic/skip.list tests/basic/skip.output \
+	tests/basic/skip.t tests/basic/status.t tests/basic.t \
+	tests/env/env.list tests/env/env.output tests/env.t \
+	tests/libtap/c-basic.output tests/libtap/sh-basic \
+	tests/libtap/sh-basic.output tests/libtap.t \
 	tests/search/build/build-t tests/search/relative.t \
-	tests/search/search.list tests/search/search.out \
-	tests/search/source/source.t tests/single/test.out \
+	tests/search/search.list tests/search/search.output \
+	tests/search/source/source.t tests/single/test.output \
 	tests/single/test.t tests/single.t
 
 bin_PROGRAMS = runtests

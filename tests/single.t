@@ -16,7 +16,7 @@ plan 2
 "../runtests" -s "${SOURCE}/single" -o test > test.result
 status=$?
 ok [ $status -eq 4 ]
-diff -u "${SOURCE}/single/test.out" test.result 2>&1
+diff -u "${SOURCE}/single/test.output" test.result 2>&1
 status=$?
 ok [ $status -eq 0 ]
 if [ $status -eq 0 ] ; then

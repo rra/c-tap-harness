@@ -16,7 +16,7 @@ ok_runtests () {
     "$BUILD"/../runtests -s "${SOURCE}/basic" -b "${BUILD}/basic" \
         "${SOURCE}/basic/$1".list | sed 's/\(Tests=[0-9]*\),  .*/\1/' \
         > "$1".result
-    diff -u "${SOURCE}/basic/$1".out "$1".result 2>&1
+    diff -u "${SOURCE}/basic/$1".output "$1".result 2>&1
     status=$?
     ok [ $status -eq 0 ]
     if [ $status -eq 0 ] ; then

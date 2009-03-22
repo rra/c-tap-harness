@@ -15,7 +15,7 @@ cd "${BUILD}/libtap"
 # corresponding *.out file.
 ok_result () {
     "$2"/libtap/"$1" > "$1".result
-    diff -u "${SOURCE}/libtap/$1".out "$1".result 2>&1
+    diff -u "${SOURCE}/libtap/$1".output "$1".result 2>&1
     status=$?
     ok [ $status -eq 0 ]
     if [ $status -eq 0 ] ; then
