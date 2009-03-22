@@ -7,9 +7,6 @@ Protocol:
    pre-allocating space and then checking against the plan for missing
    tests at the end.
 
- * Support omitting the test number in "ok" and "not ok" lines.  The
-   driver should maintain its own counter and increment with each test.
-
  * Support todo tests ("# todo" on the test line).  The driver should
    report such tests as successful if they're not ok and failure if
    they're ok (although probably with different detail).

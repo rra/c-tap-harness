@@ -14,4 +14,3 @@ echo ok'   ' 8
 echo '    ok    9'
 echo ok 9
 echo ok10
-echo ok 10

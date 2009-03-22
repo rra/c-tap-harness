@@ -365,6 +365,7 @@ test_checkline(const char *line, struct testset *ts)
 {
     enum test_status status = TEST_PASS;
     const char *bail;
+    char *end;
     int current;
 
     /* Before anything, check for a test abort. */
@@ -397,29 +398,25 @@ test_checkline(const char *line, struct testset *ts)
         status = TEST_FAIL;
         line += 4;
     }
-    if (strncmp(line, "ok ", 3) != 0)
+    if (strncmp(line, "ok", 2) != 0)
         return;
-    line += 3;
-    current = atoi(line);
-    if (current == 0)
-        return;
-    if (current < 0 || current > ts->count) {
+    line = skip_whitespace(line + 2);
+    errno = 0;
+    current = strtol(line, &end, 10);
+    if (errno != 0 || end == line)
+        current = ts->current + 1;
+    if (current <= 0 || current > ts->count) {
         test_backspace(ts);
         printf("ABORTED (invalid test number %d)\n", current);
         ts->aborted = 1;
         ts->reported = 1;
         return;
     }
-    while (isspace((unsigned char)(*line)))
-        line++;
     while (isdigit((unsigned char)(*line)))
         line++;
-    while (isspace((unsigned char)(*line)))
-        line++;
+    line = skip_whitespace(line);
     if (*line == '#') {
-        line++;
-        while (isspace((unsigned char)(*line)))
-            line++;
+        line = skip_whitespace(line + 1);
         if (strncmp(line, "skip", 4) == 0)
             status = TEST_SKIP;
     }

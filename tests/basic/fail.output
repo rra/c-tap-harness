@@ -3,6 +3,7 @@ Running all tests listed in fail.list.  If any tests fail, run the failing
 test program with runtests -o to see more details.
 
 fail............FAILED 2-3, 5-8
+fail-count......FAILED 3-4
 missing.........MISSED 1, 6, 10, 12, 14, 18; FAILED 8, 16
 hup.............dubious (killed by signal 1)
 status..........dubious (exit status 1)
@@ -12,9 +13,10 @@ pass............ok
 Failed Set                 Fail/Total (%) Skip Stat  Failing Tests
 -------------------------- -------------- ---- ----  ------------------------
 fail                          6/8     75%    1    0  2-3, 5-8
+fail-count                    2/9     22%    0    0  3-4
 missing                       8/19    42%    0    0  1, 6, 8, 10, 12, 14, ...
 hup                           0/4      0%    0   --  
 status                        0/4      0%    0    1  
 
-Failed 14/51 tests, 72.55% okay, 4 tests skipped.
-Files=6,  Tests=51
+Failed 16/60 tests, 73.33% okay, 4 tests skipped.
+Files=7,  Tests=60

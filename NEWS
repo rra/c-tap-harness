@@ -27,6 +27,13 @@ C TAP Harness 1.0
     Add support for aborting a test case with "Bail out!" and reporting
     the reason given on that line.
 
+    Add support for omitting the test number from an "ok" or "not ok"
+    line, in which case the number is assumed to be one more than the
+    previous number.
+
+    Omitting the space after "ok" or "not ok" line is now supported, and a
+    test number of 0 now results in an error.
+
     Change the reporting of reasons to abort the test case to use ABORTED
     and the abort reason in parentheses for more consistent output.
 

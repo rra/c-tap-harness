@@ -14,6 +14,8 @@ badnum..........ABORTED (invalid test number 5)
 duplicate.......ABORTED (duplicate test number 4)
 bail............ABORTED (stopping now)
 bail-silent.....ABORTED (passed 1/2)
+too-many........ABORTED (invalid test number 3)
+zero............ABORTED (invalid test number 0)
 nonexistent.....ABORTED (execution failed -- not found?)
 
 Failed Set                 Fail/Total (%) Skip Stat  Failing Tests
@@ -29,7 +31,9 @@ badnum                        2/4     50%    0    0  aborted
 duplicate                     0/4      0%    0    0  aborted
 bail                          1/2     50%    0    0  aborted
 bail-silent                   1/2     50%    0    0  aborted
+too-many                      0/2      0%    0    0  aborted
+zero                          1/1    100%    0    0  aborted
 nonexistent                   0/0      0%    0  101  aborted
 
-Aborted 6 test sets, passed 42/65 tests, 1 test skipped.
-Files=13,  Tests=65
+Aborted 8 test sets, passed 44/68 tests, 1 test skipped.
+Files=15,  Tests=68
