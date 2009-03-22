@@ -7,16 +7,15 @@
 # See LICENSE for licensing terms.
 
 . "$SOURCE/../tap/libtap.sh"
+cd "$BUILD/env"
 
 # Total tests.
 plan 1
 
-# Be sure that we run from the source directory.
-cd "$SOURCE/env"
-
 # Run runtests on the env test list.
-"$BUILD/../runtests" env.list | sed 's/\(Tests=[0-9]*\),  .*/\1/' > env.result
-diff -u env.out env.result 2>&1
+"../../runtests" "${SOURCE}/env/env.list" \
+    | sed 's/\(Tests=[0-9]*\),  .*/\1/' > env.result
+diff -u "${SOURCE}/env/env.out" env.result 2>&1
 status=$?
 ok [ $status -eq 0 ]
 if [ $status -eq 0 ] ; then

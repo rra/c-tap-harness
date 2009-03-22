@@ -4,31 +4,31 @@
 #
 # See LICENSE for licensing terms.
 
-# The list of files needed by the test suite.  They're listed here to be added
-# to EXTRA_DIST and so that they can be copied over properly for builddir !=
-# srcdir builds.
-TEST_FILES = tests/basic/abort.list tests/basic/abort.out \
-	tests/basic/abort.t tests/basic/badnum.t tests/basic/bail-silent.t \
-	tests/basic/bail.t tests/basic/duplicate.t tests/basic/fail.list \
-	tests/basic/fail.out tests/basic/fail.t tests/basic/hup.t \
-	tests/basic/missing.t tests/basic/nocount.t tests/basic/order.t \
-	tests/basic/pass.list tests/basic/pass.out tests/basic/pass.t \
-	tests/basic/segv.t tests/basic/skip-all-quiet.t \
-	tests/basic/skip-all.t tests/basic/skip.list tests/basic/skip.out \
-	tests/basic/skip.t tests/basic/status.t tests/env.t \
-	tests/env/env.list tests/env/env.out tests/search/build/build-t \
-	tests/search/relative.t tests/search/search.list \
-	tests/search/search.out tests/search/source/source.t
-
 AUTOMAKE_OPTIONS = foreign subdir-objects
-EXTRA_DIST = LICENSE autogen runtests.pod
+EXTRA_DIST = LICENSE autogen runtests.pod tap/libtap.sh tests/TESTS \
+	tests/basic/abort-one.list tests/basic/abort-one.out \
+	tests/basic/abort.list tests/basic/abort.out tests/basic/abort.t \
+	tests/basic/badnum.t tests/basic/bail-silent.t tests/basic/bail.t \
+	tests/basic/duplicate.t tests/basic/fail.list tests/basic/fail.out \
+	tests/basic/fail.t tests/basic/hup.t tests/basic/missing.t \
+	tests/basic/nocount.t tests/basic/order.t tests/basic/pass.list \
+	tests/basic/pass.out tests/basic/pass.t tests/basic/segv.t \
+	tests/basic/skip-all-quiet.t tests/basic/skip-all.t \
+	tests/basic/skip.list tests/basic/skip.out tests/basic/skip.t \
+	tests/basic/status.t tests/basic.t tests/env/env.list \
+	tests/env/env.out tests/env.t tests/libtap/c-basic.out \
+	tests/libtap/sh-basic tests/libtap/sh-basic.out tests/libtap.t \
+	tests/search/build/build-t tests/search/relative.t \
+	tests/search/search.list tests/search/search.out \
+	tests/search/source/source.t tests/single/test.out \
+	tests/single/test.t tests/single.t
 
 bin_PROGRAMS = runtests
 runtests_CPPFLAGS = -DSOURCE='"$(abs_top_srcdir)/tests"' \
 	-DBUILD='"$(abs_top_builddir)/tests"'
 noinst_LIBRARIES = tap/libtap.a
 tap_libtap_a_SOURCES = tap/basic.c tap/basic.h
-man_MANS = runtests.1
+dist_man_MANS = runtests.1
 
 # Work around the GNU Coding Standards, which leave all the Autoconf and
 # Automake stuff around after make maintainer-clean, thus making that command
@@ -52,9 +52,4 @@ check_PROGRAMS = tests/libtap/c-basic
 tests_libtap_c_basic_LDADD = tap/libtap.a
 
 check-local: $(check_PROGRAMS)
-	set -e; if [ x"$(builddir)" != x"$(srcdir)" ] ; then \
-	    for f in $(TEST_FILES) ; do \
-		cp "$(srcdir)/$$f" "$(builddir)/$$f" ; \
-	    done \
-	fi
-	cd tests && ../runtests TESTS
+	cd tests && ../runtests $(abs_top_srcdir)/tests/TESTS

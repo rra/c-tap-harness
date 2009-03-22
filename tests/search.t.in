@@ -16,10 +16,11 @@ cd "@abs_top_srcdir@/tests/search"
 
 # Run runtests, overriding the build and source directories.
 "@abs_top_builddir@/runtests" -b build -s source search.list \
-    | sed 's/\(Tests=[0-9]*\),  .*/\1/' > search.result
-diff -u search.out search.result 2>&1
+    | sed 's/\(Tests=[0-9]*\),  .*/\1/' \
+    > "@abs_top_builddir@/tests/search.result"
+diff -u search.out "@abs_top_builddir@/tests/search.result" 2>&1
 status=$?
 ok [ $status -eq 0 ]
 if [ $status -eq 0 ] ; then
-    rm search.result
+    rm "@abs_top_builddir@/tests/search.result"
 fi
