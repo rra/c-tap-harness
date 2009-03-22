@@ -3,12 +3,12 @@
 # Calls basic libtap functions for testing the shell library.
 #
 # Written by Russ Allbery <rra@stanford.edu>
-# Copyright 2008 Board of Trustees, Leland Stanford Jr. University
+# Copyright 2008, 2009 Board of Trustees, Leland Stanford Jr. University
 #
 # See LICENSE for licensing terms.
 
 # Load the test library.
-. "@abs_top_srcdir@/tap/libtap.sh"
+. "$SOURCE/../tap/libtap.sh"
 
 # Plan test.
 plan 25

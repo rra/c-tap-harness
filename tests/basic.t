@@ -6,14 +6,17 @@
 #
 # See LICENSE for licensing terms.
 
-. "@abs_top_srcdir@/tap/libtap.sh"
+. "$SOURCE/../tap/libtap.sh"
+cd "$BUILD/basic"
 
 # Run runtests on a list and compare the output to the expected output,
 # printing ok if it matches.  Strip out the time information from the runtests
 # result since it changes for each run.
 ok_runtests () {
-    ../../runtests "$1".list | sed 's/\(Tests=[0-9]*\),  .*/\1/' > "$1".result
-    diff -u "$1".out "$1".result 2>&1
+    "$BUILD"/../runtests -s "${SOURCE}/basic" -b "${BUILD}/basic" \
+        "${SOURCE}/basic/$1".list | sed 's/\(Tests=[0-9]*\),  .*/\1/' \
+        > "$1".result
+    diff -u "${SOURCE}/basic/$1".out "$1".result 2>&1
     status=$?
     ok [ $status -eq 0 ]
     if [ $status -eq 0 ] ; then
@@ -21,11 +24,6 @@ ok_runtests () {
     fi
     rm -f core
 }
-
-# Find where our test cases are.
-for dir in ./tests/basic . ./basic ; do
-    [ -f $dir/pass.list ] && cd $dir
-done
 
 # Total tests.
 plan 5

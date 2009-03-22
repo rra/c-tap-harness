@@ -929,6 +929,7 @@ main(int argc, char *argv[])
     int option;
     int single = 0;
     char *setting;
+    const char *list;
     const char *source = SOURCE;
     const char *build = BUILD;
 
@@ -971,7 +972,12 @@ main(int argc, char *argv[])
         test_single(argv[0], source, build);
         exit(0);
     } else {
-        printf(banner, argv[0]);
+        list = strrchr(argv[0], '/');
+        if (list == NULL)
+            list = argv[0];
+        else
+            list++;
+        printf(banner, list);
         exit(test_batch(argv[0], source, build) ? 0 : 1);
     }
 }

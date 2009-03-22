@@ -8,13 +8,14 @@
 #
 # See LICENSE for licensing terms.
 
-. "@abs_top_srcdir@/tap/libtap.sh"
+. "$SOURCE/../tap/libtap.sh"
+cd "${BUILD}/libtap"
 
 # Run a binary, saving its output, and then compare that output to the
 # corresponding *.out file.
 ok_result () {
-    ./"$1" > "$1".result
-    diff -u "$1".out "$1".result 2>&1
+    "$2"/libtap/"$1" > "$1".result
+    diff -u "${SOURCE}/libtap/$1".out "$1".result 2>&1
     status=$?
     ok [ $status -eq 0 ]
     if [ $status -eq 0 ] ; then
@@ -22,14 +23,9 @@ ok_result () {
     fi
 }
 
-# Find where our test cases are.
-for dir in ./tests/libtap . ./libtap ; do
-    [ -f $dir/c-basic.out ] && cd $dir
-done
-
 # Total tests.
 plan 2
 
 # Run the individual tests.
-ok_result c-basic
-ok_result sh-basic 
+ok_result c-basic "$BUILD"
+ok_result sh-basic "$SOURCE"
