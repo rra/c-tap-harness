@@ -20,6 +20,7 @@ AC_PROG_RANLIB
 
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([tests/basic.t],         [chmod +x tests/basic.t])
+AC_CONFIG_FILES([tests/env/env.t],       [chmod +x tests/env/env.t])
 AC_CONFIG_FILES([tests/libtap.t],        [chmod +x tests/libtap.t])
 AC_CONFIG_FILES([tests/libtap/sh-basic], [chmod +x tests/libtap/sh-basic])
 AC_CONFIG_FILES([tests/search.t],        [chmod +x tests/search.t])
