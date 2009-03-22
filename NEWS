@@ -6,6 +6,17 @@ C TAP Harness 1.0
     libtest library that shipped with remctl 2.13.  The changes below are
     relative to that version.
 
+    Set the SOURCE and BUILD environment variables when running tests to
+    the roots of the source and build test directories if set at compile
+    time or via the -s and -b command-line options to runtests.
+
+    Search for test programs first in the current directory and then in
+    the build and source directories, in that order, as specified by
+    SOURCE and BUILD or by the -s and -b options.  This allows some tests
+    to be compiled and some shipped with the package and merged together
+    at run time by runtests, even if the build directory is not the source
+    directory.
+
     Add support for 0..1 # skip <reason> plan lines, indicating that the
     entire test case should be skipped.
 

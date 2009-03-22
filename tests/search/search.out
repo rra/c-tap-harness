@@ -1,0 +1,11 @@
+
+Running all tests listed in search.list.  If any tests fail, run the failing
+test program by hand to see more details.  The test program will have the
+same name as the test set but with "-t" or ".t" appended.
+
+relative........ok
+source..........ok
+build...........ok
+
+All tests successful.
+Files=3,  Tests=3

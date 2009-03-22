@@ -12,6 +12,7 @@
 /tests/libtap.t
 /tests/libtap/c-basic
 /tests/libtap/sh-basic
+/tests/search.t
 .deps/
 .dirstamp
 *.a

@@ -22,4 +22,5 @@ AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([tests/basic.t],         [chmod +x tests/basic.t])
 AC_CONFIG_FILES([tests/libtap.t],        [chmod +x tests/libtap.t])
 AC_CONFIG_FILES([tests/libtap/sh-basic], [chmod +x tests/libtap/sh-basic])
+AC_CONFIG_FILES([tests/search.t],        [chmod +x tests/search.t])
 AC_OUTPUT

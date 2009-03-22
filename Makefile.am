@@ -15,12 +15,16 @@ TEST_FILES = tests/basic/abort.list tests/basic/abort.out \
 	tests/basic/pass.list tests/basic/pass.out tests/basic/pass.t \
 	tests/basic/segv.t tests/basic/skip-all-quiet.t \
 	tests/basic/skip-all.t tests/basic/skip.list tests/basic/skip.out \
-	tests/basic/skip.t tests/basic/status.t
+	tests/basic/skip.t tests/basic/status.t tests/search/build/build-t \
+	tests/search/relative.t tests/search/search.list \
+	tests/search/search.out tests/search/source/source.t
 
 AUTOMAKE_OPTIONS = foreign subdir-objects
 EXTRA_DIST = LICENSE autogen runtests.pod
 
 bin_PROGRAMS = runtests
+runtests_CPPFLAGS = -DSOURCE='"$(abs_top_srcdir)/tests"' \
+	-DBUILD='"$(abs_top_builddir)/tests"'
 noinst_LIBRARIES = tap/libtap.a
 tap_libtap_a_SOURCES = tap/basic.c tap/basic.h
 man_MANS = runtests.1

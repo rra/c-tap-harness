@@ -13,8 +13,9 @@ BLURB
   C TAP Harness is a pure-C implementation of TAP, the Test Anything
   Protocol.  TAP is the text-based protocol used by Perl's test suite.
   This package provides a harness similar to Perl's Test::Harness for
-  running tests and C and shell libraries to make writing TAP-compliant
-  test programs easier.
+  running tests, with some additional features useful for test suites in
+  packages that use Autoconf and Automake, and C and shell libraries to
+  make writing TAP-compliant test programs easier.
 
 DESCRIPTION
 
@@ -31,9 +32,15 @@ DESCRIPTION
   currently does not have any notable features that Test::Harness doesn't
   have.  It's therefore currently mostly useful because it doesn't assume
   or require Perl.  My future intention is to complete the implementation
-  of the TAP specification and add additional features that make C TAP
-  Harness particularly suited to testing packages using non-recursive
-  Automake.
+  of the TAP specification.
+
+  The runtests program can be built with knowledge of the source and build
+  directory and pass that knowledge on to test scripts, and will search
+  for test scripts in both the source and build directory.  This makes it
+  easier for packages using Autoconf and Automake and supporting
+  out-of-tree builds to build some test programs, ship others, and run
+  them all regardless of what tree they're in.  It also makes it easier
+  for test cases to find their supporting files when they run.
 
   Also included in this package are C and shell libraries that provide
   utility functions for writing test scripts that use TAP to report

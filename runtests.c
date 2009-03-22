@@ -67,6 +67,19 @@
 # define WCOREDUMP(status)      ((unsigned)(status) & 0x80)
 #endif
 
+/*
+ * The source and build versions of the tests directory.  This is used to set
+ * the SOURCE and BUILD environment variables and find test programs, if set.
+ * Normally, this should be set as part of the build process to the test
+ * subdirectories of $(abs_top_srcdir) and $(abs_top_builddir) respectively.
+ */
+#ifndef SOURCE
+# define SOURCE NULL
+#endif
+#ifndef BUILD
+# define BUILD NULL
+#endif
+
 /* Test status codes. */
 enum test_status {
     TEST_FAIL,
@@ -83,6 +96,7 @@ enum test_status {
 /* Structure to hold data for a set of tests. */
 struct testset {
     char *file;                 /* The file name of the test. */
+    char *path;                 /* The path to the test program. */
     int count;                  /* Expected count of tests. */
     int current;                /* The last seen test number. */
     int length;                 /* The length of the last status message. */
@@ -120,22 +134,6 @@ Failed Set                 Fail/Total (%) Skip Stat  Failing Tests\n\
 /* Include the file name and line number in malloc failures. */
 #define xmalloc(size)   x_malloc((size), __FILE__, __LINE__)
 #define xstrdup(p)      x_strdup((p), __FILE__, __LINE__)
-
-/* Internal prototypes. */
-static void sysdie(const char *format, ...);
-static void *x_malloc(size_t, const char *file, int line);
-static char *x_strdup(const char *, const char *file, int line);
-static int test_analyze(struct testset *);
-static int test_batch(const char *testlist);
-static void test_checkline(const char *line, struct testset *);
-static void test_fail_summary(const struct testlist *);
-static int test_init(const char *line, struct testset *);
-static int test_print_range(int first, int last, int chars, int limit);
-static void test_summarize(struct testset *, int status);
-static pid_t test_start(const char *path, int *fd);
-static double tv_diff(const struct timeval *, const struct timeval *);
-static double tv_seconds(const struct timeval *);
-static double tv_sum(const struct timeval *, const struct timeval *);
 
 
 /*
@@ -623,21 +621,12 @@ test_run(struct testset *ts)
     int outfd, i, status;
     FILE *output;
     char buffer[BUFSIZ];
-    char *file;
 
     /*
      * Initialize the test and our data structures, flagging this set in error
      * if the initialization fails.
      */
-    file = xmalloc(strlen(ts->file) + 3);
-    strcpy(file, ts->file);
-    strcat(file, "-t");
-    if (access(file, X_OK) != 0) {
-        strcpy(file, ts->file);
-        strcat(file, ".t");
-    }
-    testpid = test_start(file, &outfd);
-    free(file);
+    testpid = test_start(ts->path, &outfd);
     output = fdopen(outfd, "r");
     if (!output) {
         puts("ABORTED");
@@ -733,12 +722,53 @@ test_fail_summary(const struct testlist *fails)
 
 
 /*
+ * Given the name of a test, a pointer to the testset struct, and the source
+ * and build directories, find the test.  We try first relative to the current
+ * directory, then in the build directory (if not NULL), then in the source
+ * directory.  In each of those directories, we first try a "-t" extension and
+ * then a ".t" extension.  When we find an executable program, we fill in the
+ * path member of the testset struct.  If none of those paths are executable,
+ * just fill in the name of the test with "-t" appended.
+ *
+ * The caller is responsible for freeing the path member of the testset
+ * struct.
+ */
+static void
+find_test(const char *name, struct testset *ts, const char *source,
+          const char *build)
+{
+    char *path;
+    const char *bases[] = { ".", build, source, NULL };
+    int i;
+
+    for (i = 0; bases[i] != NULL; i++) {
+        path = xmalloc(strlen(bases[i]) + strlen(name) + 4);
+        sprintf(path, "%s/%s-t", bases[i], name);
+        if (access(path, X_OK) != 0)
+            path[strlen(path) - 2] = '.';
+        if (access(path, X_OK) == 0)
+            break;
+        free(path);
+        path = NULL;
+    }
+    if (path == NULL) {
+        path = xmalloc(strlen(name) + 3);
+        sprintf(path, "%s-t", name);
+    }
+    ts->path = path;
+}
+
+
+/*
  * Run a batch of tests from a given file listing each test on a line by
- * itself.  The file must be rewindable.  Returns true iff all tests
+ * itself.  Takes two additional parameters: the root of the source directory
+ * and the root of the build directory.  Test programs will be first searched
+ * for in the current directory, then the build directory, then the source
+ * directory.  The file must be rewindable.  Returns true iff all tests
  * passed.
  */
 static int
-test_batch(const char *testlist)
+test_batch(const char *testlist, const char *source, const char *build)
 {
     FILE *tests;
     size_t length, i;
@@ -808,9 +838,11 @@ test_batch(const char *testlist)
             fflush(stdout);
         memset(&ts, 0, sizeof(ts));
         ts.file = xstrdup(buffer);
+        find_test(buffer, &ts, source, build);
         ts.reason = NULL;
         if (test_run(&ts)) {
             free(ts.file);
+            free(ts.path);
             if (ts.reason != NULL)
                 free(ts.reason);
         } else {
@@ -841,7 +873,8 @@ test_batch(const char *testlist)
     getrusage(RUSAGE_CHILDREN, &stats);
 
     /* Print out our final results. */
-    if (failhead) test_fail_summary(failhead);
+    if (failhead)
+        test_fail_summary(failhead);
     putchar('\n');
     if (aborted != 0) {
         if (aborted == 1)
@@ -872,15 +905,49 @@ test_batch(const char *testlist)
 
 
 /*
- * Main routine.  Given a file listing tests, run each test listed.
+ * Main routine.  Set the SOURCE and BUILD environment variables and then,
+ * given a file listing tests, run each test listed.
  */
 int
 main(int argc, char *argv[])
 {
-    if (argc != 2) {
+    int option;
+    char *setting;
+    const char *source = SOURCE;
+    const char *build = BUILD;
+
+    while ((option = getopt(argc, argv, "b:s:")) != EOF) {
+        switch (option) {
+        case 'b':
+            build = optarg;
+            break;
+        case 's':
+            source = optarg;
+            break;
+        default:
+            exit(1);
+        }
+    }
+    argc -= optind;
+    argv += optind;
+    if (argc != 1) {
         fprintf(stderr, "Usage: runtests <test-list>\n");
         exit(1);
     }
-    printf(banner, argv[1]);
-    exit(test_batch(argv[1]) ? 0 : 1);
+
+    if (source != NULL) {
+        setting = xmalloc(strlen("SOURCE=") + strlen(source) + 1);
+        sprintf(setting, "SOURCE=%s", source);
+        if (putenv(setting) != 0)
+            sysdie("cannot set SOURCE in the environment");
+    }
+    if (build != NULL) {
+        setting = xmalloc(strlen("BUILD=") + strlen(build) + 1);
+        sprintf(setting, "BUILD=%s", build);
+        if (putenv(setting) != 0)
+            sysdie("cannot set BUILD in the environment");
+    }
+
+    printf(banner, argv[0]);
+    exit(test_batch(argv[0], source, build) ? 0 : 1);
 }
