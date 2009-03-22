@@ -15,13 +15,13 @@ EXTRA_DIST = LICENSE autogen runtests.pod tap/libtap.sh tests/TESTS \
 	tests/basic/order.t tests/basic/pass.list tests/basic/pass.output \
 	tests/basic/pass.t tests/basic/segv.t tests/basic/skip-all-quiet.t \
 	tests/basic/skip-all.t tests/basic/skip.list tests/basic/skip.output \
-	tests/basic/skip.t tests/basic/status.t tests/basic/too-many.t \
-	tests/basic/zero.t tests/basic.t tests/env/env.list \
-	tests/env/env.output tests/env.t tests/libtap/c-bail.output \
-	tests/libtap/c-basic.output tests/libtap/sh-bail \
-	tests/libtap/sh-bail.output tests/libtap/sh-basic \
-	tests/libtap/sh-basic.output tests/libtap.t tests/pod.t \
-	tests/pod-spelling.t tests/search/build/build-t \
+	tests/basic/skip.t tests/basic/status.t tests/basic/todo.t \
+	tests/basic/too-many.t tests/basic/zero.t tests/basic.t \
+	tests/env/env.list tests/env/env.output tests/env.t \
+	tests/libtap/c-bail.output tests/libtap/c-basic.output \
+	tests/libtap/sh-bail tests/libtap/sh-bail.output \
+	tests/libtap/sh-basic tests/libtap/sh-basic.output tests/libtap.t \
+	tests/pod.t tests/pod-spelling.t tests/search/build/build-t \
 	tests/search/relative.t tests/search/search.list \
 	tests/search/search.output tests/search/source/source.t \
 	tests/single/test.output tests/single/test.t tests/single.t

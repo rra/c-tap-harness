@@ -134,11 +134,6 @@ output instead of the first line.
 
 =item *
 
-The todo directive indicates a test that's not expected to succeed and
-should be reported if it does succeed.
-
-=item *
-
 The text after C<# skip> should be reported as the reason for the skipped
 test.
 

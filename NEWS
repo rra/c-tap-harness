@@ -31,6 +31,9 @@ C TAP Harness 1.0
     line, in which case the number is assumed to be one more than the
     previous number.
 
+    Add support for todo tests, which are recorded as skipped if failing
+    and failed if they succeed unexpectedly.
+
     Omitting the space after "ok" or "not ok" line is now supported, and a
     test number of 0 now results in an error.
 

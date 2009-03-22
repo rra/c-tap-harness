@@ -412,6 +412,11 @@ test_checkline(const char *line, struct testset *ts)
         ts->reported = 1;
         return;
     }
+
+    /*
+     * Handle directives.  We should probably do something more interesting
+     * with unexpected passes of todo tests.
+     */
     while (isdigit((unsigned char)(*line)))
         line++;
     line = skip_whitespace(line);
@@ -419,6 +424,8 @@ test_checkline(const char *line, struct testset *ts)
         line = skip_whitespace(line + 1);
         if (strncasecmp(line, "skip", 4) == 0)
             status = TEST_SKIP;
+        if (strncasecmp(line, "todo", 4) == 0)
+            status = (status == TEST_FAIL) ? TEST_SKIP : TEST_FAIL;
     }
 
     /* Make sure that the test number is in range and not a duplicate. */
