@@ -131,7 +131,7 @@ USING THE HARNESS
     need to be compiled, add build rules for them in Makefile.am, simliar
     to:
 
-        tests_libtap_c_basic_LDADD = tap/libtap.a
+        tests_libtap_c_basic_LDADD = tests/tap/libtap.a
 
     and add them to check_PROGRAMS.  A more complex example from the
     remctl package that needs additional libraries:
