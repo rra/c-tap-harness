@@ -417,7 +417,7 @@ test_checkline(const char *line, struct testset *ts)
     line = skip_whitespace(line);
     if (*line == '#') {
         line = skip_whitespace(line + 1);
-        if (strncmp(line, "skip", 4) == 0)
+        if (strncasecmp(line, "skip", 4) == 0)
             status = TEST_SKIP;
     }
 

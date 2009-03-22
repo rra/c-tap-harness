@@ -7,7 +7,7 @@ fail-count......FAILED 3-4
 missing.........MISSED 1, 6, 10, 12, 14, 18; FAILED 8, 16
 hup.............dubious (killed by signal 1)
 status..........dubious (exit status 1)
-skip............ok (skipped 3 tests)
+skip............ok (skipped 5 tests)
 pass............ok
 
 Failed Set                 Fail/Total (%) Skip Stat  Failing Tests
@@ -18,5 +18,5 @@ missing                       8/19    42%    0    0  1, 6, 8, 10, 12, 14, ...
 hup                           0/4      0%    0   --  
 status                        0/4      0%    0    1  
 
-Failed 16/60 tests, 73.33% okay, 4 tests skipped.
-Files=7,  Tests=60
+Failed 16/58 tests, 72.41% okay, 6 tests skipped.
+Files=7,  Tests=58

@@ -2,11 +2,11 @@
 Running all tests listed in skip.list.  If any tests fail, run the failing
 test program with runtests -o to see more details.
 
-skip............ok (skipped 3 tests)
+skip............ok (skipped 5 tests)
 skip-all........skipped (some reason)
 skip-all-quiet..skipped
 pass............ok
 order...........ok
 
-All tests successful, 5 tests skipped.
-Files=5,  Tests=20
+All tests successful, 7 tests skipped.
+Files=5,  Tests=18
