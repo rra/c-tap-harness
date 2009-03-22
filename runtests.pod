@@ -1,3 +1,6 @@
+=for stopwords
+runtests builddir srcdir Automake preprocessor subdirectory todo Allbery
+
 =head1 NAME
 
 runtests - Harness for running TAP-compliant test scripts
@@ -51,8 +54,8 @@ either is set).  This only applies to tests that are not absolute paths.
 
 =item B<-b> I<builddir>
 
-Sets the build directory, overriding a BUILD preprocessor directive set at
-build time.  This directory will be put into the BUILD environment
+Sets the build directory, overriding a BUILD preprocessor directive set
+at build time.  This directory will be put into the BUILD environment
 variable, and test programs not found relative to the current working
 directory of B<runtests> will be searched for relative to this directory
 next.

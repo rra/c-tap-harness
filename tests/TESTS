@@ -2,5 +2,6 @@ basic
 env
 libtap
 pod
+pod-spelling
 search
 single

@@ -19,10 +19,10 @@ EXTRA_DIST = LICENSE autogen runtests.pod tap/libtap.sh tests/TESTS \
 	tests/env/env.list tests/env/env.output tests/env.t \
 	tests/libtap/c-basic.output tests/libtap/sh-basic \
 	tests/libtap/sh-basic.output tests/libtap.t tests/pod.t \
-	tests/search/build/build-t tests/search/relative.t \
-	tests/search/search.list tests/search/search.output \
-	tests/search/source/source.t tests/single/test.output \
-	tests/single/test.t tests/single.t
+	tests/pod-spelling.t tests/search/build/build-t \
+	tests/search/relative.t tests/search/search.list \
+	tests/search/search.output tests/search/source/source.t \
+	tests/single/test.output tests/single/test.t tests/single.t
 
 bin_PROGRAMS = runtests
 runtests_CPPFLAGS = -DSOURCE='"$(abs_top_srcdir)/tests"' \
