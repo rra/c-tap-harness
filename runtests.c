@@ -123,8 +123,7 @@ struct testlist {
  */
 static const char banner[] = "\n\
 Running all tests listed in %s.  If any tests fail, run the failing\n\
-test program by hand to see more details.  The test program will have the\n\
-same name as the test set but with \"-t\" or \".t\" appended.\n\n";
+test program with runtests -o to see more details.\n\n";
 
 /* Header for reports of failed tests. */
 static const char header[] = "\n\
