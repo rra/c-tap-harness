@@ -54,7 +54,7 @@ REQUIREMENTS
 
   If you change the Automake files and need to regenerate Makefile.in, you
   will need Automake 1.10 or later.  If you change configure.ac and need
-  to regenerate configure or config.h.in, you will need Autoconf 2.61 or
+  to regenerate configure or config.h.in, you will need Autoconf 2.63 or
   later.
 
 BUILDING AND TESTING
