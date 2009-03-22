@@ -14,7 +14,7 @@ plan 1
 # Be sure that we run from the source directory.
 cd "$SOURCE/env"
 
-# Run runtests, overriding the build and source directories.
+# Run runtests on the env test list.
 "$BUILD/../runtests" env.list | sed 's/\(Tests=[0-9]*\),  .*/\1/' > env.result
 diff -u env.out env.result 2>&1
 status=$?

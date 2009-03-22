@@ -8,11 +8,11 @@
 
 . "@abs_top_srcdir@/tap/libtap.sh"
 
-# Be sure that we run from the source directory.
-cd "@abs_top_srcdir@/tests/search"
-
 # Total tests.
 plan 1
+
+# Be sure that we run from the source directory.
+cd "@abs_top_srcdir@/tests/search"
 
 # Run runtests, overriding the build and source directories.
 "@abs_top_builddir@/runtests" -b build -s source search.list \
