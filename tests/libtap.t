@@ -14,7 +14,9 @@ cd "${BUILD}/libtap"
 # Run a binary, saving its output, and then compare that output to the
 # corresponding *.out file.
 ok_result () {
-    "$2"/libtap/"$1" > "$1".result
+    "$2"/libtap/"$1" > "$1".result 2>&1
+    status=$?
+    ok [ $status -eq "$3" ]
     diff -u "${SOURCE}/libtap/$1".output "$1".result 2>&1
     status=$?
     ok [ $status -eq 0 ]
@@ -24,8 +26,9 @@ ok_result () {
 }
 
 # Total tests.
-plan 2
+plan 6
 
 # Run the individual tests.
-ok_result c-basic "$BUILD"
-ok_result sh-basic "$SOURCE"
+ok_result c-basic  "$BUILD"  0
+ok_result c-bail   "$BUILD"  1
+ok_result sh-basic "$SOURCE" 0

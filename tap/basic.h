@@ -17,6 +17,17 @@
 #include <sys/types.h>          /* pid_t */
 
 /*
+ * __attribute__ is available in gcc 2.5 and later, but only with gcc 2.7
+ * could you use the __format__ form of the attributes, which is what we use
+ * (to avoid confusion with other macros).
+ */
+#ifndef __attribute__
+# if __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 7)
+#  define __attribute__(spec)   /* empty */
+# endif
+#endif
+
+/*
  * BEGIN_DECLS is used at the beginning of declarations so that C++
  * compilers don't mangle their names.  END_DECLS is used at the end.
  */
@@ -47,6 +58,10 @@ void skip_block(int n, int count, const char *reason);
 void is_int(int n, int wanted, int seen);
 void is_double(int n, double wanted, double seen);
 void is_string(int n, const char *wanted, const char *seen);
+
+/* Bail out with an error. */
+void bail(const char *format, ...)
+    __attribute__((__noreturn__, __format__(printf, 1, 2)));
 
 END_DECLS
 

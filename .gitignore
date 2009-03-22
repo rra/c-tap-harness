@@ -9,6 +9,7 @@
 /runtests
 /runtests.1
 /tests/env/env.t
+/tests/libtap/c-bail
 /tests/libtap/c-basic
 /tests/search.t
 .deps/

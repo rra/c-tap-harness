@@ -17,9 +17,9 @@ EXTRA_DIST = LICENSE autogen runtests.pod tap/libtap.sh tests/TESTS \
 	tests/basic/skip-all.t tests/basic/skip.list tests/basic/skip.output \
 	tests/basic/skip.t tests/basic/status.t tests/basic.t \
 	tests/env/env.list tests/env/env.output tests/env.t \
-	tests/libtap/c-basic.output tests/libtap/sh-basic \
-	tests/libtap/sh-basic.output tests/libtap.t tests/pod.t \
-	tests/pod-spelling.t tests/search/build/build-t \
+	tests/libtap/c-bail.output tests/libtap/c-basic.output \
+	tests/libtap/sh-basic tests/libtap/sh-basic.output tests/libtap.t \
+	tests/pod.t tests/pod-spelling.t tests/search/build/build-t \
 	tests/search/relative.t tests/search/search.list \
 	tests/search/search.output tests/search/source/source.t \
 	tests/single/test.output tests/single/test.t tests/single.t
@@ -49,8 +49,9 @@ warnings:
 	$(MAKE) CFLAGS='$(WARNINGS)' $(check_PROGRAMS)
 
 # The bits below are for the test suite.
-check_PROGRAMS = tests/libtap/c-basic
+check_PROGRAMS = tests/libtap/c-basic tests/libtap/c-bail
 tests_libtap_c_basic_LDADD = tap/libtap.a
+tests_libtap_c_bail_LDADD = tap/libtap.a
 
 check-local: $(check_PROGRAMS)
 	cd tests && ../runtests $(abs_top_srcdir)/tests/TESTS

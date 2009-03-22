@@ -19,7 +19,9 @@
  */
 
 #include <errno.h>
+#include <stdarg.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
 #include <sys/wait.h>
@@ -134,4 +136,22 @@ is_double(int n, double wanted, double seen)
         printf("ok %d\n", n);
     else
         printf("# wanted: %g\n#   seen: %g\nnot ok %d\n", wanted, seen, n);
+}
+
+
+/*
+ * Bail out with an error.
+ */
+void
+bail(const char *format, ...)
+{
+    va_list args;
+
+    fflush(stdout);
+    printf("Bail out! ");
+    va_start(args, format);
+    vprintf(format, args);
+    va_end(args);
+    printf("\n");
+    exit(1);
 }
