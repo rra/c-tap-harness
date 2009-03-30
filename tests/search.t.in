@@ -20,7 +20,7 @@ cd "@abs_top_srcdir@/tests/search"
     > "@abs_top_builddir@/tests/search.result"
 diff -u search.output "@abs_top_builddir@/tests/search.result" 2>&1
 status=$?
-ok [ $status -eq 0 ]
+ok '' [ $status -eq 0 ]
 if [ $status -eq 0 ] ; then
     rm "@abs_top_builddir@/tests/search.result"
 fi

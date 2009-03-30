@@ -18,7 +18,7 @@ ok_runtests () {
         > "$1".result
     diff -u "${SOURCE}/basic/$1".output "$1".result 2>&1
     status=$?
-    ok [ $status -eq 0 ]
+    ok "$1 test set" [ $status -eq 0 ]
     if [ $status -eq 0 ] ; then
         rm "$1".result
     fi

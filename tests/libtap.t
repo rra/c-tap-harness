@@ -16,10 +16,10 @@ cd "${BUILD}/libtap"
 ok_result () {
     "$2"/libtap/"$1" > "$1".result 2>&1
     status=$?
-    ok [ $status -eq "$3" ]
+    ok "$1 exit status" [ $status -eq "$3" ]
     diff -u "${SOURCE}/libtap/$1".output "$1".result 2>&1
     status=$?
-    ok [ $status -eq 0 ]
+    ok "$1 output" [ $status -eq 0 ]
     if [ $status -eq 0 ] ; then
         rm "$1".result
     fi

@@ -43,21 +43,34 @@
 
 BEGIN_DECLS
 
+/*
+ * The test count.  Always contains the number that will be used for the next
+ * test status.
+ */
+extern int testnum;
+
 /* Print out the number of tests and set standard output to line buffered. */
 void plan(int count);
 
 /* Basic reporting functions. */
-void ok(int n, int success);
-void skip(int n, const char *reason);
+void ok(int success, const char *format, ...)
+    __attribute__((__format__(printf, 2, 3)));
+void skip(const char *reason, ...)
+    __attribute__((__format__(printf, 1, 2)));
 
 /* Report the same status on, or skip, the next count tests. */
-void ok_block(int n, int count, int success);
-void skip_block(int n, int count, const char *reason);
+void ok_block(int count, int success, const char *format, ...)
+    __attribute__((__format__(printf, 3, 4)));
+void skip_block(int count, const char *reason, ...)
+    __attribute__((__format__(printf, 2, 3)));
 
 /* Check an expected value against a seen value. */
-void is_int(int n, int wanted, int seen);
-void is_double(int n, double wanted, double seen);
-void is_string(int n, const char *wanted, const char *seen);
+void is_int(int wanted, int seen, const char *format, ...)
+    __attribute__((__format__(printf, 3, 4)));
+void is_double(double wanted, double seen, const char *format, ...)
+    __attribute__((__format__(printf, 3, 4)));
+void is_string(const char *wanted, const char *seen, const char *format, ...)
+    __attribute__((__format__(printf, 3, 4)));
 
 /* Bail out with an error. */
 void bail(const char *format, ...)

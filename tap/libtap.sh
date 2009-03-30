@@ -12,14 +12,20 @@ plan () {
     echo "1..$1"
 }
 
-# ok takes a command to run and prints success if that command is successful,
-# false otherwise.  The count starts at 1 and is updated each time ok is
-# printed.
+# ok takes a test description and a command to run and prints success if that
+# command is successful, false otherwise.  The count starts at 1 and is
+# updated each time ok is printed.
 ok () {
+    local desc
+    desc="$1"
+    if [ -n "$desc" ] ; then
+        desc=" - $desc"
+    fi
+    shift
     if "$@" ; then
-        echo ok $count
+        echo ok $count$desc
     else
-        echo not ok $count
+        echo not ok $count$desc
     fi
     count=`expr $count + 1`
 }
@@ -30,19 +36,23 @@ skip () {
     count=`expr $count + 1`
 }
 
-# Report the same status on a whole set of tests.
+# Report the same status on a whole set of tests.  Takes the count of tests,
+# the description, and then the command to run to determine the status.
 ok_block () {
-    local start end
+    local start end i desc
     i=$count
     end=`expr $count + $1`
     shift
+    desc="$1"
+    shift
     while [ "$i" -lt "$end" ] ; do
-        ok "$@"
+        ok "$desc" "$@"
         i=`expr $i + 1`
     done
 }
 
-# Skip a whole set of tests.
+# Skip a whole set of tests.  Takes the count and then the reason for skipping
+# the test.
 skip_block () {
     local start end
     i=$count
@@ -55,11 +65,14 @@ skip_block () {
 }
 
 # Run a program expected to succeed, and print ok if it does and produces the
-# correct output.  Takes the expected exit status, the expected output, the
-# command to run, and then any arguments for that command.  Strip the second
-# colon and everything after it off the output if the expected status is
-# non-zero, since this is probably a system-specific error message.
+# correct output.  Takes the description, expected exit status, the expected
+# output, the command to run, and then any arguments for that command.  Strip
+# the second colon and everything after it off the output if the expected
+# status is non-zero, since this is probably a system-specific error message.
 ok_program () {
+    local desc w_status w_output output status
+    desc="$1"
+    shift
     w_status="$1"
     shift
     w_output="$1"
@@ -70,11 +83,11 @@ ok_program () {
         output=`echo "$output" | sed 's/\(:[^:]*\):.*/\1/'`
     fi
     if [ $status = $w_status ] && [ x"$output" = x"$w_output" ] ; then
-        ok true
+        ok "$desc" true
     else
         echo "#  saw: ($status) $output"
         echo "#  not: ($w_status) $w_output"
-        ok false
+        ok "$desc" false
     fi
 }
 

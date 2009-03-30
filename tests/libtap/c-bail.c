@@ -12,9 +12,9 @@ int
 main(void)
 {
     plan(2);
-    ok(1, 1);
+    ok(1, "first test");
     bail("some error message");
-    ok(2, 1);
+    ok(1, "second test");
 
     return 0;
 }

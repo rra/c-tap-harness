@@ -14,32 +14,32 @@
 plan 25
 
 # ok tests.
-ok true
-ok false
-ok [ 1 -eq 1 ]
-ok [ 2 -eq 1 ]
+ok '' true
+ok '' false
+ok 'with desc' [ 1 -eq 1 ]
+ok 'with desc' [ 2 -eq 1 ]
 
 # skip tests.
 skip no idea why
 
 # ok_block tests.
-ok_block 1 false
-ok_block 2 true
-ok_block 3 [ 1 -ne 1 ]
+ok_block 1 '' false
+ok_block 2 'with desc' true
+ok_block 3 '' [ 1 -ne 1 ]
 
 # skip_block tests.
 skip_block 1 some reason
 skip_block 2 some other reason
 
 # ok_program tests.
-ok_program 0 '' /bin/true
-ok_program 0 '' sh -c 'exit 1'
-ok_program 1 '' sh -c 'exit 1'
-ok_program 0 'test is successful' echo test is successful
-ok_program 0 'test fails' sh -c 'echo test fails; exit 1'
-ok_program 0 'test fails' echo test failed
-ok_program 1 'yay' sh -c 'echo yay; exit 1'
-ok_program 10 'yay' sh -c 'echo yay; exit 10'
-ok_program 10 'yay' sh -c 'echo yay; exit 9'
-ok_program 1 'test' echo test
-ok_program 1 'test' sh -c 'echo yay; exit 1'
+ok_program '' 0 '' /bin/true
+ok_program 'some program' 0 '' sh -c 'exit 1'
+ok_program 'another program' 1 '' sh -c 'exit 1'
+ok_program '' 0 'test is successful' echo test is successful
+ok_program '' 0 'test fails' sh -c 'echo test fails; exit 1'
+ok_program '' 0 'test fails' echo test failed
+ok_program '' 1 'yay' sh -c 'echo yay; exit 1'
+ok_program '' 10 'yay' sh -c 'echo yay; exit 10'
+ok_program '' 10 'yay' sh -c 'echo yay; exit 9'
+ok_program '' 1 'test' echo test
+ok_program '' 1 'test' sh -c 'echo yay; exit 1'

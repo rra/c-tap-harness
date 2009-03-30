@@ -47,13 +47,18 @@ C TAP Harness 1.0
     library to more closely match the function names in Perl's test
     modules.
 
+    Change all C library functions to take a test description
+    (printf-style) and to no longer take the test number.  Instead, keep a
+    static count of the current test number.
+
     Add a bail() C TAP library function to bail out with the right magic
     output string.
 
     Stop exporting the printcount interface in the shell version of the
     TAP library.  Instead, provide plan, ok, skip, ok_block, skip_block,
     ok_program, and bail shell functions, similar to the C library
-    interface.
+    interface, with the ok* functions taking a test description as the
+    first argument.
 
     Show mismatch output from the is_*() functions before the "not ok"
     line instead of after it.

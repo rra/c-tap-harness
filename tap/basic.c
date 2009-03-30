@@ -30,6 +30,13 @@
 
 
 /*
+ * The test count.  Always contains the number that will be used for the next
+ * test status.
+ */
+int testnum = 1;
+
+
+/*
  * Initialize things.  Turns on line buffering on stdout and then prints out
  * the number of tests in the test suite.
  */
@@ -40,6 +47,18 @@ plan(int count)
         fprintf(stderr, "cannot set stdout to line buffered: %s\n",
                 strerror(errno));
     printf("1..%d\n", count);
+    testnum = 1;
+}
+
+
+/*
+ * Print the test description.
+ */
+static void
+print_desc(const char *format, va_list args)
+{
+    printf(" - ");
+    vprintf(format, args);
 }
 
 
@@ -48,9 +67,17 @@ plan(int count)
  * is true and fails if that value is false.
  */
 void
-ok(int n, int success)
+ok(int success, const char *format, ...)
 {
-    printf("%sok %d\n", success ? "" : "not ", n);
+    printf("%sok %d", success ? "" : "not ", testnum++);
+    if (format != NULL) {
+        va_list args;
+
+        va_start(args, format);
+        print_desc(format, args);
+        va_end(args);
+    }
+    putchar('\n');
 }
 
 
@@ -58,11 +85,17 @@ ok(int n, int success)
  * Skip a test.
  */
 void
-skip(int n, const char *reason)
+skip(const char *reason, ...)
 {
-    printf("ok %d # skip", n);
-    if (reason != NULL)
-        printf(" %s", reason);
+    printf("ok %d # skip", testnum++);
+    if (reason != NULL) {
+        va_list args;
+
+        va_start(args, reason);
+        putchar(' ');
+        vprintf(reason, args);
+        va_end(args);
+    }
     putchar('\n');
 }
 
@@ -71,12 +104,21 @@ skip(int n, const char *reason)
  * Report the same status on the next count tests.
  */
 void
-ok_block(int n, int count, int status)
+ok_block(int count, int status, const char *format, ...)
 {
     int i;
 
-    for (i = 0; i < count; i++)
-        ok(n++, status);
+    for (i = 0; i < count; i++) {
+        printf("%sok %d", status ? "" : "not ", testnum++);
+        if (format != NULL) {
+            va_list args;
+
+            va_start(args, format);
+            print_desc(format, args);
+            va_end(args);
+        }
+        putchar('\n');
+    }
 }
 
 
@@ -84,12 +126,22 @@ ok_block(int n, int count, int status)
  * Skip the next count tests.
  */
 void
-skip_block(int n, int count, const char *reason)
+skip_block(int count, const char *reason, ...)
 {
     int i;
 
-    for (i = 0; i < count; i++)
-        skip(n++, reason);
+    for (i = 0; i < count; i++) {
+        printf("ok %d # skip", testnum++);
+        if (reason != NULL) {
+            va_list args;
+
+            va_start(args, reason);
+            putchar(' ');
+            vprintf(reason, args);
+            va_end(args);
+        }
+        putchar('\n');
+    }
 }
 
 
@@ -98,12 +150,22 @@ skip_block(int n, int count, const char *reason)
  * if those two numbers match.
  */
 void
-is_int(int n, int wanted, int seen)
+is_int(int wanted, int seen, const char *format, ...)
 {
     if (wanted == seen)
-        printf("ok %d\n", n);
-    else
-        printf("# wanted: %d\n#   seen: %d\nnot ok %d\n", wanted, seen, n);
+        printf("ok %d", testnum++);
+    else {
+        printf("# wanted: %d\n#   seen: %d\n", wanted, seen);
+        printf("not ok %d", testnum++);
+    }
+    if (format != NULL) {
+        va_list args;
+
+        va_start(args, format);
+        print_desc(format, args);
+        va_end(args);
+    }
+    putchar('\n');
 }
 
 
@@ -112,16 +174,26 @@ is_int(int n, int wanted, int seen)
  * if those strings match (using strcmp).
  */
 void
-is_string(int n, const char *wanted, const char *seen)
+is_string(const char *wanted, const char *seen, const char *format, ...)
 {
     if (wanted == NULL)
         wanted = "(null)";
     if (seen == NULL)
         seen = "(null)";
-    if (strcmp(wanted, seen) != 0)
-        printf("# wanted: %s\n#   seen: %s\nnot ok %d\n", wanted, seen, n);
-    else
-        printf("ok %d\n", n);
+    if (strcmp(wanted, seen) == 0)
+        printf("ok %d", testnum++);
+    else {
+        printf("# wanted: %s\n#   seen: %s\n", wanted, seen);
+        printf("not ok %d", testnum++);
+    }
+    if (format != NULL) {
+        va_list args;
+
+        va_start(args, format);
+        print_desc(format, args);
+        va_end(args);
+    }
+    putchar('\n');
 }
 
 
@@ -130,12 +202,22 @@ is_string(int n, const char *wanted, const char *seen)
  * those two numbers match.
  */
 void
-is_double(int n, double wanted, double seen)
+is_double(double wanted, double seen, const char *format, ...)
 {
     if (wanted == seen)
-        printf("ok %d\n", n);
-    else
-        printf("# wanted: %g\n#   seen: %g\nnot ok %d\n", wanted, seen, n);
+        printf("ok %d", testnum++);
+    else {
+        printf("# wanted: %g\n#   seen: %g\n", wanted, seen);
+        printf("not ok %d", testnum++);
+    }
+    if (format != NULL) {
+        va_list args;
+
+        va_start(args, format);
+        print_desc(format, args);
+        va_end(args);
+    }
+    putchar('\n');
 }
 
 

@@ -15,10 +15,10 @@ plan 2
 # Run runtests, overriding the build and source directories.
 "../runtests" -s "${SOURCE}/single" -o test > test.result
 status=$?
-ok [ $status -eq 4 ]
+ok 'test result status' [ $status -eq 4 ]
 diff -u "${SOURCE}/single/test.output" test.result 2>&1
 status=$?
-ok [ $status -eq 0 ]
+ok 'test output' [ $status -eq 0 ]
 if [ $status -eq 0 ] ; then
     rm test.result
 fi

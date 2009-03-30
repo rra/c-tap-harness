@@ -2,38 +2,41 @@
 ok 1
 not ok 2
 ok 3
-ok 4
-ok 5
+ok 4 - an integer test
+ok 5 - comparing -1 and -1
 # wanted: -1
 #   seen: 1
 not ok 6
 ok 7
-ok 8
+ok 8 - a double test
 # wanted: 0.1
 #   seen: -0.1
-not ok 9
+not ok 9 - a failing double test
 ok 10
 ok 11
 ok 12
-ok 13
+ok 13 - a string test
 # wanted: yes
 #   seen: yes no
-not ok 14
-ok 15
+not ok 14 - 
+ok 15 - null null
 # wanted: yes
 #   seen: (null)
 not ok 16
 # wanted: (null)
 #   seen: yes
 not ok 17
-ok 18 # skip testing skip
+ok 18 # skip testing skip foo
 ok 19
 ok 20
-not ok 21
-not ok 22
-not ok 23
-not ok 24
+not ok 21 - some block
+not ok 22 - some block
+not ok 23 - some block
+not ok 24 - some block
 ok 25 # skip testing skip block
 ok 26 # skip testing skip block
 ok 27 # skip testing skip block
 ok 28 # skip testing skip block
+ok 29 # skip
+ok 30 # skip
+ok 31 # skip
