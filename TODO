@@ -16,6 +16,8 @@ Reporting:
 
  * Report passing todo tests as something other than simple failed tests.
 
+ * Add an option to report test results in color.
+
 Extra Harness Features:
 
  * Support a verbose mode that shows the result of each test as it's
