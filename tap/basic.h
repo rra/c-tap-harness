@@ -41,6 +41,15 @@
 # define END_DECLS      /* empty */
 #endif
 
+/*
+ * Used for iterating through arrays.  ARRAY_SIZE returns the number of
+ * elements in the array (useful for a < upper bound in a for loop) and
+ * ARRAY_END returns a pointer to the element past the end (ISO C99 makes it
+ * legal to refer to such a pointer as long as it's never dereferenced).
+ */
+#define ARRAY_SIZE(array)       (sizeof(array) / sizeof((array)[0]))
+#define ARRAY_END(array)        (&(array)[ARRAY_SIZE(array)])
+
 BEGIN_DECLS
 
 /*
