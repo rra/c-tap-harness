@@ -40,3 +40,8 @@ ok 28 # skip testing skip block
 ok 29 # skip
 ok 30 # skip
 ok 31 # skip
+ok 32 - 2^31 + 1 correct
+# wanted: 80000001
+#   seen: 0
+not ok 33 - 2^31 + 1 incorrect
+ok 34

@@ -26,9 +26,13 @@ ok_result () {
 }
 
 # Total tests.
-plan 6
+plan 8
 
 # Run the individual tests.
-ok_result c-basic  "$BUILD"  0
-ok_result c-bail   "$BUILD"  1
-ok_result sh-basic "$SOURCE" 0
+ok_result c-basic   "$BUILD"  0
+ok_result c-bail    "$BUILD"  1
+ok_result c-sysbail "$BUILD"  1
+ok_result sh-basic  "$SOURCE" 0
+
+# Remove the output file created by c-sysbail.
+rm -f c-sysbail.output

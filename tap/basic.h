@@ -80,9 +80,13 @@ void is_double(double wanted, double seen, const char *format, ...)
     __attribute__((__format__(printf, 3, 4)));
 void is_string(const char *wanted, const char *seen, const char *format, ...)
     __attribute__((__format__(printf, 3, 4)));
+void is_hex(unsigned long wanted, unsigned long seen, const char *format, ...)
+    __attribute__((__format__(printf, 3, 4)));
 
-/* Bail out with an error. */
+/* Bail out with an error.  sysbail appends strerror(errno). */
 void bail(const char *format, ...)
+    __attribute__((__noreturn__, __format__(printf, 1, 2)));
+void sysbail(const char *format, ...)
     __attribute__((__noreturn__, __format__(printf, 1, 2)));
 
 END_DECLS

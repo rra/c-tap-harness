@@ -222,6 +222,31 @@ is_double(double wanted, double seen, const char *format, ...)
 
 
 /*
+ * Takes an expected unsigned long and a seen unsigned long and assumes the
+ * test passes if the two numbers match.  Otherwise, reports them in hex.
+ */
+void
+is_hex(unsigned long wanted, unsigned long seen, const char *format, ...)
+{
+    if (wanted == seen)
+        printf("ok %d", testnum++);
+    else {
+        printf("# wanted: %lx\n#   seen: %lx\n", (unsigned long) wanted,
+               (unsigned long) seen);
+        printf("not ok %d", testnum++);
+    }
+    if (format != NULL) {
+        va_list args;
+
+        va_start(args, format);
+        print_desc(format, args);
+        va_end(args);
+    }
+    putchar('\n');
+}
+
+
+/*
  * Bail out with an error.
  */
 void
@@ -235,5 +260,24 @@ bail(const char *format, ...)
     vprintf(format, args);
     va_end(args);
     printf("\n");
+    exit(1);
+}
+
+
+/*
+ * Bail out with an error, appending strerror(errno).
+ */
+void
+sysbail(const char *format, ...)
+{
+    va_list args;
+    int oerrno = errno;
+
+    fflush(stdout);
+    printf("Bail out! ");
+    va_start(args, format);
+    vprintf(format, args);
+    va_end(args);
+    printf(": %s\n", strerror(oerrno));
     exit(1);
 }

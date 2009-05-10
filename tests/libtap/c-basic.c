@@ -38,6 +38,9 @@ main(void)
     skip_block(4, "testing skip block");
     skip(NULL);
     skip_block(2, NULL);
+    is_hex(2147483649UL, 2147483649UL, "2^31 + 1 correct");
+    is_hex(2147483649UL, 0, "2^31 + 1 incorrect");
+    is_hex(0, 0, NULL);
 
     return 0;
 }
