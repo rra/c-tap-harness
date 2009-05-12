@@ -12,6 +12,18 @@ plan () {
     echo "1..$1"
 }
 
+# Skip the entire test suite.  Should be run instead of plan.
+skip_all () {
+    local desc
+    desc="$1"
+    if [ -n "$desc" ] ; then
+        echo "1..0 # skip $desc"
+    else
+        echo "1..0 # skip"
+    fi
+    exit 0
+}
+
 # ok takes a test description and a command to run and prints success if that
 # command is successful, false otherwise.  The count starts at 1 and is
 # updated each time ok is printed.

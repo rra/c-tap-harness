@@ -60,10 +60,10 @@ C TAP Harness 1.0
     Add skip_all() C TAP library function to skip all tests and exit.
 
     Stop exporting the printcount interface in the shell version of the
-    TAP library.  Instead, provide plan, ok, skip, ok_block, skip_block,
-    ok_program, and bail shell functions, similar to the C library
-    interface, with the ok* functions taking a test description as the
-    first argument.
+    TAP library.  Instead, provide plan, skip_all, ok, skip, ok_block,
+    skip_block, ok_program, and bail shell functions, similar to the C
+    library interface, with the ok* functions taking a test description as
+    the first argument.
 
     Show mismatch output from the is_*() functions before the "not ok"
     line instead of after it.
