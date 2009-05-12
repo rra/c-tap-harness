@@ -57,6 +57,8 @@ C TAP Harness 1.0
     Add bail() and sysbail() C TAP library functions to bail out with the
     right magic output string.
 
+    Add skip_all() C TAP library function to skip all tests and exit.
+
     Stop exporting the printcount interface in the shell version of the
     TAP library.  Instead, provide plan, ok, skip, ok_block, skip_block,
     ok_program, and bail shell functions, similar to the C library

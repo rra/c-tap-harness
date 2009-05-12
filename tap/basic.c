@@ -52,6 +52,27 @@ plan(int count)
 
 
 /*
+ * Skip the entire test suite and exits.  Should be called instead of plan(),
+ * not after it, since it prints out a special plan line.
+ */
+void
+skip_all(const char *format, ...)
+{
+    printf("1..0 # skip");
+    if (format != NULL) {
+        va_list args;
+
+        putchar(' ');
+        va_start(args, format);
+        vprintf(format, args);
+        va_end(args);
+    }
+    putchar('\n');
+    exit(0);
+}
+
+
+/*
  * Print the test description.
  */
 static void

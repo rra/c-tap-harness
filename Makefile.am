@@ -52,9 +52,11 @@ warnings:
 
 # The bits below are for the test suite.
 check_PROGRAMS = tests/libtap/c-basic tests/libtap/c-bail \
-	tests/libtap/c-sysbail
+	tests/libtap/c-skip tests/libtap/c-skip-reason tests/libtap/c-sysbail
 tests_libtap_c_basic_LDADD = tap/libtap.a
 tests_libtap_c_bail_LDADD = tap/libtap.a
+tests_libtap_c_skip_LDADD = tap/libtap.a
+tests_libtap_c_skip_reason_LDADD = tap/libtap.a
 tests_libtap_c_sysbail_LDADD = tap/libtap.a
 
 check-local: $(check_PROGRAMS)

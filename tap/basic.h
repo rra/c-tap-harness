@@ -61,6 +61,10 @@ extern int testnum;
 /* Print out the number of tests and set standard output to line buffered. */
 void plan(int count);
 
+/* Skip the entire test suite.  Call instead of plan. */
+void skip_all(const char *format, ...)
+    __attribute__((__noreturn__, __format__(printf, 1, 2)));
+
 /* Basic reporting functions. */
 void ok(int success, const char *format, ...)
     __attribute__((__format__(printf, 2, 3)));

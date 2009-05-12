@@ -11,6 +11,8 @@
 /tests/env/env.t
 /tests/libtap/c-bail
 /tests/libtap/c-basic
+/tests/libtap/c-skip
+/tests/libtap/c-skip-reason
 /tests/libtap/c-sysbail
 /tests/search.t
 .deps/
