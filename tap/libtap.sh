@@ -79,8 +79,8 @@ skip_block () {
 # Run a program expected to succeed, and print ok if it does and produces the
 # correct output.  Takes the description, expected exit status, the expected
 # output, the command to run, and then any arguments for that command.  Strip
-# the second colon and everything after it off the output if the expected
-# status is non-zero, since this is probably a system-specific error message.
+# a colon and everything after it off the output if the expected status is
+# non-zero, since this is probably a system-specific error message.
 ok_program () {
     local desc w_status w_output output status
     desc="$1"
@@ -92,7 +92,7 @@ ok_program () {
     output=`"$@" 2>&1`
     status=$?
     if [ "$w_status" -ne 0 ] ; then
-        output=`echo "$output" | sed 's/\(:[^:]*\):.*/\1/'`
+        output=`echo "$output" | sed 's/^\([^:]*\):.*/\1/'`
     fi
     if [ $status = $w_status ] && [ x"$output" = x"$w_output" ] ; then
         ok "$desc" true
