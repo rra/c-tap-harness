@@ -43,7 +43,7 @@ plan skip_all => 'aspell or ispell required to test POD spelling'
 # Prerequisites are satisfied, so we're going to do some testing.  Figure out
 # what POD files we have and from that develop our plan.
 $| = 1;
-my @pod = ("$ENV{SOURCE}/../runtests.pod");
+my @pod = map { s,[^/.][^/]*/../,,g; $_ } ("$ENV{SOURCE}/../runtests.pod");
 plan tests => scalar @pod;
 
 # Finally, do the checks.
