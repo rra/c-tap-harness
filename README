@@ -66,10 +66,12 @@ REQUIREMENTS
   dictionaries differ too much between systems.  To enable those tests,
   set RRA_MAINTAINER_TESTS to a true value.
 
-  If you change the Automake files and need to regenerate Makefile.in, you
-  will need Automake 1.10 or later.  If you change configure.ac and need
-  to regenerate configure or config.h.in, you will need Autoconf 2.63 or
-  later.
+  To bootstrap from a Git checkout, or if you change the Automake files
+  and need to regenerate Makefile.in, you will need Automake 1.10 or
+  later.  For bootstrap or if you change configure.ac or any of the m4
+  files it includes and need to regenerate configure or config.h.in, you
+  will need Autoconf 2.63 or later.  Perl is also required to generate the
+  manual page from a fresh Git checkout.
 
 BUILDING AND TESTING
 
