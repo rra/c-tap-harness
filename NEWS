@@ -1,5 +1,11 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 1.1 (unreleased)
+
+    When looking for 0..1 # skip plan lines indicating the whole test case
+    should be skipped, correctly compare "skip" case-insensitively.  This
+    fixes interoperability with Perl's Test::More.
+
 C TAP Harness 1.0 (2009-05-21)
 
     Initial public release based on the version of runtests.c and the

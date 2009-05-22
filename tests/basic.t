@@ -28,7 +28,7 @@ ok_runtests () {
 # Total tests.
 plan 5
 
-# First run the tests expected to succeed.
+# Run the tests.
 ok_runtests pass
 ok_runtests skip
 ok_runtests fail

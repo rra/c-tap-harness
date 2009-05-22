@@ -4,9 +4,10 @@ test program with runtests -o to see more details.
 
 skip............ok (skipped 5 tests)
 skip-all........skipped (some reason)
+skip-all-case...skipped (some reason)
 skip-all-quiet..skipped
 pass............ok
 order...........ok
 
-All tests successful, 7 tests skipped.
-Files=5,  Tests=18
+All tests successful, 8 tests skipped.
+Files=6,  Tests=18
