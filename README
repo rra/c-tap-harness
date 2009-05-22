@@ -28,11 +28,12 @@ DESCRIPTION
   merges all the various versions into a single code base that all my
   packages can pull from.
 
-  C TAP Harness doesn't yet implement the full TAP specification and
-  currently does not have any notable features that Test::Harness doesn't
-  have.  It's therefore currently mostly useful because it doesn't assume
-  or require Perl.  My future intention is to complete the implementation
-  of the TAP specification.
+  C TAP Harness doesn't yet implement the full TAP specification, but
+  it does have a few special features for supporting builds outside the
+  source directory.  It's currently mostly useful for packages using
+  Autoconf and Automake and because it doesn't assume or require Perl.
+  I plan to complete the implementation of the TAP specification
+  eventually.
 
   The runtests program can be built with knowledge of the source and build
   directory and pass that knowledge on to test scripts, and will search
