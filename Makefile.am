@@ -37,7 +37,7 @@ dist_man_MANS = runtests.1
 # Automake stuff around after make maintainer-clean, thus making that command
 # mostly worthless.
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/depcomp \
-	build-aux/install-sh build-aux/missing configure
+	build-aux/install-sh build-aux/missing configure runtests.1
 
 # A set of flags for warnings.  Add -O because gcc won't find some warnings
 # without optimization turned on, and add -DDEBUG=1 so we'll also compile all
