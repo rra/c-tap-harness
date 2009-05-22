@@ -19,8 +19,10 @@ EXTRA_DIST = LICENSE autogen runtests.pod tap/libtap.sh tests/TESTS \
 	tests/basic/too-many.t tests/basic/zero.t tests/basic.t \
 	tests/env/env.list tests/env/env.output tests/env.t \
 	tests/libtap/c-bail.output tests/libtap/c-basic.output \
+	tests/libtap/c-skip.output tests/libtap/c-skip-reason.output \
 	tests/libtap/sh-bail tests/libtap/sh-bail.output \
-	tests/libtap/sh-basic tests/libtap/sh-basic.output tests/libtap.t \
+	tests/libtap/sh-basic tests/libtap/sh-basic.output \
+	tests/libtap/sh-skip tests/libtap/sh-skip.output tests/libtap.t \
 	tests/pod.t tests/pod-spelling.t tests/search/build/build-t \
 	tests/search/relative.t tests/search/search.list \
 	tests/search/search.output tests/search/source/source.t \
