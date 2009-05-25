@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Test POD formatting for C TAP Driver documentation.
+# Test POD formatting for C TAP Harness documentation.
 #
 # Copyright 2009 Russ Allbery <rra@stanford.edu>
 #

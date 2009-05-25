@@ -144,7 +144,7 @@ test.
 prove(1), Test::Harness(3), Test::Harness::TAP(3)
 
 The current version of this program is available from its web page at
-L<http://www.eyrie.org/~eagle/software/c-tap-driver/>.
+L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.
 
 =head1 AUTHOR
 
