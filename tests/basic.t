@@ -7,7 +7,7 @@
 # See LICENSE for licensing terms.
 
 . "$SOURCE/../tap/libtap.sh"
-cd "$BUILD/basic"
+cd "$BUILD"
 
 # Run runtests on a list and compare the output to the expected output,
 # printing ok if it matches.  Strip out the time information from the runtests
