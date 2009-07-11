@@ -16,7 +16,7 @@ main(void)
 {
     plan(2);
 
-    ok(1, "first");
+    ok(0, "first");
 
     return 0;
 }

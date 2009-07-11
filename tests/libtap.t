@@ -30,23 +30,29 @@ ok_result () {
 }
 
 # Total tests.
-plan 28
+plan 40
 
 # Run the individual tests.
-ok_result c-basic       "$BUILD"  0
-ok_result c-bail        "$BUILD"  1
-ok_result c-extra       "$BUILD"  0
-ok_result c-extra-one   "$BUILD"  0
-ok_result c-missing     "$BUILD"  0
-ok_result c-missing-one "$BUILD"  0
-ok_result c-skip        "$BUILD"  0
-ok_result c-skip-reason "$BUILD"  0
-ok_result c-success     "$BUILD"  0
-ok_result c-success-one "$BUILD"  0
-ok_result c-sysbail     "$BUILD"  1
-ok_result sh-basic      "$SOURCE" 0
-ok_result sh-bail       "$SOURCE" 1
-ok_result sh-skip       "$SOURCE" 0
+ok_result c-bail         "$BUILD"  1
+ok_result c-basic        "$BUILD"  0
+ok_result c-extra        "$BUILD"  0
+ok_result c-extra-one    "$BUILD"  0
+ok_result c-missing      "$BUILD"  0
+ok_result c-missing-one  "$BUILD"  0
+ok_result c-skip         "$BUILD"  0
+ok_result c-skip-reason  "$BUILD"  0
+ok_result c-success      "$BUILD"  0
+ok_result c-success-one  "$BUILD"  0
+ok_result c-sysbail      "$BUILD"  1
+ok_result sh-bail        "$SOURCE" 1
+ok_result sh-basic       "$SOURCE" 0
+ok_result sh-extra       "$SOURCE" 0
+ok_result sh-extra-one   "$SOURCE" 0
+ok_result sh-missing     "$SOURCE" 0
+ok_result sh-missing-one "$SOURCE" 0
+ok_result sh-skip        "$SOURCE" 0
+ok_result sh-success     "$SOURCE" 0
+ok_result sh-success-one "$SOURCE" 0
 
 # Remove the output file created by c-sysbail.
 rm -f c-sysbail.output

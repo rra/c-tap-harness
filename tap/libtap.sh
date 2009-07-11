@@ -9,7 +9,44 @@
 # Print out the number of test cases we expect to run.
 plan () {
     count=1
+    planned="$1"
+    failed=0
     echo "1..$1"
+    trap finish 0
+}
+
+# Report the test status on exit.
+finish () {
+    local highest looks
+    highest=`expr "$count" - 1`
+    looks='# Looks like you'
+    if [ "$planned" -gt 0 ] ; then
+        if [ "$planned" -gt "$highest" ] ; then
+            if [ "$planned" -gt 1 ] ; then
+                echo "$looks planned $planned tests but only ran $highest"
+            else
+                echo "$looks planned $planned test but only ran $highest"
+            fi
+        elif [ "$planned" -lt "$highest" ] ; then
+            local extra
+            extra=`expr "$highest" - "$planned"`
+            if [ "$planned" -gt 1 ] ; then
+                echo "$looks planned $planned tests but ran $extra extra"
+            else
+                echo "$looks planned $planned test but ran $extra extra"
+            fi
+        elif [ "$failed" -gt 0 ] ; then
+            if [ "$failed" -gt 1 ] ; then
+                echo "$looks failed $failed tests of $planned"
+            else
+                echo "$looks failed $failed test of $planned"
+            fi
+        elif [ "$planned" -gt 1 ] ; then
+            echo "# All $planned tests successful or skipped"
+        else
+            echo "# $planned test successful or skipped"
+        fi
+    fi
 }
 
 # Skip the entire test suite.  Should be run instead of plan.
@@ -38,6 +75,7 @@ ok () {
         echo ok $count$desc
     else
         echo not ok $count$desc
+        failed=`expr $failed + 1`
     fi
     count=`expr $count + 1`
 }
