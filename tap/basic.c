@@ -23,17 +23,58 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
 #include <sys/time.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 #include <tap/basic.h>
-
 
 /*
  * The test count.  Always contains the number that will be used for the next
  * test status.
  */
 int testnum = 1;
+
+/*
+ * Status information stored so that we can give a test summary at the end of
+ * the test case.  We store the planned final test and the count of failures.
+ * We can get the highest test count from testnum.
+ *
+ * We also store the PID of the process that called plan() and only summarize
+ * results when that process exits, so as to not misreport results in forked
+ * processes.
+ */
+static int _planned = 0;
+static int _failed  = 0;
+static pid_t _process = 0;
+
+
+/*
+ * Our exit handler.  Called on completion of the test to report a summary of
+ * results provided we're still in the original process.
+ */
+static void
+finish(void)
+{
+    int highest = testnum - 1;
+
+    if (_process != 0 && getpid() == _process && _planned > 0) {
+        if (_planned > highest)
+            printf("# Looks like you planned %d test%s but only ran %d\n",
+                   _planned, (_planned > 1 ? "s" : ""), highest);
+        else if (_planned < highest)
+            printf("# Looks like you planned %d test%s but ran %d extra\n",
+                   _planned, (_planned > 1 ? "s" : ""), highest - _planned);
+        else if (_failed > 0)
+            printf("# Looks like you failed %d test%s of %d\n", _failed,
+                   (_failed > 1 ? "s" : ""), _planned);
+        else if (_planned > 1)
+            printf("# All %d tests successful or skipped\n", _planned);
+        else
+            printf("# %d test successful or skipped\n", _planned);
+    }
+}
 
 
 /*
@@ -44,10 +85,13 @@ void
 plan(int count)
 {
     if (setvbuf(stdout, NULL, _IOLBF, BUFSIZ) != 0)
-        fprintf(stderr, "cannot set stdout to line buffered: %s\n",
+        fprintf(stderr, "# cannot set stdout to line buffered: %s\n",
                 strerror(errno));
     printf("1..%d\n", count);
     testnum = 1;
+    _planned = count;
+    _process = getpid();
+    atexit(finish);
 }
 
 
@@ -91,6 +135,8 @@ void
 ok(int success, const char *format, ...)
 {
     printf("%sok %d", success ? "" : "not ", testnum++);
+    if (!success)
+        _failed++;
     if (format != NULL) {
         va_list args;
 
@@ -131,6 +177,8 @@ ok_block(int count, int status, const char *format, ...)
 
     for (i = 0; i < count; i++) {
         printf("%sok %d", status ? "" : "not ", testnum++);
+        if (!status)
+            _failed++;
         if (format != NULL) {
             va_list args;
 
@@ -178,6 +226,7 @@ is_int(int wanted, int seen, const char *format, ...)
     else {
         printf("# wanted: %d\n#   seen: %d\n", wanted, seen);
         printf("not ok %d", testnum++);
+        _failed++;
     }
     if (format != NULL) {
         va_list args;
@@ -206,6 +255,7 @@ is_string(const char *wanted, const char *seen, const char *format, ...)
     else {
         printf("# wanted: %s\n#   seen: %s\n", wanted, seen);
         printf("not ok %d", testnum++);
+        _failed++;
     }
     if (format != NULL) {
         va_list args;
@@ -230,6 +280,7 @@ is_double(double wanted, double seen, const char *format, ...)
     else {
         printf("# wanted: %g\n#   seen: %g\n", wanted, seen);
         printf("not ok %d", testnum++);
+        _failed++;
     }
     if (format != NULL) {
         va_list args;
@@ -255,6 +306,7 @@ is_hex(unsigned long wanted, unsigned long seen, const char *format, ...)
         printf("# wanted: %lx\n#   seen: %lx\n", (unsigned long) wanted,
                (unsigned long) seen);
         printf("not ok %d", testnum++);
+        _failed++;
     }
     if (format != NULL) {
         va_list args;

@@ -2,6 +2,9 @@
 
 C TAP Harness 1.1 (unreleased)
 
+    Set an exit handler in libtap that prints a summary of the test
+    results at the end of a test script, similar to Perl's Test::More.
+
     When looking for 0..1 # skip plan lines indicating the whole test case
     should be skipped, correctly compare "skip" case-insensitively.  This
     fixes interoperability with Perl's Test::More.

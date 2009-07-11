@@ -30,13 +30,19 @@ ok_result () {
 }
 
 # Total tests.
-plan 16
+plan 28
 
 # Run the individual tests.
 ok_result c-basic       "$BUILD"  0
 ok_result c-bail        "$BUILD"  1
+ok_result c-extra       "$BUILD"  0
+ok_result c-extra-one   "$BUILD"  0
+ok_result c-missing     "$BUILD"  0
+ok_result c-missing-one "$BUILD"  0
 ok_result c-skip        "$BUILD"  0
 ok_result c-skip-reason "$BUILD"  0
+ok_result c-success     "$BUILD"  0
+ok_result c-success-one "$BUILD"  0
 ok_result c-sysbail     "$BUILD"  1
 ok_result sh-basic      "$SOURCE" 0
 ok_result sh-bail       "$SOURCE" 1

@@ -2,7 +2,7 @@
  * Calls libtap basic functions for testing.
  *
  * Written by Russ Allbery <rra@stanford.edu>
- * Copyright 2008 Board of Trustees, Leland Stanford Jr. University
+ * Copyright 2008, 2009 Board of Trustees, Leland Stanford Jr. University
  *
  * See LICENSE for licensing terms.
  */
@@ -14,7 +14,8 @@
 int
 main(void)
 {
-    plan(29);
+    plan(34);
+
     ok(1, NULL);
     ok(0, NULL);
     is_int(0, 0, NULL);
