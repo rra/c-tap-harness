@@ -6,6 +6,11 @@ C TAP Harness 1.1 (unreleased)
     should be skipped, correctly compare "skip" case-insensitively.  This
     fixes interoperability with Perl's Test::More.
 
+    Consume all output from the test case before closing its file
+    descriptor, even if the case is aborted due to bailing out or sending
+    an invalid test number.  This prevents tests from spuriously dying
+    with SIGPIPE.
+
 C TAP Harness 1.0 (2009-05-21)
 
     Initial public release based on the version of runtests.c and the

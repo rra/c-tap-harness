@@ -650,9 +650,12 @@ test_run(struct testset *ts)
     test_backspace(ts);
 
     /*
-     * Close the output descriptor, retrieve the exit status, and pass that
-     * information to test_analyze() for eventual output.
+     * Consume the rest of the test output, close the output descriptor,
+     * retrieve the exit status, and pass that information to test_analyze()
+     * for eventual output.
      */
+    while (fgets(buffer, sizeof(buffer), output))
+        ;
     fclose(output);
     child = waitpid(testpid, &ts->status, 0);
     if (child == (pid_t) -1) {
