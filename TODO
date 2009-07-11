@@ -25,3 +25,8 @@ Extra Harness Features:
 
  * Support displaying diagnostic lines (lines beginning with "#") in a
    verbose mode.
+
+libtap:
+
+ * Add an atexit handler that reports the expected and total tests run
+   and any failed tests.
