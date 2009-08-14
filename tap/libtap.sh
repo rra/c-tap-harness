@@ -89,7 +89,7 @@ skip () {
 # Report the same status on a whole set of tests.  Takes the count of tests,
 # the description, and then the command to run to determine the status.
 ok_block () {
-    local start end i desc
+    local end i desc
     i=$count
     end=`expr $count + $1`
     shift
@@ -104,7 +104,7 @@ ok_block () {
 # Skip a whole set of tests.  Takes the count and then the reason for skipping
 # the test.
 skip_block () {
-    local start end
+    local i end
     i=$count
     end=`expr $count + $1`
     shift
