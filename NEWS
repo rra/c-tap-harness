@@ -14,6 +14,9 @@ C TAP Harness 1.1 (unreleased)
     an invalid test number.  This prevents tests from spuriously dying
     with SIGPIPE.
 
+    Enable Automake silent rules.  For a quieter build, pass the
+    --enable-silent-rules option to configure or build with make V=0.
+
 C TAP Harness 1.0 (2009-05-21)
 
     Initial public release based on the version of runtests.c and the

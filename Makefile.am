@@ -59,8 +59,8 @@ WARNINGS = -g -O -DDEBUG=1 -Wall -W -Wendif-labels -Wpointer-arith \
 	-Wmissing-prototypes -Wnested-externs -Werror
 
 warnings:
-	$(MAKE) CFLAGS='$(WARNINGS)'
-	$(MAKE) CFLAGS='$(WARNINGS)' $(check_PROGRAMS)
+	$(MAKE) V=0 CFLAGS='$(WARNINGS)'
+	$(MAKE) V=0 CFLAGS='$(WARNINGS)' $(check_PROGRAMS)
 
 # The bits below are for the test suite.
 check_PROGRAMS = tests/libtap/c-basic tests/libtap/c-bail		     \
