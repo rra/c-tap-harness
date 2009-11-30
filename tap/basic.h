@@ -89,9 +89,9 @@ void is_hex(unsigned long wanted, unsigned long seen, const char *format, ...)
 
 /* Bail out with an error.  sysbail appends strerror(errno). */
 void bail(const char *format, ...)
-    __attribute__((__noreturn__, __format__(printf, 1, 2)));
+    __attribute__((__noreturn__, __nonnull__, __format__(printf, 1, 2)));
 void sysbail(const char *format, ...)
-    __attribute__((__noreturn__, __format__(printf, 1, 2)));
+    __attribute__((__noreturn__, __nonnull__, __format__(printf, 1, 2)));
 
 END_DECLS
 
