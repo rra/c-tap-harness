@@ -25,3 +25,11 @@ Extra Harness Features:
 
  * Support displaying diagnostic lines (lines beginning with "#") in a
    verbose mode.
+
+ * Support running selected tests under fakeroot, probably by adding a
+   parameter in the TESTS file after the test name.
+
+TAP Library:
+
+ * Add a function for reporting diagnostic output that handles prepending
+   the # character.
