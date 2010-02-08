@@ -269,7 +269,7 @@ is_string(const char *wanted, const char *seen, const char *format, ...)
 
 
 /*
- * Takes an expected integer and a seen integer and assumes the test passes if
+ * Takes an expected double and a seen double and assumes the test passes if
  * those two numbers match.
  */
 void
