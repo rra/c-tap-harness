@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 #
 # Test POD formatting for C TAP Harness documentation.
 #
