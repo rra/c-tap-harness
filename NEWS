@@ -1,5 +1,10 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 1.2 (unreleased)
+
+    Add the GCC nonnull attribute to the bail functions in the TAP
+    library.
+
 C TAP Harness 1.1 (2009-08-15)
 
     Set an exit handler in libtap that prints a summary of the test
