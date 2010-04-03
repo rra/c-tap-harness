@@ -29,6 +29,9 @@ Extra Harness Features:
  * Support running selected tests under fakeroot, probably by adding a
    parameter in the TESTS file after the test name.
 
+ * Support automatically finding test cases under a particular directory
+   similar to how prove finds tests, without needing a TESTS file.
+
 TAP Library:
 
  * Add a function for reporting diagnostic output that handles prepending
