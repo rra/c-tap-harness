@@ -351,7 +351,7 @@ test_backspace(struct testset *ts)
 static int
 test_plan(const char *line, struct testset *ts)
 {
-    int i;
+    int i, n;
 
     /*
      * Accept a plan without the leading 1.. for compatibility with older
@@ -367,8 +367,8 @@ test_plan(const char *line, struct testset *ts)
      * have something of the form "1..0 # skip foo", the whole file was
      * skipped; record that.
      */
-    i = strtol(line, (char **) &line, 10);
-    if (i == 0) {
+    n = strtol(line, (char **) &line, 10);
+    if (n == 0) {
         line = skip_whitespace(line);
         if (*line == '#') {
             line = skip_whitespace(line + 1);
@@ -384,27 +384,33 @@ test_plan(const char *line, struct testset *ts)
             }
         }
     }
-    if (i <= 0) {
+    if (n <= 0) {
         puts("ABORTED (invalid test count)");
         ts->aborted = 1;
         ts->reported = 1;
         return 0;
     }
     if (ts->plan == PLAN_INIT && ts->allocated == 0) {
-        ts->count = i;
-        ts->allocated = i;
+        ts->count = n;
+        ts->allocated = n;
         ts->plan = PLAN_FIRST;
         ts->results = xmalloc(ts->count * sizeof(enum test_status));
         for (i = 0; i < ts->count; i++)
             ts->results[i] = TEST_INVALID;
     } else if (ts->plan == PLAN_PENDING) {
-        if (i < ts->count) {
+        if (n < ts->count) {
             printf("ABORTED (invalid test number %d)\n", ts->count);
             ts->aborted = 1;
             ts->reported = 1;
             return 0;
         }
-        ts->count = i;
+        ts->count = n;
+        if (n > ts->allocated) {
+            ts->results = xrealloc(ts->results, n * sizeof(enum test_status));
+            for (i = ts->allocated; i < ts->count; i++)
+                ts->results[i] = TEST_INVALID;
+            ts->allocated = n;
+        }
         ts->plan = PLAN_FINAL;
     }
     return 1;
