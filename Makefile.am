@@ -1,6 +1,6 @@
 # Automake makefile for C TAP Harness.
 #
-# Copyright 2008, 2009 Russ Allbery <rra@stanford.edu>
+# Copyright 2008, 2009, 2010 Russ Allbery <rra@stanford.edu>
 #
 # See LICENSE for licensing terms.
 
@@ -25,7 +25,8 @@ EXTRA_DIST = LICENSE autogen runtests.pod tap/libtap.sh tests/TESTS	    \
 	tests/libtap/c-skip-reason.output tests/libtap/c-success-one.output \
 	tests/libtap/c-success.output tests/libtap/sh-bail		    \
 	tests/libtap/sh-bail.output tests/libtap/sh-basic		    \
-	tests/libtap/sh-basic.output tests/libtap/sh-extra		    \
+	tests/libtap/sh-basic.output tests/libtap/sh-diag		    \
+	tests/libtap/sh-diag.output tests/libtap/sh-extra		    \
 	tests/libtap/sh-extra-one tests/libtap/sh-extra-one.output	    \
 	tests/libtap/sh-extra.output tests/libtap/sh-missing		    \
 	tests/libtap/sh-missing-one tests/libtap/sh-missing-one.output	    \

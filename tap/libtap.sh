@@ -146,3 +146,8 @@ bail () {
     echo 'Bail out!' "$@"
     exit 1
 }
+
+# Output a diagnostic on standard error, preceded by the required # mark.
+diag () {
+    echo '#' "$@"
+}
