@@ -7,7 +7,7 @@
  * arguments, and print out something appropriate for that test number.  Other
  * utility routines help in constructing more complex tests.
  *
- * Copyright 2009 Russ Allbery <rra@stanford.edu>
+ * Copyright 2009, 2010 Russ Allbery <rra@stanford.edu>
  * Copyright 2006, 2007, 2008
  *     Board of Trustees, Leland Stanford Jr. University
  * Copyright (c) 2004, 2005, 2006
@@ -44,10 +44,14 @@ int testnum = 1;
  * We also store the PID of the process that called plan() and only summarize
  * results when that process exits, so as to not misreport results in forked
  * processes.
+ *
+ * If _lazy is true, we're doing lazy planning and will print out the plan
+ * based on the last test number at the end of testing.
  */
 static int _planned = 0;
 static int _failed  = 0;
 static pid_t _process = 0;
+static int _lazy = 0;
 
 
 /*
@@ -59,7 +63,13 @@ finish(void)
 {
     int highest = testnum - 1;
 
-    if (_process != 0 && getpid() == _process && _planned > 0) {
+    if (_planned == 0 && !_lazy)
+        return;
+    if (_process != 0 && getpid() == _process) {
+        if (_lazy) {
+            printf("1..%d\n", highest);
+            _planned = highest;
+        }
         if (_planned > highest)
             printf("# Looks like you planned %d test%s but only ran %d\n",
                    _planned, (_planned > 1 ? "s" : ""), highest);
@@ -91,6 +101,23 @@ plan(int count)
     testnum = 1;
     _planned = count;
     _process = getpid();
+    atexit(finish);
+}
+
+
+/*
+ * Initialize things for lazy planning, where we'll automatically print out a
+ * plan at the end of the program.  Turns on line buffering on stdout as well.
+ */
+void
+plan_lazy(void)
+{
+    if (setvbuf(stdout, NULL, _IOLBF, BUFSIZ) != 0)
+        fprintf(stderr, "# cannot set stdout to line buffered: %s\n",
+                strerror(errno));
+    testnum = 1;
+    _process = getpid();
+    _lazy = 1;
     atexit(finish);
 }
 

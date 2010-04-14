@@ -24,21 +24,22 @@ EXTRA_DIST = LICENSE autogen runtests.pod tap/libtap.sh tests/TESTS	     \
 	tests/basic/zero.t tests/basic.t tests/env/env.list		     \
 	tests/env/env.output tests/env.t tests/libtap/c-bail.output	     \
 	tests/libtap/c-basic.output tests/libtap/c-extra-one.output	     \
-	tests/libtap/c-extra.output tests/libtap/c-missing-one.output	     \
-	tests/libtap/c-missing.output tests/libtap/c-skip.output	     \
-	tests/libtap/c-skip-reason.output tests/libtap/c-success-one.output  \
-	tests/libtap/c-success.output tests/libtap/sh-bail		     \
-	tests/libtap/sh-bail.output tests/libtap/sh-basic		     \
-	tests/libtap/sh-basic.output tests/libtap/sh-diag		     \
-	tests/libtap/sh-diag.output tests/libtap/sh-extra		     \
-	tests/libtap/sh-extra-one tests/libtap/sh-extra-one.output	     \
-	tests/libtap/sh-extra.output tests/libtap/sh-missing		     \
-	tests/libtap/sh-missing-one tests/libtap/sh-missing-one.output	     \
-	tests/libtap/sh-missing.output tests/libtap/sh-success		     \
-	tests/libtap/sh-success-one tests/libtap/sh-success-one.output	     \
-	tests/libtap/sh-success.output tests/libtap/sh-skip		     \
-	tests/libtap/sh-skip.output tests/libtap.t tests/pod.t		     \
-	tests/pod-spelling.t tests/search/build/build-t			     \
+	tests/libtap/c-extra.output tests/libtap/c-lazy.output		     \
+	tests/libtap/c-missing-one.output tests/libtap/c-missing.output	     \
+	tests/libtap/c-skip.output tests/libtap/c-skip-reason.output	     \
+	tests/libtap/c-success-one.output tests/libtap/c-success.output	     \
+	tests/libtap/sh-bail tests/libtap/sh-bail.output		     \
+	tests/libtap/sh-basic tests/libtap/sh-basic.output		     \
+	tests/libtap/sh-diag tests/libtap/sh-diag.output		     \
+	tests/libtap/sh-extra tests/libtap/sh-extra-one			     \
+	tests/libtap/sh-extra-one.output tests/libtap/sh-extra.output	     \
+	tests/libtap/sh-lazy tests/libtap/sh-lazy.output		     \
+	tests/libtap/sh-missing tests/libtap/sh-missing-one		     \
+	tests/libtap/sh-missing-one.output tests/libtap/sh-missing.output    \
+	tests/libtap/sh-success tests/libtap/sh-success-one		     \
+	tests/libtap/sh-success-one.output tests/libtap/sh-success.output    \
+	tests/libtap/sh-skip tests/libtap/sh-skip.output tests/libtap.t	     \
+	tests/pod.t tests/pod-spelling.t tests/search/build/build-t	     \
 	tests/search/relative.t tests/search/search.list		     \
 	tests/search/search.output tests/search/source/source.t		     \
 	tests/single/test.output tests/single/test.t tests/single.t
@@ -70,15 +71,16 @@ warnings:
 # The bits below are for the test suite.
 check_PROGRAMS = tests/libtap/c-bail tests/libtap/c-basic		  \
 	tests/libtap/c-diag tests/libtap/c-extra tests/libtap/c-extra-one \
-	tests/libtap/c-missing tests/libtap/c-missing-one		  \
-	tests/libtap/c-skip tests/libtap/c-skip-reason			  \
-	tests/libtap/c-success tests/libtap/c-success-one		  \
-	tests/libtap/c-sysbail
+	tests/libtap/c-lazy tests/libtap/c-missing			  \
+	tests/libtap/c-missing-one tests/libtap/c-skip			  \
+	tests/libtap/c-skip-reason tests/libtap/c-success		  \
+	tests/libtap/c-success-one tests/libtap/c-sysbail
 tests_libtap_c_bail_LDADD = tap/libtap.a
 tests_libtap_c_basic_LDADD = tap/libtap.a
 tests_libtap_c_diag_LDADD = tap/libtap.a
 tests_libtap_c_extra_LDADD = tap/libtap.a
 tests_libtap_c_extra_one_LDADD = tap/libtap.a
+tests_libtap_c_lazy_LDADD = tap/libtap.a
 tests_libtap_c_missing_LDADD = tap/libtap.a
 tests_libtap_c_missing_one_LDADD = tap/libtap.a
 tests_libtap_c_skip_LDADD = tap/libtap.a

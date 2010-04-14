@@ -7,6 +7,15 @@ C TAP Harness 1.2 (unreleased)
     instead of first, but since it's just as easy to support providing the
     plan in the middle of the test output, allow that as well.
 
+    Add support for lazy planning to the basic TAP library.  Instead of
+    calling plan at the start of the test, call plan_lazy instead, which
+    doesn't require specifying a test count.  Then, the plan will
+    automatically be printed based on the last test number at the end of
+    the program.  This is not the recommended approach for writing tests
+    since, should the test program exit in the middle for some reason,
+    everything will appear to succeed.  But it can save time in writing
+    tests quickly and allows for dynamic numbers of tests.
+
     Add diag and sysdiag functions to the basic TAP library, which output
     diagnostics to standard error preceded by the protocol-required #
     character.

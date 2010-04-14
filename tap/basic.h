@@ -1,6 +1,7 @@
 /*
  * Basic utility routines for the TAP protocol.
  *
+ * Copyright 2009, 2010 Russ Allbery <rra@stanford.edu>
  * Copyright 2006, 2007, 2008
  *     Board of Trustees, Leland Stanford Jr. University
  * Copyright (c) 2004, 2005, 2006
@@ -60,6 +61,12 @@ extern int testnum;
 
 /* Print out the number of tests and set standard output to line buffered. */
 void plan(int count);
+
+/*
+ * Prepare for lazy planning, in which the plan will be  printed automatically
+ * at the end of the test program.
+ */
+void plan_lazy(void);
 
 /* Skip the entire test suite.  Call instead of plan. */
 void skip_all(const char *format, ...)

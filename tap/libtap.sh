@@ -1,7 +1,7 @@
 # Shell function library for test cases.
 #
 # Written by Russ Allbery <rra@stanford.edu>
-# Copyright 2009 Russ Allbery <rra@stanford.edu>
+# Copyright 2009, 2010 Russ Allbery <rra@stanford.edu>
 # Copyright 2006, 2007, 2008 Board of Trustees, Leland Stanford Jr. University
 #
 # See LICENSE for licensing terms.
@@ -15,10 +15,22 @@ plan () {
     trap finish 0
 }
 
+# Prepare for lazy planning.
+plan_lazy () {
+    count=1
+    planned=0
+    failed=0
+    trap finish 0
+}
+
 # Report the test status on exit.
 finish () {
     local highest looks
     highest=`expr "$count" - 1`
+    if [ "$planned" = 0 ] ; then
+        echo "1..$highest"
+        planned="$highest"
+    fi
     looks='# Looks like you'
     if [ "$planned" -gt 0 ] ; then
         if [ "$planned" -gt "$highest" ] ; then

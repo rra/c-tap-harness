@@ -17,6 +17,7 @@
 /tests/libtap/c-diag
 /tests/libtap/c-extra
 /tests/libtap/c-extra-one
+/tests/libtap/c-lazy
 /tests/libtap/c-missing
 /tests/libtap/c-missing-one
 /tests/libtap/c-skip
