@@ -12,6 +12,9 @@ Protocol:
    tests that had that reason and report how many tests were skipped for
    each reason.
 
+ * Ignore an initial "TAP version <version>" string in the output for
+   compliance with what's apparently the new TAP format.
+
 Reporting:
 
  * Report passing todo tests as something other than simple failed tests.
