@@ -34,7 +34,7 @@
  * The test count.  Always contains the number that will be used for the next
  * test status.
  */
-int testnum = 1;
+unsigned long testnum = 1;
 
 /*
  * Status information stored so that we can give a test summary at the end of
@@ -48,8 +48,8 @@ int testnum = 1;
  * If _lazy is true, we're doing lazy planning and will print out the plan
  * based on the last test number at the end of testing.
  */
-static int _planned = 0;
-static int _failed  = 0;
+static unsigned long _planned = 0;
+static unsigned long _failed  = 0;
 static pid_t _process = 0;
 static int _lazy = 0;
 
@@ -61,28 +61,28 @@ static int _lazy = 0;
 static void
 finish(void)
 {
-    int highest = testnum - 1;
+    unsigned long highest = testnum - 1;
 
     if (_planned == 0 && !_lazy)
         return;
     if (_process != 0 && getpid() == _process) {
         if (_lazy) {
-            printf("1..%d\n", highest);
+            printf("1..%lu\n", highest);
             _planned = highest;
         }
         if (_planned > highest)
-            printf("# Looks like you planned %d test%s but only ran %d\n",
+            printf("# Looks like you planned %lu test%s but only ran %lu\n",
                    _planned, (_planned > 1 ? "s" : ""), highest);
         else if (_planned < highest)
-            printf("# Looks like you planned %d test%s but ran %d extra\n",
+            printf("# Looks like you planned %lu test%s but ran %lu extra\n",
                    _planned, (_planned > 1 ? "s" : ""), highest - _planned);
         else if (_failed > 0)
-            printf("# Looks like you failed %d test%s of %d\n", _failed,
+            printf("# Looks like you failed %lu test%s of %lu\n", _failed,
                    (_failed > 1 ? "s" : ""), _planned);
         else if (_planned > 1)
-            printf("# All %d tests successful or skipped\n", _planned);
+            printf("# All %lu tests successful or skipped\n", _planned);
         else
-            printf("# %d test successful or skipped\n", _planned);
+            printf("# %lu test successful or skipped\n", _planned);
     }
 }
 
@@ -92,12 +92,12 @@ finish(void)
  * the number of tests in the test suite.
  */
 void
-plan(int count)
+plan(unsigned long count)
 {
     if (setvbuf(stdout, NULL, _IOLBF, BUFSIZ) != 0)
         fprintf(stderr, "# cannot set stdout to line buffered: %s\n",
                 strerror(errno));
-    printf("1..%d\n", count);
+    printf("1..%lu\n", count);
     testnum = 1;
     _planned = count;
     _process = getpid();
@@ -161,7 +161,7 @@ print_desc(const char *format, va_list args)
 void
 ok(int success, const char *format, ...)
 {
-    printf("%sok %d", success ? "" : "not ", testnum++);
+    printf("%sok %lu", success ? "" : "not ", testnum++);
     if (!success)
         _failed++;
     if (format != NULL) {
@@ -181,7 +181,7 @@ ok(int success, const char *format, ...)
 void
 skip(const char *reason, ...)
 {
-    printf("ok %d # skip", testnum++);
+    printf("ok %lu # skip", testnum++);
     if (reason != NULL) {
         va_list args;
 
@@ -198,12 +198,12 @@ skip(const char *reason, ...)
  * Report the same status on the next count tests.
  */
 void
-ok_block(int count, int status, const char *format, ...)
+ok_block(unsigned long count, int status, const char *format, ...)
 {
-    int i;
+    unsigned long i;
 
     for (i = 0; i < count; i++) {
-        printf("%sok %d", status ? "" : "not ", testnum++);
+        printf("%sok %lu", status ? "" : "not ", testnum++);
         if (!status)
             _failed++;
         if (format != NULL) {
@@ -222,12 +222,12 @@ ok_block(int count, int status, const char *format, ...)
  * Skip the next count tests.
  */
 void
-skip_block(int count, const char *reason, ...)
+skip_block(unsigned long count, const char *reason, ...)
 {
-    int i;
+    unsigned long i;
 
     for (i = 0; i < count; i++) {
-        printf("ok %d # skip", testnum++);
+        printf("ok %lu # skip", testnum++);
         if (reason != NULL) {
             va_list args;
 
@@ -246,13 +246,13 @@ skip_block(int count, const char *reason, ...)
  * if those two numbers match.
  */
 void
-is_int(int wanted, int seen, const char *format, ...)
+is_int(long wanted, long seen, const char *format, ...)
 {
     if (wanted == seen)
-        printf("ok %d", testnum++);
+        printf("ok %lu", testnum++);
     else {
-        printf("# wanted: %d\n#   seen: %d\n", wanted, seen);
-        printf("not ok %d", testnum++);
+        printf("# wanted: %ld\n#   seen: %ld\n", wanted, seen);
+        printf("not ok %lu", testnum++);
         _failed++;
     }
     if (format != NULL) {
@@ -278,10 +278,10 @@ is_string(const char *wanted, const char *seen, const char *format, ...)
     if (seen == NULL)
         seen = "(null)";
     if (strcmp(wanted, seen) == 0)
-        printf("ok %d", testnum++);
+        printf("ok %lu", testnum++);
     else {
         printf("# wanted: %s\n#   seen: %s\n", wanted, seen);
-        printf("not ok %d", testnum++);
+        printf("not ok %lu", testnum++);
         _failed++;
     }
     if (format != NULL) {
@@ -303,10 +303,10 @@ void
 is_double(double wanted, double seen, const char *format, ...)
 {
     if (wanted == seen)
-        printf("ok %d", testnum++);
+        printf("ok %lu", testnum++);
     else {
         printf("# wanted: %g\n#   seen: %g\n", wanted, seen);
-        printf("not ok %d", testnum++);
+        printf("not ok %lu", testnum++);
         _failed++;
     }
     if (format != NULL) {
@@ -328,11 +328,11 @@ void
 is_hex(unsigned long wanted, unsigned long seen, const char *format, ...)
 {
     if (wanted == seen)
-        printf("ok %d", testnum++);
+        printf("ok %lu", testnum++);
     else {
         printf("# wanted: %lx\n#   seen: %lx\n", (unsigned long) wanted,
                (unsigned long) seen);
-        printf("not ok %d", testnum++);
+        printf("not ok %lu", testnum++);
         _failed++;
     }
     if (format != NULL) {

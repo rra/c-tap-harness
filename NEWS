@@ -20,6 +20,9 @@ C TAP Harness 1.2 (unreleased)
     diagnostics to standard error preceded by the protocol-required #
     character.
 
+    Clean up data types in the basic C TAP library.  Test numbers and
+    counts are now unsigned long, and ok_int compares longs.
+
     Add the GCC nonnull attribute to the bail functions in the TAP
     library.
 

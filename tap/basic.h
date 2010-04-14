@@ -57,10 +57,10 @@ BEGIN_DECLS
  * The test count.  Always contains the number that will be used for the next
  * test status.
  */
-extern int testnum;
+extern unsigned long testnum;
 
 /* Print out the number of tests and set standard output to line buffered. */
-void plan(int count);
+void plan(unsigned long count);
 
 /*
  * Prepare for lazy planning, in which the plan will be  printed automatically
@@ -79,13 +79,13 @@ void skip(const char *reason, ...)
     __attribute__((__format__(printf, 1, 2)));
 
 /* Report the same status on, or skip, the next count tests. */
-void ok_block(int count, int success, const char *format, ...)
+void ok_block(unsigned long count, int success, const char *format, ...)
     __attribute__((__format__(printf, 3, 4)));
-void skip_block(int count, const char *reason, ...)
+void skip_block(unsigned long count, const char *reason, ...)
     __attribute__((__format__(printf, 2, 3)));
 
 /* Check an expected value against a seen value. */
-void is_int(int wanted, int seen, const char *format, ...)
+void is_int(long wanted, long seen, const char *format, ...)
     __attribute__((__format__(printf, 3, 4)));
 void is_double(double wanted, double seen, const char *format, ...)
     __attribute__((__format__(printf, 3, 4)));
