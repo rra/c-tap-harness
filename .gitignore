@@ -14,6 +14,7 @@
 /tests/env/env.t
 /tests/libtap/c-bail
 /tests/libtap/c-basic
+/tests/libtap/c-diag
 /tests/libtap/c-extra
 /tests/libtap/c-extra-one
 /tests/libtap/c-missing

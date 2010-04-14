@@ -354,3 +354,38 @@ sysbail(const char *format, ...)
     printf(": %s\n", strerror(oerrno));
     exit(1);
 }
+
+
+/*
+ * Report a diagnostic to stderr.
+ */
+void
+diag(const char *format, ...)
+{
+    va_list args;
+
+    fflush(stdout);
+    printf("# ");
+    va_start(args, format);
+    vprintf(format, args);
+    va_end(args);
+    printf("\n");
+}
+
+
+/*
+ * Report a diagnostic to stderr, appending strerror(errno).
+ */
+void
+sysdiag(const char *format, ...)
+{
+    va_list args;
+    int oerrno = errno;
+
+    fflush(stdout);
+    printf("# ");
+    va_start(args, format);
+    vprintf(format, args);
+    va_end(args);
+    printf(": %s\n", strerror(oerrno));
+}

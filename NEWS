@@ -2,6 +2,10 @@
 
 C TAP Harness 1.2 (unreleased)
 
+    Add diag and sysdiag functions to the basic TAP library, which output
+    diagnostics to standard error preceded by the protocol-required #
+    character.
+
     Add the GCC nonnull attribute to the bail functions in the TAP
     library.
 

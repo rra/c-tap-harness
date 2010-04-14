@@ -12,12 +12,12 @@
 cd "${BUILD}/libtap"
 
 # Run a binary, saving its output, and then compare that output to the
-# corresponding *.out file.
+# corresponding *.output file.
 ok_result () {
     "$2"/libtap/"$1" > "$1".result 2>&1
     status=$?
     ok "$1 exit status" [ $status -eq "$3" ]
-    if [ "$1" = "c-sysbail" ] ; then
+    if [ "$1" = "c-diag" ] || [ "$1" = "c-sysbail" ] ; then
         diff -u "${BUILD}/libtap/$1".output "$1".result 2>&1
     else
         diff -u "${SOURCE}/libtap/$1".output "$1".result 2>&1
@@ -30,11 +30,12 @@ ok_result () {
 }
 
 # Total tests.
-plan 40
+plan 42
 
 # Run the individual tests.
 ok_result c-bail         "$BUILD"  1
 ok_result c-basic        "$BUILD"  0
+ok_result c-diag         "$BUILD"  0
 ok_result c-extra        "$BUILD"  0
 ok_result c-extra-one    "$BUILD"  0
 ok_result c-missing      "$BUILD"  0
@@ -54,5 +55,5 @@ ok_result sh-skip        "$SOURCE" 0
 ok_result sh-success     "$SOURCE" 0
 ok_result sh-success-one "$SOURCE" 0
 
-# Remove the output file created by c-sysbail.
-rm -f c-sysbail.output
+# Remove the output files created by c-diag and c-sysbail.
+rm -f c-diag.output c-sysbail.output

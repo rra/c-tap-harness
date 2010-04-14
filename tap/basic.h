@@ -93,6 +93,12 @@ void bail(const char *format, ...)
 void sysbail(const char *format, ...)
     __attribute__((__noreturn__, __nonnull__, __format__(printf, 1, 2)));
 
+/* Report a diagnostic to stderr prefixed with #. */
+void diag(const char *format, ...)
+    __attribute__((__nonnull__, __format__(printf, 1, 2)));
+void sysdiag(const char *format, ...)
+    __attribute__((__nonnull__, __format__(printf, 1, 2)));
+
 END_DECLS
 
 #endif /* LIBTEST_H */
