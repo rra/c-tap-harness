@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 1.2 (unreleased)
+C TAP Harness 1.2 (2010-04-13)
 
     Support giving the plan at any point in the test output rather than
     requiring it be first.  The TAP protocol permits giving the plan last
