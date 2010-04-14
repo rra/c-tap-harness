@@ -80,23 +80,37 @@ relative to this directory.
 
 =head1 TEST PROTOCOL
 
-The canonical documentation for TAP is Test::Harness::TAP(3).  This is a
-brief summary.
+The canonical documentation for TAP is L<TAP::Parser::Grammar> or, in
+older versions of Perl, L<Test::Harness::TAP>.  This is a brief summary.
 
 Every individual test done by a test script must get a unique number.  The
 output of each test executable should start with:
 
     1..<last>
 
-where <last> is the number of the last test.  For each test, the script
-must output a line in one of these three formats:
+where <last> is the number of the last test.  C<1..> may be omitted.  For
+each test, the script must output a line in one of these three formats:
 
     ok <number>
     not ok <number>
     ok <number> # skip <reason>
+    not ok <number> # todo <reason>
 
-where <number> is the test number.  The last form indicates a skipped
-test; <reason> should be some brief reason for why the test was skipped.
+where <number> is the test number.  The <number> may be followed by an
+optional comment except in the last two forms.  The last two forms both
+indicate a skipped test.  <reason> should be some brief reason for why the
+test was skipped, but is optional.
+
+As a special case, the first line of the output may be in the form:
+
+    1..0 # skip some reason
+
+which indicates that this entire test case should be skipped and gives a
+reason.
+
+All other output lines are ignored, although for compliance with the TAP
+protocol all other output should go to standard error and begin with a
+C<#> sign.
 
 =head1 ENVIRONMENT
 
@@ -141,7 +155,7 @@ test.
 
 =head1 SEE ALSO
 
-prove(1), Test::Harness(3), Test::Harness::TAP(3)
+prove(1), TAP::Parser::Grammar(3), Test::Harness(3), Test::Harness::TAP(3)
 
 The current version of this program is available from its web page at
 L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.

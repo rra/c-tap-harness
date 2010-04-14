@@ -8,22 +8,40 @@
  * Expects a list of executables located in the given file, one line per
  * executable.  For each one, runs it as part of a test suite, reporting
  * results.  Test output should start with a line containing the number of
- * tests (numbered from 1 to this number), and then each line should be in the
- * following format:
+ * tests (numbered from 1 to this number), optionally preceded by "1..".  Each
+ * line should be in the following format:
  *
  *      ok <number>
  *      not ok <number>
  *      ok <number> # skip
+ *      not ok <number> # todo
  *
- * where <number> is the number of the test.  ok indicates success, not ok
- * indicates failure, and "# skip" indicates the test was skipped for some
- * reason (maybe because it doesn't apply to this platform).  This is a subset
- * of TAP as documented in Test::Harness::TAP, which comes with Perl.
+ * where <number> is the number of the test.  An optional comment is permitted
+ * after the number if preceded by whitespace.  ok indicates success, not ok
+ * indicates failure.  "# skip" and "# todo" are a special cases of a comment,
+ * and must start with exactly that formatting.  They indicate the test was
+ * skipped for some reason (maybe because it doesn't apply to this platform)
+ * or is testing something known to currently fail.  The text following either
+ * "# skip" or "# todo" and whitespace is the reason.
+ *
+ * As a special case, the first line of the output may be in the form:
+ *
+ *      1..0 # skip some reason
+ *
+ * which indicates that this entire test case should be skipped and gives a
+ * reason.
+ *
+ * Any other lines are ignored, although for compliance with the TAP protocol
+ * all lines other than the ones in the above format should be sent to
+ * standard error rather than standard output and start with #.
+ *
+ * This is a subset of TAP as documented in Test::Harness::TAP or
+ * TAP::Parser::Grammar, which comes with Perl.
  *
  * Any bug reports, bug fixes, and improvements are very much welcome and
  * should be sent to the e-mail address below.
  *
- * Copyright 2000, 2001, 2004, 2006, 2007, 2008, 2009
+ * Copyright 2000, 2001, 2004, 2006, 2007, 2008, 2009, 2010
  *     Russ Allbery <rra@stanford.edu>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
