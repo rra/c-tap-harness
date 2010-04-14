@@ -2,8 +2,12 @@
 Running all tests listed in pass.list.  If any tests fail, run the failing
 test program with runtests -o to see more details.
 
-pass....ok
-order...ok
+pass............ok
+order...........ok
+plan-last.......ok
+plan-order......ok
+plan-middle.....ok
+plan-long.......ok
 
 All tests successful.
-Files=2,  Tests=14
+Files=6,  Tests=89

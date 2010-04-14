@@ -2,11 +2,6 @@
 
 Protocol:
 
- * Support giving the plan at the end of the test suite instead of the
-   beginning.  This will require dynamically tracking test results without
-   pre-allocating space and then checking against the plan for missing
-   tests at the end.
-
  * Report the text after the "# skip" directive as the reason for the
    skipping of the test.  We should accumulate reasons and the count of
    tests that had that reason and report how many tests were skipped for

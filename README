@@ -3,7 +3,7 @@
 
                 Written by Russ Allbery <rra@stanford.edu>
 
-  Copyright 2000, 2001, 2004, 2006, 2007, 2008, 2009 Russ Allbery
+  Copyright 2000, 2001, 2004, 2006, 2007, 2008, 2009, 2010 Russ Allbery
   <rra@stanford.edu>.  This software is distributed under a BSD-style
   license.  Please see the file LICENSE in the distribution for more
   information.
@@ -28,12 +28,11 @@ DESCRIPTION
   merges all the various versions into a single code base that all my
   packages can pull from.
 
-  C TAP Harness doesn't yet implement the full TAP specification, but
-  it does have a few special features for supporting builds outside the
-  source directory.  It's currently mostly useful for packages using
-  Autoconf and Automake and because it doesn't assume or require Perl.
-  I plan to complete the implementation of the TAP specification
-  eventually.
+  C TAP Harness provides a full TAP specification (apart from a few
+  possible edge cases) and has additional special features for supporting
+  builds outside the source directory.  It's mostly useful for packages
+  using Autoconf and Automake and because it doesn't assume or require
+  Perl.
 
   The runtests program can be built with knowledge of the source and build
   directory and pass that knowledge on to test scripts, and will search

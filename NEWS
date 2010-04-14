@@ -2,6 +2,11 @@
 
 C TAP Harness 1.2 (unreleased)
 
+    Support giving the plan at any point in the test output rather than
+    requiring it be first.  The TAP protocol permits giving the plan last
+    instead of first, but since it's just as easy to support providing the
+    plan in the middle of the test output, allow that as well.
+
     Add diag and sysdiag functions to the basic TAP library, which output
     diagnostics to standard error preceded by the protocol-required #
     character.

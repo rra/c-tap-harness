@@ -84,12 +84,17 @@ The canonical documentation for TAP is L<TAP::Parser::Grammar> or, in
 older versions of Perl, L<Test::Harness::TAP>.  This is a brief summary.
 
 Every individual test done by a test script must get a unique number.  The
-output of each test executable should start with:
+output of each test executable should contain:
 
     1..<last>
 
-where <last> is the number of the last test.  C<1..> may be omitted.  For
-each test, the script must output a line in one of these three formats:
+where <last> is the number of the last test.  C<1..> may be omitted.
+Normally, this line is given first, but B<runtests> allows it to be given
+anywhere in the test output (in case the number of tests are determined
+dynamically for some reason).
+
+For each test, the script must output a line to standard output in one of
+these three formats:
 
     ok <number>
     not ok <number>
@@ -109,8 +114,8 @@ which indicates that this entire test case should be skipped and gives a
 reason.
 
 All other output lines are ignored, although for compliance with the TAP
-protocol all other output should go to standard error and begin with a
-C<#> sign.
+protocol all other output should go to standard error or begin with a C<#>
+sign.
 
 =head1 ENVIRONMENT
 
@@ -140,11 +145,6 @@ environment handling, and it assumes all test cases are written in Perl.
 The following features of TAP are not yet implemented by this harness:
 
 =over 2
-
-=item *
-
-The plan (the initial C<< 1..<last> >> line) may be the last line of the
-output instead of the first line.
 
 =item *
 

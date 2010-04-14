@@ -8,7 +8,8 @@
  * Expects a list of executables located in the given file, one line per
  * executable.  For each one, runs it as part of a test suite, reporting
  * results.  Test output should start with a line containing the number of
- * tests (numbered from 1 to this number), optionally preceded by "1..".  Each
+ * tests (numbered from 1 to this number), optionally preceded by "1..",
+ * although that line may be given anywhere in the output.  Each additional
  * line should be in the following format:
  *
  *      ok <number>
@@ -106,6 +107,14 @@ enum test_status {
     TEST_INVALID
 };
 
+/* Indicates the state of our plan. */
+enum plan_status {
+    PLAN_INIT,                  /* Nothing seen yet. */
+    PLAN_FIRST,                 /* Plan seen before any tests. */
+    PLAN_PENDING,               /* Test seen and no plan yet. */
+    PLAN_FINAL                  /* Plan seen after some tests. */
+};
+
 /* Error exit statuses for test processes. */
 #define CHILDERR_DUP    100     /* Couldn't redirect stderr or stdout. */
 #define CHILDERR_EXEC   101     /* Couldn't exec child process. */
@@ -115,12 +124,14 @@ enum test_status {
 struct testset {
     char *file;                 /* The file name of the test. */
     char *path;                 /* The path to the test program. */
+    enum plan_status plan;      /* The status of our plan. */
     int count;                  /* Expected count of tests. */
     int current;                /* The last seen test number. */
     int length;                 /* The length of the last status message. */
     int passed;                 /* Count of passing tests. */
     int failed;                 /* Count of failing lists. */
     int skipped;                /* Count of skipped tests (passed). */
+    int allocated;              /* The size of the results table. */
     enum test_status *results;  /* Table of results by test number. */
     int aborted;                /* Whether the set as aborted. */
     int reported;               /* Whether the results were reported. */
@@ -149,8 +160,9 @@ Failed Set                 Fail/Total (%) Skip Stat  Failing Tests\n\
 -------------------------- -------------- ---- ----  ------------------------";
 
 /* Include the file name and line number in malloc failures. */
-#define xmalloc(size)   x_malloc((size), __FILE__, __LINE__)
-#define xstrdup(p)      x_strdup((p), __FILE__, __LINE__)
+#define xmalloc(size)     x_malloc((size), __FILE__, __LINE__)
+#define xrealloc(p, size) x_realloc((p), (size), __FILE__, __LINE__)
+#define xstrdup(p)        x_strdup((p), __FILE__, __LINE__)
 
 
 /*
@@ -184,6 +196,20 @@ x_malloc(size_t size, const char *file, int line)
     p = malloc(size);
     if (!p)
         sysdie("failed to malloc %lu bytes at %s line %d",
+               (unsigned long) size, file, line);
+    return p;
+}
+
+
+/*
+ * Reallocate memory, reporting a fatal error and exiting on failure.
+ */
+static void *
+x_realloc(void *p, size_t size, const char *file, int line)
+{
+    p = realloc(p, size);
+    if (!p)
+        sysdie("failed to realloc %lu bytes at %s line %d",
                (unsigned long) size, file, line);
     return p;
 }
@@ -253,62 +279,6 @@ skip_whitespace(const char *p)
 
 
 /*
- * Read the first line of test output, which should contain the range of
- * test numbers, and initialize the testset structure.  Assume it was zeroed
- * before being passed in.  Return true if initialization succeeds, false
- * otherwise.
- */
-static int
-test_init(const char *line, struct testset *ts)
-{
-    int i;
-
-    /*
-     * Prefer a simple number of tests, but if the count is given as a range
-     * such as 1..10, accept that too for compatibility with Perl's
-     * Test::Harness.
-     */
-    line = skip_whitespace(line);
-    if (strncmp(line, "1..", 3) == 0)
-        line += 3;
-
-    /*
-     * Get the count, check it for validity, and initialize the struct.  If we
-     * have something of the form "1..0 # skip foo", the whole file was
-     * skipped; record that.
-     */
-    i = strtol(line, (char **) &line, 10);
-    if (i == 0) {
-        line = skip_whitespace(line);
-        if (*line == '#') {
-            line = skip_whitespace(line + 1);
-            if (strncasecmp(line, "skip", 4) == 0) {
-                line = skip_whitespace(line + 4);
-                if (*line != '\0') {
-                    ts->reason = xstrdup(line);
-                    ts->reason[strlen(ts->reason) - 1] = '\0';
-                }
-                ts->all_skipped = 1;
-                ts->aborted = 1;
-                return 0;
-            }
-        }
-    }
-    if (i <= 0) {
-        puts("ABORTED (invalid test count)");
-        ts->aborted = 1;
-        ts->reported = 1;
-        return 0;
-    }
-    ts->count = i;
-    ts->results = xmalloc(ts->count * sizeof(enum test_status));
-    for (i = 0; i < ts->count; i++)
-        ts->results[i] = TEST_INVALID;
-    return 1;
-}
-
-
-/*
  * Start a program, connecting its stdout to a pipe on our end and its stderr
  * to /dev/null, and storing the file descriptor to read from in the two
  * argument.  Returns the PID of the new process.  Errors are fatal.
@@ -373,6 +343,75 @@ test_backspace(struct testset *ts)
 
 
 /*
+ * Read the plan line of test output, which should contain the range of test
+ * numbers.  We may initialize the testset structure here if we haven't yet
+ * seen a test.  Return true if initialization succeeded and the test should
+ * continue, false otherwise.
+ */
+static int
+test_plan(const char *line, struct testset *ts)
+{
+    int i;
+
+    /*
+     * Accept a plan without the leading 1.. for compatibility with older
+     * versions of runtests.  This will only be allowed if we've not yet seen
+     * a test result.
+     */
+    line = skip_whitespace(line);
+    if (strncmp(line, "1..", 3) == 0)
+        line += 3;
+
+    /*
+     * Get the count, check it for validity, and initialize the struct.  If we
+     * have something of the form "1..0 # skip foo", the whole file was
+     * skipped; record that.
+     */
+    i = strtol(line, (char **) &line, 10);
+    if (i == 0) {
+        line = skip_whitespace(line);
+        if (*line == '#') {
+            line = skip_whitespace(line + 1);
+            if (strncasecmp(line, "skip", 4) == 0) {
+                line = skip_whitespace(line + 4);
+                if (*line != '\0') {
+                    ts->reason = xstrdup(line);
+                    ts->reason[strlen(ts->reason) - 1] = '\0';
+                }
+                ts->all_skipped = 1;
+                ts->aborted = 1;
+                return 0;
+            }
+        }
+    }
+    if (i <= 0) {
+        puts("ABORTED (invalid test count)");
+        ts->aborted = 1;
+        ts->reported = 1;
+        return 0;
+    }
+    if (ts->plan == PLAN_INIT && ts->allocated == 0) {
+        ts->count = i;
+        ts->allocated = i;
+        ts->plan = PLAN_FIRST;
+        ts->results = xmalloc(ts->count * sizeof(enum test_status));
+        for (i = 0; i < ts->count; i++)
+            ts->results[i] = TEST_INVALID;
+    } else if (ts->plan == PLAN_PENDING) {
+        if (i < ts->count) {
+            printf("ABORTED (invalid test number %d)\n", ts->count);
+            ts->aborted = 1;
+            ts->reported = 1;
+            return 0;
+        }
+        ts->count = i;
+        ts->plan = PLAN_FINAL;
+    }
+    return 1;
+}
+
+
+/*
  * Given a single line of output from a test, parse it and return the success
  * status of that test.  Anything printed to stdout not matching the form
  * /^(not )?ok \d+/ is ignored.  Sets ts->current to the test number that just
@@ -384,7 +423,7 @@ test_checkline(const char *line, struct testset *ts)
     enum test_status status = TEST_PASS;
     const char *bail;
     char *end;
-    int current;
+    int current, i;
 
     /* Before anything, check for a test abort. */
     bail = strstr(line, "Bail out!");
@@ -411,6 +450,26 @@ test_checkline(const char *line, struct testset *ts)
     if (line[strlen(line) - 1] != '\n')
         return;
 
+    /* If the line begins with a hash mark, ignore it. */
+    if (line[0] == '#')
+        return;
+
+    /* If we haven't yet seen a plan, look for one. */
+    if (ts->plan == PLAN_INIT && isdigit((unsigned char)(*line))) {
+        if (!test_plan(line, ts))
+            return;
+    } else if (strncmp(line, "1..", 3) == 0) {
+        if (ts->plan == PLAN_PENDING) {
+            if (!test_plan(line, ts))
+                return;
+        } else {
+            puts("ABORTED (multiple plans)");
+            ts->aborted = 1;
+            ts->reported = 1;
+            return;
+        }
+    }
+
     /* Parse the line, ignoring something we can't parse. */
     if (strncmp(line, "not ", 4) == 0) {
         status = TEST_FAIL;
@@ -423,12 +482,30 @@ test_checkline(const char *line, struct testset *ts)
     current = strtol(line, &end, 10);
     if (errno != 0 || end == line)
         current = ts->current + 1;
-    if (current <= 0 || current > ts->count) {
+    if (current <= 0 || (current > ts->count && ts->plan == PLAN_FIRST)) {
         test_backspace(ts);
         printf("ABORTED (invalid test number %d)\n", current);
         ts->aborted = 1;
         ts->reported = 1;
         return;
+    }
+
+    /* We have a valid test result.  Tweak the results array if needed. */
+    if (ts->plan == PLAN_INIT || ts->plan == PLAN_PENDING) {
+        ts->plan = PLAN_PENDING;
+        if (current > ts->count)
+            ts->count = current;
+        if (current > ts->allocated) {
+            int n;
+
+            n = (ts->allocated == 0) ? 32 : ts->allocated * 2;
+            if (n < current)
+                n = current;
+            ts->results = xrealloc(ts->results, n * sizeof(enum test_status));
+            for (i = ts->allocated; i < n; i++)
+                ts->results[i] = TEST_INVALID;
+            ts->allocated = n;
+        }
     }
 
     /*
@@ -588,8 +665,9 @@ test_summarize(struct testset *ts, int status)
 
 /*
  * Given a test set, analyze the results, classify the exit status, handle a
- * few special error messages, and then pass it along to test_summarize()
- * for the regular output.
+ * few special error messages, and then pass it along to test_summarize() for
+ * the regular output.  Returns true if the test set ran successfully and all
+ * tests passed or were skipped, false otherwise.
  */
 static int
 test_analyze(struct testset *ts)
@@ -624,6 +702,10 @@ test_analyze(struct testset *ts)
     } else if (WIFSIGNALED(ts->status)) {
         test_summarize(ts, -WTERMSIG(ts->status));
         return 0;
+    } else if (ts->plan != PLAN_FIRST && ts->plan != PLAN_FINAL) {
+        puts("ABORTED (no valid test plan)");
+        ts->aborted = 1;
+        return 0;
     } else {
         test_summarize(ts, 0);
         return (ts->failed == 0);
@@ -644,10 +726,7 @@ test_run(struct testset *ts)
     FILE *output;
     char buffer[BUFSIZ];
 
-    /*
-     * Initialize the test and our data structures, flagging this set in error
-     * if the initialization fails.
-     */
+    /* Run the test program. */
     testpid = test_start(ts->path, &outfd);
     output = fdopen(outfd, "r");
     if (!output) {
@@ -655,15 +734,11 @@ test_run(struct testset *ts)
         fflush(stdout);
         sysdie("fdopen failed");
     }
-    if (!fgets(buffer, sizeof(buffer), output))
-        ts->aborted = 1;
-    if (!ts->aborted && !test_init(buffer, ts))
-        ts->aborted = 1;
 
     /* Pass each line of output to test_checkline(). */
     while (!ts->aborted && fgets(buffer, sizeof(buffer), output))
         test_checkline(buffer, ts);
-    if (ferror(output))
+    if (ferror(output) || ts->plan == PLAN_INIT)
         ts->aborted = 1;
     test_backspace(ts);
 
@@ -742,6 +817,12 @@ test_fail_summary(const struct testlist *fails)
         if (first)
             test_print_range(first, last, chars, 20);
         putchar('\n');
+        free(ts->file);
+        free(ts->path);
+        free(ts->results);
+        if (ts->reason != NULL)
+            free(ts->reason);
+        free(ts);
     }
 }
 
@@ -803,8 +884,9 @@ test_batch(const char *testlist, const char *source, const char *build)
     struct testset ts, *tmp;
     struct timeval start, end;
     struct rusage stats;
-    struct testlist *failhead = 0;
-    struct testlist *failtail = 0;
+    struct testlist *failhead = NULL;
+    struct testlist *failtail = NULL;
+    struct testlist *next;
     int total = 0;
     int passed = 0;
     int skipped = 0;
@@ -862,12 +944,14 @@ test_batch(const char *testlist, const char *source, const char *build)
         if (isatty(STDOUT_FILENO))
             fflush(stdout);
         memset(&ts, 0, sizeof(ts));
+        ts.plan = PLAN_INIT;
         ts.file = xstrdup(buffer);
         find_test(buffer, &ts, source, build);
         ts.reason = NULL;
         if (test_run(&ts)) {
             free(ts.file);
             free(ts.path);
+            free(ts.results);
             if (ts.reason != NULL)
                 free(ts.reason);
         } else {
@@ -876,13 +960,13 @@ test_batch(const char *testlist, const char *source, const char *build)
             if (!failhead) {
                 failhead = xmalloc(sizeof(struct testset));
                 failhead->ts = tmp;
-                failhead->next = 0;
+                failhead->next = NULL;
                 failtail = failhead;
             } else {
                 failtail->next = xmalloc(sizeof(struct testset));
                 failtail = failtail->next;
                 failtail->ts = tmp;
-                failtail->next = 0;
+                failtail->next = NULL;
             }
         }
         aborted += ts.aborted;
@@ -898,8 +982,14 @@ test_batch(const char *testlist, const char *source, const char *build)
     getrusage(RUSAGE_CHILDREN, &stats);
 
     /* Print out our final results. */
-    if (failhead)
+    if (failhead != NULL) {
         test_fail_summary(failhead);
+        while (failhead != NULL) {
+            next = failhead->next;
+            free(failhead);
+            failhead = next;
+        }
+    }
     putchar('\n');
     if (aborted != 0) {
         if (aborted == 1)
