@@ -125,13 +125,13 @@ struct testset {
     char *file;                 /* The file name of the test. */
     char *path;                 /* The path to the test program. */
     enum plan_status plan;      /* The status of our plan. */
-    int count;                  /* Expected count of tests. */
-    int current;                /* The last seen test number. */
-    int length;                 /* The length of the last status message. */
-    int passed;                 /* Count of passing tests. */
-    int failed;                 /* Count of failing lists. */
-    int skipped;                /* Count of skipped tests (passed). */
-    int allocated;              /* The size of the results table. */
+    unsigned long count;        /* Expected count of tests. */
+    unsigned long current;      /* The last seen test number. */
+    unsigned int length;        /* The length of the last status message. */
+    unsigned long passed;       /* Count of passing tests. */
+    unsigned long failed;       /* Count of failing lists. */
+    unsigned long skipped;      /* Count of skipped tests (passed). */
+    unsigned long allocated;    /* The size of the results table. */
     enum test_status *results;  /* Table of results by test number. */
     int aborted;                /* Whether the set as aborted. */
     int reported;               /* Whether the results were reported. */
@@ -194,7 +194,7 @@ x_malloc(size_t size, const char *file, int line)
     void *p;
 
     p = malloc(size);
-    if (!p)
+    if (p == NULL)
         sysdie("failed to malloc %lu bytes at %s line %d",
                (unsigned long) size, file, line);
     return p;
@@ -208,7 +208,7 @@ static void *
 x_realloc(void *p, size_t size, const char *file, int line)
 {
     p = realloc(p, size);
-    if (!p)
+    if (p == NULL)
         sysdie("failed to realloc %lu bytes at %s line %d",
                (unsigned long) size, file, line);
     return p;
@@ -226,7 +226,7 @@ x_strdup(const char *s, const char *file, int line)
 
     len = strlen(s) + 1;
     p = malloc(len);
-    if (!p)
+    if (p == NULL)
         sysdie("failed to strdup %lu bytes at %s line %d",
                (unsigned long) len, file, line);
     memcpy(p, s, len);
@@ -328,7 +328,7 @@ test_start(const char *path, int *fd)
 static void
 test_backspace(struct testset *ts)
 {
-    int i;
+    unsigned int i;
 
     if (!isatty(STDOUT_FILENO))
         return;
@@ -351,7 +351,8 @@ test_backspace(struct testset *ts)
 static int
 test_plan(const char *line, struct testset *ts)
 {
-    int i, n;
+    unsigned long i;
+    long n;
 
     /*
      * Accept a plan without the leading 1.. for compatibility with older
@@ -403,14 +404,14 @@ test_plan(const char *line, struct testset *ts)
         for (i = 0; i < ts->count; i++)
             ts->results[i] = TEST_INVALID;
     } else if (ts->plan == PLAN_PENDING) {
-        if (n < ts->count) {
-            printf("ABORTED (invalid test number %d)\n", ts->count);
+        if ((unsigned long) n < ts->count) {
+            printf("ABORTED (invalid test number %lu)\n", ts->count);
             ts->aborted = 1;
             ts->reported = 1;
             return 0;
         }
         ts->count = n;
-        if (n > ts->allocated) {
+        if ((unsigned long) n > ts->allocated) {
             ts->results = xrealloc(ts->results, n * sizeof(enum test_status));
             for (i = ts->allocated; i < ts->count; i++)
                 ts->results[i] = TEST_INVALID;
@@ -434,14 +435,15 @@ test_checkline(const char *line, struct testset *ts)
     enum test_status status = TEST_PASS;
     const char *bail;
     char *end;
-    int current, i;
+    long number;
+    unsigned long i, current;
 
     /* Before anything, check for a test abort. */
     bail = strstr(line, "Bail out!");
     if (bail != NULL) {
         bail = skip_whitespace(bail + strlen("Bail out!"));
         if (*bail != '\0') {
-            int length;
+            size_t length;
 
             length = strlen(bail);
             if (bail[length - 1] == '\n')
@@ -490,12 +492,13 @@ test_checkline(const char *line, struct testset *ts)
         return;
     line = skip_whitespace(line + 2);
     errno = 0;
-    current = strtol(line, &end, 10);
+    number = strtol(line, &end, 10);
     if (errno != 0 || end == line)
-        current = ts->current + 1;
-    if (current <= 0 || (current > ts->count && ts->plan == PLAN_FIRST)) {
+        number = ts->current + 1;
+    current = number;
+    if (number <= 0 || (current > ts->count && ts->plan == PLAN_FIRST)) {
         test_backspace(ts);
-        printf("ABORTED (invalid test number %d)\n", current);
+        printf("ABORTED (invalid test number %lu)\n", current);
         ts->aborted = 1;
         ts->reported = 1;
         return;
@@ -507,7 +510,7 @@ test_checkline(const char *line, struct testset *ts)
         if (current > ts->count)
             ts->count = current;
         if (current > ts->allocated) {
-            int n;
+            unsigned long n;
 
             n = (ts->allocated == 0) ? 32 : ts->allocated * 2;
             if (n < current)
@@ -537,7 +540,7 @@ test_checkline(const char *line, struct testset *ts)
     /* Make sure that the test number is in range and not a duplicate. */
     if (ts->results[current - 1] != TEST_INVALID) {
         test_backspace(ts);
-        printf("ABORTED (duplicate test number %d)\n", current);
+        printf("ABORTED (duplicate test number %lu)\n", current);
         ts->aborted = 1;
         ts->reported = 1;
         return;
@@ -554,7 +557,7 @@ test_checkline(const char *line, struct testset *ts)
     ts->results[current - 1] = status;
     test_backspace(ts);
     if (isatty(STDOUT_FILENO)) {
-        ts->length = printf("%d/%d", current, ts->count);
+        ts->length = printf("%lu/%lu", current, ts->count);
         fflush(stdout);
     }
 }
@@ -567,12 +570,13 @@ test_checkline(const char *line, struct testset *ts)
  * chars plus the space needed would go over the limit (use a limit of 0 to
  * disable this.
  */
-static int
-test_print_range(int first, int last, int chars, int limit)
+static unsigned int
+test_print_range(unsigned long first, unsigned long last, unsigned int chars,
+                 unsigned int limit)
 {
-    int needed = 0;
-    int out = 0;
-    int n;
+    unsigned int needed = 0;
+    unsigned int out = 0;
+    unsigned long n;
 
     if (chars > 0) {
         needed += 2;
@@ -590,8 +594,8 @@ test_print_range(int first, int last, int chars, int limit)
             out += printf("...");
     } else {
         if (last > first)
-            out += printf("%d-", first);
-        out += printf("%d", last);
+            out += printf("%lu-", first);
+        out += printf("%lu", last);
     }
     return out;
 }
@@ -606,16 +610,16 @@ test_print_range(int first, int last, int chars, int limit)
 static void
 test_summarize(struct testset *ts, int status)
 {
-    int i;
-    int missing = 0;
-    int failed = 0;
-    int first = 0;
-    int last = 0;
+    unsigned long i;
+    unsigned long missing = 0;
+    unsigned long failed = 0;
+    unsigned long first = 0;
+    unsigned long last = 0;
 
     if (ts->aborted) {
         fputs("ABORTED", stdout);
         if (ts->count > 0)
-            printf(" (passed %d/%d)", ts->passed, ts->count - ts->skipped);
+            printf(" (passed %lu/%lu)", ts->passed, ts->count - ts->skipped);
     } else {
         for (i = 0; i < ts->count; i++) {
             if (ts->results[i] == TEST_INVALID) {
@@ -659,9 +663,9 @@ test_summarize(struct testset *ts, int status)
             fputs(!status ? "ok" : "dubious", stdout);
             if (ts->skipped > 0) {
                 if (ts->skipped == 1)
-                    printf(" (skipped %d test)", ts->skipped);
+                    printf(" (skipped %lu test)", ts->skipped);
                 else
-                    printf(" (skipped %d tests)", ts->skipped);
+                    printf(" (skipped %lu tests)", ts->skipped);
             }
         }
     }
@@ -733,7 +737,8 @@ static int
 test_run(struct testset *ts)
 {
     pid_t testpid, child;
-    int outfd, i, status;
+    int outfd, status;
+    unsigned long i;
     FILE *output;
     char buffer[BUFSIZ];
 
@@ -790,7 +795,8 @@ static void
 test_fail_summary(const struct testlist *fails)
 {
     struct testset *ts;
-    int i, chars, total, first, last;
+    unsigned int chars;
+    unsigned long i, first, last, total;
 
     puts(header);
 
@@ -799,7 +805,7 @@ test_fail_summary(const struct testlist *fails)
     for (; fails; fails = fails->next) {
         ts = fails->ts;
         total = ts->count - ts->skipped;
-        printf("%-26.26s %4d/%-4d %3.0f%% %4d ", ts->file, ts->failed,
+        printf("%-26.26s %4lu/%-4lu %3.0f%% %4lu ", ts->file, ts->failed,
                total, total ? (ts->failed * 100.0) / total : 0,
                ts->skipped);
         if (WIFEXITED(ts->status))
@@ -815,17 +821,17 @@ test_fail_summary(const struct testlist *fails)
         last = 0;
         for (i = 0; i < ts->count; i++) {
             if (ts->results[i] == TEST_FAIL) {
-                if (first && i == last)
+                if (first != 0 && i == last)
                     last = i + 1;
                 else {
-                    if (first)
+                    if (first != 0)
                         chars += test_print_range(first, last, chars, 20);
                     first = i + 1;
                     last = i + 1;
                 }
             }
         }
-        if (first)
+        if (first != 0)
             test_print_range(first, last, chars, 20);
         putchar('\n');
         free(ts->file);
@@ -856,7 +862,7 @@ find_test(const char *name, struct testset *ts, const char *source,
 {
     char *path;
     const char *bases[] = { ".", build, source, NULL };
-    int i;
+    unsigned int i;
 
     for (i = 0; bases[i] != NULL; i++) {
         path = xmalloc(strlen(bases[i]) + strlen(name) + 4);
@@ -888,21 +894,21 @@ static int
 test_batch(const char *testlist, const char *source, const char *build)
 {
     FILE *tests;
-    size_t length, i;
-    size_t longest = 0;
+    unsigned int length, i;
+    unsigned int longest = 0;
     char buffer[BUFSIZ];
-    int line;
+    unsigned int line;
     struct testset ts, *tmp;
     struct timeval start, end;
     struct rusage stats;
     struct testlist *failhead = NULL;
     struct testlist *failtail = NULL;
     struct testlist *next;
-    int total = 0;
-    int passed = 0;
-    int skipped = 0;
-    int failed = 0;
-    int aborted = 0;
+    unsigned long total = 0;
+    unsigned long passed = 0;
+    unsigned long skipped = 0;
+    unsigned long failed = 0;
+    unsigned long aborted = 0;
 
     /*
      * Open our file of tests to run and scan it, checking for lines that
@@ -916,7 +922,7 @@ test_batch(const char *testlist, const char *source, const char *build)
         line++;
         length = strlen(buffer) - 1;
         if (buffer[length] != '\n') {
-            fprintf(stderr, "%s:%d: line too long\n", testlist, line);
+            fprintf(stderr, "%s:%u: line too long\n", testlist, line);
             exit(1);
         }
         if (length > longest)
@@ -945,7 +951,7 @@ test_batch(const char *testlist, const char *source, const char *build)
         line++;
         length = strlen(buffer) - 1;
         if (buffer[length] != '\n') {
-            fprintf(stderr, "%s:%d: line too long\n", testlist, line);
+            fprintf(stderr, "%s:%u: line too long\n", testlist, line);
             exit(1);
         }
         buffer[length] = '\0';
@@ -1004,24 +1010,24 @@ test_batch(const char *testlist, const char *source, const char *build)
     putchar('\n');
     if (aborted != 0) {
         if (aborted == 1)
-            printf("Aborted %d test set", aborted);
+            printf("Aborted %lu test set", aborted);
         else
-            printf("Aborted %d test sets", aborted);
-        printf(", passed %d/%d tests", passed, total);
+            printf("Aborted %lu test sets", aborted);
+        printf(", passed %lu/%lu tests", passed, total);
     }
     else if (failed == 0)
         fputs("All tests successful", stdout);
     else
-        printf("Failed %d/%d tests, %.2f%% okay", failed, total,
+        printf("Failed %lu/%lu tests, %.2f%% okay", failed, total,
                (total - failed) * 100.0 / total);
     if (skipped != 0) {
         if (skipped == 1)
-            printf(", %d test skipped", skipped);
+            printf(", %lu test skipped", skipped);
         else
-            printf(", %d tests skipped", skipped);
+            printf(", %lu tests skipped", skipped);
     }
     puts(".");
-    printf("Files=%d,  Tests=%d", line, total);
+    printf("Files=%u,  Tests=%lu", line, total);
     printf(",  %.2f seconds", tv_diff(&end, &start));
     printf(" (%.2f usr + %.2f sys = %.2f CPU)\n",
            tv_seconds(&stats.ru_utime), tv_seconds(&stats.ru_stime),
