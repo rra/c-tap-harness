@@ -8,6 +8,7 @@ skip-all-case...skipped (some reason)
 skip-all-quiet..skipped
 pass............ok
 order...........ok
+skip-all-late...skipped (some reason)
 
-All tests successful, 8 tests skipped.
-Files=6,  Tests=18
+All tests successful, 9 tests skipped.
+Files=7,  Tests=18

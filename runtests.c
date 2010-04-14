@@ -365,7 +365,8 @@ test_plan(const char *line, struct testset *ts)
     /*
      * Get the count, check it for validity, and initialize the struct.  If we
      * have something of the form "1..0 # skip foo", the whole file was
-     * skipped; record that.
+     * skipped; record that.  If we do skip the whole file, zero out all of
+     * our statistics, since they're no longer relevant.
      */
     n = strtol(line, (char **) &line, 10);
     if (n == 0) {
@@ -380,6 +381,10 @@ test_plan(const char *line, struct testset *ts)
                 }
                 ts->all_skipped = 1;
                 ts->aborted = 1;
+                ts->count = 0;
+                ts->passed = 0;
+                ts->skipped = 0;
+                ts->failed = 0;
                 return 0;
             }
         }
