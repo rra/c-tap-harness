@@ -5,9 +5,12 @@
 # See LICENSE for licensing terms.
 
 AUTOMAKE_OPTIONS = foreign subdir-objects
-EXTRA_DIST = LICENSE autogen docs/runtests.pod tap/libtap.sh tests/TESTS     \
-	tests/basic/abort-one.list tests/basic/abort-one.output		     \
-	tests/basic/abort.list tests/basic/abort.output tests/basic/abort.t  \
+EXTRA_DIST = LICENSE autogen docs/api/bail.pod docs/api/diag.pod	     \
+	docs/api/is_int.pod docs/api/ok.pod docs/api/plan.pod		     \
+	docs/api/skip.pod docs/api/skip_all.pod docs/runtests.pod	     \
+	tap/libtap.sh tests/TESTS tests/basic/abort-one.list		     \
+	tests/basic/abort-one.output tests/basic/abort.list		     \
+	tests/basic/abort.output tests/basic/abort.t			     \
 	tests/basic/badnum-delay.t tests/basic/badnum.t			     \
 	tests/basic/bail-silent.t tests/basic/bail.t tests/basic/duplicate.t \
 	tests/basic/fail-count.t tests/basic/fail.list			     \
@@ -49,7 +52,38 @@ runtests_CPPFLAGS = -DSOURCE='"$(abs_top_srcdir)/tests"' \
 	-DBUILD='"$(abs_top_builddir)/tests"'
 noinst_LIBRARIES = tap/libtap.a
 tap_libtap_a_SOURCES = tap/basic.c tap/basic.h
-dist_man_MANS = docs/runtests.1
+dist_man_MANS = docs/api/bail.3 docs/api/diag.3 docs/api/is_int.3	  \
+	docs/api/ok.3 docs/api/plan.3 docs/api/skip.3 docs/api/skip_all.3 \
+	docs/runtests.1
+
+# Add symlinks for the man pages that document multiple functions.
+install-data-hook:
+	rm -f $(DESTDIR)$(man3dir)/sysbail.3
+	$(LN_S) bail.3 $(DESTDIR)$(man3dir)/sysbail.3
+	rm -f $(DESTDIR)$(man3dir)/sysdiag.3
+	$(LN_S) diag.3 $(DESTDIR)$(man3dir)/sysdiag.3
+	rm -f $(DESTDIR)$(man3dir)/is_double.3
+	rm -f $(DESTDIR)$(man3dir)/is_string.3
+	rm -f $(DESTDIR)$(man3dir)/is_hex.3
+	$(LN_S) is_int.3 $(DESTDIR)$(man3dir)/is_double.3
+	$(LN_S) is_int.3 $(DESTDIR)$(man3dir)/is_string.3
+	$(LN_S) is_int.3 $(DESTDIR)$(man3dir)/is_hex.3
+	rm -f $(DESTDIR)$(man3dir)/ok_block.3
+	$(LN_S) ok.3 $(DESTDIR)$(man3dir)/ok_block.3
+	rm -f $(DESTDIR)$(man3dir)/plan_lazy.3
+	$(LN_S) plan.3 $(DESTDIR)$(man3dir)/plan_lazy.3
+	rm -f $(DESTDIR)$(man3dir)/skip_block.3
+	$(LN_S) skip.3 $(DESTDIR)$(man3dir)/skip_block.3
+
+uninstall-hook:
+	rm -f $(DESTDIR)$(man3dir)/sysbail.3
+	rm -f $(DESTDIR)$(man3dir)/sysdiag.3
+	rm -f $(DESTDIR)$(man3dir)/is_double.3
+	rm -f $(DESTDIR)$(man3dir)/is_string.3
+	rm -f $(DESTDIR)$(man3dir)/is_hex.3
+	rm -f $(DESTDIR)$(man3dir)/ok_block.3
+	rm -f $(DESTDIR)$(man3dir)/plan_lazy.3
+	rm -f $(DESTDIR)$(man3dir)/skip_block.3
 
 # Work around the GNU Coding Standards, which leave all the Autoconf and
 # Automake stuff around after make maintainer-clean, thus making that command

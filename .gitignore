@@ -28,5 +28,6 @@
 /tests/search.t
 .deps/
 .dirstamp
+*.3
 *.a
 *.o

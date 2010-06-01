@@ -1,5 +1,11 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 1.3 (unreleased)
+
+    Add API documentation for the functions provided by the basic TAP C
+    library.  The documentation is in POD and *roff format in docs/api and
+    installed as man pages in the (generally unused) case of make install.
+
 C TAP Harness 1.2 (2010-04-13)
 
     Support giving the plan at any point in the test output rather than

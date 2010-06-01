@@ -1,0 +1,58 @@
+=for stopwords
+ok const printf-style Allbery
+
+=head1 NAME
+
+ok, ok_block - Simple success or failure for a TAP test
+
+=head1 SYNOPSIS
+
+#include <tap/basic.h>
+
+void B<ok>(int I<success>, const char *I<format>, ...);
+
+void B<ok_block>(unsigned long I<count>, int I<success>, const char *I<format>, ...);
+
+=head1 DESCRIPTION
+
+ok() reports success or failure for a simple test.  I<success> is
+interpreted as a boolean value, and the test is successful if I<success>
+is non-zero and a failure otherwise.  I<format> may be NULL; if not NULL,
+I<format> should be a printf-style format string with possible optional
+arguments giving the name or intention of this test.  I<format> should be
+specified where possible to make it easier to track failures down to
+specific tests.
+
+ok() cannot provide any additional information about why a test succeeded
+or failed.  Normally, is_int() or a similar function should be used
+instead to check a value against another value, but ok() is the only
+useful way to express some more complex test cases.  Consider calling
+diag() before ok() if the test is known to have failed to provide
+additional information about exactly what failed.
+
+ok_block() is identical to ok() except that it takes an initial I<count>
+and reports the same status for the next I<count> tests.  It's rarely
+used.  To skip a set of tests because they don't apply to the current
+environment, use skip_block() instead.
+
+=head1 RETURN VALUE
+
+None.
+
+=head1 CAVEATS
+
+plan() or plan_lazy() should always be called before calling ok() or
+ok_block().
+
+=head1 SEE ALSO
+
+diag(3), is_int(3), plan(3), skip(3)
+
+The current version of the C TAP Harness library is available from its web
+page at L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.
+
+=head1 AUTHOR
+
+Russ Allbery <rra@stanford.edu>
+
+=cut

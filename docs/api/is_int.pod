@@ -1,0 +1,63 @@
+=for stopwords
+const printf-style Allbery
+
+=head1 NAME
+
+is_int, is_double, is_string, is_hex - Check values for a TAP test
+
+=head1 SYNOPSIS
+
+#include <tap/basic.h>
+
+void B<is_int>(long I<wanted>, long I<seen>, const char *I<format>, ...);
+
+void B<is_double>(double I<wanted>, double I<seen>, const char *I<format>, ...);
+
+void B<is_string>(const char *I<wanted>, const char *I<seen>,
+               const char *I<format>, ...);
+
+void B<is_hex>(unsigned long I<wanted>, unsigned long I<seen>,
+            const char *I<format>, ...);
+
+=head1 DESCRIPTION
+
+These functions compare two values and report success to a TAP harness if
+the values match and failure otherwise.  In each case, I<format> may be
+NULL; if not NULL, I<format> should be a printf-style format string with
+possible optional arguments giving the name or intention of this test.
+I<format> should be specified where possible to make it easier to track
+failures down to specific tests.
+
+is_int() compares two longs, is_double() compares two doubles, is_string()
+compares two strings, and is_hex() compares two unsigned longs.  The
+advantage of these functions over ok() is that, if the values don't match,
+the expected and seen values are reported as diagnostics to make it easier
+to understand the test failure.  is_string() correctly handles NULL values
+for both I<wanted> and I<seen>.  is_hex() reports its values as hex
+strings and is useful for testing flags or similar values.
+
+=head1 RETURN VALUE
+
+None.
+
+=head1 CAVEATS
+
+is_double() is not safe to use with the results of calculations since it
+doesn't provide a way to specify an epsilon value within which two doubles
+should still be considered equal.
+
+plan() or plan_lazy() should always be called before calling any of these
+functions.
+
+=head1 SEE ALSO
+
+ok(3), plan(3)
+
+The current version of the C TAP Harness library is available from its web
+page at L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.
+
+=head1 AUTHOR
+
+Russ Allbery <rra@stanford.edu>
+
+=cut
