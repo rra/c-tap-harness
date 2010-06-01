@@ -9,8 +9,8 @@
 /config.status.lineno
 /configure
 /configure.lineno
+/docs/runtests.1
 /runtests
-/runtests.1
 /tests/env/env.t
 /tests/libtap/c-bail
 /tests/libtap/c-basic

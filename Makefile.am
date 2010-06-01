@@ -5,7 +5,7 @@
 # See LICENSE for licensing terms.
 
 AUTOMAKE_OPTIONS = foreign subdir-objects
-EXTRA_DIST = LICENSE autogen runtests.pod tap/libtap.sh tests/TESTS	     \
+EXTRA_DIST = LICENSE autogen docs/runtests.pod tap/libtap.sh tests/TESTS     \
 	tests/basic/abort-one.list tests/basic/abort-one.output		     \
 	tests/basic/abort.list tests/basic/abort.output tests/basic/abort.t  \
 	tests/basic/badnum-delay.t tests/basic/badnum.t			     \
@@ -49,13 +49,13 @@ runtests_CPPFLAGS = -DSOURCE='"$(abs_top_srcdir)/tests"' \
 	-DBUILD='"$(abs_top_builddir)/tests"'
 noinst_LIBRARIES = tap/libtap.a
 tap_libtap_a_SOURCES = tap/basic.c tap/basic.h
-dist_man_MANS = runtests.1
+dist_man_MANS = docs/runtests.1
 
 # Work around the GNU Coding Standards, which leave all the Autoconf and
 # Automake stuff around after make maintainer-clean, thus making that command
 # mostly worthless.
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/depcomp		\
-	build-aux/install-sh build-aux/missing configure runtests.1
+	build-aux/install-sh build-aux/missing configure docs/runtests.1
 
 # A set of flags for warnings.  Add -O because gcc won't find some warnings
 # without optimization turned on, and add -DDEBUG=1 so we'll also compile all
