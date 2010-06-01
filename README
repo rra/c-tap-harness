@@ -98,10 +98,11 @@ BUILDING AND TESTING
 USING THE HARNESS
 
   While there is an install target that installs runtests in the default
-  binary directory (/usr/local/bin by default) because Automake provides
-  it automatically, one normally wouldn't install anything from this
-  package.  Instead, the code is intended to be copied into your package
-  and refreshed from the latest release of C TAP Harness for each release.
+  binary directory (/usr/local/bin by default) and installs the man pages,
+  because Automake provides it automatically, one normally wouldn't
+  install anything from this package.  Instead, the code is intended to be
+  copied into your package and refreshed from the latest release of C TAP
+  Harness for each release.
 
   You can obviously copy the code and integrate it however works best for
   your package and your build system.  Here's how I do it for my packages
@@ -164,6 +165,10 @@ USING THE HARNESS
         . "${SOURCE}/tap/libtap.sh"
 
     and can then use the functions defined in the library.
+
+  * Optionally copy docs/writing-tests into your package somewhere, such
+    as tests/README, as instructions to contributors on how to write tests
+    for this framework.
 
   If you have data files that your test cases use, conventionally they go
   into tests/data.  You can then find the data directory relative to the

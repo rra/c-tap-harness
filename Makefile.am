@@ -8,9 +8,9 @@ AUTOMAKE_OPTIONS = foreign subdir-objects
 EXTRA_DIST = LICENSE autogen docs/api/bail.pod docs/api/diag.pod	     \
 	docs/api/is_int.pod docs/api/ok.pod docs/api/plan.pod		     \
 	docs/api/skip.pod docs/api/skip_all.pod docs/runtests.pod	     \
-	tap/libtap.sh tests/TESTS tests/basic/abort-one.list		     \
-	tests/basic/abort-one.output tests/basic/abort.list		     \
-	tests/basic/abort.output tests/basic/abort.t			     \
+	docs/writing-tests tap/libtap.sh tests/TESTS			     \
+	tests/basic/abort-one.list tests/basic/abort-one.output		     \
+	tests/basic/abort.list tests/basic/abort.output tests/basic/abort.t  \
 	tests/basic/badnum-delay.t tests/basic/badnum.t			     \
 	tests/basic/bail-silent.t tests/basic/bail.t tests/basic/duplicate.t \
 	tests/basic/fail-count.t tests/basic/fail.list			     \
