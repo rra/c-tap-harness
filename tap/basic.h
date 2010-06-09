@@ -15,6 +15,7 @@
 #ifndef TAP_BASIC_H
 #define TAP_BASIC_H 1
 
+#include <stdarg.h>             /* va_list */
 #include <sys/types.h>          /* pid_t */
 
 /*

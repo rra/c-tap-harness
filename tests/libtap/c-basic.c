@@ -11,10 +11,25 @@
 
 #include <tap/basic.h>
 
+/*
+ * Test okv(), which requires having a separate stdargs function that
+ * generates the va_list.
+ */
+static void
+test_okv(const char *format, ...)
+{
+    va_list args;
+
+    va_start(args, format);
+    okv(1, format, args);
+    va_end(args);
+}
+
+
 int
 main(void)
 {
-    plan(34);
+    plan(35);
 
     ok(1, NULL);
     ok(0, NULL);
@@ -42,6 +57,7 @@ main(void)
     is_hex(2147483649UL, 2147483649UL, "2^31 + 1 correct");
     is_hex(2147483649UL, 0, "2^31 + 1 incorrect");
     is_hex(0, 0, NULL);
+    test_okv("testing %s", "okv");
 
     return 0;
 }
