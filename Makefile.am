@@ -59,21 +59,21 @@ dist_man_MANS = docs/api/bail.3 docs/api/diag.3 docs/api/is_int.3	  \
 # Add symlinks for the man pages that document multiple functions.
 install-data-hook:
 	rm -f $(DESTDIR)$(man3dir)/sysbail.3
-	$(LN_S) bail.3 $(DESTDIR)$(man3dir)/sysbail.3
+	cd $(DESTDIR)$(man3dir) && $(LN_S) bail.3 sysbail.3
 	rm -f $(DESTDIR)$(man3dir)/sysdiag.3
-	$(LN_S) diag.3 $(DESTDIR)$(man3dir)/sysdiag.3
+	cd $(DESTDIR)$(man3dir) && $(LN_S) diag.3 sysdiag.3
 	rm -f $(DESTDIR)$(man3dir)/is_double.3
 	rm -f $(DESTDIR)$(man3dir)/is_string.3
 	rm -f $(DESTDIR)$(man3dir)/is_hex.3
-	$(LN_S) is_int.3 $(DESTDIR)$(man3dir)/is_double.3
-	$(LN_S) is_int.3 $(DESTDIR)$(man3dir)/is_string.3
-	$(LN_S) is_int.3 $(DESTDIR)$(man3dir)/is_hex.3
+	cd $(DESTDIR)$(man3dir) && $(LN_S) is_int.3 is_double.3
+	cd $(DESTDIR)$(man3dir) && $(LN_S) is_int.3 is_string.3
+	cd $(DESTDIR)$(man3dir) && $(LN_S) is_int.3 is_hex.3
 	rm -f $(DESTDIR)$(man3dir)/ok_block.3
-	$(LN_S) ok.3 $(DESTDIR)$(man3dir)/ok_block.3
+	cd $(DESTDIR)$(man3dir) && $(LN_S) ok.3 ok_block.3
 	rm -f $(DESTDIR)$(man3dir)/plan_lazy.3
-	$(LN_S) plan.3 $(DESTDIR)$(man3dir)/plan_lazy.3
+	cd $(DESTDIR)$(man3dir) && $(LN_S) plan.3 plan_lazy.3
 	rm -f $(DESTDIR)$(man3dir)/skip_block.3
-	$(LN_S) skip.3 $(DESTDIR)$(man3dir)/skip_block.3
+	cd $(DESTDIR)$(man3dir) && $(LN_S) skip.3 skip_block.3
 
 uninstall-hook:
 	rm -f $(DESTDIR)$(man3dir)/sysbail.3

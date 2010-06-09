@@ -17,6 +17,7 @@ AM_MAINTAINER_MODE
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_RANLIB
+AC_PROG_LN_S
 
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([tests/env/env.t], [chmod +x tests/env/env.t])
