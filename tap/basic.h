@@ -72,9 +72,14 @@ void plan_lazy(void);
 void skip_all(const char *format, ...)
     __attribute__((__noreturn__, __format__(printf, 1, 2)));
 
-/* Basic reporting functions. */
+/*
+ * Basic reporting functions.  The okv() function is the same as ok() but
+ * takes the test description as a va_list to make it easier to reuse the
+ * reporting infrastructure when writing new tests.
+ */
 void ok(int success, const char *format, ...)
     __attribute__((__format__(printf, 2, 3)));
+void okv(int success, const char *format, va_list args);
 void skip(const char *reason, ...)
     __attribute__((__format__(printf, 1, 2)));
 
