@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 1.3 (unreleased)
+C TAP Harness 1.3 (2010-06-09)
 
     Add API documentation for the functions provided by the basic TAP C
     library.  The documentation is in POD and *roff format in docs/api and
