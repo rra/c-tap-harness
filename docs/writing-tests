@@ -144,7 +144,7 @@ Writing TAP Tests
     Complete API documentation for the basic C TAP library that comes with
     C TAP Harness is available at:
 
-        http://www.eyrie.org/~eagle/software/c-tap-harness/
+        <http://www.eyrie.org/~eagle/software/c-tap-harness/>
 
     It's common to need additional test functions and utility functions
     for your C tests, particularly if you have to set up and tear down a
@@ -161,7 +161,7 @@ Writing TAP Tests
     Libraries of additional useful TAP test functions are available in
     rra-c-util at:
 
-        http://www.eyrie.org/~eagle/software/rra-c-util/
+        <http://www.eyrie.org/~eagle/software/rra-c-util/>
 
     Some of the code there is particularly useful when testing programs
     that require Kerberos keys.
