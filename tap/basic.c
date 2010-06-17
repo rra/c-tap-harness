@@ -2,10 +2,11 @@
  * Some utility routines for writing tests.
  *
  * Herein are a variety of utility routines for writing tests.  All routines
- * of the form ok*() take a test number and some number of appropriate
+ * of the form ok() or is*() take a test number and some number of appropriate
  * arguments, check to be sure the results match the expected output using the
  * arguments, and print out something appropriate for that test number.  Other
- * utility routines help in constructing more complex tests.
+ * utility routines help in constructing more complex tests, skipping tests,
+ * or setting up the TAP output format.
  *
  * Copyright 2009, 2010 Russ Allbery <rra@stanford.edu>
  * Copyright 2006, 2007, 2008
@@ -430,4 +431,54 @@ sysdiag(const char *format, ...)
     vprintf(format, args);
     va_end(args);
     printf(": %s\n", strerror(oerrno));
+}
+
+
+/*
+ * Locate a test file.  Given the partial path to a file, look under BUILD and
+ * then SOURCE for the file and return the full path to the file.  Returns
+ * NULL if the file doesn't exist.  A non-NULL return should be freed with
+ * test_file_path_free().
+ *
+ * This function uses sprintf because it attempts to be independent of all
+ * other portability layers.  The use immediately after a memory allocation
+ * should be safe without using snprintf or strlcpy/strlcat.
+ */
+char *
+test_file_path(const char *file)
+{
+    char *base;
+    char *path = NULL;
+    size_t length;
+    const char *envs[] = { "BUILD", "SOURCE", NULL };
+    int i;
+
+    for (i = 0; envs[i] != NULL; i++) {
+        base = getenv(envs[i]);
+        if (base == NULL)
+            continue;
+        length = strlen(base) + 1 + strlen(file) + 1;
+        path = malloc(length);
+        if (path == NULL)
+            sysbail("cannot allocate memory");
+        sprintf(path, "%s/%s", base, file);
+        if (access(path, R_OK) == 0)
+            break;
+        free(path);
+        path = NULL;
+    }
+    return path;
+}
+
+
+/*
+ * Free a path returned from test_file_path().  This function exists primarily
+ * for Windows, where memory must be freed from the same library domain that
+ * it was allocated from.
+ */
+void
+test_file_path_free(char *path)
+{
+    if (path != NULL)
+        free(path);
 }

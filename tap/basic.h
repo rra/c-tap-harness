@@ -112,6 +112,14 @@ void diag(const char *format, ...)
 void sysdiag(const char *format, ...)
     __attribute__((__nonnull__, __format__(printf, 1, 2)));
 
+/*
+ * Find a test file under BUILD or SOURCE, returning the full path.  The
+ * returned path should be freed with test_file_path_free().
+ */
+char *test_file_path(const char *file)
+    __attribute__((__malloc__, __nonnull__));
+void test_file_path_free(char *path);
+
 END_DECLS
 
 #endif /* TAP_BASIC_H */

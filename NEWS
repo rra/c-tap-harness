@@ -1,5 +1,12 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 1.4 (unreleased)
+
+    Add a test_file_path() function to the basic C and shell TAP
+    libraries, which searches the build and source directories for a
+    particular file and returns the full path.  This is a utility function
+    that can be used to find test data files.
+
 C TAP Harness 1.3 (2010-06-09)
 
     Add API documentation for the functions provided by the basic TAP C

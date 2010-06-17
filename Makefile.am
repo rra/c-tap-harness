@@ -106,17 +106,18 @@ warnings:
 	$(MAKE) V=0 CFLAGS='$(WARNINGS)' $(check_PROGRAMS)
 
 # The bits below are for the test suite.
-check_PROGRAMS = tests/libtap/c-bail tests/libtap/c-basic		  \
-	tests/libtap/c-diag tests/libtap/c-extra tests/libtap/c-extra-one \
-	tests/libtap/c-lazy tests/libtap/c-missing			  \
-	tests/libtap/c-missing-one tests/libtap/c-skip			  \
-	tests/libtap/c-skip-reason tests/libtap/c-success		  \
+check_PROGRAMS = tests/libtap/c-bail tests/libtap/c-basic		    \
+	tests/libtap/c-diag tests/libtap/c-file tests/libtap/c-extra	    \
+	tests/libtap/c-extra-one tests/libtap/c-lazy tests/libtap/c-missing \
+	tests/libtap/c-missing-one tests/libtap/c-skip			    \
+	tests/libtap/c-skip-reason tests/libtap/c-success		    \
 	tests/libtap/c-success-one tests/libtap/c-sysbail
 tests_libtap_c_bail_LDADD = tap/libtap.a
 tests_libtap_c_basic_LDADD = tap/libtap.a
 tests_libtap_c_diag_LDADD = tap/libtap.a
 tests_libtap_c_extra_LDADD = tap/libtap.a
 tests_libtap_c_extra_one_LDADD = tap/libtap.a
+tests_libtap_c_file_LDADD = tap/libtap.a
 tests_libtap_c_lazy_LDADD = tap/libtap.a
 tests_libtap_c_missing_LDADD = tap/libtap.a
 tests_libtap_c_missing_one_LDADD = tap/libtap.a

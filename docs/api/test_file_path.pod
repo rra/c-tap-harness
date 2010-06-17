@@ -1,0 +1,43 @@
+=for stopwords
+Allbery
+
+=head1 NAME
+
+test_file_path, test_file_path_free - Locate test files for a TAP test
+
+=head1 SYNOPSIS
+
+#include <tap/basic.h>
+
+char *B<test_file_path>(const char *I<file>);
+
+void B<test_file_path_free>(char *I<path>);
+
+=head1 DESCRIPTION
+
+Given a partial file name, test_file_path() looks for that file under the
+directories named by the BUILD and then SOURCE environment variables and
+returns the full path to the first matching file.  If the file is not
+found under either directory, it returns NULL.  This can be used to locate
+test data without regard to whether it's in the source tree or generated
+as part of the build tree.
+
+test_file_path_free() frees the path returned by test_file_path().
+
+=head1 RETURN VALUE
+
+test_file_path() returns the full path to the first matching file as a
+string or NULL if the file was not found.
+
+=head1 SEE ALSO
+
+runtests(1)
+
+The current version of the C TAP Harness library is available from its web
+page at L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.
+
+=head1 AUTHOR
+
+Russ Allbery <rra@stanford.edu>
+
+=cut

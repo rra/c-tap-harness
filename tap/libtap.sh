@@ -163,3 +163,16 @@ bail () {
 diag () {
     echo '#' "$@"
 }
+
+# Search for the given file first in $BUILD and then in $SOURCE and echo the
+# path where the file was found, or the empty string if the file wasn't
+# found.
+test_file_path () {
+    if [ -f "$BUILD/$1" ] ; then
+        echo "$BUILD/$1"
+    elif [ -f "$SOURCE/$1" ] ; then
+        echo "$SOURCE/$1"
+    else
+        echo ''
+    fi
+}

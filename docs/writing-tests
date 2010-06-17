@@ -71,10 +71,17 @@ Writing TAP Tests
     One of the special features of C TAP Harness is the environment that
     it sets up for your test cases.  If your test program is called under
     the runtests driver, the environment variables SOURCE and BUILD will
-    be set to the top of the source tree and the top of the build tree,
-    respectively.  You can use those environment variables to locate
-    additional test data, programs and libraries built as part of your
-    software build, and other supporting information needed by tests.
+    be set to the top of the test directory in the source tree and the top
+    of the build tree, respectively.  You can use those environment
+    variables to locate additional test data, programs and libraries built
+    as part of your software build, and other supporting information
+    needed by tests.
+
+    The C and shell TAP libraries support a test_file_path() function,
+    which looks for a file under the build tree and then under the source
+    tree, using the BUILD and SOURCE environment variables, and return the
+    full path to the file.  This can be used to locate supporting data
+    files.
 
   Perl
 
