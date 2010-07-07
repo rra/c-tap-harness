@@ -5,10 +5,10 @@
 # See LICENSE for licensing terms.
 
 AUTOMAKE_OPTIONS = foreign subdir-objects
-EXTRA_DIST = LICENSE autogen docs/api/bail.pod docs/api/diag.pod	     \
+EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod docs/api/diag.pod  \
 	docs/api/is_int.pod docs/api/ok.pod docs/api/plan.pod		     \
-	docs/api/skip.pod docs/api/skip_all.pod docs/runtests.pod	     \
-	docs/writing-tests tap/libtap.sh tests/TESTS			     \
+	docs/api/skip.pod docs/api/skip_all.pod docs/api/test_file_path.pod  \
+	docs/runtests.pod docs/writing-tests tap/libtap.sh tests/TESTS	     \
 	tests/basic/abort-one.list tests/basic/abort-one.output		     \
 	tests/basic/abort.list tests/basic/abort.output tests/basic/abort.t  \
 	tests/basic/badnum-delay.t tests/basic/badnum.t			     \
@@ -36,13 +36,14 @@ EXTRA_DIST = LICENSE autogen docs/api/bail.pod docs/api/diag.pod	     \
 	tests/libtap/sh-diag tests/libtap/sh-diag.output		     \
 	tests/libtap/sh-extra tests/libtap/sh-extra-one			     \
 	tests/libtap/sh-extra-one.output tests/libtap/sh-extra.output	     \
-	tests/libtap/sh-lazy tests/libtap/sh-lazy.output		     \
-	tests/libtap/sh-missing tests/libtap/sh-missing-one		     \
-	tests/libtap/sh-missing-one.output tests/libtap/sh-missing.output    \
-	tests/libtap/sh-success tests/libtap/sh-success-one		     \
-	tests/libtap/sh-success-one.output tests/libtap/sh-success.output    \
-	tests/libtap/sh-skip tests/libtap/sh-skip.output tests/libtap.t	     \
-	tests/pod.t tests/pod-spelling.t tests/search/build/build-t	     \
+	tests/libtap/sh-file tests/libtap/sh-lazy			     \
+	tests/libtap/sh-lazy.output tests/libtap/sh-missing		     \
+	tests/libtap/sh-missing-one tests/libtap/sh-missing-one.output	     \
+	tests/libtap/sh-missing.output tests/libtap/sh-success		     \
+	tests/libtap/sh-success-one tests/libtap/sh-success-one.output	     \
+	tests/libtap/sh-success.output tests/libtap/sh-skip		     \
+	tests/libtap/sh-skip.output tests/libtap.t tests/pod.t		     \
+	tests/pod-spelling.t tests/search/build/build-t			     \
 	tests/search/relative.t tests/search/search.list		     \
 	tests/search/search.output tests/search/source/source.t		     \
 	tests/single/test.output tests/single/test.t tests/single.t
