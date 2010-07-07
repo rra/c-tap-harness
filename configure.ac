@@ -9,7 +9,7 @@ dnl
 dnl See LICENSE for licensing terms.
 
 AC_PREREQ([2.64])
-AC_INIT([C TAP Harness], [1.3], [rra@stanford.edu], [c-tap-harness])
+AC_INIT([C TAP Harness], [1.4], [rra@stanford.edu], [c-tap-harness])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([1.11 check-news silent-rules -Wall -Werror])
 AM_MAINTAINER_MODE

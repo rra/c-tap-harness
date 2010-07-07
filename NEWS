@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 1.4 (unreleased)
+C TAP Harness 1.4 (2010-07-07)
 
     Add a test_file_path() function to the basic C and shell TAP
     libraries, which searches the build and source directories for a
