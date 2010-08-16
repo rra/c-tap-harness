@@ -551,7 +551,7 @@ test_checkline(const char *line, struct testset *ts)
         case TEST_PASS: ts->passed++;   break;
         case TEST_FAIL: ts->failed++;   break;
         case TEST_SKIP: ts->skipped++;  break;
-        default:                        break;
+        case TEST_INVALID:              break;
     }
     ts->current = current;
     ts->results[current - 1] = status;
