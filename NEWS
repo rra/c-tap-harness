@@ -8,6 +8,8 @@ C TAP Harness 1.5 (unreleased)
     first colon, since it separates the program name from the error
     message.
 
+    runtests.c now builds without warnings with gcc -Wswitch-enum.
+
 C TAP Harness 1.4 (2010-07-07)
 
     Add a test_file_path() function to the basic C and shell TAP
