@@ -1,5 +1,13 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 1.5 (unreleased)
+
+    In ok_program in the shell TAP library, strip error output after the
+    second colon, not after the first.  This code helps comparing error
+    output that includes system error messages, but needs to skip past the
+    first colon, since it separates the program name from the error
+    message.
+
 C TAP Harness 1.4 (2010-07-07)
 
     Add a test_file_path() function to the basic C and shell TAP

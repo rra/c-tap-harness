@@ -142,7 +142,7 @@ ok_program () {
     output=`"$@" 2>&1`
     status=$?
     if [ "$w_status" -ne 0 ] ; then
-        output=`echo "$output" | sed 's/^\([^:]*\):.*/\1/'`
+        output=`echo "$output" | sed 's/^\([^:]* [^:]*\):.*/\1/'`
     fi
     if [ $status = $w_status ] && [ x"$output" = x"$w_output" ] ; then
         ok "$desc" true
