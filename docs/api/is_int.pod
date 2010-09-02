@@ -53,10 +53,6 @@ None.
 
 =head1 CAVEATS
 
-is_double() is not safe to use with the results of calculations since it
-doesn't provide a way to specify an epsilon value within which two doubles
-should still be considered equal.
-
 plan() or plan_lazy() should always be called before calling any of these
 functions.
 
