@@ -20,6 +20,7 @@
  */
 
 #include <errno.h>
+#include <math.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -313,12 +314,14 @@ is_string(const char *wanted, const char *seen, const char *format, ...)
 
 /*
  * Takes an expected double and a seen double and assumes the test passes if
- * those two numbers match.
+ * those two numbers are within delta of each other.
  */
 void
-is_double(double wanted, double seen, const char *format, ...)
+is_double(double wanted, double seen, double epsilon, const char *format, ...)
 {
-    if (wanted == seen)
+    if ((isnan(wanted) && isnan(seen))
+        || (isinf(wanted) && isinf(seen) && wanted == seen)
+        || fabs(wanted - seen) <= epsilon)
         printf("ok %lu", testnum++);
     else {
         printf("# wanted: %g\n#   seen: %g\n", wanted, seen);

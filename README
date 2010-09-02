@@ -148,8 +148,9 @@ USING THE HARNESS
 
         tests_libtap_c_basic_LDADD = tests/tap/libtap.a
 
-    and add them to check_PROGRAMS.  A more complex example from the
-    remctl package that needs additional libraries:
+    and add them to check_PROGRAMS.  If you call the is_double() function,
+    you will need to add -lm to the _LDADD setting.  A more complex
+    example from the remctl package that needs additional libraries:
 
         tests_client_open_t_LDFLAGS = $(GSSAPI_LDFLAGS)
         tests_client_open_t_LDADD = client/libremctl.la tests/tap/libtap.a \

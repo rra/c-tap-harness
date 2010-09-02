@@ -1,4 +1,4 @@
-1..35
+1..39
 ok 1
 not ok 2
 ok 3
@@ -14,36 +14,42 @@ ok 8 - a double test
 not ok 9 - a failing double test
 ok 10
 ok 11
-ok 12
-ok 13 - a string test
+ok 12 - NaN
+ok 13 - inf
+ok 14 - -inf
+# wanted: inf
+#   seen: -inf
+not ok 15 - inf and -inf
+ok 16
+ok 17 - a string test
 # wanted: yes
 #   seen: yes no
-not ok 14 - 
-ok 15 - null null
+not ok 18 - 
+ok 19 - null null
 # wanted: yes
 #   seen: (null)
-not ok 16
+not ok 20
 # wanted: (null)
 #   seen: yes
-not ok 17
-ok 18 # skip testing skip foo
-ok 19
-ok 20
-not ok 21 - some block
-not ok 22 - some block
-not ok 23 - some block
-not ok 24 - some block
-ok 25 # skip testing skip block
-ok 26 # skip testing skip block
-ok 27 # skip testing skip block
-ok 28 # skip testing skip block
-ok 29 # skip
-ok 30 # skip
-ok 31 # skip
-ok 32 - 2^31 + 1 correct
+not ok 21
+ok 22 # skip testing skip foo
+ok 23
+ok 24
+not ok 25 - some block
+not ok 26 - some block
+not ok 27 - some block
+not ok 28 - some block
+ok 29 # skip testing skip block
+ok 30 # skip testing skip block
+ok 31 # skip testing skip block
+ok 32 # skip testing skip block
+ok 33 # skip
+ok 34 # skip
+ok 35 # skip
+ok 36 - 2^31 + 1 correct
 # wanted: 80000001
 #   seen: 0
-not ok 33 - 2^31 + 1 incorrect
-ok 34
-ok 35 - testing okv
-# Looks like you failed 11 tests of 35
+not ok 37 - 2^31 + 1 incorrect
+ok 38
+ok 39 - testing okv
+# Looks like you failed 12 tests of 39

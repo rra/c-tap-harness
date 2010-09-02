@@ -118,7 +118,7 @@ check_PROGRAMS = tests/libtap/c-bail tests/libtap/c-basic		    \
 	tests/libtap/c-skip-reason tests/libtap/c-success		    \
 	tests/libtap/c-success-one tests/libtap/c-sysbail
 tests_libtap_c_bail_LDADD = tap/libtap.a
-tests_libtap_c_basic_LDADD = tap/libtap.a
+tests_libtap_c_basic_LDADD = tap/libtap.a -lm
 tests_libtap_c_diag_LDADD = tap/libtap.a
 tests_libtap_c_extra_LDADD = tap/libtap.a
 tests_libtap_c_extra_one_LDADD = tap/libtap.a

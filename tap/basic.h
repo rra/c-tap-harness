@@ -93,8 +93,9 @@ void skip_block(unsigned long count, const char *reason, ...)
 /* Check an expected value against a seen value. */
 void is_int(long wanted, long seen, const char *format, ...)
     __attribute__((__format__(printf, 3, 4)));
-void is_double(double wanted, double seen, const char *format, ...)
-    __attribute__((__format__(printf, 3, 4)));
+void is_double(double wanted, double seen, double epsilon,
+               const char *format, ...)
+    __attribute__((__format__(printf, 4, 5)));
 void is_string(const char *wanted, const char *seen, const char *format, ...)
     __attribute__((__format__(printf, 3, 4)));
 void is_hex(unsigned long wanted, unsigned long seen, const char *format, ...)

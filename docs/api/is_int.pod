@@ -11,7 +11,8 @@ is_int, is_double, is_string, is_hex - Check values for a TAP test
 
 void B<is_int>(long I<wanted>, long I<seen>, const char *I<format>, ...);
 
-void B<is_double>(double I<wanted>, double I<seen>, const char *I<format>, ...);
+void B<is_double>(double I<wanted>, double I<seen>, double I<epsilon>,
+               const char *I<format>, ...);
 
 void B<is_string>(const char *I<wanted>, const char *I<seen>,
                const char *I<format>, ...);
@@ -32,9 +33,19 @@ is_int() compares two longs, is_double() compares two doubles, is_string()
 compares two strings, and is_hex() compares two unsigned longs.  The
 advantage of these functions over ok() is that, if the values don't match,
 the expected and seen values are reported as diagnostics to make it easier
-to understand the test failure.  is_string() correctly handles NULL values
-for both I<wanted> and I<seen>.  is_hex() reports its values as hex
-strings and is useful for testing flags or similar values.
+to understand the test failure.
+
+is_double() takes an I<epsilon> value and considers the two values equal
+if their difference is less than I<epsilon>.  This avoids problems with
+rounding errors in representation of floating point numbers.  I<wanted>
+and I<seen> may be positive or negative infinity or NaN as well as a
+regular number.  If the expected value is NaN (not a number), any I<seen>
+NaN value is considered equal to it, contrary to the normal NaN behavior.
+
+is_string() correctly handles NULL values for both I<wanted> and I<seen>.
+
+is_hex() reports its values as hex strings and is useful for testing flags
+or similar values.
 
 =head1 RETURN VALUE
 

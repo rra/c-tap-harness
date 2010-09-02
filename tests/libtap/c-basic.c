@@ -29,7 +29,7 @@ test_okv(const char *format, ...)
 int
 main(void)
 {
-    plan(35);
+    plan(39);
 
     ok(1, NULL);
     ok(0, NULL);
@@ -37,11 +37,15 @@ main(void)
     is_int(1, 1, "an integer test");
     is_int(-1, -1, "comparing %d and %d", -1, -1);
     is_int(-1, 1, NULL);
-    is_double(0, 0, NULL);
-    is_double(0.1, 0.1, "a double test");
-    is_double(0.1, -0.1, "a failing double test");
-    is_double(0, -0, NULL);
-    is_double(1.7e45, 1.7e45, NULL);
+    is_double(0, 0, 0, NULL);
+    is_double(0.1, 0.11, 0.02, "a double test");
+    is_double(0.1, -0.1, 0.1, "a failing double test");
+    is_double(0, -0, 0.1, NULL);
+    is_double(1.7e45, 1.7e45, 0.1, NULL);
+    is_double(strtod("NAN", NULL), strtod("NAN", NULL), 0, "NaN");
+    is_double(strtod("INF", NULL), strtod("INF", NULL), 0, "inf");
+    is_double(strtod("-INF", NULL), strtod("-INF", NULL), 0, "-inf");
+    is_double(strtod("INF", NULL), strtod("-INF", NULL), 0, "inf and -inf");
     is_string("", "", NULL);
     is_string("yes", "yes", "a string test");
     is_string("yes", "yes no", "%s", "");

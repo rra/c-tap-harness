@@ -1,5 +1,13 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 1.6 (unreleased)
+
+    is_double() now takes a third argument, an epsilon.  Two numbers are
+    considered equal if their absolute difference is less than epsilon.
+    is_double() also now treats wanted and seen values of NaN (not a
+    number) as equal.  Thanks to PICCA Frédéric-Emmanuel for the proposed
+    changes.
+
 C TAP Harness 1.5 (2010-08-25)
 
     In ok_program in the shell TAP library, strip error output after the
