@@ -126,6 +126,15 @@ skip_block () {
     done
 }
 
+# Portable variant of printf '%s\n' "$*".  In the majority of cases, this
+# function is slower than printf, because the latter is often implemented
+# as a builtin command.  The value of the variable IFS is ignored.
+puts () {
+    cat << EOH
+$@
+EOH
+}
+
 # Run a program expected to succeed, and print ok if it does and produces the
 # correct output.  Takes the description, expected exit status, the expected
 # output, the command to run, and then any arguments for that command.  Strip
@@ -142,7 +151,7 @@ ok_program () {
     output=`"$@" 2>&1`
     status=$?
     if [ "$w_status" -ne 0 ] ; then
-        output=`echo "$output" | sed 's/^\([^:]* [^:]*\):.*/\1/'`
+        output=`puts "$output" | sed 's/^\([^:]* [^:]*\):.*/\1/'`
     fi
     if [ $status = $w_status ] && [ x"$output" = x"$w_output" ] ; then
         ok "$desc" true
