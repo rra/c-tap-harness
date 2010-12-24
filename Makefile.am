@@ -101,10 +101,10 @@ MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/depcomp		\
 #     -Wconversion     http://bugs.debian.org/488884 (htons warnings)
 #
 # Last checked against gcc 4.4 (2010-08-15).
-WARNINGS = -g -O -Wall -Wextra -Wendif-labels -Wformat=2 -Winit-self \
-	-Wswitch-enum -Wdeclaration-after-statement -Wshadow -Wpointer-arith \
-	-Wbad-function-cast -Wwrite-strings -Wstrict-prototypes \
-	-Wmissing-prototypes -Wnested-externs -Werror
+WARNINGS = -ansi -pedantic -g -O -Wall -Wextra -Wendif-labels -Wformat=2 \
+	-Winit-self -Wswitch-enum -Wdeclaration-after-statement -Wshadow \
+	-Wpointer-arith -Wbad-function-cast -Wwrite-strings \
+	-Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Werror
 
 warnings:
 	$(MAKE) V=0 CFLAGS='$(WARNINGS)'
