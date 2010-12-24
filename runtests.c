@@ -371,7 +371,9 @@ test_plan(const char *line, struct testset *ts)
      * Get the count, check it for validity, and initialize the struct.  If we
      * have something of the form "1..0 # skip foo", the whole file was
      * skipped; record that.  If we do skip the whole file, zero out all of
-     * our statistics, since they're no longer relevant.
+     * our statistics, since they're no longer relevant.  strtol is called
+     * with a second argument to advance the line pointer past the count to
+     * make it simpler to detect the # skip case.
      */
     n = strtol(line, (char **) &line, 10);
     if (n == 0) {
