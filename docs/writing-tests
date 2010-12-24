@@ -117,6 +117,7 @@ Writing TAP Tests
 
     Here's a complete example test program that uses the C TAP library:
 
+        #include <stddef.h>
         #include <tap/basic.h>
 
         int
