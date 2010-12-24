@@ -13,6 +13,9 @@ C TAP Harness 1.6 (unreleased)
     build C TAP Harness.  (This should not be a problem on any modern
     platform.)
 
+    Simplify and improve output formatting in the summary of failing tests
+    in some edge cases.
+
 C TAP Harness 1.5 (2010-08-25)
 
     In ok_program in the shell TAP library, strip error output after the

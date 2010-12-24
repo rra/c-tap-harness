@@ -137,10 +137,10 @@ struct testset {
     unsigned long skipped;      /* Count of skipped tests (passed). */
     unsigned long allocated;    /* The size of the results table. */
     enum test_status *results;  /* Table of results by test number. */
-    int aborted;                /* Whether the set as aborted. */
+    unsigned int aborted;       /* Whether the set as aborted. */
     int reported;               /* Whether the results were reported. */
     int status;                 /* The exit status of the test. */
-    int all_skipped;            /* Whether all tests were skipped. */
+    unsigned int all_skipped;   /* Whether all tests were skipped. */
     char *reason;               /* Why all tests were skipped. */
 };
 
@@ -443,6 +443,7 @@ test_checkline(const char *line, struct testset *ts)
     char *end;
     long number;
     unsigned long i, current;
+    int outlen;
 
     /* Before anything, check for a test abort. */
     bail = strstr(line, "Bail out!");
@@ -563,7 +564,8 @@ test_checkline(const char *line, struct testset *ts)
     ts->results[current - 1] = status;
     test_backspace(ts);
     if (isatty(STDOUT_FILENO)) {
-        ts->length = printf("%lu/%lu", current, ts->count);
+        outlen = printf("%lu/%lu", current, ts->count);
+        ts->length = (outlen >= 0) ? outlen : 0;
         fflush(stdout);
     }
 }
@@ -571,23 +573,20 @@ test_checkline(const char *line, struct testset *ts)
 
 /*
  * Print out a range of test numbers, returning the number of characters it
- * took up.  Add a comma and a space before the range if chars indicates that
+ * took up.  Takes the first number, the last number, the number of characters
+ * already printed on the line, and the limit of number of characters the line
+ * can hold.  Add a comma and a space before the range if chars indicates that
  * something has already been printed on the line, and print ... instead if
  * chars plus the space needed would go over the limit (use a limit of 0 to
- * disable this.
+ * disable this).
  */
 static unsigned int
 test_print_range(unsigned long first, unsigned long last, unsigned int chars,
                  unsigned int limit)
 {
     unsigned int needed = 0;
-    unsigned int out = 0;
     unsigned long n;
 
-    if (chars > 0) {
-        needed += 2;
-        if (!limit || chars <= limit) out += printf(", ");
-    }
     for (n = first; n > 0; n /= 10)
         needed++;
     if (last > first) {
@@ -595,15 +594,26 @@ test_print_range(unsigned long first, unsigned long last, unsigned int chars,
             needed++;
         needed++;
     }
-    if (limit && chars + needed > limit) {
-        if (chars <= limit)
-            out += printf("...");
+    if (chars > 0)
+        needed += 2;
+    if (limit > 0 && chars + needed > limit) {
+        needed = 0;
+        if (chars <= limit) {
+            if (chars > 0) {
+                printf(", ");
+                needed += 2;
+            }
+            printf("...");
+            needed += 3;
+        }
     } else {
+        if (chars > 0)
+            printf(", ");
         if (last > first)
-            out += printf("%lu-", first);
-        out += printf("%lu", last);
+            printf("%lu-", first);
+        printf("%lu", last);
     }
-    return out;
+    return needed;
 }
 
 
@@ -831,14 +841,14 @@ test_fail_summary(const struct testlist *fails)
                     last = i + 1;
                 else {
                     if (first != 0)
-                        chars += test_print_range(first, last, chars, 20);
+                        chars += test_print_range(first, last, chars, 19);
                     first = i + 1;
                     last = i + 1;
                 }
             }
         }
         if (first != 0)
-            test_print_range(first, last, chars, 20);
+            test_print_range(first, last, chars, 19);
         putchar('\n');
         free(ts->file);
         free(ts->path);
