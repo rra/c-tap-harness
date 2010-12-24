@@ -19,6 +19,8 @@
  * See LICENSE for licensing terms.
  */
 
+#define _XOPEN_SOURCE 600
+
 #include <errno.h>
 #include <math.h>
 #include <stdarg.h>
