@@ -64,6 +64,7 @@
  * DEALINGS IN THE SOFTWARE.
 */
 
+/* Required for fdopen(), getopt(), and putenv(). */
 #define _XOPEN_SOURCE 500
 
 #include <ctype.h>

@@ -19,6 +19,7 @@
  * See LICENSE for licensing terms.
  */
 
+/* Required for isnan() and isinf(). */
 #define _XOPEN_SOURCE 600
 
 #include <errno.h>

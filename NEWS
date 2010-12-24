@@ -8,6 +8,11 @@ C TAP Harness 1.6 (unreleased)
     number) as equal.  Thanks to PICCA Frédéric-Emmanuel for the proposed
     changes.
 
+    All of C TAP Harness compiles with gcc -ansi -pedantic and should be
+    fully C89-compatible.  Note that either C99 or SUSv3 is required to
+    build C TAP Harness.  (This should not be a problem on any modern
+    platform.)
+
 C TAP Harness 1.5 (2010-08-25)
 
     In ok_program in the shell TAP library, strip error output after the
