@@ -64,6 +64,8 @@
  * DEALINGS IN THE SOFTWARE.
 */
 
+#define _XOPEN_SOURCE 500
+
 #include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -71,6 +73,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/types.h>
@@ -861,8 +864,13 @@ find_test(const char *name, struct testset *ts, const char *source,
           const char *build)
 {
     char *path;
-    const char *bases[] = { ".", build, source, NULL };
+    const char *bases[4];
     unsigned int i;
+
+    bases[0] = ".";
+    bases[1] = build;
+    bases[2] = source;
+    bases[3] = NULL;
 
     for (i = 0; bases[i] != NULL; i++) {
         path = xmalloc(strlen(bases[i]) + strlen(name) + 4);
