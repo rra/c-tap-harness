@@ -19,10 +19,10 @@ C TAP Harness 1.6 (unreleased)
     ending in a colon (which is generally the program name) while still
     stripping error messages later in the line.
 
-    All of C TAP Harness compiles with gcc -ansi -pedantic and should be
-    fully C89-compatible.  Note that either C99 or SUSv3 is required to
+    All of C TAP Harness now compiles with gcc -ansi -pedantic and should
+    be fully C89-compatible.  Note that either C99 or SUSv3 is required to
     build C TAP Harness.  (This should not be a problem on any modern
-    platform.)
+    platform.)  Based on work by Carsten Hey.
 
     Simplify and improve output formatting in the summary of failing tests
     in some edge cases.
