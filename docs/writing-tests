@@ -96,12 +96,11 @@ Writing TAP Tests
     of Test::More for all the details and lots of examples.
 
     C TAP Harness can run Perl test scripts directly and interpret the
-    results correctly, and similarly the Perl Test::Harness module can run
-    TAP tests written in other languages using, for example, the TAP
-    library that comes with C TAP Harness.  However, the "prove" tool that
-    comes with Perl and runs tests makes some Perl-specific assumptions
-    that aren't always appropriate for packages that aren't written in
-    Perl.
+    results correctly, and similarly the Perl Test::Harness module and
+    prove command can run TAP tests written in other languages using, for
+    example, the TAP library that comes with C TAP Harness.  You can, if
+    you wish, use the library that comes with C TAP Harness but use prove
+    instead of runtests for running the test suite.
 
   C
 
