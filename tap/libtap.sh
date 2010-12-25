@@ -191,9 +191,9 @@ diag () {
 # path where the file was found, or the empty string if the file wasn't
 # found.
 test_file_path () {
-    if [ -f "$BUILD/$1" ] ; then
+    if [ -n "$BUILD" ] && [ -f "$BUILD/$1" ] ; then
         puts "$BUILD/$1"
-    elif [ -f "$SOURCE/$1" ] ; then
+    elif [ -n "$SOURCE" ] && [ -f "$SOURCE/$1" ] ; then
         puts "$SOURCE/$1"
     else
         echo ''

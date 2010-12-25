@@ -4,6 +4,14 @@
 echo "Path to c-file: ${BUILD}/libtap/c-file" > sh-file.output
 echo "Path to c-basic.output: ${SOURCE}/libtap/c-basic.output" \
     >> sh-file.output
+echo "Path to c-file: " >> sh-file.output
+echo "Path to c-basic.output: " >> sh-file.output
+path=`test_file_path 'libtap/c-file'`
+echo "Path to c-file: $path"
+path=`test_file_path 'libtap/c-basic.output'`
+echo "Path to c-basic.output: $path"
+BUILD=
+SOURCE=
 path=`test_file_path 'libtap/c-file'`
 echo "Path to c-file: $path"
 path=`test_file_path 'libtap/c-basic.output'`
