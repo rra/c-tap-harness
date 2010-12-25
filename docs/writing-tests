@@ -227,3 +227,11 @@ Writing TAP Tests
     rest of its arguments as the program to run.  That program is run with
     standard error and standard output combined, and then its exit status
     and output are tested against the provided values.
+
+    A utility function, strip_colon_error, is provided that runs the
+    command given as its arguments and strips text following a colon and a
+    space from the output (unless there is no whitespace on the line
+    before the colon and the space, normally indicating a prefix of the
+    program name).  This function can be used to wrap commands that are
+    expected to fail with output that has a system- or locale-specific
+    error message appended, such as the output of strerror().
