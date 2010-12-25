@@ -87,6 +87,7 @@ finish(void)
 
     if (_planned == 0 && !_lazy)
         return;
+    fflush(stderr);
     if (_process != 0 && getpid() == _process) {
         if (_lazy) {
             printf("1..%lu\n", highest);
@@ -119,6 +120,7 @@ plan(unsigned long count)
     if (setvbuf(stdout, NULL, _IOLBF, BUFSIZ) != 0)
         fprintf(stderr, "# cannot set stdout to line buffered: %s\n",
                 strerror(errno));
+    fflush(stderr);
     printf("1..%lu\n", count);
     testnum = 1;
     _planned = count;
@@ -151,6 +153,7 @@ plan_lazy(void)
 void
 skip_all(const char *format, ...)
 {
+    fflush(stderr);
     printf("1..0 # skip");
     if (format != NULL) {
         va_list args;
@@ -183,6 +186,7 @@ print_desc(const char *format, va_list args)
 void
 ok(int success, const char *format, ...)
 {
+    fflush(stderr);
     printf("%sok %lu", success ? "" : "not ", testnum++);
     if (!success)
         _failed++;
@@ -203,6 +207,7 @@ ok(int success, const char *format, ...)
 void
 okv(int success, const char *format, va_list args)
 {
+    fflush(stderr);
     printf("%sok %lu", success ? "" : "not ", testnum++);
     if (!success)
         _failed++;
@@ -218,6 +223,7 @@ okv(int success, const char *format, va_list args)
 void
 skip(const char *reason, ...)
 {
+    fflush(stderr);
     printf("ok %lu # skip", testnum++);
     if (reason != NULL) {
         va_list args;
@@ -239,6 +245,7 @@ ok_block(unsigned long count, int status, const char *format, ...)
 {
     unsigned long i;
 
+    fflush(stderr);
     for (i = 0; i < count; i++) {
         printf("%sok %lu", status ? "" : "not ", testnum++);
         if (!status)
@@ -263,6 +270,7 @@ skip_block(unsigned long count, const char *reason, ...)
 {
     unsigned long i;
 
+    fflush(stderr);
     for (i = 0; i < count; i++) {
         printf("ok %lu # skip", testnum++);
         if (reason != NULL) {
@@ -285,6 +293,7 @@ skip_block(unsigned long count, const char *reason, ...)
 void
 is_int(long wanted, long seen, const char *format, ...)
 {
+    fflush(stderr);
     if (wanted == seen)
         printf("ok %lu", testnum++);
     else {
@@ -314,6 +323,7 @@ is_string(const char *wanted, const char *seen, const char *format, ...)
         wanted = "(null)";
     if (seen == NULL)
         seen = "(null)";
+    fflush(stderr);
     if (strcmp(wanted, seen) == 0)
         printf("ok %lu", testnum++);
     else {
@@ -339,6 +349,7 @@ is_string(const char *wanted, const char *seen, const char *format, ...)
 void
 is_double(double wanted, double seen, double epsilon, const char *format, ...)
 {
+    fflush(stderr);
     if ((isnan(wanted) && isnan(seen))
         || (isinf(wanted) && isinf(seen) && wanted == seen)
         || fabs(wanted - seen) <= epsilon)
@@ -366,6 +377,7 @@ is_double(double wanted, double seen, double epsilon, const char *format, ...)
 void
 is_hex(unsigned long wanted, unsigned long seen, const char *format, ...)
 {
+    fflush(stderr);
     if (wanted == seen)
         printf("ok %lu", testnum++);
     else {
@@ -393,6 +405,7 @@ bail(const char *format, ...)
 {
     va_list args;
 
+    fflush(stderr);
     fflush(stdout);
     printf("Bail out! ");
     va_start(args, format);
@@ -412,6 +425,7 @@ sysbail(const char *format, ...)
     va_list args;
     int oerrno = errno;
 
+    fflush(stderr);
     fflush(stdout);
     printf("Bail out! ");
     va_start(args, format);
@@ -430,6 +444,7 @@ diag(const char *format, ...)
 {
     va_list args;
 
+    fflush(stderr);
     fflush(stdout);
     printf("# ");
     va_start(args, format);
@@ -448,6 +463,7 @@ sysdiag(const char *format, ...)
     va_list args;
     int oerrno = errno;
 
+    fflush(stderr);
     fflush(stdout);
     printf("# ");
     va_start(args, format);

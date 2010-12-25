@@ -23,6 +23,9 @@ C TAP Harness 1.6 (unreleased)
     returns the empty string, rather than possible absolute paths starting
     at /, if $BUILD and $SOURCE are not set.
 
+    Flush standard error in the C TAP library before printing results for
+    more deterministic output.  Thanks to Carsten Hey for the idea.
+
     All of C TAP Harness now compiles with gcc -ansi -pedantic and should
     be fully C89-compatible.  Note that either C99 or SUSv3 is required to
     build C TAP Harness.  (This should not be a problem on any modern
