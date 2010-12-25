@@ -39,7 +39,8 @@ EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod docs/api/diag.pod  \
 	tests/libtap/sh-file tests/libtap/sh-lazy			     \
 	tests/libtap/sh-lazy.output tests/libtap/sh-missing		     \
 	tests/libtap/sh-missing-one tests/libtap/sh-missing-one.output	     \
-	tests/libtap/sh-missing.output tests/libtap/sh-success		     \
+	tests/libtap/sh-missing.output tests/libtap/sh-strip-colon	     \
+	tests/libtap/sh-strip-colon.output tests/libtap/sh-success	     \
 	tests/libtap/sh-success-one tests/libtap/sh-success-one.output	     \
 	tests/libtap/sh-success.output tests/libtap/sh-skip		     \
 	tests/libtap/sh-skip.output tests/libtap.t tests/pod.t		     \

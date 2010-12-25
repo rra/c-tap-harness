@@ -137,9 +137,12 @@ EOH
 
 # Run a program expected to succeed, and print ok if it does and produces the
 # correct output.  Takes the description, expected exit status, the expected
-# output, the command to run, and then any arguments for that command.  Strip
-# a colon and everything after it off the output if the expected status is
-# non-zero, since this is probably a system-specific error message.
+# output, the command to run, and then any arguments for that command.
+# Standard output and standard error are combined when analyzing the output of
+# the command.
+#
+# If the command may contain system-specific error messages in its output,
+# add strip_colon_error before the command to post-process its output.
 ok_program () {
     local desc w_status w_output output status
     desc="$1"
@@ -150,9 +153,6 @@ ok_program () {
     shift
     output=`"$@" 2>&1`
     status=$?
-    if [ "$w_status" -ne 0 ] ; then
-        output=`puts "$output" | sed 's/^\([^:]* [^:]*\):.*/\1/'`
-    fi
     if [ $status = $w_status ] && [ x"$output" = x"$w_output" ] ; then
         ok "$desc" true
     else
@@ -160,6 +160,20 @@ ok_program () {
         echo "#  not: ($w_status) $w_output"
         ok "$desc" false
     fi
+}
+
+# Strip a colon and everything after it off the output of a command, as long
+# as that colon comes after at least one whitespace character.  (This is done
+# to avoid stripping the name of the program from the start of an error
+# message.)  This is used to remove system-specific error messages (coming
+# from strerror, for example).
+strip_colon_error() {
+    local output status
+    output=`"$@" 2>&1`
+    status=$?
+    output=`puts "$output" | sed 's/^\([^ ]* [^:]*\):.*/\1/'`
+    puts "$output"
+    return $status
 }
 
 # Bail out with an error message.
