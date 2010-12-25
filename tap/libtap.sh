@@ -178,9 +178,9 @@ diag () {
 # found.
 test_file_path () {
     if [ -f "$BUILD/$1" ] ; then
-        echo "$BUILD/$1"
+        puts "$BUILD/$1"
     elif [ -f "$SOURCE/$1" ] ; then
-        echo "$SOURCE/$1"
+        puts "$SOURCE/$1"
     else
         echo ''
     fi
