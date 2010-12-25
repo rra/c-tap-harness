@@ -19,6 +19,10 @@ C TAP Harness 1.6 (unreleased)
     ending in a colon (which is generally the program name) while still
     stripping error messages later in the line.
 
+    The test_file_path function in the shell libtap.sh library now always
+    returns the empty string, rather than possible absolute paths starting
+    at /, if $BUILD and $SOURCE are not set.
+
     All of C TAP Harness now compiles with gcc -ansi -pedantic and should
     be fully C89-compatible.  Note that either C99 or SUSv3 is required to
     build C TAP Harness.  (This should not be a problem on any modern
@@ -26,6 +30,9 @@ C TAP Harness 1.6 (unreleased)
 
     Simplify and improve output formatting in the summary of failing tests
     in some edge cases.
+
+    Add explicit license statements to the files meant to be copied into
+    other packages rather than referring to LICENSE.
 
 C TAP Harness 1.5 (2010-08-25)
 

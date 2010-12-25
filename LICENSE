@@ -47,6 +47,13 @@ Collected copyright notices for the entire package:
       Free Software Foundation, Inc.
   Copyright 1994 X Consortium
 
+The file docs/writing-tests is released under the following license:
+
+  Copying and distribution of this file, with or without modification, are
+  permitted in any medium without royalty provided the copyright notice
+  and this notice are preserved.  This file is offered as-is, without any
+  warranty.
+
 The files tap/basic.c and tap/basic.h are released under the following
 copyright and license:
 
