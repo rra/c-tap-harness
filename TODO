@@ -28,4 +28,26 @@ Extra Harness Features:
    parameter in the TESTS file after the test name.
 
  * Support automatically finding test cases under a particular directory
-   similar to how prove finds tests, without needing a TESTS file.
+   similar to how prove finds tests, without needing a TESTS file.  Allow
+   directories or test cases to be given on the command line.
+
+ * Support recursing into directories and running all tests found inside.
+
+ * In test lists and with the -o option, allow the full name of the test
+   to be specified rather than requiring it be given without -t or .t and
+   always adding the suffix.
+
+ * Support -D/--dry-run to list the tests that would be run.  (Mostly only
+   useful after passing directories and recursion are implemented.)
+
+ * Support comments in test lists.
+
+ * Use C_TAP_SOURCE and C_TAP_BUILD instead of SOURCE and BUILD to avoid
+   the generic environment variables that may conflict with other uses of
+   the same variables.
+
+Documentation:
+
+ * Move the integration documentation in README into a separate file in
+   docs, probably docs/autotools-integration, and clarify in README what
+   documentation to read first.
