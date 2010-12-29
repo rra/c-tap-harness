@@ -66,7 +66,9 @@
 */
 
 /* Required for fdopen(), getopt(), and putenv(). */
-#define _XOPEN_SOURCE 500
+#ifndef _XOPEN_SOURCE
+# define _XOPEN_SOURCE 500
+#endif
 
 #include <ctype.h>
 #include <errno.h>
