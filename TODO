@@ -10,6 +10,13 @@ Protocol:
  * Ignore an initial "TAP version <version>" string in the output for
    compliance with what's apparently the new TAP format.
 
+Shell:
+
+ * ok_program merges stdout and stderr, which could cause test problems
+   when output isn't flushed or when the difference is important.  Add
+   a new function that keeps the streams separate and specifies what's
+   expected on each stream.
+
 Reporting:
 
  * Report passing todo tests as something other than simple failed tests.
