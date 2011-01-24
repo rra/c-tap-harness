@@ -198,3 +198,11 @@ HOMEPAGE AND SOURCE REPOSITORY
   or view the repository via the web at:
 
       http://git.eyrie.org/?p=devel/c-tap-harness.git
+
+  C TAP Harness is also available via github at:
+
+      http://github.com/rra/c-tap-harness
+
+  and the github wiki and issue tracker are available on an experimental
+  basis.  If you like using the github facilities, try filing issues or
+  adding supplemental documentation there.
