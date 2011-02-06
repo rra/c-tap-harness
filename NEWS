@@ -1,5 +1,9 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 1.7 (unreleased)
+
+    Add a more complete usage message to runtests.
+
 C TAP Harness 1.6 (2010-12-29)
 
     is_double() now takes a third argument, an epsilon.  Two numbers are

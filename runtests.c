@@ -3,14 +3,15 @@
  *
  * Usage:
  *
- *      runtests <test-list>
+ *      runtests [-b <build-dir>] [-s <source-dir>] <test-list>
+ *      runtests -o [-b <build-dir>] [-s <source-dir>] <test>
  *
- * Expects a list of executables located in the given file, one line per
- * executable.  For each one, runs it as part of a test suite, reporting
- * results.  Test output should start with a line containing the number of
- * tests (numbered from 1 to this number), optionally preceded by "1..",
- * although that line may be given anywhere in the output.  Each additional
- * line should be in the following format:
+ * In the first case, expects a list of executables located in the given file,
+ * one line per executable.  For each one, runs it as part of a test suite,
+ * reporting results.  Test output should start with a line containing the
+ * number of tests (numbered from 1 to this number), optionally preceded by
+ * "1..", although that line may be given anywhere in the output.  Each
+ * additional line should be in the following format:
  *
  *      ok <number>
  *      not ok <number>
@@ -39,11 +40,21 @@
  * This is a subset of TAP as documented in Test::Harness::TAP or
  * TAP::Parser::Grammar, which comes with Perl.
  *
+ * If the -o option is given, instead run a single test and display all of its
+ * output.  This is intended for use with failing tests so that the person
+ * running the test suite can get more details about what failed.
+ *
+ * If built with the C preprocessor symbols SOURCE and BUILD defined, C TAP
+ * Harness will export those values in the environment so that tests can find
+ * the source and build directory and will look for tests under both
+ * directories.  These paths can also be set with the -b and -s command-line
+ * options, which will override anything set at build time.
+ *
  * Any bug reports, bug fixes, and improvements are very much welcome and
  * should be sent to the e-mail address below.  This program is part of C TAP
  * Harness <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
- * Copyright 2000, 2001, 2004, 2006, 2007, 2008, 2009, 2010
+ * Copyright 2000, 2001, 2004, 2006, 2007, 2008, 2009, 2010, 2011
  *     Russ Allbery <rra@stanford.edu>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -152,6 +163,23 @@ struct testlist {
     struct testset *ts;
     struct testlist *next;
 };
+
+/*
+ * Usage message.  Should be used as a printf format with two arguments: the
+ * path to runtests, given twice.
+ */
+static const char usage_message[] = "\
+Usage: %s [-b <build-dir>] [-s <source-dir>] <test-list>\n\
+       %s -o [-b <build-dir>] [-s <source-dir>] <test>\n\
+\n\
+Options:\n\
+    -b <build-dir>      Set the build directory to <build-dir>\n\
+    -o                  Run a single test rather than a list of tests\n\
+    -s <source-dir>     Set the source directory to <source-dir>\n\
+\n\
+runtests normally runs each test listed in a file whose path is given as\n\
+its command-line argument.  With the -o option, it instead runs a single\n\
+test and shows its complete output.\n";
 
 /*
  * Header used for test output.  %s is replaced by the file name of the list
@@ -1105,12 +1133,12 @@ main(int argc, char *argv[])
             exit(1);
         }
     }
-    argc -= optind;
-    argv += optind;
-    if (argc != 1) {
-        fprintf(stderr, "Usage: runtests <test-list>\n");
+    if (argc - optind != 1) {
+        fprintf(stderr, usage_message, argv[0], argv[0]);
         exit(1);
     }
+    argc -= optind;
+    argv += optind;
 
     if (source != NULL) {
         setting = xmalloc(strlen("SOURCE=") + strlen(source) + 1);
