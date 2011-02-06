@@ -1118,10 +1118,14 @@ main(int argc, char *argv[])
     const char *source = SOURCE;
     const char *build = BUILD;
 
-    while ((option = getopt(argc, argv, "b:os:")) != EOF) {
+    while ((option = getopt(argc, argv, "b:hos:")) != EOF) {
         switch (option) {
         case 'b':
             build = optarg;
+            break;
+        case 'h':
+            printf(usage_message, argv[0], argv[0]);
+            exit(0);
             break;
         case 'o':
             single = 1;

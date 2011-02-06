@@ -7,7 +7,7 @@ runtests - Harness for running TAP-compliant test scripts
 
 =head1 SYNOPSIS
 
-B<runtests> [B<-b> I<builddir>] [B<-s> I<srcdir>] I<test-list>
+B<runtests> [B<-h>] [B<-b> I<builddir>] [B<-s> I<srcdir>] I<test-list>
 
 B<runtests> B<-o> [B<-b> I<builddir>] [B<-s> I<srcdir>] I<test>
 
@@ -59,6 +59,10 @@ at build time.  This directory will be put into the BUILD environment
 variable, and test programs not found relative to the current working
 directory of B<runtests> will be searched for relative to this directory
 next.
+
+=item B<-h>
+
+Display a usage message and exit, doing nothing else.
 
 =item B<-o>
 

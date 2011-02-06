@@ -2,7 +2,8 @@
 
 C TAP Harness 1.7 (unreleased)
 
-    Add a more complete usage message to runtests.
+    Add a more complete usage message to runtests and add support for a -h
+    command-line flag to display the usage message.
 
 C TAP Harness 1.6 (2010-12-29)
 
