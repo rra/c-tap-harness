@@ -5,7 +5,7 @@
  * documentation is at <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
  * Copyright 2009, 2010 Russ Allbery <rra@stanford.edu>
- * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008
+ * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011
  *     The Board of Trustees of the Leland Stanford Junior University
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -31,7 +31,7 @@
 #define TAP_BASIC_H 1
 
 #include <stdarg.h>             /* va_list */
-#include <sys/types.h>          /* pid_t */
+#include <sys/types.h>          /* size_t */
 
 /*
  * __attribute__ is available in gcc 2.5 and later, but only with gcc 2.7
@@ -129,6 +129,8 @@ void sysdiag(const char *format, ...)
     __attribute__((__nonnull__, __format__(printf, 1, 2)));
 
 /* Allocate memory, reporting a fatal error with bail on failure. */
+void *bcalloc(size_t, size_t)
+    __attribute__((__alloc_size__(1, 2), __malloc__));
 void *bmalloc(size_t)
     __attribute__((__alloc_size__(1), __malloc__));
 void *brealloc(void *, size_t)

@@ -475,6 +475,21 @@ sysdiag(const char *format, ...)
 
 
 /*
+ * Allocate cleared memory, reporting a fatal error with bail on failure.
+ */
+void *
+bcalloc(size_t n, size_t size)
+{
+    void *p;
+
+    p = calloc(n, size);
+    if (p == NULL)
+        sysbail("failed to calloc %lu", (unsigned long)(n * size));
+    return p;
+}
+
+
+/*
  * Allocate memory, reporting a fatal error with bail on failure.
  */
 void *
