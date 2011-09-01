@@ -916,7 +916,9 @@ find_test(const char *name, struct testset *ts, const char *source,
     bases[2] = source;
     bases[3] = NULL;
 
-    for (i = 0; bases[i] != NULL; i++) {
+    for (i = 0; i < 3; i++) {
+        if (bases[i] == NULL)
+            continue;
         path = xmalloc(strlen(bases[i]) + strlen(name) + 4);
         sprintf(path, "%s/%s-t", bases[i], name);
         if (access(path, X_OK) != 0)

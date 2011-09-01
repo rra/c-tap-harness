@@ -5,6 +5,11 @@ C TAP Harness 1.8 (unreleased)
     Add bmalloc, bcalloc, brealloc, and bstrdup functions to the basic C
     TAP library.  These functions call sysbail if memory allocation fails.
 
+    If BUILD were not set when building runtests and the -b option was not
+    present, SOURCE and the -s option would be ignored when searching for
+    tests.  Fix runtests to still honor SOURCE and -s when searching for
+    tests even in that case.
+
 C TAP Harness 1.7 (2011-04-28)
 
     Add a more complete usage message to runtests and add support for a -h
