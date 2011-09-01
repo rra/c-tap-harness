@@ -13,7 +13,7 @@
  * documentation is at <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
  * Copyright 2009, 2010 Russ Allbery <rra@stanford.edu>
- * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008
+ * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011
  *     The Board of Trustees of the Leland Stanford Junior University
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -471,6 +471,52 @@ sysdiag(const char *format, ...)
     vprintf(format, args);
     va_end(args);
     printf(": %s\n", strerror(oerrno));
+}
+
+
+/*
+ * Allocate memory, reporting a fatal error with bail on failure.
+ */
+void *
+bmalloc(size_t size)
+{
+    void *p;
+
+    p = malloc(size);
+    if (p == NULL)
+        sysbail("failed to malloc %lu", (unsigned long) size);
+    return p;
+}
+
+
+/*
+ * Reallocate memory, reporting a fatal error with bail on failure.
+ */
+void *
+brealloc(void *p, size_t size)
+{
+    p = realloc(p, size);
+    if (p == NULL)
+        sysbail("failed to realloc %lu bytes", (unsigned long) size);
+    return p;
+}
+
+
+/*
+ * Copy a string, reporting a fatal error with bail on failure.
+ */
+char *
+bstrdup(const char *s)
+{
+    char *p;
+    size_t len;
+
+    len = strlen(s) + 1;
+    p = malloc(len);
+    if (p == NULL)
+        sysbail("failed to strdup %lu bytes", (unsigned long) len);
+    memcpy(p, s, len);
+    return p;
 }
 
 

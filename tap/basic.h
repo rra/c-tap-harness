@@ -128,6 +128,14 @@ void diag(const char *format, ...)
 void sysdiag(const char *format, ...)
     __attribute__((__nonnull__, __format__(printf, 1, 2)));
 
+/* Allocate memory, reporting a fatal error with bail on failure. */
+void *bmalloc(size_t)
+    __attribute__((__alloc_size__(1), __malloc__));
+void *brealloc(void *, size_t)
+    __attribute__((__alloc_size__(2), __malloc__));
+char *bstrdup(const char *)
+    __attribute__((__malloc__, __nonnull__));
+
 /*
  * Find a test file under BUILD or SOURCE, returning the full path.  The
  * returned path should be freed with test_file_path_free().
