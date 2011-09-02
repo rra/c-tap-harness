@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 1.8 (unreleased)
+C TAP Harness 1.8 (2011-09-02)
 
     Add bmalloc, bcalloc, brealloc, and bstrdup functions to the basic C
     TAP library.  These functions call sysbail if memory allocation fails.
