@@ -183,6 +183,16 @@ USING THE HARNESS
   relative to the BUILD environment variable.  Don't forget to add test
   data to EXTRA_DIST as necessary.
 
+  For more TAP library add-ons, generally ones that rely on additional
+  portability code not shipped in this package or with narrower uses, see
+  the rra-c-util package:
+
+      http://www.eyrie.org/~eagle/software/rra-c-util/
+
+  There are several additional TAP library add-ons in the tests/tap
+  directory in that package.  It's also an example of how to use this test
+  harness in another package.
+
 HOMEPAGE AND SOURCE REPOSITORY
 
   The C TAP Harness web page at:
