@@ -4,7 +4,6 @@
 #
 # See LICENSE for licensing terms.
 
-AUTOMAKE_OPTIONS = foreign subdir-objects
 EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
 	docs/api/bmalloc.pod docs/api/diag.pod docs/api/is_int.pod	    \
 	docs/api/ok.pod docs/api/plan.pod docs/api/skip.pod		    \
