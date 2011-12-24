@@ -109,16 +109,18 @@ MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/depcomp		   \
 	docs/api/plan.3 docs/api/skip.3 docs/api/skip_all.3		   \
 	docs/api/test_tmpdir.3 docs/runtests.1
 
+# A set of flags for warnings.  Add -O because gcc won't find some warnings
 # without optimization turned on.  Desirable warnings that can't be turned
 # on due to other problems:
 #
 #     -Wconversion     http://bugs.debian.org/488884 (htons warnings)
 #
-# Last checked against gcc 4.4 (2010-08-15).
-WARNINGS = -ansi -pedantic -g -O -Wall -Wextra -Wendif-labels -Wformat=2 \
+# Last checked against gcc 4.6.1 (2011-05-04)
+WARNINGS = -ansi -pedantic -g -O -Wall -Wextra -Wendif-labels -Wformat=2  \
 	-Winit-self -Wswitch-enum -Wdeclaration-after-statement -Wshadow \
-	-Wpointer-arith -Wbad-function-cast -Wwrite-strings \
-	-Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Werror
+	-Wpointer-arith -Wbad-function-cast -Wwrite-strings		  \
+	-Wjump-misses-init -Wlogical-op -Wstrict-prototypes		  \
+	-Wmissing-prototypes -Wredundant-decls -Wnested-externs -Werror
 
 warnings:
 	$(MAKE) V=0 CFLAGS='$(WARNINGS)'
