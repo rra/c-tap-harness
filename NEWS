@@ -7,6 +7,10 @@ C TAP Harness 1.9 (unreleased)
     functions create a temporary directory under the build tests directory
     for tests to use for transient files.
 
+    runtests now frees all allocated resources on exit so that it can be
+    used to run test cases with valgrind memory allocation checking
+    without adding false positives.
+
 C TAP Harness 1.8 (2011-09-02)
 
     Add bmalloc, bcalloc, brealloc, and bstrdup functions to the basic C
