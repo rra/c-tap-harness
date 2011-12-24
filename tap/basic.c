@@ -568,9 +568,7 @@ test_file_path(const char *file)
         if (base == NULL)
             continue;
         length = strlen(base) + 1 + strlen(file) + 1;
-        path = malloc(length);
-        if (path == NULL)
-            sysbail("cannot allocate memory");
+        path = bmalloc(length);
         sprintf(path, "%s/%s", base, file);
         if (access(path, R_OK) == 0)
             break;
