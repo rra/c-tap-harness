@@ -55,7 +55,8 @@ noinst_LIBRARIES = tap/libtap.a
 tap_libtap_a_SOURCES = tap/basic.c tap/basic.h
 dist_man_MANS = docs/api/bail.3 docs/api/bmalloc.3 docs/api/diag.3	\
 	docs/api/is_int.3 docs/api/ok.3 docs/api/plan.3 docs/api/skip.3	\
-	docs/api/skip_all.3 docs/api/test_tmpdir.3 docs/runtests.1
+	docs/api/skip_all.3 docs/api/test_file_path.3			\
+	docs/api/test_tmpdir.3 docs/runtests.1
 
 # Add symlinks for the man pages that document multiple functions.
 install-data-hook:
@@ -83,6 +84,9 @@ install-data-hook:
 	cd $(DESTDIR)$(man3dir) && $(LN_S) plan.3 plan_lazy.3
 	rm -f $(DESTDIR)$(man3dir)/skip_block.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) skip.3 skip_block.3
+	rm -f $(DESTDIR)$(man3dir)/test_file_path_free.3
+	cd $(DESTDIR)$(man3dir) \
+	    && $(LN_S) test_file_path.3 test_file_path_free.3
 	rm -f $(DESTDIR)$(man3dir)/test_tmpdir_free.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) test_tmpdir.3 test_tmpdir_free.3
 
@@ -99,6 +103,7 @@ uninstall-hook:
 	rm -f $(DESTDIR)$(man3dir)/okv.3
 	rm -f $(DESTDIR)$(man3dir)/plan_lazy.3
 	rm -f $(DESTDIR)$(man3dir)/skip_block.3
+	rm -f $(DESTDIR)$(man3dir)/test_file_path_free.3
 	rm -f $(DESTDIR)$(man3dir)/test_tmpdir_free.3
 
 # Work around the GNU Coding Standards, which leave all the Autoconf and
@@ -108,7 +113,7 @@ MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/depcomp		   \
 	build-aux/install-sh build-aux/missing configure docs/api/bail.3   \
 	docs/api/bmalloc.3 docs/api/diag.3 docs/api/is_int.3 docs/api/ok.3 \
 	docs/api/plan.3 docs/api/skip.3 docs/api/skip_all.3		   \
-	docs/api/test_tmpdir.3 docs/runtests.1
+	docs/api/test_file_path.3 docs/api/test_tmpdir.3 docs/runtests.1
 
 # A set of flags for warnings.  Add -O because gcc won't find some warnings
 # without optimization turned on.  Desirable warnings that can't be turned
