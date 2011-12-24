@@ -43,8 +43,8 @@ EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
 	tests/libtap/sh-strip-colon.output tests/libtap/sh-success	    \
 	tests/libtap/sh-success-one tests/libtap/sh-success-one.output	    \
 	tests/libtap/sh-success.output tests/libtap/sh-skip		    \
-	tests/libtap/sh-skip.output tests/libtap.t tests/pod.t		    \
-	tests/pod-spelling.t tests/search/build/build-t			    \
+	tests/libtap/sh-skip.output tests/libtap/sh-tmpdir tests/libtap.t   \
+	tests/pod.t tests/pod-spelling.t tests/search/build/build-t	    \
 	tests/search/relative.t tests/search/search.list		    \
 	tests/search/search.output tests/search/source/source.t		    \
 	tests/single/test.output tests/single/test.t tests/single.t
@@ -54,7 +54,7 @@ noinst_LIBRARIES = tap/libtap.a
 tap_libtap_a_SOURCES = tap/basic.c tap/basic.h
 dist_man_MANS = docs/api/bail.3 docs/api/bmalloc.3 docs/api/diag.3	\
 	docs/api/is_int.3 docs/api/ok.3 docs/api/plan.3 docs/api/skip.3	\
-	docs/api/skip_all.3 docs/runtests.1
+	docs/api/skip_all.3 docs/api/test_tmpdir.3 docs/runtests.1
 
 # Add symlinks for the man pages that document multiple functions.
 install-data-hook:
@@ -82,6 +82,8 @@ install-data-hook:
 	cd $(DESTDIR)$(man3dir) && $(LN_S) plan.3 plan_lazy.3
 	rm -f $(DESTDIR)$(man3dir)/skip_block.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) skip.3 skip_block.3
+	rm -f $(DESTDIR)$(man3dir)/test_tmpdir_free.3
+	cd $(DESTDIR)$(man3dir) && $(LN_S) test_tmpdir.3 test_tmpdir_free.3
 
 uninstall-hook:
 	rm -f $(DESTDIR)$(man3dir)/sysbail.3
@@ -96,6 +98,7 @@ uninstall-hook:
 	rm -f $(DESTDIR)$(man3dir)/okv.3
 	rm -f $(DESTDIR)$(man3dir)/plan_lazy.3
 	rm -f $(DESTDIR)$(man3dir)/skip_block.3
+	rm -f $(DESTDIR)$(man3dir)/test_tmpdir_free.3
 
 # Work around the GNU Coding Standards, which leave all the Autoconf and
 # Automake stuff around after make maintainer-clean, thus making that command
@@ -103,7 +106,8 @@ uninstall-hook:
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/depcomp		   \
 	build-aux/install-sh build-aux/missing configure docs/api/bail.3   \
 	docs/api/bmalloc.3 docs/api/diag.3 docs/api/is_int.3 docs/api/ok.3 \
-	docs/api/plan.3 docs/api/skip.3 docs/api/skip_all.3 docs/runtests.1
+	docs/api/plan.3 docs/api/skip.3 docs/api/skip_all.3		   \
+	docs/api/test_tmpdir.3 docs/runtests.1
 
 # without optimization turned on.  Desirable warnings that can't be turned
 # on due to other problems:
@@ -126,7 +130,8 @@ check_PROGRAMS = tests/libtap/c-bail tests/libtap/c-basic		    \
 	tests/libtap/c-extra-one tests/libtap/c-lazy tests/libtap/c-missing \
 	tests/libtap/c-missing-one tests/libtap/c-skip			    \
 	tests/libtap/c-skip-reason tests/libtap/c-success		    \
-	tests/libtap/c-success-one tests/libtap/c-sysbail
+	tests/libtap/c-success-one tests/libtap/c-sysbail		    \
+	tests/libtap/c-tmpdir
 tests_libtap_c_bail_LDADD = tap/libtap.a
 tests_libtap_c_basic_LDADD = tap/libtap.a -lm
 tests_libtap_c_diag_LDADD = tap/libtap.a
@@ -141,6 +146,7 @@ tests_libtap_c_skip_reason_LDADD = tap/libtap.a
 tests_libtap_c_success_LDADD = tap/libtap.a
 tests_libtap_c_success_one_LDADD = tap/libtap.a
 tests_libtap_c_sysbail_LDADD = tap/libtap.a
+tests_libtap_c_tmpdir_LDADD = tap/libtap.a
 
 check-local: $(check_PROGRAMS)
 	cd tests && ../runtests -s '$(abs_top_srcdir)/tests' \

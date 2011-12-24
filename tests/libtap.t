@@ -19,7 +19,7 @@ ok_result () {
     status=$?
     ok "$1 exit status" [ $status -eq "$3" ]
     case "$1" in
-        c-diag|c-file|c-sysbail|sh-file)
+        c-diag|c-file|c-sysbail|c-tmpdir|sh-file|sh-tmpdir)
             diff -u "${BUILD}/libtap/$1".output "$1".result 2>&1
             ;;
         *)
@@ -34,7 +34,7 @@ ok_result () {
 }
 
 # Total tests.
-plan 54
+plan 58
 
 # Run the individual tests.
 ok_result c-bail         "$BUILD"  1
@@ -51,6 +51,7 @@ ok_result c-skip-reason  "$BUILD"  0
 ok_result c-success      "$BUILD"  0
 ok_result c-success-one  "$BUILD"  0
 ok_result c-sysbail      "$BUILD"  1
+ok_result c-tmpdir       "$BUILD"  0
 ok_result sh-bail        "$SOURCE" 1
 ok_result sh-basic       "$SOURCE" 0
 ok_result sh-diag        "$SOURCE" 0
@@ -64,6 +65,9 @@ ok_result sh-skip        "$SOURCE" 0
 ok_result sh-strip-colon "$SOURCE" 0
 ok_result sh-success     "$SOURCE" 0
 ok_result sh-success-one "$SOURCE" 0
+ok_result sh-tmpdir      "$SOURCE" 0
 
-# Remove the output files created by c-diag, c-file, c-sysbail, and sh-file.
-rm -f c-diag.output c-file.output c-sysbail.output sh-file.output
+# Remove the output files created by c-diag, c-file, c-sysbail, c-tmpdir,
+# sh-file, and sh-tmpdir
+rm -f c-diag.output c-file.output c-sysbail.output c-tmpdir.output \
+    sh-file.output sh-tmpdir.output

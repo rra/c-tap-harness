@@ -12,7 +12,7 @@
  * This file is part of C TAP Harness.  The current version plus supporting
  * documentation is at <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
- * Copyright 2009, 2010 Russ Allbery <rra@stanford.edu>
+ * Copyright 2009, 2010, 2011 Russ Allbery <rra@stanford.edu>
  * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011
  *     The Board of Trustees of the Leland Stanford Junior University
  *
@@ -46,10 +46,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef _WIN32
+# include <direct.h>
+#else
+# include <sys/stat.h>
+#endif
 #include <sys/types.h>
 #include <unistd.h>
 
 #include <tap/basic.h>
+
+/* Windows provides mkdir and rmdir under different names. */
+#ifdef _WIN32
+# define mkdir(p, m) _mkdir(p)
+# define rmdir(p)    _rmdir(p)
+#endif
 
 /*
  * The test count.  Always contains the number that will be used for the next
@@ -578,6 +589,50 @@ test_file_path(const char *file)
 void
 test_file_path_free(char *path)
 {
+    if (path != NULL)
+        free(path);
+}
+
+
+/*
+ * Create a temporary directory, tmp, under BUILD if set and the current
+ * directory if it does not.  Returns the path to the temporary directory in
+ * newly allocated memory, and calls bail on any failure.  The return value
+ * should be freed with test_tmpdir_free.
+ *
+ * This function uses sprintf because it attempts to be independent of all
+ * other portability layers.  The use immediately after a memory allocation
+ * should be safe without using snprintf or strlcpy/strlcat.
+ */
+char *
+test_tmpdir(void)
+{
+    const char *build;
+    char *path = NULL;
+    size_t length;
+
+    build = getenv("BUILD");
+    if (build == NULL)
+        build = ".";
+    length = strlen(build) + strlen("/tmp") + 1;
+    path = bmalloc(length);
+    sprintf(path, "%s/tmp", build);
+    if (access(path, X_OK) < 0)
+        if (mkdir(path, 0777) < 0)
+            sysbail("error creating temporary directory %s", path);
+    return path;
+}
+
+
+/*
+ * Free a path returned from test_tmpdir() and attempt to remove the
+ * directory.  If we can't delete the directory, don't worry; something else
+ * that hasn't yet cleaned up may still be using it.
+ */
+void
+test_tmpdir_free(char *path)
+{
+    rmdir(path);
     if (path != NULL)
         free(path);
 }

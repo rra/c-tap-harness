@@ -5,7 +5,7 @@
 # <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
 #
 # Written by Russ Allbery <rra@stanford.edu>
-# Copyright 2009, 2010 Russ Allbery <rra@stanford.edu>
+# Copyright 2009, 2010, 2011 Russ Allbery <rra@stanford.edu>
 # Copyright 2006, 2007, 2008
 #     The Board of Trustees of the Leland Stanford Junior University
 #
@@ -219,4 +219,19 @@ test_file_path () {
     else
         echo ''
     fi
+}
+
+# Create $BUILD/tmp for use by tests for storing temporary files and return
+# the path (via standard output).
+test_tmpdir () {
+    local tmpdir
+    if [ -z "$BUILD" ] ; then
+        tmpdir="./tmp"
+    else
+        tmpdir="$BUILD"/tmp
+    fi
+    if [ ! -d "$tmpdir" ] ; then
+        mkdir "$tmpdir" || bail "Error creating $tmpdir"
+    fi
+    puts "$tmpdir"
 }

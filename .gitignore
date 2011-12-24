@@ -26,6 +26,7 @@
 /tests/libtap/c-success
 /tests/libtap/c-success-one
 /tests/libtap/c-sysbail
+/tests/libtap/c-tmpdir
 /tests/search.t
 .deps/
 .dirstamp

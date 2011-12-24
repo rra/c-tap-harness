@@ -1,5 +1,12 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 1.9 (unreleased)
+
+    Add test_tmpdir and test_tmpdir_free functions to the basic C TAP
+    library and a test_tmpdir function to the shell TAP library.  These
+    functions create a temporary directory under the build tests directory
+    for tests to use for transient files.
+
 C TAP Harness 1.8 (2011-09-02)
 
     Add bmalloc, bcalloc, brealloc, and bstrdup functions to the basic C
