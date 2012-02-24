@@ -34,11 +34,12 @@ ok_result () {
 }
 
 # Total tests.
-plan 58
+plan 60
 
 # Run the individual tests.
 ok_result c-bail         "$BUILD"  1
 ok_result c-basic        "$BUILD"  0
+ok_result c-bstrndup     "$BUILD"  0
 ok_result c-diag         "$BUILD"  0
 ok_result c-extra        "$BUILD"  0
 ok_result c-extra-one    "$BUILD"  0

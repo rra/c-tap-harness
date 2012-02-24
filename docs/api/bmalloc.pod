@@ -1,9 +1,9 @@
 =for stopwords
-bmalloc bcalloc brealloc bstrdup Allbery
+bmalloc bcalloc brealloc bstrdup bstrndup nul-terminates Allbery
 
 =head1 NAME
 
-bmalloc, bcalloc, brealloc, bstrdup - Checked memory allocation functions
+bmalloc, bcalloc, brealloc, bstrdup, bstrndup - Checked memory allocation
 
 =head1 SYNOPSIS
 
@@ -16,6 +16,8 @@ void *B<bcalloc>(size_t I<n>, size_t I<size>);
 void *B<brealloc>(void *I<ptr>, size_t I<size>);
 
 char *B<bstrdup>(const char *I<string>);
+
+char *B<bstrndup>(const char *I<string>, size_t I<size>);
 
 =head1 DESCRIPTION
 
@@ -31,9 +33,11 @@ check each allocation as it's performed.
 bmalloc() and bcalloc() return a pointer to the newly allocated memory,
 and brealloc() a pointer to the reallocated memory (which may or may not
 be the same as I<ptr>), identical to their standard C counterparts.
-bstrdup() returns a pointer to a newly allocated copy of I<string>.  None
-of these functions may return NULL; if memory allocation fails, they will
-abort the program.
+bstrdup() returns a pointer to a newly allocated copy of I<string>.
+bstrndup() does the same, but copies at most I<size> characters of
+I<string> and always nul-terminates the returned string.  None of these
+functions may return NULL; if memory allocation fails, they will abort the
+program.
 
 =head1 CAVEATS
 
@@ -43,7 +47,7 @@ case on some platforms.
 
 =head1 SEE ALSO
 
-calloc(3), malloc(3), realloc(3), strdup(3), sysbail(3)
+calloc(3), malloc(3), realloc(3), strdup(3), strndup(3), sysbail(3)
 
 The current version of the C TAP Harness library is available from its web
 page at L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.

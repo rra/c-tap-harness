@@ -6,14 +6,14 @@
  * number and some number of appropriate arguments, check to be sure the
  * results match the expected output using the arguments, and print out
  * something appropriate for that test number.  Other utility routines help in
- * constructing more complex tests, skipping tests, or setting up the TAP
- * output format.
+ * constructing more complex tests, skipping tests, reporting errors, setting
+ * up the TAP output format, or finding things in the test environment.
  *
  * This file is part of C TAP Harness.  The current version plus supporting
  * documentation is at <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
  * Copyright 2009, 2010, 2011 Russ Allbery <rra@stanford.edu>
- * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011
+ * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011, 2012
  *     The Board of Trustees of the Leland Stanford Junior University
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -541,6 +541,31 @@ bstrdup(const char *s)
         sysbail("failed to strdup %lu bytes", (unsigned long) len);
     memcpy(p, s, len);
     return p;
+}
+
+
+/*
+ * Copy up to n characters of a string, reporting a fatal error with bail on
+ * failure.  Don't use the system strndup function, since it may not exist and
+ * the TAP library doesn't assume any portability support.
+ */
+char *
+bstrndup(const char *s, size_t n)
+{
+    const char *p;
+    char *copy;
+    size_t length;
+
+    /* Don't assume that the source string is nul-terminated. */
+    for (p = s; (size_t) (p - s) < n && *p != '\0'; p++)
+        ;
+    length = p - s;
+    copy = malloc(length + 1);
+    if (p == NULL)
+        sysbail("failed to strndup %lu bytes", (unsigned long) length);
+    memcpy(copy, s, length);
+    copy[length] = '\0';
+    return copy;
 }
 
 

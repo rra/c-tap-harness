@@ -4,50 +4,51 @@
 #
 # See LICENSE for licensing terms.
 
-EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		   \
-	docs/api/bmalloc.pod docs/api/diag.pod docs/api/is_int.pod	   \
-	docs/api/ok.pod docs/api/plan.pod docs/api/skip.pod		   \
-	docs/api/skip_all.pod docs/api/test_file_path.pod		   \
-	docs/api/test_tmpdir.pod docs/runtests.pod docs/writing-tests	   \
-	tap/libtap.sh tests/TESTS tests/basic/abort-one.list		   \
-	tests/basic/abort-one.output tests/basic/abort.list		   \
-	tests/basic/abort.output tests/basic/abort.t			   \
-	tests/basic/badnum-delay.t tests/basic/badnum.t			   \
-	tests/basic/bail-silent.t tests/basic/bail.t			   \
-	tests/basic/duplicate.t tests/basic/fail-count.t		   \
-	tests/basic/fail.list tests/basic/fail.output tests/basic/fail.t   \
-	tests/basic/hup.t tests/basic/missing.t tests/basic/nocount.t	   \
-	tests/basic/order.t tests/basic/pass.list tests/basic/pass.output  \
-	tests/basic/pass.t tests/basic/plan-last.t tests/basic/plan-long.t \
-	tests/basic/plan-middle.t tests/basic/plan-order.t		   \
-	tests/basic/plan-twice.t tests/basic/segv.t			   \
-	tests/basic/skip-all-case.t tests/basic/skip-all-late.t		   \
-	tests/basic/skip-all-quiet.t tests/basic/skip-all.t		   \
-	tests/basic/skip.list tests/basic/skip.output tests/basic/skip.t   \
-	tests/basic/status.t tests/basic/todo.t tests/basic/too-many.t	   \
-	tests/basic/zero.t tests/basic.t tests/env/env.list		   \
-	tests/env/env.output tests/env.t tests/libtap/c-bail.output	   \
-	tests/libtap/c-basic.output tests/libtap/c-extra-one.output	   \
-	tests/libtap/c-extra.output tests/libtap/c-lazy.output		   \
-	tests/libtap/c-missing-one.output tests/libtap/c-missing.output	   \
-	tests/libtap/c-skip.output tests/libtap/c-skip-reason.output	   \
-	tests/libtap/c-success-one.output tests/libtap/c-success.output	   \
-	tests/libtap/sh-bail tests/libtap/sh-bail.output		   \
-	tests/libtap/sh-basic tests/libtap/sh-basic.output		   \
-	tests/libtap/sh-diag tests/libtap/sh-diag.output		   \
-	tests/libtap/sh-extra tests/libtap/sh-extra-one			   \
-	tests/libtap/sh-extra-one.output tests/libtap/sh-extra.output	   \
-	tests/libtap/sh-file tests/libtap/sh-lazy			   \
-	tests/libtap/sh-lazy.output tests/libtap/sh-missing		   \
-	tests/libtap/sh-missing-one tests/libtap/sh-missing-one.output	   \
-	tests/libtap/sh-missing.output tests/libtap/sh-strip-colon	   \
-	tests/libtap/sh-strip-colon.output tests/libtap/sh-success	   \
-	tests/libtap/sh-success-one tests/libtap/sh-success-one.output	   \
-	tests/libtap/sh-success.output tests/libtap/sh-skip		   \
-	tests/libtap/sh-skip.output tests/libtap/sh-tmpdir tests/libtap.t  \
-	tests/pod.t tests/pod-spelling.t tests/search/build/build-t	   \
-	tests/search/relative.t tests/search/search.list		   \
-	tests/search/search.output tests/search/source/source.t		   \
+EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
+	docs/api/bmalloc.pod docs/api/diag.pod docs/api/is_int.pod	    \
+	docs/api/ok.pod docs/api/plan.pod docs/api/skip.pod		    \
+	docs/api/skip_all.pod docs/api/test_file_path.pod		    \
+	docs/api/test_tmpdir.pod docs/runtests.pod docs/writing-tests	    \
+	tap/libtap.sh tests/TESTS tests/basic/abort-one.list		    \
+	tests/basic/abort-one.output tests/basic/abort.list		    \
+	tests/basic/abort.output tests/basic/abort.t			    \
+	tests/basic/badnum-delay.t tests/basic/badnum.t			    \
+	tests/basic/bail-silent.t tests/basic/bail.t			    \
+	tests/basic/duplicate.t tests/basic/fail-count.t		    \
+	tests/basic/fail.list tests/basic/fail.output tests/basic/fail.t    \
+	tests/basic/hup.t tests/basic/missing.t tests/basic/nocount.t	    \
+	tests/basic/order.t tests/basic/pass.list tests/basic/pass.output   \
+	tests/basic/pass.t tests/basic/plan-last.t tests/basic/plan-long.t  \
+	tests/basic/plan-middle.t tests/basic/plan-order.t		    \
+	tests/basic/plan-twice.t tests/basic/segv.t			    \
+	tests/basic/skip-all-case.t tests/basic/skip-all-late.t		    \
+	tests/basic/skip-all-quiet.t tests/basic/skip-all.t		    \
+	tests/basic/skip.list tests/basic/skip.output tests/basic/skip.t    \
+	tests/basic/status.t tests/basic/todo.t tests/basic/too-many.t	    \
+	tests/basic/zero.t tests/basic.t tests/env/env.list		    \
+	tests/env/env.output tests/env.t tests/libtap/c-bail.output	    \
+	tests/libtap/c-basic.output tests/libtap/c-bstrndup.output	    \
+	tests/libtap/c-extra-one.output tests/libtap/c-extra.output	    \
+	tests/libtap/c-lazy.output tests/libtap/c-missing-one.output	    \
+	tests/libtap/c-missing.output tests/libtap/c-skip.output	    \
+	tests/libtap/c-skip-reason.output tests/libtap/c-success-one.output \
+	tests/libtap/c-success.output tests/libtap/sh-bail		    \
+	tests/libtap/sh-bail.output tests/libtap/sh-basic		    \
+	tests/libtap/sh-basic.output tests/libtap/sh-diag		    \
+	tests/libtap/sh-diag.output tests/libtap/sh-extra		    \
+	tests/libtap/sh-extra-one tests/libtap/sh-extra-one.output	    \
+	tests/libtap/sh-extra.output tests/libtap/sh-file		    \
+	tests/libtap/sh-lazy tests/libtap/sh-lazy.output		    \
+	tests/libtap/sh-missing tests/libtap/sh-missing-one		    \
+	tests/libtap/sh-missing-one.output tests/libtap/sh-missing.output   \
+	tests/libtap/sh-strip-colon tests/libtap/sh-strip-colon.output	    \
+	tests/libtap/sh-success tests/libtap/sh-success-one		    \
+	tests/libtap/sh-success-one.output tests/libtap/sh-success.output   \
+	tests/libtap/sh-skip tests/libtap/sh-skip.output		    \
+	tests/libtap/sh-tmpdir tests/libtap.t tests/pod.t		    \
+	tests/pod-spelling.t tests/search/build/build-t			    \
+	tests/search/relative.t tests/search/search.list		    \
+	tests/search/search.output tests/search/source/source.t		    \
 	tests/single/test.output tests/single/test.t tests/single.t
 
 bin_PROGRAMS = runtests
@@ -68,6 +69,7 @@ install-data-hook:
 	cd $(DESTDIR)$(man3dir) && $(LN_S) bmalloc.3 bcalloc.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) bmalloc.3 brealloc.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) bmalloc.3 bstrdup.3
+	cd $(DESTDIR)$(man3dir) && $(LN_S) bmalloc.3 bstrndup.3
 	rm -f $(DESTDIR)$(man3dir)/sysdiag.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) diag.3 sysdiag.3
 	rm -f $(DESTDIR)$(man3dir)/is_double.3
@@ -95,6 +97,7 @@ uninstall-hook:
 	rm -f $(DESTDIR)$(man3dir)/bcalloc.3
 	rm -f $(DESTDIR)$(man3dir)/brealloc.3
 	rm -f $(DESTDIR)$(man3dir)/bstrdup.3
+	rm -f $(DESTDIR)$(man3dir)/bstrndup.3
 	rm -f $(DESTDIR)$(man3dir)/sysdiag.3
 	rm -f $(DESTDIR)$(man3dir)/is_double.3
 	rm -f $(DESTDIR)$(man3dir)/is_string.3
@@ -133,15 +136,16 @@ warnings:
 	$(MAKE) V=0 CFLAGS='$(WARNINGS)' $(check_PROGRAMS)
 
 # The bits below are for the test suite.
-check_PROGRAMS = tests/libtap/c-bail tests/libtap/c-basic		    \
-	tests/libtap/c-diag tests/libtap/c-file tests/libtap/c-extra	    \
-	tests/libtap/c-extra-one tests/libtap/c-lazy tests/libtap/c-missing \
-	tests/libtap/c-missing-one tests/libtap/c-skip			    \
-	tests/libtap/c-skip-reason tests/libtap/c-success		    \
-	tests/libtap/c-success-one tests/libtap/c-sysbail		    \
-	tests/libtap/c-tmpdir
+check_PROGRAMS = tests/libtap/c-bail tests/libtap/c-basic		  \
+	tests/libtap/c-bstrndup tests/libtap/c-diag tests/libtap/c-file	  \
+	tests/libtap/c-extra tests/libtap/c-extra-one tests/libtap/c-lazy \
+	tests/libtap/c-missing tests/libtap/c-missing-one		  \
+	tests/libtap/c-skip tests/libtap/c-skip-reason			  \
+	tests/libtap/c-success tests/libtap/c-success-one		  \
+	tests/libtap/c-sysbail tests/libtap/c-tmpdir
 tests_libtap_c_bail_LDADD = tap/libtap.a
 tests_libtap_c_basic_LDADD = tap/libtap.a -lm
+tests_libtap_c_bstrndup_LDADD = tap/libtap.a
 tests_libtap_c_diag_LDADD = tap/libtap.a
 tests_libtap_c_extra_LDADD = tap/libtap.a
 tests_libtap_c_extra_one_LDADD = tap/libtap.a

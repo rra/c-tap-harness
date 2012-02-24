@@ -5,7 +5,7 @@
  * documentation is at <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
  * Copyright 2009, 2010, 2011 Russ Allbery <rra@stanford.edu>
- * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011
+ * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011, 2012
  *     The Board of Trustees of the Leland Stanford Junior University
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -136,6 +136,8 @@ void *bmalloc(size_t)
 void *brealloc(void *, size_t)
     __attribute__((__alloc_size__(2), __malloc__));
 char *bstrdup(const char *)
+    __attribute__((__malloc__, __nonnull__));
+char *bstrndup(const char *, size_t)
     __attribute__((__malloc__, __nonnull__));
 
 /*

@@ -1,5 +1,11 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 1.10 (unreleased)
+
+    Add bstrndup to the basic C TAP library.  This is akin to strndup
+    (copying at most n characters of the string), but calls sysbail if
+    memory allocation fails.
+
 C TAP Harness 1.9 (2011-12-24)
 
     Add test_tmpdir and test_tmpdir_free functions to the basic C TAP
