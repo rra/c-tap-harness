@@ -1,10 +1,10 @@
-                            C TAP Harness 1.9
+                            C TAP Harness 1.10
                (C harness for running TAP-compliant tests)
 
                 Written by Russ Allbery <rra@stanford.edu>
 
-  Copyright 2000, 2001, 2004, 2006, 2007, 2008, 2009, 2010, 2011 Russ
-  Allbery <rra@stanford.edu>.  This software is distributed under a
+  Copyright 2000, 2001, 2004, 2006, 2007, 2008, 2009, 2010, 2011, 2012
+  Russ Allbery <rra@stanford.edu>.  This software is distributed under a
   BSD-style license.  Please see the file LICENSE in the distribution for
   more information.
 

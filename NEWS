@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 1.10 (unreleased)
+C TAP Harness 1.10 (2012-02-29)
 
     Add bstrndup to the basic C TAP library.  This is akin to strndup
     (copying at most n characters of the string), but calls sysbail if
