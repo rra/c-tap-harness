@@ -25,6 +25,9 @@ Reporting:
 
 Extra Harness Features:
 
+ * Save log files for the output of each test, either by default or via an
+   option, similar to the new Automake TAP test support.
+
  * Support a verbose mode that shows the result of each test as it's
    running instead of just the test counts.
 
