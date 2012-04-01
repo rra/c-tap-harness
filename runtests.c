@@ -77,8 +77,10 @@
 */
 
 /* Required for fdopen(), getopt(), and putenv(). */
-#ifndef _XOPEN_SOURCE
-# define _XOPEN_SOURCE 500
+#if defined(__STRICT_ANSI__) || defined(PEDANTIC)
+# ifndef _XOPEN_SOURCE
+#  define _XOPEN_SOURCE 500
+# endif
 #endif
 
 #include <ctype.h>

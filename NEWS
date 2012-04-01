@@ -1,5 +1,16 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 1.11 (unreleased)
+
+    Do not attempt to use feature-test macros unless compiled with gcc's
+    -ansi flag or PEDANTIC is defined.  Defining _XOPEN_SOURCE 600 on
+    Solaris 10, which is required for isinf() if feature-test macros are
+    in use, causes compilation to fail unless the compiler is run in C99
+    mode due to an ABI change.  The basic TAP library doesn't care about
+    this distinction and doesn't want to force specific compiler flags, so
+    avoiding feature-test macros is a better fix.  Thanks to Bob
+    Friesenhahn for the bug report.
+
 C TAP Harness 1.10 (2012-02-29)
 
     Add bstrndup to the basic C TAP library.  This is akin to strndup

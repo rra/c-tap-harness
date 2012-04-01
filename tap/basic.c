@@ -36,8 +36,10 @@
  */
 
 /* Required for isnan() and isinf(). */
-#ifndef _XOPEN_SOURCE
-# define _XOPEN_SOURCE 600
+#if defined(__STRICT_ANSI__) || defined(PEDANTIC)
+# ifndef _XOPEN_SOURCE
+#  define _XOPEN_SOURCE 600
+# endif
 #endif
 
 #include <errno.h>
