@@ -11,6 +11,10 @@ C TAP Harness 1.11 (unreleased)
     avoiding feature-test macros is a better fix.  Thanks to Bob
     Friesenhahn for the bug report.
 
+    Do not use local in the shell TAP library.  Solaris /bin/sh doesn't
+    support it, and the shell library is otherwise portable to that shell.
+    Instead, use a prefix of tap_ on all non-public variables.
+
 C TAP Harness 1.10 (2012-02-29)
 
     Add bstrndup to the basic C TAP library.  This is akin to strndup
