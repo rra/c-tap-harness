@@ -53,7 +53,7 @@ EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
 
 bin_PROGRAMS = runtests
 noinst_LIBRARIES = tap/libtap.a
-tap_libtap_a_SOURCES = tap/basic.c tap/basic.h
+tap_libtap_a_SOURCES = tap/basic.c tap/basic.h tap/macros.h
 dist_man_MANS = docs/api/bail.3 docs/api/bmalloc.3 docs/api/diag.3	\
 	docs/api/is_int.3 docs/api/ok.3 docs/api/plan.3 docs/api/skip.3	\
 	docs/api/skip_all.3 docs/api/test_file_path.3			\

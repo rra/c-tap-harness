@@ -15,6 +15,12 @@ C TAP Harness 1.11 (unreleased)
     support it, and the shell library is otherwise portable to that shell.
     Instead, use a prefix of tap_ on all non-public variables.
 
+    Move the __attribute__ and BEGIN_DECLS/END_DECLS macros from
+    tap/basic.h to a new tap/macros.h header file so that they can be more
+    easily reused by any other TAP add-on.  Be sure to copy tap/macros.h
+    into your source package and add it to the source files for the libtap
+    library when upgrading.
+
 C TAP Harness 1.10 (2012-02-29)
 
     Add bstrndup to the basic C TAP library.  This is akin to strndup
