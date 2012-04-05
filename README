@@ -128,11 +128,14 @@ USING THE HARNESS
                 -DBUILD='"$(abs_top_builddir)/tests"'
         check_LIBRARIES = tests/tap/libtap.a
         tests_tap_libtap_a_CPPFLAGS = -I$(abs_top_srcdir)/tests
-        tests_tap_libtap_a_SOURCES = tests/tap/basic.c tests/tap/basic.h
+        tests_tap_libtap_a_SOURCES = tests/tap/basic.c tests/tap/basic.h \
+                tests/tap/float.c tests/tap/float.h tests/tap/macros.h
 
-    Building the build and source directories into runtests will let
-    tests/runtests -o <test> to work for users without requiring that they
-    set any other variables, even if they're doing an out-of-source build.
+    Omit float.c and float.h from the last line if your package doesn't
+    need the is_double function.  Building the build and source
+    directories into runtests will let tests/runtests -o <test> to work
+    for users without requiring that they set any other variables, even if
+    they're doing an out-of-source build.
 
     Add additional source files and headers that should go into the TAP
     library if you added extra utility functions for your package.

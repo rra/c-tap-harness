@@ -43,7 +43,6 @@
 #endif
 
 #include <errno.h>
-#include <math.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -340,34 +339,6 @@ is_string(const char *wanted, const char *seen, const char *format, ...)
         printf("ok %lu", testnum++);
     else {
         printf("# wanted: %s\n#   seen: %s\n", wanted, seen);
-        printf("not ok %lu", testnum++);
-        _failed++;
-    }
-    if (format != NULL) {
-        va_list args;
-
-        va_start(args, format);
-        print_desc(format, args);
-        va_end(args);
-    }
-    putchar('\n');
-}
-
-
-/*
- * Takes an expected double and a seen double and assumes the test passes if
- * those two numbers are within delta of each other.
- */
-void
-is_double(double wanted, double seen, double epsilon, const char *format, ...)
-{
-    fflush(stderr);
-    if ((isnan(wanted) && isnan(seen))
-        || (isinf(wanted) && isinf(seen) && wanted == seen)
-        || fabs(wanted - seen) <= epsilon)
-        printf("ok %lu", testnum++);
-    else {
-        printf("# wanted: %g\n#   seen: %g\n", wanted, seen);
         printf("not ok %lu", testnum++);
         _failed++;
     }

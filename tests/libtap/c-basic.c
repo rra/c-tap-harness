@@ -11,6 +11,7 @@
 #include <stdlib.h>
 
 #include <tap/basic.h>
+#include <tap/float.h>
 
 /*
  * Test okv(), which requires having a separate stdargs function that

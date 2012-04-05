@@ -21,6 +21,14 @@ C TAP Harness 1.11 (unreleased)
     into your source package and add it to the source files for the libtap
     library when upgrading.
 
+    Move the is_double C TAP test function into a separate source file.
+    Including this function may require linking with libm on some
+    platforms, which is undesireable if the package otherwise doesn't use
+    math functions.  The new tap/float.c and tap/float.h files need only
+    be included in a package that wants to do floating point tests.  Users
+    of is_double will now need to include tap/float.h in addition to
+    tap/basic.h.
+
 C TAP Harness 1.10 (2012-02-29)
 
     Add bstrndup to the basic C TAP library.  This is akin to strndup
