@@ -11,14 +11,16 @@ is_int, is_double, is_string, is_hex - Check values for a TAP test
 
 void B<is_int>(long I<wanted>, long I<seen>, const char *I<format>, ...);
 
-void B<is_double>(double I<wanted>, double I<seen>, double I<epsilon>,
-               const char *I<format>, ...);
-
 void B<is_string>(const char *I<wanted>, const char *I<seen>,
                const char *I<format>, ...);
 
 void B<is_hex>(unsigned long I<wanted>, unsigned long I<seen>,
             const char *I<format>, ...);
+
+#include <tap/float.h>
+
+void B<is_double>(double I<wanted>, double I<seen>, double I<epsilon>,
+               const char *I<format>, ...);
 
 =head1 DESCRIPTION
 
@@ -41,6 +43,8 @@ rounding errors in representation of floating point numbers.  I<wanted>
 and I<seen> may be positive or negative infinity or NaN as well as a
 regular number.  If the expected value is NaN (not a number), any I<seen>
 NaN value is considered equal to it, contrary to the normal NaN behavior.
+Callers of is_double() need to also include C<tap/float.h> and link the
+test program with C<-lm>.
 
 is_string() correctly handles NULL values for both I<wanted> and I<seen>.
 
