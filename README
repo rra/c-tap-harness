@@ -104,10 +104,9 @@ USING THE HARNESS
 
   While there is an install target that installs runtests in the default
   binary directory (/usr/local/bin by default) and installs the man pages,
-  because Automake provides it automatically, one normally wouldn't
-  install anything from this package.  Instead, the code is intended to be
-  copied into your package and refreshed from the latest release of C TAP
-  Harness for each release.
+  one normally wouldn't install anything from this package.  Instead, the
+  code is intended to be copied into your package and refreshed from the
+  latest release of C TAP Harness for each release.
 
   You can obviously copy the code and integrate it however works best for
   your package and your build system.  Here's how I do it for my packages
