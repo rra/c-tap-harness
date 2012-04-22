@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# Test of the test_tmpdir utility function in libtap.sh.
+#
+# Copyright 2009, 2012 Russ Allbery <rra@stanford.edu>
+#
+# See LICENSE for licensing terms.
+
+. "${SOURCE}/tap/libtap.sh"
+
+set -e
+echo "Path to temporary directory: ${BUILD}/tmp" > sh-tmpdir.output
+if [ -e "${BUILD}/tmp" ] ; then
+    bail "${BUILD}/tmp already exists"
+fi
+path=`test_tmpdir`
+echo "Path to temporary directory: $path"
+if [ ! -d "${BUILD}/tmp" ] ; then
+    bail "${BUILD}/tmp not created"
+fi
+rmdir "${BUILD}/tmp"
+exit 0

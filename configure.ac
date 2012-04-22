@@ -22,6 +22,6 @@ AC_PROG_RANLIB
 AC_PROG_LN_S
 
 AC_CONFIG_FILES([Makefile])
-AC_CONFIG_FILES([tests/env/env.t], [chmod +x tests/env/env.t])
-AC_CONFIG_FILES([tests/search.t],  [chmod +x tests/search.t])
+AC_CONFIG_FILES([tests/harness/env/env.t], [chmod +x tests/harness/env/env.t])
+AC_CONFIG_FILES([tests/harness/search.t],  [chmod +x tests/harness/search.t])
 AC_OUTPUT

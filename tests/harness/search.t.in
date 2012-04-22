@@ -1,0 +1,26 @@
+#! /bin/sh
+#
+# Test suite for runtests directory search support.
+#
+# Copyright 2009, 2012 Russ Allbery <rra@stanford.edu>
+#
+# See LICENSE for licensing terms.
+
+. "@abs_top_srcdir@/tests/tap/libtap.sh"
+
+# Total tests.
+plan 1
+
+# Be sure that we run from the source directory.
+cd "@abs_top_srcdir@/tests/harness/search"
+
+# Run runtests, overriding the build and source directories.
+"@abs_top_builddir@/tests/runtests" -b build -s source search.list \
+    | sed 's/\(Tests=[0-9]*\),  .*/\1/' \
+    > "@abs_top_builddir@/tests/harness/search.result"
+diff -u search.output "@abs_top_builddir@/tests/harness/search.result" 2>&1
+status=$?
+ok '' [ $status -eq 0 ]
+if [ $status -eq 0 ] ; then
+    rm "@abs_top_builddir@/tests/harness/search.result"
+fi

@@ -1,6 +1,6 @@
 # Automake makefile for C TAP Harness.
 #
-# Copyright 2008, 2009, 2010, 2011 Russ Allbery <rra@stanford.edu>
+# Copyright 2008, 2009, 2010, 2011, 2012 Russ Allbery <rra@stanford.edu>
 #
 # See LICENSE for licensing terms.
 
@@ -9,52 +9,70 @@ EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
 	docs/api/ok.pod docs/api/plan.pod docs/api/skip.pod		    \
 	docs/api/skip_all.pod docs/api/test_file_path.pod		    \
 	docs/api/test_tmpdir.pod docs/runtests.pod docs/writing-tests	    \
-	tap/libtap.sh tests/TESTS tests/basic/abort-one.list		    \
-	tests/basic/abort-one.output tests/basic/abort.list		    \
-	tests/basic/abort.output tests/basic/abort.t			    \
-	tests/basic/badnum-delay.t tests/basic/badnum.t			    \
-	tests/basic/bail-silent.t tests/basic/bail.t			    \
-	tests/basic/duplicate.t tests/basic/fail-count.t		    \
-	tests/basic/fail.list tests/basic/fail.output tests/basic/fail.t    \
-	tests/basic/hup.t tests/basic/missing.t tests/basic/nocount.t	    \
-	tests/basic/order.t tests/basic/pass.list tests/basic/pass.output   \
-	tests/basic/pass.t tests/basic/plan-last.t tests/basic/plan-long.t  \
-	tests/basic/plan-middle.t tests/basic/plan-order.t		    \
-	tests/basic/plan-twice.t tests/basic/segv.t			    \
-	tests/basic/skip-all-case.t tests/basic/skip-all-late.t		    \
-	tests/basic/skip-all-quiet.t tests/basic/skip-all.t		    \
-	tests/basic/skip.list tests/basic/skip.output tests/basic/skip.t    \
-	tests/basic/status.t tests/basic/todo.t tests/basic/too-many.t	    \
-	tests/basic/zero.t tests/basic.t tests/env/env.list		    \
-	tests/env/env.output tests/env.t tests/libtap/c-bail.output	    \
-	tests/libtap/c-basic.output tests/libtap/c-bstrndup.output	    \
-	tests/libtap/c-extra-one.output tests/libtap/c-extra.output	    \
-	tests/libtap/c-lazy.output tests/libtap/c-missing-one.output	    \
-	tests/libtap/c-missing.output tests/libtap/c-skip.output	    \
-	tests/libtap/c-skip-reason.output tests/libtap/c-success-one.output \
-	tests/libtap/c-success.output tests/libtap/sh-bail		    \
-	tests/libtap/sh-bail.output tests/libtap/sh-basic		    \
-	tests/libtap/sh-basic.output tests/libtap/sh-diag		    \
-	tests/libtap/sh-diag.output tests/libtap/sh-extra		    \
-	tests/libtap/sh-extra-one tests/libtap/sh-extra-one.output	    \
-	tests/libtap/sh-extra.output tests/libtap/sh-file		    \
-	tests/libtap/sh-lazy tests/libtap/sh-lazy.output		    \
-	tests/libtap/sh-missing tests/libtap/sh-missing-one		    \
-	tests/libtap/sh-missing-one.output tests/libtap/sh-missing.output   \
-	tests/libtap/sh-strip-colon tests/libtap/sh-strip-colon.output	    \
-	tests/libtap/sh-success tests/libtap/sh-success-one		    \
-	tests/libtap/sh-success-one.output tests/libtap/sh-success.output   \
-	tests/libtap/sh-skip tests/libtap/sh-skip.output		    \
-	tests/libtap/sh-tmpdir tests/libtap.t tests/pod.t		    \
-	tests/pod-spelling.t tests/search/build/build-t			    \
-	tests/search/relative.t tests/search/search.list		    \
-	tests/search/search.output tests/search/source/source.t		    \
-	tests/single/test.output tests/single/test.t tests/single.t
+	tests/TESTS tests/docs/pod.t tests/docs/pod-spelling.t		    \
+	tests/harness/basic/abort-one.list				    \
+	tests/harness/basic/abort-one.output tests/harness/basic/abort.list \
+	tests/harness/basic/abort.output tests/harness/basic/abort.t	    \
+	tests/harness/basic/badnum-delay.t tests/harness/basic/badnum.t	    \
+	tests/harness/basic/bail-silent.t tests/harness/basic/bail.t	    \
+	tests/harness/basic/duplicate.t tests/harness/basic/fail-count.t    \
+	tests/harness/basic/fail.list tests/harness/basic/fail.output	    \
+	tests/harness/basic/fail.t tests/harness/basic/hup.t		    \
+	tests/harness/basic/missing.t tests/harness/basic/nocount.t	    \
+	tests/harness/basic/order.t tests/harness/basic/pass.list	    \
+	tests/harness/basic/pass.output tests/harness/basic/pass.t	    \
+	tests/harness/basic/plan-last.t tests/harness/basic/plan-long.t	    \
+	tests/harness/basic/plan-middle.t tests/harness/basic/plan-order.t  \
+	tests/harness/basic/plan-twice.t tests/harness/basic/segv.t	    \
+	tests/harness/basic/skip-all-case.t				    \
+	tests/harness/basic/skip-all-late.t				    \
+	tests/harness/basic/skip-all-quiet.t tests/harness/basic/skip-all.t \
+	tests/harness/basic/skip.list tests/harness/basic/skip.output	    \
+	tests/harness/basic/skip.t tests/harness/basic/status.t		    \
+	tests/harness/basic/todo.t tests/harness/basic/too-many.t	    \
+	tests/harness/basic/zero.t tests/harness/basic.t		    \
+	tests/harness/env/env.list tests/harness/env/env.output		    \
+	tests/harness/env.t tests/libtap/basic/c-bail.output		    \
+	tests/harness/search/build/build-t tests/harness/search/relative.t  \
+	tests/harness/search/search.list tests/harness/search/search.output \
+	tests/harness/search/source/source.t				    \
+	tests/harness/single/test.output tests/harness/single/test.t	    \
+	tests/harness/single.t tests/libtap/basic/c-basic.output	    \
+	tests/libtap/basic/c-bstrndup.output				    \
+	tests/libtap/basic/c-extra-one.output				    \
+	tests/libtap/basic/c-extra.output tests/libtap/basic/c-lazy.output  \
+	tests/libtap/basic/c-missing-one.output				    \
+	tests/libtap/basic/c-missing.output				    \
+	tests/libtap/basic/c-skip.output				    \
+	tests/libtap/basic/c-skip-reason.output				    \
+	tests/libtap/basic/c-success-one.output				    \
+	tests/libtap/basic/c-success.output tests/libtap/basic/sh-bail	    \
+	tests/libtap/basic/sh-bail.output tests/libtap/basic/sh-basic	    \
+	tests/libtap/basic/sh-basic.output tests/libtap/basic/sh-diag	    \
+	tests/libtap/basic/sh-diag.output tests/libtap/basic/sh-extra	    \
+	tests/libtap/basic/sh-extra-one					    \
+	tests/libtap/basic/sh-extra-one.output				    \
+	tests/libtap/basic/sh-extra.output tests/libtap/basic/sh-file	    \
+	tests/libtap/basic/sh-lazy tests/libtap/basic/sh-lazy.output	    \
+	tests/libtap/basic/sh-missing tests/libtap/basic/sh-missing-one	    \
+	tests/libtap/basic/sh-missing-one.output			    \
+	tests/libtap/basic/sh-missing.output				    \
+	tests/libtap/basic/sh-strip-colon				    \
+	tests/libtap/basic/sh-strip-colon.output			    \
+	tests/libtap/basic/sh-success tests/libtap/basic/sh-success-one	    \
+	tests/libtap/basic/sh-success-one.output			    \
+	tests/libtap/basic/sh-success.output tests/libtap/basic/sh-skip	    \
+	tests/libtap/basic/sh-skip.output tests/libtap/basic/sh-tmpdir	    \
+	tests/libtap/basic.t tests/tap/libtap.sh
 
-bin_PROGRAMS = runtests
-noinst_LIBRARIES = tap/libtap.a
-tap_libtap_a_SOURCES = tap/basic.c tap/basic.h tap/float.c tap/float.h	\
-	tap/macros.h
+# It's somewhat odd to have the TAP library and the runtests harness in the
+# tests directory, since they're the primary point of this package.  But
+# that way they're in the same locations as they are in packages into which
+# they're copied, which simplifies things like include paths.
+bin_PROGRAMS = tests/runtests
+noinst_LIBRARIES = tests/tap/libtap.a
+tests_tap_libtap_a_SOURCES = tests/tap/basic.c tests/tap/basic.h	\
+	tests/tap/float.c tests/tap/float.h tests/tap/macros.h
 dist_man_MANS = docs/api/bail.3 docs/api/bmalloc.3 docs/api/diag.3	\
 	docs/api/is_int.3 docs/api/ok.3 docs/api/plan.3 docs/api/skip.3	\
 	docs/api/skip_all.3 docs/api/test_file_path.3			\
@@ -140,30 +158,31 @@ warnings:
 	$(MAKE) V=0 CFLAGS='$(WARNINGS)' $(check_PROGRAMS)
 
 # The bits below are for the test suite.
-check_PROGRAMS = tests/libtap/c-bail tests/libtap/c-basic		  \
-	tests/libtap/c-bstrndup tests/libtap/c-diag tests/libtap/c-file	  \
-	tests/libtap/c-extra tests/libtap/c-extra-one tests/libtap/c-lazy \
-	tests/libtap/c-missing tests/libtap/c-missing-one		  \
-	tests/libtap/c-skip tests/libtap/c-skip-reason			  \
-	tests/libtap/c-success tests/libtap/c-success-one		  \
-	tests/libtap/c-sysbail tests/libtap/c-tmpdir
-tests_libtap_c_bail_LDADD = tap/libtap.a
-tests_libtap_c_basic_LDADD = tap/libtap.a -lm
-tests_libtap_c_bstrndup_LDADD = tap/libtap.a
-tests_libtap_c_diag_LDADD = tap/libtap.a
-tests_libtap_c_extra_LDADD = tap/libtap.a
-tests_libtap_c_extra_one_LDADD = tap/libtap.a
-tests_libtap_c_file_LDADD = tap/libtap.a
-tests_libtap_c_lazy_LDADD = tap/libtap.a
-tests_libtap_c_missing_LDADD = tap/libtap.a
-tests_libtap_c_missing_one_LDADD = tap/libtap.a
-tests_libtap_c_skip_LDADD = tap/libtap.a
-tests_libtap_c_skip_reason_LDADD = tap/libtap.a
-tests_libtap_c_success_LDADD = tap/libtap.a
-tests_libtap_c_success_one_LDADD = tap/libtap.a
-tests_libtap_c_sysbail_LDADD = tap/libtap.a
-tests_libtap_c_tmpdir_LDADD = tap/libtap.a
+check_PROGRAMS = tests/libtap/basic/c-bail tests/libtap/basic/c-basic	\
+	tests/libtap/basic/c-bstrndup tests/libtap/basic/c-diag		\
+	tests/libtap/basic/c-file tests/libtap/basic/c-extra		\
+	tests/libtap/basic/c-extra-one tests/libtap/basic/c-lazy	\
+	tests/libtap/basic/c-missing tests/libtap/basic/c-missing-one	\
+	tests/libtap/basic/c-skip tests/libtap/basic/c-skip-reason	\
+	tests/libtap/basic/c-success tests/libtap/basic/c-success-one	\
+	tests/libtap/basic/c-sysbail tests/libtap/basic/c-tmpdir
+tests_libtap_basic_c_bail_LDADD = tests/tap/libtap.a -lm
+tests_libtap_basic_c_basic_LDADD = tests/tap/libtap.a -lm
+tests_libtap_basic_c_bstrndup_LDADD = tests/tap/libtap.a -lm
+tests_libtap_basic_c_diag_LDADD = tests/tap/libtap.a -lm
+tests_libtap_basic_c_extra_LDADD = tests/tap/libtap.a -lm
+tests_libtap_basic_c_extra_one_LDADD = tests/tap/libtap.a -lm
+tests_libtap_basic_c_file_LDADD = tests/tap/libtap.a -lm
+tests_libtap_basic_c_lazy_LDADD = tests/tap/libtap.a -lm
+tests_libtap_basic_c_missing_LDADD = tests/tap/libtap.a -lm
+tests_libtap_basic_c_missing_one_LDADD = tests/tap/libtap.a -lm
+tests_libtap_basic_c_skip_LDADD = tests/tap/libtap.a -lm
+tests_libtap_basic_c_skip_reason_LDADD = tests/tap/libtap.a -lm
+tests_libtap_basic_c_success_LDADD = tests/tap/libtap.a -lm
+tests_libtap_basic_c_success_one_LDADD = tests/tap/libtap.a -lm
+tests_libtap_basic_c_sysbail_LDADD = tests/tap/libtap.a -lm
+tests_libtap_basic_c_tmpdir_LDADD = tests/tap/libtap.a -lm
 
 check-local: $(check_PROGRAMS)
-	cd tests && ../runtests -s '$(abs_top_srcdir)/tests' \
+	cd tests && ./runtests -s '$(abs_top_srcdir)/tests' \
 	    -b '$(abs_top_builddir)/tests' $(abs_top_srcdir)/tests/TESTS

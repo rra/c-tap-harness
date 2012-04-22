@@ -1,7 +1,7 @@
-basic
-env
-libtap
-pod
-pod-spelling
-search
-single
+docs/pod
+docs/pod-spelling
+harness/basic
+harness/env
+harness/search
+harness/single
+libtap/basic

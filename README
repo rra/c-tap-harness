@@ -112,11 +112,11 @@ USING THE HARNESS
   your package and your build system.  Here's how I do it for my packages
   as an example:
 
-  * Create a tests directory and copy runtests.c into it.  Create a
-    tests/tap subdirectory and copy the portions of the TAP library that I
-    need for that package into it.  The TAP library is designed to let you
-    drop in additional source and header files for additional utility
-    functions that are useful in your package.
+  * Create a tests directory and copy tests/runtests.c into it.  Create a
+    tests/tap subdirectory and copy the portions of the TAP library (from
+    tests/tap) that I need for that package into it.  The TAP library is
+    designed to let you drop in additional source and header files for
+    additional utility functions that are useful in your package.
 
   * Add code to my top-level Makefile.am (I always use a non-recursive
     Makefile with subdir-objects set) to build runtests and the test
@@ -155,9 +155,12 @@ USING THE HARNESS
 
         tests_libtap_c_basic_LDADD = tests/tap/libtap.a
 
-    and add them to check_PROGRAMS.  If you call the is_double() function,
-    you will need to add -lm to the _LDADD setting.  A more complex
-    example from the remctl package that needs additional libraries:
+    and add them to check_PROGRAMS.  If you include the float.c add-on in
+    your libtap library, you will need to add -lm to the _LDADD setting
+    for all test programs linked against it.
+
+    A more complex example from the remctl package that needs additional
+    libraries:
 
         tests_client_open_t_LDFLAGS = $(GSSAPI_LDFLAGS)
         tests_client_open_t_LDADD = client/libremctl.la tests/tap/libtap.a \
@@ -166,9 +169,9 @@ USING THE HARNESS
     If the test program doesn't need to be compiled, add it to EXTRA_DIST
     so that it will be included in the distribution.
 
-  * If you have test programs written in shell, copy tap/libtap.sh the tap
-    subdirectory of your tests directory and add it to EXTRA_DIST.  Shell
-    programs should start with:
+  * If you have test programs written in shell, copy tests/tap/libtap.sh
+    the tap subdirectory of your tests directory and add it to EXTRA_DIST.
+    Shell programs should start with:
 
         . "${SOURCE}/tap/libtap.sh"
 
@@ -177,6 +180,9 @@ USING THE HARNESS
   * Optionally copy docs/writing-tests into your package somewhere, such
     as tests/README, as instructions to contributors on how to write tests
     for this framework.
+
+  If you have configuration files that the user must create to enable some
+  of the tests, conventionally they go into tests/config.
 
   If you have data files that your test cases use, conventionally they go
   into tests/data.  You can then find the data directory relative to the

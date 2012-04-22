@@ -2,6 +2,17 @@
 
 C TAP Harness 1.11 (unreleased)
 
+    Reorganize the source package so that runtests.c is in the tests
+    directory and the C and shell TAP libraries are in tests/tap.  Change
+    the include directives in the C TAP library source files accordingly.
+    This is somewhat confusing for the standalone package, but means that
+    the files are located in the same locations here as they would be in
+    packages into which they're copied, which simplifies instructions and
+    the build system.  This also removes the need to build the C TAP
+    library with -I flags at the cost of requiring that it be located in a
+    tests subdirectory, allowing easier use of additional supporting
+    headers without requiring that all tests be built with a -I directive.
+
     Do not attempt to use feature-test macros unless compiled with gcc's
     -ansi flag or PEDANTIC is defined.  Defining _XOPEN_SOURCE 600 on
     Solaris 10, which is required for isinf() if feature-test macros are
@@ -16,18 +27,19 @@ C TAP Harness 1.11 (unreleased)
     Instead, use a prefix of tap_ on all non-public variables.
 
     Move the __attribute__ and BEGIN_DECLS/END_DECLS macros from
-    tap/basic.h to a new tap/macros.h header file so that they can be more
-    easily reused by any other TAP add-on.  Be sure to copy tap/macros.h
-    into your source package and add it to the source files for the libtap
-    library when upgrading.
+    tests/tap/basic.h to a new tests/tap/macros.h header file so that they
+    can be more easily reused by any other TAP add-on.  Be sure to copy
+    tests/tap/macros.h into your source package and add it to the source
+    files for the libtap library when upgrading.
 
     Move the is_double C TAP test function into a separate source file.
     Including this function may require linking with libm on some
     platforms, which is undesireable if the package otherwise doesn't use
-    math functions.  The new tap/float.c and tap/float.h files need only
-    be included in a package that wants to do floating point tests.  Users
-    of is_double will now need to include tap/float.h in addition to
-    tap/basic.h.
+    math functions.  The new tests/tap/float.c and tests/tap/float.h files
+    need only be included in a package that wants to do floating point
+    tests.  Users of is_double will now need to include tests/tap/float.h
+    in addition to tests/tap/basic.h (and link all clients of the libtap
+    library with -lm).
 
 C TAP Harness 1.10 (2012-02-29)
 
