@@ -82,7 +82,9 @@ static int _lazy = 0;
 
 /*
  * Our exit handler.  Called on completion of the test to report a summary of
- * results provided we're still in the original process.
+ * results provided we're still in the original process.  This also handles
+ * printing out the plan if we used plan_lazy(), although that's suppressed if
+ * we never ran a test (due to an early bail, for example).
  */
 static void
 finish(void)
@@ -93,7 +95,7 @@ finish(void)
         return;
     fflush(stderr);
     if (_process != 0 && getpid() == _process) {
-        if (_lazy) {
+        if (_lazy && highest > 0) {
             printf("1..%lu\n", highest);
             _planned = highest;
         }

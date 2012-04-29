@@ -1,5 +1,10 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 1.12 (unreleased)
+
+    In the C TAP library, if bail is called after plan_lazy but before any
+    tests are run, don't output the plan or the summary of test results.
+
 C TAP Harness 1.11 (2012-04-25)
 
     Reorganize the source package so that runtests.c is in the tests
