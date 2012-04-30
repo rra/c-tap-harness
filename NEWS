@@ -5,6 +5,9 @@ C TAP Harness 1.12 (unreleased)
     In the C TAP library, if bail is called after plan_lazy but before any
     tests are run, don't output the plan or the summary of test results.
 
+    Add the UNUSED macro (to mark possibly-usused variables for gcc) to
+    tests/tap/macros.h for use in the C TAP library.
+
 C TAP Harness 1.11 (2012-04-25)
 
     Reorganize the source package so that runtests.c is in the tests

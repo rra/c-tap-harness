@@ -43,6 +43,9 @@
 # endif
 #endif
 
+/* Used for unused parameters to silence gcc warnings. */
+#define UNUSED __attribute__((__unused__))
+
 /*
  * BEGIN_DECLS is used at the beginning of declarations so that C++
  * compilers don't mangle their names.  END_DECLS is used at the end.
