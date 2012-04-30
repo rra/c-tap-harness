@@ -2,6 +2,11 @@
 
 C TAP Harness 1.12 (unreleased)
 
+    Fix additional uses of local in the shell TAP library for portability
+    to Solaris /bin/sh and document a bad interaction between backquotes
+    and double quotes for the puts, test_file_path, and test_tmpdir
+    functions.
+
     In the C TAP library, if bail is called after plan_lazy but before any
     tests are run, don't output the plan or the summary of test results.
 
