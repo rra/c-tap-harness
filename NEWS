@@ -13,6 +13,13 @@ C TAP Harness 1.12 (unreleased)
     Add the UNUSED macro (to mark possibly-usused variables for gcc) to
     tests/tap/macros.h for use in the C TAP library.
 
+    Make the __attribute__ handling in tests/tap/macros.h more aware of
+    different versions and compilers.  All attributes are now suppressed
+    for GCC older than 2.96 (instead of 2.7), since __malloc__ became
+    available then.  __alloc_size__ is suppressed for GCC older than 4.3.
+    Warnings about unknown diagnostics are suppressed for LLVM and Clang,
+    which pretend to be GCC but don't support all the same attributes.
+
 C TAP Harness 1.11 (2012-04-25)
 
     Reorganize the source package so that runtests.c is in the tests
