@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 1.12 (unreleased)
+C TAP Harness 1.12 (2012-05-11)
 
     Fix additional uses of local in the shell TAP library for portability
     to Solaris /bin/sh and document a bad interaction between backquotes
