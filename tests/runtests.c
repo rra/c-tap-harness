@@ -201,6 +201,50 @@ Failed Set                 Fail/Total (%) Skip Stat  Failing Tests\n\
 #define xrealloc(p, size) x_realloc((p), (size), __FILE__, __LINE__)
 #define xstrdup(p)        x_strdup((p), __FILE__, __LINE__)
 
+/*
+ * __attribute__ is available in gcc 2.5 and later, but only with gcc 2.7
+ * could you use the __format__ form of the attributes, which is what we use
+ * (to avoid confusion with other macros).
+ */
+#ifndef __attribute__
+# if __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 7)
+#  define __attribute__(spec)   /* empty */
+# endif
+#endif
+
+/*
+ * We use __alloc_size__, but it was only available in fairly recent versions
+ * of GCC.  Suppress warnings about the unknown attribute if GCC is too old.
+ * We know that we're GCC at this point, so we can use the GCC variadic macro
+ * extension, which will still work with versions of GCC too old to have C99
+ * variadic macro support.
+ */
+#if !defined(__attribute__) && !defined(__alloc_size__)
+# if __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 3)
+#  define __alloc_size__(spec, args...) /* empty */
+# endif
+#endif
+
+/*
+ * LLVM and Clang pretend to be GCC but don't support all of the __attribute__
+ * settings that GCC does.  For them, suppress warnings about unknown
+ * attributes on declarations.  This unfortunately will affect the entire
+ * compilation context, but there's no push and pop available.
+ */
+#if !defined(__attribute__) && (defined(__llvm__) || defined(__clang__))
+# pragma GCC diagnostic ignored "-Wattributes"
+#endif
+
+/* Declare internal functions that benefit from compiler attributes. */
+static void sysdie(const char *, ...)
+    __attribute__((__nonnull__, __noreturn__, __format__(printf, 1, 2)));
+static void *x_malloc(size_t, const char *, int)
+    __attribute__((__alloc_size__(1), __malloc__, __nonnull__));
+static void *x_realloc(void *, size_t, const char *, int)
+    __attribute__((__alloc_size__(2), __malloc__, __nonnull__(3)));
+static char *x_strdup(const char *, const char *, int)
+    __attribute__((__malloc__, __nonnull__));
+
 
 /*
  * Report a fatal error, including the results of strerror, and exit.
@@ -1148,7 +1192,6 @@ main(int argc, char *argv[])
         fprintf(stderr, usage_message, argv[0], argv[0]);
         exit(1);
     }
-    argc -= optind;
     argv += optind;
 
     if (source != NULL) {
