@@ -1086,6 +1086,7 @@ test_batch(const char *testlist, const char *source, const char *build)
                 failtail->next = NULL;
             }
         }
+        fflush(stdout);
         aborted += ts.aborted;
         total += ts.count + ts.all_skipped;
         passed += ts.passed;
