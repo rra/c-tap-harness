@@ -960,13 +960,32 @@ test_fail_summary(const struct testlist *fails)
 
 
 /*
+ * Check whether a given file path is a valid test.  Currently, this checks
+ * whether it is executable and is a regular file.  Returns true or false.
+ */
+static int
+is_valid_test(const char *path)
+{
+    struct stat st;
+
+    if (access(path, X_OK) < 0)
+        return 0;
+    if (stat(path, &st) < 0)
+        return 0;
+    if (!S_ISREG(st.st_mode))
+        return 0;
+    return 1;
+}
+
+
+/*
  * Given the name of a test, a pointer to the testset struct, and the source
  * and build directories, find the test.  We try first relative to the current
  * directory, then in the build directory (if not NULL), then in the source
  * directory.  In each of those directories, we first try a "-t" extension and
  * then a ".t" extension.  When we find an executable program, we return the
  * path to that program.  If none of those paths are executable, just fill in
- * the name of the test with "-t" appended.
+ * the name of the test as is.
  *
  * The caller is responsible for freeing the path member of the testset
  * struct.
@@ -976,29 +995,34 @@ find_test(const char *name, const char *source, const char *build)
 {
     char *path;
     const char *bases[4];
-    unsigned int i;
+    unsigned int i, j;
+    const char *suffixes[3] = { "-t", ".t", "" };
 
+    /* Possible base directories. */
     bases[0] = ".";
     bases[1] = build;
     bases[2] = source;
     bases[3] = NULL;
 
+    /* Iterate through every possible base and format to find the file. */
     for (i = 0; i < 3; i++) {
         if (bases[i] == NULL)
             continue;
+
+        /* One character for the slash, plus the longest suffix, plus nul. */
         path = xmalloc(strlen(bases[i]) + strlen(name) + 4);
-        sprintf(path, "%s/%s-t", bases[i], name);
-        if (access(path, X_OK) != 0)
-            path[strlen(path) - 2] = '.';
-        if (access(path, X_OK) == 0)
-            break;
+
+        /* Try each suffix in turn. */
+        for (j = 0; j < 3; j++) {
+            sprintf(path, "%s/%s%s", bases[i], name, suffixes[j]);
+            if (is_valid_test(path))
+                return path;
+        }
         free(path);
         path = NULL;
     }
-    if (path == NULL) {
-        path = xmalloc(strlen(name) + 3);
-        sprintf(path, "%s-t", name);
-    }
+    if (path == NULL)
+        path = xstrdup(name);
     return path;
 }
 

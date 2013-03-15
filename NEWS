@@ -9,6 +9,11 @@ C TAP Harness 2.0 (unreleased)
     are taken as tests to run, as if they were all listed in a test list
     file.
 
+    runtests now tries the test name without any extension if the test
+    name with either -t or .t was not found.  It also does not consider a
+    directory to be a valid test when searching for the executable, even
+    if the directory is executable.
+
     Flush the harness output after each test.  This effectively implements
     line buffering even when standard output is not a terminal and
     therefore output isn't flushed after each line of test output.

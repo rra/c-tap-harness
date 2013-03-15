@@ -1,6 +1,6 @@
 =for stopwords
 runtests builddir srcdir Automake preprocessor subdirectory todo Allbery
-reimplementation
+reimplementation executables
 
 =head1 NAME
 
@@ -25,12 +25,11 @@ Automake.
 
 By default, the arguments to B<runtests> are taken as tests to run.  The
 tests to run can instead be listed in a file, one per line, passed to
-B<runtests> with the B<-l> option.  Either way, each test must be an
-executable ending in either C<-t> or C<.t> and its name given to
-B<runtests> with the extension removed.  The program name should normally
-be given as a relative path (see below for source and build directory
-handling).  B<runtests> will run each test program in the order listed and
-summarize the results.
+B<runtests> with the B<-l> option.  Either way, each test name should be a
+path to an executable, possibly with a trailing C<-t> or C<.t> removed.
+The path should normally be given as relative to the source or build
+directory; see below for source and build directory handling.  B<runtests>
+will run each test program in the order listed and summarize the results.
 
 If B<runtests> is given the B<-o> option, it instead runs a single test
 program given on the command line.  This is equivalent to running the
@@ -148,6 +147,13 @@ built or the B<-s> option, if either was set.
 =back
 
 =head1 NOTES
+
+While not required, arranging for the test programs to end in C<-t>
+(preferred since it doesn't cause confusion with extensions) or C<.t> is
+recommended because it keeps the test executable name distinct from any
+executables that are part of the main purpose of the package.  This will
+also allow a future version of B<runtests> to find all test programs by
+recursively searching a directory.
 
 Consider using prove(1) instead of this test suite harness if you're
 testing Perl packages.  It has more features for handling Perl test
