@@ -107,6 +107,12 @@
 #endif
 
 /*
+ * Used for iterating through arrays.  Returns the number of elements in the
+ * array (useful for a < upper bound in a for loop).
+ */
+#define ARRAY_SIZE(array) (sizeof(array) / sizeof((array)[0]))
+
+/*
  * The source and build versions of the tests directory.  This is used to set
  * the SOURCE and BUILD environment variables and find test programs, if set.
  * Normally, this should be set as part of the build process to the test
@@ -994,7 +1000,7 @@ static char *
 find_test(const char *name, const char *source, const char *build)
 {
     char *path;
-    const char *bases[4];
+    const char *bases[3], *suffix, *base;
     unsigned int i, j;
     const char *suffixes[3] = { "-t", ".t", "" };
 
@@ -1002,24 +1008,21 @@ find_test(const char *name, const char *source, const char *build)
     bases[0] = ".";
     bases[1] = build;
     bases[2] = source;
-    bases[3] = NULL;
 
-    /* Iterate through every possible base and format to find the file. */
-    for (i = 0; i < 3; i++) {
-        if (bases[i] == NULL)
-            continue;
-
-        /* One character for the slash, plus the longest suffix, plus nul. */
-        path = xmalloc(strlen(bases[i]) + strlen(name) + 4);
-
-        /* Try each suffix in turn. */
-        for (j = 0; j < 3; j++) {
-            sprintf(path, "%s/%s%s", bases[i], name, suffixes[j]);
+    /* Try each suffix with each base. */
+    for (i = 0; i < ARRAY_SIZE(suffixes); i++) {
+        suffix = suffixes[i];
+        for (j = 0; j < ARRAY_SIZE(bases); j++) {
+            base = bases[j];
+            if (base == NULL)
+                continue;
+            path = xmalloc(strlen(base) + strlen(name) + strlen(suffix) + 2);
+            sprintf(path, "%s/%s%s", base, name, suffix);
             if (is_valid_test(path))
                 return path;
+            free(path);
+            path = NULL;
         }
-        free(path);
-        path = NULL;
     }
     if (path == NULL)
         path = xstrdup(name);

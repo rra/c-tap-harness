@@ -1,5 +1,14 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 2.1 (unreleased)
+
+    When locating test programs, try a suffix (-t, .t, or no suffix) with
+    all bases before moving on to the next suffix.  The behavior in the
+    previous release was not backward-compatible: it would find the
+    unsuffixed helper program in the build directory instead of the actual
+    test in the source directory for some rra-c-util tests when the build
+    directory and the source directory weren't the same.
+
 C TAP Harness 2.0 (2013-03-14)
 
     The default behavior of tests/runtests has changed to make it act more
