@@ -1301,7 +1301,7 @@ main(int argc, char *argv[])
     }
     argv += optind;
     argc -= optind;
-    if (list == NULL && argc < 1) {
+    if ((list == NULL && argc < 1) || (list != NULL && argc > 0)) {
         fprintf(stderr, usage_message, argv[0], argv[0], argv[0]);
         exit(1);
     }

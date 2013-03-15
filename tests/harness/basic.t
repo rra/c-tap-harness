@@ -26,7 +26,7 @@ ok_runtests () {
 }
 
 # Total tests.
-plan 5
+plan 7
 
 # Run the tests.
 ok_runtests pass
@@ -34,3 +34,12 @@ ok_runtests skip
 ok_runtests fail
 ok_runtests abort
 ok_runtests abort-one
+
+# Check that running runtests with a list and another argument fails and
+# produces the usage message.
+output=`"${BUILD}/runtests" -l "${SOURCE}/harness/basic/pass.list" pass 2>&1`
+status=$?
+ok 'runtests with list and argument fails' [ $status -eq 1 ]
+echo "$output" | grep Usage: >/dev/null 2>&1
+status=$?
+ok '...and produces usage message' [ $status -eq 0 ]

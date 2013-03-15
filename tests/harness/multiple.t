@@ -10,7 +10,7 @@
 cd "$BUILD"
 
 # Total tests.
-plan 2
+plan 4
 
 # Run runtests, overriding the build and source directories, and passing a
 # few tests from the basic directory to run.
@@ -24,3 +24,12 @@ ok 'test output' [ $status -eq 0 ]
 if [ $status -eq 0 ] ; then
     rm multiple.result
 fi
+
+# Verify that running runtests without any tests fails and prints a usage
+# message.
+output=`"${BUILD}/runtests" 2>&1`
+status=$?
+ok 'runtests with no arguments fails' [ $status -eq 1 ]
+echo "$output" | grep Usage: >/dev/null 2>&1
+status=$?
+ok '...and produces usage message' [ $status -eq 0 ]
