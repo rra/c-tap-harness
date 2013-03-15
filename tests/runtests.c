@@ -153,7 +153,7 @@ struct testset {
     unsigned long skipped;      /* Count of skipped tests (passed). */
     unsigned long allocated;    /* The size of the results table. */
     enum test_status *results;  /* Table of results by test number. */
-    unsigned int aborted;       /* Whether the set as aborted. */
+    unsigned int aborted;       /* Whether the set was aborted. */
     int reported;               /* Whether the results were reported. */
     int status;                 /* The exit status of the test. */
     unsigned int all_skipped;   /* Whether all tests were skipped. */
