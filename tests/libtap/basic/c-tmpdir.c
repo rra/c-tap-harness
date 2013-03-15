@@ -1,7 +1,7 @@
 /*
  * Test creating a temporary directory with test_tmpdir().
  *
- * Copyright 2011 Russ Allbery <rra@stanford.edu>
+ * Copyright 2011, 2013 Russ Allbery <rra@stanford.edu>
  *
  * See LICENSE for licensing terms.
  */
@@ -47,6 +47,7 @@ main(void)
     test_tmpdir_free(path);
     if (stat(tmp, &st) == 0)
         bail("temporary directory not removed");
+    free(tmp);
 
     return 0;
 }
