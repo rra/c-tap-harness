@@ -639,9 +639,12 @@ test_checkline(const char *line, struct testset *ts)
     }
     ts->current = current;
     ts->results[current - 1] = status;
-    test_backspace(ts);
     if (isatty(STDOUT_FILENO)) {
-        outlen = printf("%lu/%lu", current, ts->count);
+        test_backspace(ts);
+        if (ts->plan == PLAN_PENDING)
+            outlen = printf("%lu/?", current);
+        else
+            outlen = printf("%lu/%lu", current, ts->count);
         ts->length = (outlen >= 0) ? outlen : 0;
         fflush(stdout);
     }
