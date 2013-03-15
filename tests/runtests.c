@@ -488,6 +488,7 @@ test_plan(const char *line, struct testset *ts)
             ts->results[i] = TEST_INVALID;
     } else if (ts->plan == PLAN_PENDING) {
         if ((unsigned long) n < ts->count) {
+            test_backspace(ts);
             printf("ABORTED (invalid test number %lu)\n", ts->count);
             ts->aborted = 1;
             ts->reported = 1;
@@ -560,6 +561,7 @@ test_checkline(const char *line, struct testset *ts)
             if (!test_plan(line, ts))
                 return;
         } else {
+            test_backspace(ts);
             puts("ABORTED (multiple plans)");
             ts->aborted = 1;
             ts->reported = 1;

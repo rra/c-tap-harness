@@ -3,12 +3,15 @@
 C TAP Harness 1.13 (unreleased)
 
     Flush the harness output after each test.  This effectively implements
-    line buffering even when standard output is not a tty and therefore
-    output isn't flushed after each line of test output.
+    line buffering even when standard output is not a terminal and
+    therefore output isn't flushed after each line of test output.
 
     When displaying partial status of tests with a deferred plan, show the
     total number of tests as ? rather than the number of tests seen so
     far.  This matches the behavior of Perl's prove utility.
+
+    More correctly handle backspacing over the test count in several abort
+    cases when reporting status to a terminal.
 
     Add GCC annotations to some internal functions in runtests to help
     clang --analyze better understand code correctness.  Remove a dead
