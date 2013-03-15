@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 2.1 (unreleased)
+C TAP Harness 2.1 (2013-03-15)
 
     When locating test programs, try a suffix (-t, .t, or no suffix) with
     all bases before moving on to the next suffix.  The behavior in the

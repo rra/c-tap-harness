@@ -17,7 +17,7 @@ License: Expat
 
 Files: Makefile.in
 Copyright: 1994-2011 Free Software Foundation, Inc.
-  2008-2012 Russ Allbery <rra@stanford.edu>
+  2008-2013 Russ Allbery <rra@stanford.edu>
 License: FSF-unlimited and Expat
 
 Files: aclocal.m4
