@@ -7,9 +7,6 @@ Protocol:
    tests that had that reason and report how many tests were skipped for
    each reason.
 
- * Ignore an initial "TAP version <version>" string in the output for
-   compliance with what's apparently the new TAP format.
-
 Shell:
 
  * ok_program merges stdout and stderr, which could cause test problems

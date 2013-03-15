@@ -9,6 +9,8 @@ C TAP Harness 2.1 (unreleased)
     test in the source directory for some rra-c-util tests when the build
     directory and the source directory weren't the same.
 
+    Document that TAP version directives in the TAP output are ignored.
+
 C TAP Harness 2.0 (2013-03-14)
 
     The default behavior of tests/runtests has changed to make it act more
