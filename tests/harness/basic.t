@@ -2,7 +2,7 @@
 #
 # Test suite for basic runtests functionality.
 #
-# Copyright 2008, 2009, 2012 Russ Allbery <rra@stanford.edu>
+# Copyright 2008, 2009, 2012, 2013 Russ Allbery <rra@stanford.edu>
 #
 # See LICENSE for licensing terms.
 
@@ -14,7 +14,7 @@ cd "$BUILD"
 # result since it changes for each run.
 ok_runtests () {
     "$BUILD"/runtests -s "${SOURCE}/harness/basic" \
-        -b "${BUILD}/harness/basic" "${SOURCE}/harness/basic/$1".list \
+        -b "${BUILD}/harness/basic" -l "${SOURCE}/harness/basic/$1".list \
         | sed 's/\(Tests=[0-9]*\),  .*/\1/' > "$1".result
     diff -u "${SOURCE}/harness/basic/$1".output "$1".result 2>&1
     status=$?

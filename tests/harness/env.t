@@ -2,7 +2,7 @@
 #
 # Test suite for runtests directory search support.
 #
-# Copyright 2009, 2012 Russ Allbery <rra@stanford.edu>
+# Copyright 2009, 2012, 2013 Russ Allbery <rra@stanford.edu>
 #
 # See LICENSE for licensing terms.
 
@@ -13,7 +13,7 @@ cd "$BUILD/harness/env"
 plan 1
 
 # Run runtests on the env test list.
-"${BUILD}/runtests" "${SOURCE}/harness/env/env.list" \
+"${BUILD}/runtests" -l "${SOURCE}/harness/env/env.list" \
     | sed 's/\(Tests=[0-9]*\),  .*/\1/' > env.result
 diff -u "${SOURCE}/harness/env/env.output" env.result 2>&1
 status=$?

@@ -171,17 +171,19 @@ struct testlist {
  * path to runtests, given twice.
  */
 static const char usage_message[] = "\
-Usage: %s [-b <build-dir>] [-s <source-dir>] <test-list>\n\
+Usage: %s [-b <build-dir>] [-s <source-dir>] <test> ...\n\
+       %s [-b <build-dir>] [-s <source-dir>] -l <test-list>\n\
        %s -o [-b <build-dir>] [-s <source-dir>] <test>\n\
 \n\
 Options:\n\
     -b <build-dir>      Set the build directory to <build-dir>\n\
+    -l <list>           Take the list of tests to run from <test-list>\n\
     -o                  Run a single test rather than a list of tests\n\
     -s <source-dir>     Set the source directory to <source-dir>\n\
 \n\
-runtests normally runs each test listed in a file whose path is given as\n\
-its command-line argument.  With the -o option, it instead runs a single\n\
-test and shows its complete output.\n";
+runtests normally runs each test listed on the command line.  With the -l\n\
+option, it instead runs every test listed in a file.  With the -o option,\n\
+it instead runs a single test and shows its complete output.\n";
 
 /*
  * Header used for test output.  %s is replaced by the file name of the list
@@ -909,19 +911,6 @@ test_run(struct testset *ts)
 }
 
 
-/* Free a struct testset. */
-static void
-free_testset(struct testset *ts)
-{
-    free(ts->file);
-    free(ts->path);
-    free(ts->results);
-    if (ts->reason != NULL)
-        free(ts->reason);
-    free(ts);
-}
-
-
 /* Summarize a list of test failures. */
 static void
 test_fail_summary(const struct testlist *fails)
@@ -1070,15 +1059,64 @@ read_test_list(const char *filename)
 
 
 /*
- * Run a batch of tests from a given file listing each test on a line by
- * itself.  Takes two additional parameters: the root of the source directory
- * and the root of the build directory.  Test programs will be first searched
- * for in the current directory, then the build directory, then the source
- * directory.  The file must be rewindable.  Returns true iff all tests
- * passed.
+ * Build a list of tests from command line arguments.  Takes the argv and argc
+ * representing the command line arguments and returns a newly allocated test
+ * list.  The caller is responsible for freeing.
+ */
+static struct testlist *
+build_test_list(char *argv[], int argc)
+{
+    int i;
+    struct testlist *listhead, *current;
+
+    /* Create the initial container list that will hold our results. */
+    listhead = xmalloc(sizeof(struct testlist));
+    listhead->ts = NULL;
+    listhead->next = NULL;
+    current = NULL;
+
+    /* Walk the list of arguments and create test sets for them. */
+    for (i = 0; i < argc; i++) {
+        if (current == NULL)
+            current = listhead;
+        else {
+            current->next = xmalloc(sizeof(struct testlist));
+            current = current->next;
+            current->next = NULL;
+        }
+        current->ts = xcalloc(1, sizeof(struct testset));
+        current->ts->plan = PLAN_INIT;
+        current->ts->file = xstrdup(argv[i]);
+        current->ts->reason = NULL;
+    }
+
+    /* Return the results. */
+    return listhead;
+}
+
+
+/* Free a struct testset. */
+static void
+free_testset(struct testset *ts)
+{
+    free(ts->file);
+    free(ts->path);
+    free(ts->results);
+    if (ts->reason != NULL)
+        free(ts->reason);
+    free(ts);
+}
+
+
+/*
+ * Run a batch of tests.  Takes two additional parameters: the root of the
+ * source directory and the root of the build directory.  Test programs will
+ * be first searched for in the current directory, then the build directory,
+ * then the source directory.  Returns true iff all tests passed, and always
+ * frees the test list that's passed in.
  */
 static int
-test_batch(const char *testlist, const char *source, const char *build)
+test_batch(struct testlist *tests, const char *source, const char *build)
 {
     size_t length;
     unsigned int i;
@@ -1089,16 +1127,13 @@ test_batch(const char *testlist, const char *source, const char *build)
     struct rusage stats;
     struct testlist *failhead = NULL;
     struct testlist *failtail = NULL;
-    struct testlist *tests, *current, *next;
+    struct testlist *current, *next;
     int succeeded;
     unsigned long total = 0;
     unsigned long passed = 0;
     unsigned long skipped = 0;
     unsigned long failed = 0;
     unsigned long aborted = 0;
-
-    /* Read the list of tests from the file. */
-    tests = read_test_list(testlist);
 
     /* Walk the list of tests to find the longest name. */
     for (current = tests; current != NULL; current = current->next) {
@@ -1236,18 +1271,23 @@ main(int argc, char *argv[])
     int single = 0;
     char *source_env = NULL;
     char *build_env = NULL;
-    const char *list;
+    const char *shortlist;
+    const char *list = NULL;
     const char *source = SOURCE;
     const char *build = BUILD;
+    struct testlist *tests;
 
-    while ((option = getopt(argc, argv, "b:hos:")) != EOF) {
+    while ((option = getopt(argc, argv, "b:hl:os:")) != EOF) {
         switch (option) {
         case 'b':
             build = optarg;
             break;
         case 'h':
-            printf(usage_message, argv[0], argv[0]);
+            printf(usage_message, argv[0], argv[0], argv[0]);
             exit(0);
+            break;
+        case 'l':
+            list = optarg;
             break;
         case 'o':
             single = 1;
@@ -1259,11 +1299,12 @@ main(int argc, char *argv[])
             exit(1);
         }
     }
-    if (argc - optind != 1) {
-        fprintf(stderr, usage_message, argv[0], argv[0]);
+    argv += optind;
+    argc -= optind;
+    if (list == NULL && argc < 1) {
+        fprintf(stderr, usage_message, argv[0], argv[0], argv[0]);
         exit(1);
     }
-    argv += optind;
 
     /* Set SOURCE and BUILD environment variables. */
     if (source != NULL) {
@@ -1282,14 +1323,18 @@ main(int argc, char *argv[])
     /* Run the tests as instructed. */
     if (single)
         test_single(argv[0], source, build);
-    else {
-        list = strrchr(argv[0], '/');
-        if (list == NULL)
-            list = argv[0];
+    else if (list != NULL) {
+        shortlist = strrchr(list, '/');
+        if (shortlist == NULL)
+            shortlist = list;
         else
-            list++;
-        printf(banner, list);
-        status = test_batch(argv[0], source, build) ? 0 : 1;
+            shortlist++;
+        printf(banner, shortlist);
+        tests = read_test_list(list);
+        status = test_batch(tests, source, build) ? 0 : 1;
+    } else {
+        tests = build_test_list(argv, argc);
+        status = test_batch(tests, source, build) ? 0 : 1;
     }
 
     /* For valgrind cleanliness, free all our memory. */

@@ -2,6 +2,7 @@ docs/pod
 docs/pod-spelling
 harness/basic
 harness/env
+harness/multiple
 harness/search
 harness/single
 libtap/basic

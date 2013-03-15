@@ -1,6 +1,13 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 1.13 (unreleased)
+C TAP Harness 2.0 (unreleased)
+
+    The default behavior of tests/runtests has changed to make it act more
+    like other test drivers.  Now, to provide a file containing a list of
+    tests, use the -l option.  Existing users should add -l to the command
+    line in front of the test list.  Otherwise, the command-line arguments
+    are taken as tests to run, as if they were all listed in a test list
+    file.
 
     Flush the harness output after each test.  This effectively implements
     line buffering even when standard output is not a terminal and

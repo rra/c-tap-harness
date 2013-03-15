@@ -8,7 +8,9 @@ runtests - Harness for running TAP-compliant test scripts
 
 =head1 SYNOPSIS
 
-B<runtests> [B<-h>] [B<-b> I<builddir>] [B<-s> I<srcdir>] I<test-list>
+B<runtests> [B<-h>] [B<-b> I<builddir>] [B<-s> I<srcdir>] I<test> ...
+
+B<runtests> [B<-b> I<builddir>] [B<-s> I<srcdir>] B<-l> I<test-list>
 
 B<runtests> B<-o> [B<-b> I<builddir>] [B<-s> I<srcdir>] I<test>
 
@@ -21,13 +23,14 @@ is a pure C reimplementation of Test::Harness that supports some
 additional features useful for C-based software packages that use
 Automake.
 
-When run normally, the first argument to B<runtests> should be a list of
-tests to run, one per line.  Each test must be an executable ending in
-either C<-t> or C<.t>, and the line in the test list must be the name of
-the executable with the extension removed.  The program name should
-normally be given as a relative path (see below for source and build
-directory handling).  B<runtests> will run each test program in the order
-listed in the file and summarize the results.
+By default, the arguments to B<runtests> are taken as tests to run.  The
+tests to run can instead be listed in a file, one per line, passed to
+B<runtests> with the B<-l> option.  Either way, each test must be an
+executable ending in either C<-t> or C<.t> and its name given to
+B<runtests> with the extension removed.  The program name should normally
+be given as a relative path (see below for source and build directory
+handling).  B<runtests> will run each test program in the order listed and
+summarize the results.
 
 If B<runtests> is given the B<-o> option, it instead runs a single test
 program given on the command line.  This is equivalent to running the
@@ -64,6 +67,12 @@ next.
 =item B<-h>
 
 Display a usage message and exit, doing nothing else.
+
+=item B<-l> I<test-list>
+
+Rather than taking the list of tests to run from the command line, read
+the list of tests from the provided I<test-list> file.  Each line of the
+file should be the name of the test, without any trailing C<-t> or C<.t>.
 
 =item B<-o>
 
