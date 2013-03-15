@@ -33,8 +33,13 @@ EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
 	tests/harness/basic/zero.t tests/harness/basic.t		    \
 	tests/harness/env/env.list tests/harness/env/env.output		    \
 	tests/harness/env.t tests/libtap/basic/c-bail.output		    \
-	tests/harness/search/build/build-t tests/harness/search/relative.t  \
-	tests/harness/search/search.list tests/harness/search/search.output \
+	tests/harness/multiple/output tests/harness/multiple.t		    \
+	tests/harness/search/build/build-no-ext.tap			    \
+	tests/harness/search/build/build-t				    \
+	tests/harness/search/relative-no-ext				    \
+	tests/harness/search/relative.t tests/harness/search/search.list    \
+	tests/harness/search/search.output				    \
+	tests/harness/search/source/source-no-ext			    \
 	tests/harness/search/source/source.t				    \
 	tests/harness/single/test.output tests/harness/single/test.t	    \
 	tests/harness/single.t tests/libtap/basic/c-basic.output	    \
