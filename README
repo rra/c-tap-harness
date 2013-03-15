@@ -147,9 +147,12 @@ USING THE HARNESS
 
   * List the test programs in the TESTS file.  This should have the name
     of the test executable with the trailing "-t" or ".t" (you can use
-    either extension as you prefer) omitted.  For any test programs that
-    need to be compiled, add build rules for them in Makefile.am, simliar
-    to:
+    either extension as you prefer) omitted.
+
+    Test programs must be executable.
+
+    For any test programs that need to be compiled, add build rules for
+    them in Makefile.am, simliar to:
 
         tests_libtap_c_basic_LDADD = tests/tap/libtap.a
 
