@@ -1,6 +1,6 @@
 # Automake makefile for C TAP Harness.
 #
-# Copyright 2008, 2009, 2010, 2011, 2012 Russ Allbery <rra@stanford.edu>
+# Copyright 2008, 2009, 2010, 2011, 2012, 2013 Russ Allbery <rra@stanford.edu>
 #
 # See LICENSE for licensing terms.
 
@@ -183,6 +183,20 @@ tests_libtap_basic_c_success_one_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_sysbail_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_tmpdir_LDADD = tests/tap/libtap.a -lm
 
-check-local: $(check_PROGRAMS)
+check-local: $(bin_PROGRAMS) $(check_PROGRAMS)
 	cd tests && ./runtests -s '$(abs_top_srcdir)/tests' \
 	    -b '$(abs_top_builddir)/tests' $(abs_top_srcdir)/tests/TESTS
+
+# Used by maintainers to run the main test suite under valgrind.  Suppress
+# the xmalloc and pod-spelling tests because the former won't work properly
+# under valgrind (due to increased memory usage) and the latter is pointless
+# to run under valgrind.
+check-valgrind: $(bin_PROGRAMS) $(check_PROGRAMS)
+	rm -rf $(abs_top_builddir)/tmp-valgrind
+	mkdir $(abs_top_builddir)/tmp-valgrind
+	env RRA_MAINTAINER_TESTS= valgrind --leak-check=full	\
+	    --show-reachable=yes --trace-children=yes		\
+	    --log-file=$(abs_top_builddir)/tmp-valgrind/log.%p	\
+	    --trace-children-skip="/bin/sh,*/cat,*/diff,*/expr,*/mkdir,*/rm,*/rmdir,*/sed,*/sleep,*/true,*/wc,*/docs/pod*.t,*/harness/*/*.t,*/libtap/basic/sh-*" \
+	    tests/runtests -s '$(abs_top_srcdir)/tests'		\
+	    -b '$(abs_top_builddir)/tests' '$(abs_top_srcdir)/tests/TESTS'

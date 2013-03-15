@@ -29,6 +29,7 @@
 /tests/libtap/basic/c-sysbail
 /tests/libtap/basic/c-tmpdir
 /tests/runtests
+/tmp-valgrind/
 .deps/
 .dirstamp
 *.3
