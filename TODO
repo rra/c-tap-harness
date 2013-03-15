@@ -39,13 +39,7 @@ Extra Harness Features:
 
  * Support automatically finding test cases under a particular directory
    similar to how prove finds tests, without needing a TESTS file.  Allow
-   directories or test cases to be given on the command line.
-
- * Support recursing into directories and running all tests found inside.
-
- * In test lists and with the -o option, allow the full name of the test
-   to be specified rather than requiring it be given without -t or .t and
-   always adding the suffix.
+   directories to be given on the command line.
 
  * Support -D/--dry-run to list the tests that would be run.  (Mostly only
    useful after passing directories and recursion are implemented.)
