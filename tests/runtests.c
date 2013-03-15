@@ -197,6 +197,7 @@ Failed Set                 Fail/Total (%) Skip Stat  Failing Tests\n\
 -------------------------- -------------- ---- ----  ------------------------";
 
 /* Include the file name and line number in malloc failures. */
+#define xcalloc(n, size)  x_calloc((n), (size), __FILE__, __LINE__)
 #define xmalloc(size)     x_malloc((size), __FILE__, __LINE__)
 #define xrealloc(p, size) x_realloc((p), (size), __FILE__, __LINE__)
 #define xstrdup(p)        x_strdup((p), __FILE__, __LINE__)
@@ -238,6 +239,8 @@ Failed Set                 Fail/Total (%) Skip Stat  Failing Tests\n\
 /* Declare internal functions that benefit from compiler attributes. */
 static void sysdie(const char *, ...)
     __attribute__((__nonnull__, __noreturn__, __format__(printf, 1, 2)));
+static void *x_calloc(size_t, size_t, const char *, int)
+    __attribute__((__alloc_size__(1, 2), __malloc__, __nonnull__));
 static void *x_malloc(size_t, const char *, int)
     __attribute__((__alloc_size__(1), __malloc__, __nonnull__));
 static void *x_realloc(void *, size_t, const char *, int)
@@ -263,6 +266,24 @@ sysdie(const char *format, ...)
     va_end(args);
     fprintf(stderr, ": %s\n", strerror(oerrno));
     exit(1);
+}
+
+
+/*
+ * Allocate zeroed memory, reporting a fatal error and exiting on failure.
+ */
+static void *
+x_calloc(size_t n, size_t size, const char *file, int line)
+{
+    void *p;
+
+    n = (n > 0) ? n : 1;
+    size = (size > 0) ? size : 1;
+    p = calloc(n, size);
+    if (p == NULL)
+        sysdie("failed to calloc %lu bytes at %s line %d",
+               (unsigned long) size, file, line);
+    return p;
 }
 
 
@@ -888,6 +909,19 @@ test_run(struct testset *ts)
 }
 
 
+/* Free a struct testset. */
+static void
+free_testset(struct testset *ts)
+{
+    free(ts->file);
+    free(ts->path);
+    free(ts->results);
+    if (ts->reason != NULL)
+        free(ts->reason);
+    free(ts);
+}
+
+
 /* Summarize a list of test failures. */
 static void
 test_fail_summary(const struct testlist *fails)
@@ -932,12 +966,6 @@ test_fail_summary(const struct testlist *fails)
         if (first != 0)
             test_print_range(first, last, chars, 19);
         putchar('\n');
-        free(ts->file);
-        free(ts->path);
-        free(ts->results);
-        if (ts->reason != NULL)
-            free(ts->reason);
-        free(ts);
     }
 }
 
@@ -947,16 +975,15 @@ test_fail_summary(const struct testlist *fails)
  * and build directories, find the test.  We try first relative to the current
  * directory, then in the build directory (if not NULL), then in the source
  * directory.  In each of those directories, we first try a "-t" extension and
- * then a ".t" extension.  When we find an executable program, we fill in the
- * path member of the testset struct.  If none of those paths are executable,
- * just fill in the name of the test with "-t" appended.
+ * then a ".t" extension.  When we find an executable program, we return the
+ * path to that program.  If none of those paths are executable, just fill in
+ * the name of the test with "-t" appended.
  *
  * The caller is responsible for freeing the path member of the testset
  * struct.
  */
-static void
-find_test(const char *name, struct testset *ts, const char *source,
-          const char *build)
+static char *
+find_test(const char *name, const char *source, const char *build)
 {
     char *path;
     const char *bases[4];
@@ -983,7 +1010,62 @@ find_test(const char *name, struct testset *ts, const char *source,
         path = xmalloc(strlen(name) + 3);
         sprintf(path, "%s-t", name);
     }
-    ts->path = path;
+    return path;
+}
+
+
+/*
+ * Read a list of tests from a file, returning the list of tests as a struct
+ * testlist.  Reports an error to standard error and exits if the list of
+ * tests cannot be read.
+ */
+static struct testlist *
+read_test_list(const char *filename)
+{
+    FILE *file;
+    unsigned int line;
+    size_t length;
+    char buffer[BUFSIZ];
+    struct testlist *listhead, *current;
+
+    /* Create the initial container list that will hold our results. */
+    listhead = xmalloc(sizeof(struct testlist));
+    listhead->ts = NULL;
+    listhead->next = NULL;
+    current = NULL;
+
+    /*
+     * Open our file of tests to run and read it line by line, creating a new
+     * struct testlist and struct testset for each line.
+     */
+    file = fopen(filename, "r");
+    if (file == NULL)
+        sysdie("can't open %s", filename);
+    line = 0;
+    while (fgets(buffer, sizeof(buffer), file)) {
+        line++;
+        length = strlen(buffer) - 1;
+        if (buffer[length] != '\n') {
+            fprintf(stderr, "%s:%u: line too long\n", filename, line);
+            exit(1);
+        }
+        buffer[length] = '\0';
+        if (current == NULL)
+            current = listhead;
+        else {
+            current->next = xmalloc(sizeof(struct testlist));
+            current = current->next;
+            current->next = NULL;
+        }
+        current->ts = xcalloc(1, sizeof(struct testset));
+        current->ts->plan = PLAN_INIT;
+        current->ts->file = xstrdup(buffer);
+        current->ts->reason = NULL;
+    }
+    fclose(file);
+
+    /* Return the results. */
+    return listhead;
 }
 
 
@@ -998,43 +1080,32 @@ find_test(const char *name, struct testset *ts, const char *source,
 static int
 test_batch(const char *testlist, const char *source, const char *build)
 {
-    FILE *tests;
-    unsigned int length, i;
+    size_t length;
+    unsigned int i;
     unsigned int longest = 0;
-    char buffer[BUFSIZ];
-    unsigned int line;
-    struct testset ts, *tmp;
+    unsigned int count = 0;
+    struct testset *ts;
     struct timeval start, end;
     struct rusage stats;
     struct testlist *failhead = NULL;
     struct testlist *failtail = NULL;
-    struct testlist *next;
+    struct testlist *tests, *current, *next;
+    int succeeded;
     unsigned long total = 0;
     unsigned long passed = 0;
     unsigned long skipped = 0;
     unsigned long failed = 0;
     unsigned long aborted = 0;
 
-    /*
-     * Open our file of tests to run and scan it, checking for lines that
-     * are too long and searching for the longest line.
-     */
-    tests = fopen(testlist, "r");
-    if (!tests)
-        sysdie("can't open %s", testlist);
-    line = 0;
-    while (fgets(buffer, sizeof(buffer), tests)) {
-        line++;
-        length = strlen(buffer) - 1;
-        if (buffer[length] != '\n') {
-            fprintf(stderr, "%s:%u: line too long\n", testlist, line);
-            exit(1);
-        }
+    /* Read the list of tests from the file. */
+    tests = read_test_list(testlist);
+
+    /* Walk the list of tests to find the longest name. */
+    for (current = tests; current != NULL; current = current->next) {
+        length = strlen(current->ts->file);
         if (length > longest)
             longest = length;
     }
-    if (fseek(tests, 0, SEEK_SET) == -1)
-        sysdie("can't rewind %s", testlist);
 
     /*
      * Add two to longest and round up to the nearest tab stop.  This is how
@@ -1047,65 +1118,50 @@ test_batch(const char *testlist, const char *source, const char *build)
     /* Start the wall clock timer. */
     gettimeofday(&start, NULL);
 
-    /*
-     * Now, plow through our tests again, running each one.  Check line
-     * length again out of paranoia.
-     */
-    line = 0;
-    while (fgets(buffer, sizeof(buffer), tests)) {
-        line++;
-        length = strlen(buffer) - 1;
-        if (buffer[length] != '\n') {
-            fprintf(stderr, "%s:%u: line too long\n", testlist, line);
-            exit(1);
-        }
-        buffer[length] = '\0';
-        fputs(buffer, stdout);
-        for (i = length; i < longest; i++)
+    /* Now, plow through our tests again, running each one. */
+    for (current = tests; current != NULL; current = current->next) {
+        ts = current->ts;
+
+        /* Print out the name of the test file. */
+        fputs(ts->file, stdout);
+        for (i = strlen(ts->file); i < longest; i++)
             putchar('.');
         if (isatty(STDOUT_FILENO))
             fflush(stdout);
-        memset(&ts, 0, sizeof(ts));
-        ts.plan = PLAN_INIT;
-        ts.file = xstrdup(buffer);
-        find_test(buffer, &ts, source, build);
-        ts.reason = NULL;
-        if (test_run(&ts)) {
-            free(ts.file);
-            free(ts.path);
-            free(ts.results);
-            if (ts.reason != NULL)
-                free(ts.reason);
-        } else {
-            tmp = xmalloc(sizeof(struct testset));
-            memcpy(tmp, &ts, sizeof(struct testset));
-            if (!failhead) {
+
+        /* Run the test. */
+        ts->path = find_test(ts->file, source, build);
+        succeeded = test_run(ts);
+        fflush(stdout);
+
+        /* Record cumulative statistics. */
+        aborted += ts->aborted;
+        total += ts->count + ts->all_skipped;
+        passed += ts->passed;
+        skipped += ts->skipped + ts->all_skipped;
+        failed += ts->failed;
+        count++;
+
+        /* If the test fails, we shuffle it over to the fail list. */
+        if (!succeeded) {
+            if (failhead == NULL) {
                 failhead = xmalloc(sizeof(struct testset));
-                failhead->ts = tmp;
-                failhead->next = NULL;
                 failtail = failhead;
             } else {
                 failtail->next = xmalloc(sizeof(struct testset));
                 failtail = failtail->next;
-                failtail->ts = tmp;
-                failtail->next = NULL;
             }
+            failtail->ts = ts;
+            failtail->next = NULL;
         }
-        fflush(stdout);
-        aborted += ts.aborted;
-        total += ts.count + ts.all_skipped;
-        passed += ts.passed;
-        skipped += ts.skipped + ts.all_skipped;
-        failed += ts.failed;
     }
     total -= skipped;
-    fclose(tests);
 
     /* Stop the timer and get our child resource statistics. */
     gettimeofday(&end, NULL);
     getrusage(RUSAGE_CHILDREN, &stats);
 
-    /* Print out our final results. */
+    /* Summarize the failures and free the failure list. */
     if (failhead != NULL) {
         test_fail_summary(failhead);
         while (failhead != NULL) {
@@ -1114,6 +1170,16 @@ test_batch(const char *testlist, const char *source, const char *build)
             failhead = next;
         }
     }
+
+    /* Free the memory used by the test lists. */
+    while (tests != NULL) {
+        next = tests->next;
+        free_testset(tests->ts);
+        free(tests);
+        tests = next;
+    }
+
+    /* Print out the final test summary. */
     putchar('\n');
     if (aborted != 0) {
         if (aborted == 1)
@@ -1134,7 +1200,7 @@ test_batch(const char *testlist, const char *source, const char *build)
             printf(", %lu tests skipped", skipped);
     }
     puts(".");
-    printf("Files=%u,  Tests=%lu", line, total);
+    printf("Files=%u,  Tests=%lu", count, total);
     printf(",  %.2f seconds", tv_diff(&end, &start));
     printf(" (%.2f usr + %.2f sys = %.2f CPU)\n",
            tv_seconds(&stats.ru_utime), tv_seconds(&stats.ru_stime),
@@ -1150,12 +1216,11 @@ test_batch(const char *testlist, const char *source, const char *build)
 static void
 test_single(const char *program, const char *source, const char *build)
 {
-    struct testset ts;
+    char *path;
 
-    memset(&ts, 0, sizeof(ts));
-    find_test(program, &ts, source, build);
-    if (execl(ts.path, ts.path, (char *) 0) == -1)
-        sysdie("cannot exec %s", ts.path);
+    path = find_test(program, source, build);
+    if (execl(path, path, (char *) 0) == -1)
+        sysdie("cannot exec %s", path);
 }
 
 
@@ -1200,6 +1265,7 @@ main(int argc, char *argv[])
     }
     argv += optind;
 
+    /* Set SOURCE and BUILD environment variables. */
     if (source != NULL) {
         source_env = xmalloc(strlen("SOURCE=") + strlen(source) + 1);
         sprintf(source_env, "SOURCE=%s", source);
@@ -1213,6 +1279,7 @@ main(int argc, char *argv[])
             sysdie("cannot set BUILD in the environment");
     }
 
+    /* Run the tests as instructed. */
     if (single)
         test_single(argv[0], source, build);
     else {
@@ -1225,7 +1292,7 @@ main(int argc, char *argv[])
         status = test_batch(argv[0], source, build) ? 0 : 1;
     }
 
-    /* For valgrind cleanliness. */
+    /* For valgrind cleanliness, free all our memory. */
     if (source_env != NULL) {
         putenv((char *) "SOURCE=");
         free(source_env);
