@@ -1,6 +1,6 @@
 =for stopwords
 runtests builddir srcdir Automake preprocessor subdirectory todo Allbery
-reimplementation executables
+reimplementation executables API
 
 =head1 NAME
 
@@ -147,6 +147,14 @@ built or the B<-s> option, if either was set.
 =back
 
 =head1 NOTES
+
+B<runtests> does not abort the entire test suite when one of the tests
+bails out (via the bail() C API or the equivalent Perl BAIL_OUT call).  It
+only aborts the rest of that test program and then moves to the next one.
+This is contrary to the Perl Test::More documentation, but the Perl
+B<prove> behavior seems less useful.  Separate test cases should be
+independent, so the harness should be able to continue with other testing
+despite one test program failing.
 
 While not required, arranging for the test programs to end in C<-t>
 (preferred since it doesn't cause confusion with extensions) or C<.t> is
