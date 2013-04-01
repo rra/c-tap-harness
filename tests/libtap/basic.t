@@ -4,7 +4,7 @@
 #
 # Written by Russ Allbery <rra@stanford.edu>
 # Copyright 2009, 2012 Russ Allbery <rra@stanford.edu>
-# Copyright 2008
+# Copyright 2008, 2013
 #     The Board of Trustees of the Leland Stanford Junior University
 #
 # See LICENSE for licensing terms.
@@ -37,7 +37,7 @@ ok_result () {
 plan 60
 
 # Run the individual tests.
-ok_result c-bail         "$BUILD"  1
+ok_result c-bail         "$BUILD"  255
 ok_result c-basic        "$BUILD"  0
 ok_result c-bstrndup     "$BUILD"  0
 ok_result c-diag         "$BUILD"  0
@@ -51,9 +51,9 @@ ok_result c-skip         "$BUILD"  0
 ok_result c-skip-reason  "$BUILD"  0
 ok_result c-success      "$BUILD"  0
 ok_result c-success-one  "$BUILD"  0
-ok_result c-sysbail      "$BUILD"  1
+ok_result c-sysbail      "$BUILD"  255
 ok_result c-tmpdir       "$BUILD"  0
-ok_result sh-bail        "$SOURCE" 1
+ok_result sh-bail        "$SOURCE" 255
 ok_result sh-basic       "$SOURCE" 0
 ok_result sh-diag        "$SOURCE" 0
 ok_result sh-extra       "$SOURCE" 0

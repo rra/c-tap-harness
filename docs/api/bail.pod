@@ -22,7 +22,7 @@ fatal error encountered.  This function prints a string like:
     Bail out! <reason>
 
 to standard output after flushing it and then exits with an exit status of
-1.
+255.
 
 sysbail() is identical to bail() except that it appends a colon, a space,
 and the results of strerror() on the current value of B<errno> to the end
@@ -30,7 +30,7 @@ of the error message.
 
 =head1 RETURN VALUE
 
-None.  bail() and sysbail() exit with an exit status of 1 after printing
+None.  bail() and sysbail() exit with an exit status of 255 after printing
 the error message.
 
 =head1 CAVEATS

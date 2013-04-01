@@ -2,6 +2,9 @@
 
 C TAP Harness 2.2 (unreleased)
 
+    bail and sysbail now exit with status 255 to match the behavior of
+    BAIL_OUT in Perl's Test::More.
+
     Document that runtests handling of test cases that bail out differs
     from the documented behavior of BAIL_OUT in Perl's Test::More and the
     behavior of prove, and document why.

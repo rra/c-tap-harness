@@ -13,7 +13,7 @@
  * documentation is at <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
  * Copyright 2009, 2010, 2011, 2012 Russ Allbery <rra@stanford.edu>
- * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011, 2012
+ * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011, 2012, 2013
  *     The Board of Trustees of the Leland Stanford Junior University
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -390,7 +390,7 @@ bail(const char *format, ...)
     vprintf(format, args);
     va_end(args);
     printf("\n");
-    exit(1);
+    exit(255);
 }
 
 
@@ -410,7 +410,7 @@ sysbail(const char *format, ...)
     vprintf(format, args);
     va_end(args);
     printf(": %s\n", strerror(oerrno));
-    exit(1);
+    exit(255);
 }
 
 

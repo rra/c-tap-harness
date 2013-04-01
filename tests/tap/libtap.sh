@@ -11,7 +11,7 @@
 #
 # Written by Russ Allbery <rra@stanford.edu>
 # Copyright 2009, 2010, 2011, 2012 Russ Allbery <rra@stanford.edu>
-# Copyright 2006, 2007, 2008
+# Copyright 2006, 2007, 2008, 2013
 #     The Board of Trustees of the Leland Stanford Junior University
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -204,7 +204,7 @@ strip_colon_error() {
 # Bail out with an error message.
 bail () {
     echo 'Bail out!' "$@"
-    exit 1
+    exit 255
 }
 
 # Output a diagnostic on standard error, preceded by the required # mark.
