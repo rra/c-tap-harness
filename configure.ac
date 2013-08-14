@@ -16,7 +16,9 @@ AM_INIT_AUTOMAKE([1.11 check-news dist-xz foreign silent-rules subdir-objects
 AM_MAINTAINER_MODE
 
 AC_PROG_CC
+AC_SYS_LARGEFILE
 AM_PROG_CC_C_O
+m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 AC_PROG_INSTALL
 AC_PROG_RANLIB
 AC_PROG_LN_S
