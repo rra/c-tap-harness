@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 2.2 (unreleased)
+C TAP Harness 2.2 (2013-08-14)
 
     bail and sysbail now exit with status 255 to match the behavior of
     BAIL_OUT in Perl's Test::More.
