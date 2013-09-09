@@ -29,6 +29,13 @@
 /tests/libtap/basic/c-success-one
 /tests/libtap/basic/c-sysbail
 /tests/libtap/basic/c-tmpdir
+/tests/libtap/cleanup/c-bail
+/tests/libtap/cleanup/c-fork
+/tests/libtap/cleanup/c-lazy
+/tests/libtap/cleanup/c-many
+/tests/libtap/cleanup/c-many-fail
+/tests/libtap/cleanup/c-one
+/tests/libtap/cleanup/c-one-fail
 /tests/runtests
 /tmp-valgrind/
 .deps/

@@ -6,3 +6,4 @@ harness/multiple
 harness/search
 harness/single
 libtap/basic
+libtap/cleanup

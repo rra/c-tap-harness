@@ -68,7 +68,14 @@ EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
 	tests/libtap/basic/sh-success-one.output			    \
 	tests/libtap/basic/sh-success.output tests/libtap/basic/sh-skip	    \
 	tests/libtap/basic/sh-skip.output tests/libtap/basic/sh-tmpdir	    \
-	tests/libtap/basic.t tests/tap/libtap.sh
+	tests/libtap/basic.t tests/libtap/cleanup/c-bail.output		    \
+	tests/libtap/cleanup/c-fork.output				    \
+	tests/libtap/cleanup/c-lazy.output				    \
+	tests/libtap/cleanup/c-many-fail.output				    \
+	tests/libtap/cleanup/c-many.output				    \
+	tests/libtap/cleanup/c-one-fail.output				    \
+	tests/libtap/cleanup/c-one.output tests/libtap/cleanup.t	    \
+	tests/tap/libtap.sh
 
 # It's somewhat odd to have the TAP library and the runtests harness in the
 # tests directory, since they're the primary point of this package.  But
@@ -170,7 +177,11 @@ check_PROGRAMS = tests/libtap/basic/c-bail tests/libtap/basic/c-basic	\
 	tests/libtap/basic/c-missing tests/libtap/basic/c-missing-one	\
 	tests/libtap/basic/c-skip tests/libtap/basic/c-skip-reason	\
 	tests/libtap/basic/c-success tests/libtap/basic/c-success-one	\
-	tests/libtap/basic/c-sysbail tests/libtap/basic/c-tmpdir
+	tests/libtap/basic/c-sysbail tests/libtap/basic/c-tmpdir	\
+	tests/libtap/cleanup/c-bail tests/libtap/cleanup/c-fork		\
+	tests/libtap/cleanup/c-lazy tests/libtap/cleanup/c-many		\
+	tests/libtap/cleanup/c-many-fail tests/libtap/cleanup/c-one	\
+	tests/libtap/cleanup/c-one-fail
 tests_libtap_basic_c_bail_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_basic_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_bstrndup_LDADD = tests/tap/libtap.a -lm
@@ -187,6 +198,13 @@ tests_libtap_basic_c_success_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_success_one_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_sysbail_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_tmpdir_LDADD = tests/tap/libtap.a -lm
+tests_libtap_cleanup_c_bail_LDADD = tests/tap/libtap.a -lm
+tests_libtap_cleanup_c_fork_LDADD = tests/tap/libtap.a -lm
+tests_libtap_cleanup_c_lazy_LDADD = tests/tap/libtap.a -lm
+tests_libtap_cleanup_c_many_LDADD = tests/tap/libtap.a -lm
+tests_libtap_cleanup_c_many_fail_LDADD = tests/tap/libtap.a -lm
+tests_libtap_cleanup_c_one_LDADD = tests/tap/libtap.a -lm
+tests_libtap_cleanup_c_one_fail_LDADD = tests/tap/libtap.a -lm
 
 check-local: $(bin_PROGRAMS) $(check_PROGRAMS)
 	cd tests && ./runtests -s '$(abs_top_srcdir)/tests' \
@@ -202,6 +220,6 @@ check-valgrind: $(bin_PROGRAMS) $(check_PROGRAMS)
 	env RRA_MAINTAINER_TESTS= valgrind --leak-check=full	\
 	    --show-reachable=yes --trace-children=yes		\
 	    --log-file=$(abs_top_builddir)/tmp-valgrind/log.%p	\
-	    --trace-children-skip="/bin/sh,*/cat,*/diff,*/expr,*/mkdir,*/rm,*/rmdir,*/sed,*/sleep,*/true,*/wc,*/docs/pod*.t,*/harness/*/*.t,*/libtap/basic/sh-*" \
+	    --trace-children-skip="/bin/sh,*/cat,*/diff,*/expr,*/grep,*/mkdir,*/rm,*/rmdir,*/sed,*/sleep,*/true,*/wc,*/docs/pod*.t,*/harness/*/*.t,*/libtap/basic/sh-*" \
 	    tests/runtests -s '$(abs_top_srcdir)/tests'		\
 	    -b '$(abs_top_builddir)/tests' -l '$(abs_top_srcdir)/tests/TESTS'

@@ -12,7 +12,7 @@
  * This file is part of C TAP Harness.  The current version plus supporting
  * documentation is at <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
- * Copyright 2009, 2010, 2011, 2012 Russ Allbery <rra@stanford.edu>
+ * Copyright 2009, 2010, 2011, 2012, 2013 Russ Allbery <rra@stanford.edu>
  * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011, 2012, 2013
  *     The Board of Trustees of the Leland Stanford Junior University
  *
@@ -58,7 +58,7 @@
 
 /*
  * The test count.  Always contains the number that will be used for the next
- * test status.
+ * test status.  This is exported to callers of the library.
  */
 unsigned long testnum = 1;
 
@@ -79,40 +79,83 @@ static unsigned long _failed  = 0;
 static pid_t _process = 0;
 static int _lazy = 0;
 
+/* Registered cleanup functions.  These are stored as a linked list. */
+struct cleanup_func {
+    test_cleanup_func func;
+    struct cleanup_func *next;
+};
+static struct cleanup_func *cleanup_funcs = NULL;
+
 
 /*
  * Our exit handler.  Called on completion of the test to report a summary of
  * results provided we're still in the original process.  This also handles
  * printing out the plan if we used plan_lazy(), although that's suppressed if
- * we never ran a test (due to an early bail, for example).
+ * we never ran a test (due to an early bail, for example), and running any
+ * registered cleanup functions.
  */
 static void
 finish(void)
 {
+    int success;
+    struct cleanup_func *current;
     unsigned long highest = testnum - 1;
 
-    if (_planned == 0 && !_lazy)
-        return;
-    fflush(stderr);
-    if (_process != 0 && getpid() == _process) {
-        if (_lazy && highest > 0) {
-            printf("1..%lu\n", highest);
-            _planned = highest;
+    /*
+     * Don't do anything except free the cleanup functions if we aren't the
+     * primary process (the process in which plan or plan_lazy was called).
+     */
+    if (_process != 0 && getpid() != _process) {
+        while (cleanup_funcs != NULL) {
+            current = cleanup_funcs;
+            cleanup_funcs = cleanup_funcs->next;
+            free(current);
         }
-        if (_planned > highest)
-            printf("# Looks like you planned %lu test%s but only ran %lu\n",
-                   _planned, (_planned > 1 ? "s" : ""), highest);
-        else if (_planned < highest)
-            printf("# Looks like you planned %lu test%s but ran %lu extra\n",
-                   _planned, (_planned > 1 ? "s" : ""), highest - _planned);
-        else if (_failed > 0)
-            printf("# Looks like you failed %lu test%s of %lu\n", _failed,
-                   (_failed > 1 ? "s" : ""), _planned);
-        else if (_planned > 1)
-            printf("# All %lu tests successful or skipped\n", _planned);
-        else
-            printf("# %lu test successful or skipped\n", _planned);
+        return;
     }
+
+    /*
+     * Determine whether all tests were successful, which is needed before
+     * calling cleanup functions since we pass that fact to the functions.
+     */
+    if (_planned == 0 && _lazy)
+        _planned = highest;
+    success = (_planned > 0 && _planned == highest && _failed == 0);
+
+    /*
+     * If there are any registered cleanup functions, we run those first.  We
+     * always run them, even if we didn't run a test.
+     */
+    while (cleanup_funcs != NULL) {
+        cleanup_funcs->func(success);
+        current = cleanup_funcs;
+        cleanup_funcs = cleanup_funcs->next;
+        free(current);
+    }
+
+    /* Don't do anything further if we never planned a test. */
+    if (_planned == 0)
+        return;
+
+    /* Print out the lazy plan if needed. */
+    fflush(stderr);
+    if (_lazy && _planned > 0)
+        printf("1..%lu\n", _planned);
+
+    /* Print out a summary of the results. */
+    if (_planned > highest)
+        printf("# Looks like you planned %lu test%s but only ran %lu\n",
+               _planned, (_planned > 1 ? "s" : ""), highest);
+    else if (_planned < highest)
+        printf("# Looks like you planned %lu test%s but ran %lu extra\n",
+               _planned, (_planned > 1 ? "s" : ""), highest - _planned);
+    else if (_failed > 0)
+        printf("# Looks like you failed %lu test%s of %lu\n", _failed,
+               (_failed > 1 ? "s" : ""), _planned);
+    else if (_planned > 1)
+        printf("# All %lu tests successful or skipped\n", _planned);
+    else
+        printf("# %lu test successful or skipped\n", _planned);
 }
 
 
@@ -626,4 +669,23 @@ test_tmpdir_free(char *path)
     rmdir(path);
     if (path != NULL)
         free(path);
+}
+
+
+/*
+ * Register a cleanup function that is called when testing ends.  All such
+ * registered functions will be run by finish.
+ */
+void
+test_cleanup_register(test_cleanup_func func)
+{
+    struct cleanup_func *cleanup, **last;
+
+    cleanup = bmalloc(sizeof(struct cleanup_func));
+    cleanup->func = func;
+    cleanup->next = NULL;
+    last = &cleanup_funcs;
+    while (*last != NULL)
+        last = &(*last)->next;
+    *last = cleanup;
 }
