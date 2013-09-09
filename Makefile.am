@@ -85,10 +85,10 @@ bin_PROGRAMS = tests/runtests
 noinst_LIBRARIES = tests/tap/libtap.a
 tests_tap_libtap_a_SOURCES = tests/tap/basic.c tests/tap/basic.h	\
 	tests/tap/float.c tests/tap/float.h tests/tap/macros.h
-dist_man_MANS = docs/api/bail.3 docs/api/bmalloc.3 docs/api/diag.3	\
-	docs/api/is_int.3 docs/api/ok.3 docs/api/plan.3 docs/api/skip.3	\
-	docs/api/skip_all.3 docs/api/test_file_path.3			\
-	docs/api/test_tmpdir.3 docs/runtests.1
+dist_man_MANS = docs/api/bail.3 docs/api/bmalloc.3 docs/api/diag.3	 \
+	docs/api/is_int.3 docs/api/ok.3 docs/api/plan.3 docs/api/skip.3	 \
+	docs/api/skip_all.3 docs/api/test_cleanup_register.3		 \
+	docs/api/test_file_path.3 docs/api/test_tmpdir.3 docs/runtests.1
 
 # Add symlinks for the man pages that document multiple functions.
 install-data-hook:

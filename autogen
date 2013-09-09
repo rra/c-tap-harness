@@ -11,9 +11,9 @@ autoreconf -i --force
 version=`grep '^C TAP Harness' NEWS | head -1 | cut -d' ' -f4`
 pod2man --release="$version" --center="C TAP Harness" docs/runtests.pod \
     > docs/runtests.1
-for doc in bail bmalloc diag is_int ok plan skip skip_all test_file_path \
-           test_tmpdir ; do
-    pod2man --release="$version" --center="C TAP Harness Library" \
+for doc in bail bmalloc diag is_int ok plan skip skip_all \
+           test_cleanup_register test_file_path test_tmpdir ; do
+    pod2man --release="$version" --center="C TAP Harness Library"         \
         --section=3 --name=`echo "$doc" | tr a-z A-Z` docs/api/"$doc".pod \
         > docs/api/"$doc".3
 done
