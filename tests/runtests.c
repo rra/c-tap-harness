@@ -103,7 +103,7 @@
 
 /* AIX doesn't have WCOREDUMP. */
 #ifndef WCOREDUMP
-# define WCOREDUMP(status)      ((unsigned)(status) & 0x80)
+# define WCOREDUMP(status) ((unsigned)(status) & 0x80)
 #endif
 
 /*
