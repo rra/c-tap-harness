@@ -9,4 +9,4 @@ fail                          6/8     75%    1    0  2-3, 5-8
 todo                          2/2    100%    2    0  3-4
 
 Failed 8/24 tests, 66.67% okay, 8 tests skipped.
-Files=4,  Tests=24,  0.00 seconds (0.00 usr + 0.00 sys = 0.00 CPU)
+Files=4,  Tests=24

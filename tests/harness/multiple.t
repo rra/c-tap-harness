@@ -15,9 +15,11 @@ plan 4
 # Run runtests, overriding the build and source directories, and passing a
 # few tests from the basic directory to run.
 "${BUILD}/runtests" -s "${SOURCE}/harness/basic" pass fail skip todo \
-    > multiple.result
+    > multiple.raw
 status=$?
 ok 'test result status' [ $status -eq 1 ]
+sed 's/\(Tests=[0-9]*\),  .*/\1/' multiple.raw > multiple.result
+rm multiple.raw
 diff -u "${SOURCE}/harness/multiple/output" multiple.result 2>&1
 status=$?
 ok 'test output' [ $status -eq 0 ]
