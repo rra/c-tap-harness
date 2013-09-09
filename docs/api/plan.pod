@@ -49,13 +49,6 @@ Only one of plan() or plan_lazy() should be called for a given test suite,
 and one of them should be called before any tests are performed and before
 any other TAP library functions except skip_all() are called.
 
-=head1 SEE ALSO
-
-bail(3), diag(3), is_int(3), ok(3), skip(3), skip_all(3)
-
-The current version of the C TAP Harness library is available from its web
-page at L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.
-
 =head1 AUTHOR
 
 Russ Allbery <rra@stanford.edu>
@@ -68,5 +61,12 @@ Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and
 this notice are preserved.  This file is offered as-is, without any
 warranty.
+
+=head1 SEE ALSO
+
+bail(3), diag(3), is_int(3), ok(3), skip(3), skip_all(3)
+
+The current version of the C TAP Harness library is available from its web
+page at L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.
 
 =cut

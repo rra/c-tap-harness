@@ -29,13 +29,6 @@ test_file_path_free() frees the path returned by test_file_path().
 test_file_path() returns the full path to the first matching file as a
 string or NULL if the file was not found.
 
-=head1 SEE ALSO
-
-runtests(1)
-
-The current version of the C TAP Harness library is available from its web
-page at L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.
-
 =head1 AUTHOR
 
 Russ Allbery <rra@stanford.edu>
@@ -48,5 +41,12 @@ Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and
 this notice are preserved.  This file is offered as-is, without any
 warranty.
+
+=head1 SEE ALSO
+
+runtests(1)
+
+The current version of the C TAP Harness library is available from its web
+page at L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.
 
 =cut

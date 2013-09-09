@@ -30,13 +30,6 @@ returns NULL; if any problems occur in creating the directory, it calls
 bail() to exit the test instead.  Note that the path may be relative if
 the environment variable BUILD is not set or is relative itself.
 
-=head1 SEE ALSO
-
-bail(3), runtests(1)
-
-The current version of the C TAP Harness library is available from its web
-page at L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.
-
 =head1 AUTHOR
 
 Russ Allbery <rra@stanford.edu>
@@ -49,5 +42,12 @@ Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and
 this notice are preserved.  This file is offered as-is, without any
 warranty.
+
+=head1 SEE ALSO
+
+bail(3), runtests(1)
+
+The current version of the C TAP Harness library is available from its web
+page at L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.
 
 =cut

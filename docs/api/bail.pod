@@ -38,13 +38,6 @@ the error message.
 Unlike most TAP library functions, I<format> in this case may not be NULL.
 An error message must be provided.
 
-=head1 SEE ALSO
-
-diag(3), plan(3), strerror(3)
-
-The current version of the C TAP Harness library is available from its web
-page at L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.
-
 =head1 AUTHOR
 
 Russ Allbery <rra@stanford.edu>
@@ -57,5 +50,12 @@ Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and
 this notice are preserved.  This file is offered as-is, without any
 warranty.
+
+=head1 SEE ALSO
+
+diag(3), plan(3), strerror(3)
+
+The current version of the C TAP Harness library is available from its web
+page at L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.
 
 =cut
