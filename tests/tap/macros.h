@@ -8,7 +8,7 @@
  * This file is part of C TAP Harness.  The current version plus supporting
  * documentation is at <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
- * Copyright 2008, 2012 Russ Allbery <rra@stanford.edu>
+ * Copyright 2008, 2012, 2013 Russ Allbery <rra@stanford.edu>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -55,6 +55,13 @@
 #if !defined(__attribute__) && !defined(__alloc_size__)
 # if __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 3)
 #  define __alloc_size__(spec, args...) /* empty */
+# endif
+#endif
+
+/* Suppress __warn_unused_result__ if gcc is too old. */
+#if !defined(__attribute__) && !defined(__warn_unused_result__)
+# if __GNUC__ < 3 || (__GNUC__ == 3 && __GNUC_MINOR__ < 4)
+#  define __warn_unused_result__ /* empty */
 # endif
 #endif
 

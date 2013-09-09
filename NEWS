@@ -11,6 +11,8 @@ C TAP Harness 2.3 (unreleased)
     where ignoring the return value is almost certainly a bug (such as all
     the malloc functions).
 
+    Add portability for warn_unsed_result attributes to tap/macros.h.
+
 C TAP Harness 2.2 (2013-08-14)
 
     bail and sysbail now exit with status 255 to match the behavior of
