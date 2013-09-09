@@ -173,14 +173,16 @@ struct testlist {
 };
 
 /*
- * Usage message.  Should be used as a printf format with two arguments: the
- * path to runtests, given twice.
+ * Usage message.  Should be used as a printf format with four arguments: the
+ * path to runtests, given three times, and the usage_description.  This is
+ * split into variables to satisfy the pedantic ISO C90 limit on strings.
  */
 static const char usage_message[] = "\
 Usage: %s [-b <build-dir>] [-s <source-dir>] <test> ...\n\
        %s [-b <build-dir>] [-s <source-dir>] -l <test-list>\n\
        %s -o [-b <build-dir>] [-s <source-dir>] <test>\n\
-\n\
+\n%s";
+static const char usage_extra[] = "\
 Options:\n\
     -b <build-dir>      Set the build directory to <build-dir>\n\
     -l <list>           Take the list of tests to run from <test-list>\n\
@@ -1310,7 +1312,7 @@ main(int argc, char *argv[])
             build = optarg;
             break;
         case 'h':
-            printf(usage_message, argv[0], argv[0], argv[0]);
+            printf(usage_message, argv[0], argv[0], argv[0], usage_extra);
             exit(0);
             break;
         case 'l':
@@ -1329,7 +1331,7 @@ main(int argc, char *argv[])
     argv += optind;
     argc -= optind;
     if ((list == NULL && argc < 1) || (list != NULL && argc > 0)) {
-        fprintf(stderr, usage_message, argv[0], argv[0], argv[0]);
+        fprintf(stderr, usage_message, argv[0], argv[0], argv[0], usage_extra);
         exit(1);
     }
 
