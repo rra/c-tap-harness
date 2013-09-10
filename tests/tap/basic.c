@@ -66,18 +66,29 @@ unsigned long testnum = 1;
  * Status information stored so that we can give a test summary at the end of
  * the test case.  We store the planned final test and the count of failures.
  * We can get the highest test count from testnum.
- *
- * We also store the PID of the process that called plan() and only summarize
- * results when that process exits, so as to not misreport results in forked
- * processes.
- *
- * If _lazy is true, we're doing lazy planning and will print out the plan
- * based on the last test number at the end of testing.
  */
 static unsigned long _planned = 0;
 static unsigned long _failed  = 0;
+
+/*
+ * Store the PID of the process that called plan() and only summarize
+ * results when that process exits, so as to not misreport results in forked
+ * processes.
+ */
 static pid_t _process = 0;
+
+/*
+ * If true, we're doing lazy planning and will print out the plan based on the
+ * last test number at the end of testing.
+ */
 static int _lazy = 0;
+
+/*
+ * If true, the test was aborted by calling bail().  Currently, this is only
+ * used to ensure that we pass a false value to any cleanup functions even if
+ * all tests to that point have passed.
+ */
+static int _aborted = 0;
 
 /*
  * Registered cleanup functions.  These are stored as a linked list and run in
@@ -142,7 +153,7 @@ finish(void)
      */
     if (_planned == 0 && _lazy)
         _planned = highest;
-    success = (_planned > 0 && _planned == highest && _failed == 0);
+    success = (!_aborted && _planned == highest && _failed == 0);
 
     /*
      * If there are any registered cleanup functions, we run those first.  We
@@ -157,6 +168,10 @@ finish(void)
 
     /* Don't do anything further if we never planned a test. */
     if (_planned == 0)
+        return;
+
+    /* If we're aborting due to bail, don't print summaries. */
+    if (_aborted)
         return;
 
     /* Print out the lazy plan if needed. */
@@ -392,6 +407,7 @@ bail(const char *format, ...)
 {
     va_list args;
 
+    _aborted = 1;
     fflush(stderr);
     fflush(stdout);
     printf("Bail out! ");
@@ -412,6 +428,7 @@ sysbail(const char *format, ...)
     va_list args;
     int oerrno = errno;
 
+    _aborted = 1;
     fflush(stderr);
     fflush(stdout);
     printf("Bail out! ");

@@ -68,7 +68,8 @@ EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
 	tests/libtap/basic/sh-success-one.output			    \
 	tests/libtap/basic/sh-success.output tests/libtap/basic/sh-skip	    \
 	tests/libtap/basic/sh-skip.output tests/libtap/basic/sh-tmpdir	    \
-	tests/libtap/basic.t tests/libtap/cleanup/c-bail.output		    \
+	tests/libtap/basic.t tests/libtap/cleanup/c-bail-lazy.output	    \
+	tests/libtap/cleanup/c-bail.output				    \
 	tests/libtap/cleanup/c-fork.output				    \
 	tests/libtap/cleanup/c-lazy.output				    \
 	tests/libtap/cleanup/c-many-fail.output				    \
@@ -178,10 +179,10 @@ check_PROGRAMS = tests/libtap/basic/c-bail tests/libtap/basic/c-basic	\
 	tests/libtap/basic/c-skip tests/libtap/basic/c-skip-reason	\
 	tests/libtap/basic/c-success tests/libtap/basic/c-success-one	\
 	tests/libtap/basic/c-sysbail tests/libtap/basic/c-tmpdir	\
-	tests/libtap/cleanup/c-bail tests/libtap/cleanup/c-fork		\
-	tests/libtap/cleanup/c-lazy tests/libtap/cleanup/c-many		\
-	tests/libtap/cleanup/c-many-fail tests/libtap/cleanup/c-one	\
-	tests/libtap/cleanup/c-one-fail
+	tests/libtap/cleanup/c-bail tests/libtap/cleanup/c-bail-lazy	\
+	tests/libtap/cleanup/c-fork tests/libtap/cleanup/c-lazy		\
+	tests/libtap/cleanup/c-many tests/libtap/cleanup/c-many-fail	\
+	tests/libtap/cleanup/c-one tests/libtap/cleanup/c-one-fail
 tests_libtap_basic_c_bail_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_basic_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_bstrndup_LDADD = tests/tap/libtap.a -lm
@@ -199,6 +200,7 @@ tests_libtap_basic_c_success_one_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_sysbail_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_tmpdir_LDADD = tests/tap/libtap.a -lm
 tests_libtap_cleanup_c_bail_LDADD = tests/tap/libtap.a -lm
+tests_libtap_cleanup_c_bail_lazy_LDADD = tests/tap/libtap.a -lm
 tests_libtap_cleanup_c_fork_LDADD = tests/tap/libtap.a -lm
 tests_libtap_cleanup_c_lazy_LDADD = tests/tap/libtap.a -lm
 tests_libtap_cleanup_c_many_LDADD = tests/tap/libtap.a -lm

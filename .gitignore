@@ -30,6 +30,7 @@
 /tests/libtap/basic/c-sysbail
 /tests/libtap/basic/c-tmpdir
 /tests/libtap/cleanup/c-bail
+/tests/libtap/cleanup/c-bail-lazy
 /tests/libtap/cleanup/c-fork
 /tests/libtap/cleanup/c-lazy
 /tests/libtap/cleanup/c-many

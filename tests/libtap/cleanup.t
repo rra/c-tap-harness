@@ -27,10 +27,11 @@ ok_test_program () {
 }
 
 # Total tests.
-plan `expr 7 \* 2`
+plan `expr 8 \* 2`
 
 # Run the individual tests.
 ok_test_program c-bail      255
+ok_test_program c-bail-lazy 255
 ok_test_program c-fork      0
 ok_test_program c-lazy      0
 ok_test_program c-many      0

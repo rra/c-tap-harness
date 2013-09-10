@@ -9,9 +9,6 @@ Protocol:
 
 Library:
 
- * Set a flag when bail is called so that we correctly pass a false value
-   to the registered cleanup functions.
-
  * Add a function that takes a log file and polls that log file before
    each output to see if it has new lines.  If so, it reads them and
    outputs them as diagnostic messages before the regular test output.

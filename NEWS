@@ -7,6 +7,9 @@ C TAP Harness 2.3 (unreleased)
     test and passed in a boolean argument indicating whether the test
     succeeded or failed.
 
+    Suppress lazy plans and the summary of tests at the end of a test
+    program if the program aborted with bail or sysbail.
+
     Add warn_unused_result gcc attributes to the C TAP library functions
     where ignoring the return value is almost certainly a bug (such as all
     the malloc functions).
