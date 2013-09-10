@@ -79,7 +79,11 @@ static unsigned long _failed  = 0;
 static pid_t _process = 0;
 static int _lazy = 0;
 
-/* Registered cleanup functions.  These are stored as a linked list. */
+/*
+ * Registered cleanup functions.  These are stored as a linked list and run in
+ * registered order by finish when the test program exits.  Each function is
+ * passed a boolean value indicating whether all tests were successful.
+ */
 struct cleanup_func {
     test_cleanup_func func;
     struct cleanup_func *next;
