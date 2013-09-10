@@ -90,6 +90,24 @@ struct cleanup_func {
 };
 static struct cleanup_func *cleanup_funcs = NULL;
 
+/*
+ * Print a specified prefix and then the test description.  Handles turning
+ * the argument list into a va_args structure suitable for passing to
+ * print_desc, which has to be done in a macro.  Assumes that format is the
+ * argument immediately before the variadic arguments.
+ */
+#define PRINT_DESC(prefix, format)              \
+    do {                                        \
+        if (format != NULL) {                   \
+            va_list args;                       \
+            if (prefix != NULL)                 \
+                printf("%s", prefix);           \
+            va_start(args, format);             \
+            vprintf(format, args);              \
+            va_end(args);                       \
+        }                                       \
+    } while (0)
+
 
 /*
  * Our exit handler.  Called on completion of the test to report a summary of
@@ -210,27 +228,9 @@ skip_all(const char *format, ...)
 {
     fflush(stderr);
     printf("1..0 # skip");
-    if (format != NULL) {
-        va_list args;
-
-        putchar(' ');
-        va_start(args, format);
-        vprintf(format, args);
-        va_end(args);
-    }
+    PRINT_DESC(" ", format);
     putchar('\n');
     exit(0);
-}
-
-
-/*
- * Print the test description.
- */
-static void
-print_desc(const char *format, va_list args)
-{
-    printf(" - ");
-    vprintf(format, args);
 }
 
 
@@ -245,13 +245,7 @@ ok(int success, const char *format, ...)
     printf("%sok %lu", success ? "" : "not ", testnum++);
     if (!success)
         _failed++;
-    if (format != NULL) {
-        va_list args;
-
-        va_start(args, format);
-        print_desc(format, args);
-        va_end(args);
-    }
+    PRINT_DESC(" - ", format);
     putchar('\n');
 }
 
@@ -266,8 +260,10 @@ okv(int success, const char *format, va_list args)
     printf("%sok %lu", success ? "" : "not ", testnum++);
     if (!success)
         _failed++;
-    if (format != NULL)
-        print_desc(format, args);
+    if (format != NULL) {
+        printf(" - ");
+        vprintf(format, args);
+    }
     putchar('\n');
 }
 
@@ -280,14 +276,7 @@ skip(const char *reason, ...)
 {
     fflush(stderr);
     printf("ok %lu # skip", testnum++);
-    if (reason != NULL) {
-        va_list args;
-
-        va_start(args, reason);
-        putchar(' ');
-        vprintf(reason, args);
-        va_end(args);
-    }
+    PRINT_DESC(" ", reason);
     putchar('\n');
 }
 
@@ -305,13 +294,7 @@ ok_block(unsigned long count, int status, const char *format, ...)
         printf("%sok %lu", status ? "" : "not ", testnum++);
         if (!status)
             _failed++;
-        if (format != NULL) {
-            va_list args;
-
-            va_start(args, format);
-            print_desc(format, args);
-            va_end(args);
-        }
+        PRINT_DESC(" - ", format);
         putchar('\n');
     }
 }
@@ -328,14 +311,7 @@ skip_block(unsigned long count, const char *reason, ...)
     fflush(stderr);
     for (i = 0; i < count; i++) {
         printf("ok %lu # skip", testnum++);
-        if (reason != NULL) {
-            va_list args;
-
-            va_start(args, reason);
-            putchar(' ');
-            vprintf(reason, args);
-            va_end(args);
-        }
+        PRINT_DESC(" ", reason);
         putchar('\n');
     }
 }
@@ -357,13 +333,7 @@ is_int(long wanted, long seen, const char *format, ...)
         printf("not ok %lu", testnum++);
         _failed++;
     }
-    if (format != NULL) {
-        va_list args;
-
-        va_start(args, format);
-        print_desc(format, args);
-        va_end(args);
-    }
+    PRINT_DESC(" - ", format);
     putchar('\n');
 }
 
@@ -388,13 +358,7 @@ is_string(const char *wanted, const char *seen, const char *format, ...)
         printf("not ok %lu", testnum++);
         _failed++;
     }
-    if (format != NULL) {
-        va_list args;
-
-        va_start(args, format);
-        print_desc(format, args);
-        va_end(args);
-    }
+    PRINT_DESC(" - ", format);
     putchar('\n');
 }
 
@@ -415,13 +379,7 @@ is_hex(unsigned long wanted, unsigned long seen, const char *format, ...)
         printf("not ok %lu", testnum++);
         _failed++;
     }
-    if (format != NULL) {
-        va_list args;
-
-        va_start(args, format);
-        print_desc(format, args);
-        va_end(args);
-    }
+    PRINT_DESC(" - ", format);
     putchar('\n');
 }
 
