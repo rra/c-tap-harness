@@ -144,18 +144,18 @@ finish(void)
 
     /* Print out a summary of the results. */
     if (_planned > highest)
-        printf("# Looks like you planned %lu test%s but only ran %lu\n",
-               _planned, (_planned > 1 ? "s" : ""), highest);
+        diag("Looks like you planned %lu test%s but only ran %lu", _planned,
+             (_planned > 1 ? "s" : ""), highest);
     else if (_planned < highest)
-        printf("# Looks like you planned %lu test%s but ran %lu extra\n",
-               _planned, (_planned > 1 ? "s" : ""), highest - _planned);
+        diag("Looks like you planned %lu test%s but ran %lu extra", _planned,
+             (_planned > 1 ? "s" : ""), highest - _planned);
     else if (_failed > 0)
-        printf("# Looks like you failed %lu test%s of %lu\n", _failed,
-               (_failed > 1 ? "s" : ""), _planned);
-    else if (_planned > 1)
-        printf("# All %lu tests successful or skipped\n", _planned);
+        diag("Looks like you failed %lu test%s of %lu", _failed,
+             (_failed > 1 ? "s" : ""), _planned);
+    else if (_planned != 1)
+        diag("All %lu tests successful or skipped", _planned);
     else
-        printf("# %lu test successful or skipped\n", _planned);
+        diag("%lu test successful or skipped", _planned);
 }
 
 
@@ -167,8 +167,7 @@ void
 plan(unsigned long count)
 {
     if (setvbuf(stdout, NULL, _IOLBF, BUFSIZ) != 0)
-        fprintf(stderr, "# cannot set stdout to line buffered: %s\n",
-                strerror(errno));
+        sysdiag("cannot set stdout to line buffered");
     fflush(stderr);
     printf("1..%lu\n", count);
     testnum = 1;
@@ -189,8 +188,7 @@ void
 plan_lazy(void)
 {
     if (setvbuf(stdout, NULL, _IOLBF, BUFSIZ) != 0)
-        fprintf(stderr, "# cannot set stdout to line buffered: %s\n",
-                strerror(errno));
+        sysdiag("cannot set stdout to line buffered");
     testnum = 1;
     _process = getpid();
     _lazy = 1;
@@ -350,7 +348,8 @@ is_int(long wanted, long seen, const char *format, ...)
     if (wanted == seen)
         printf("ok %lu", testnum++);
     else {
-        printf("# wanted: %ld\n#   seen: %ld\n", wanted, seen);
+        diag("wanted: %ld", wanted);
+        diag("  seen: %ld", seen);
         printf("not ok %lu", testnum++);
         _failed++;
     }
@@ -380,7 +379,8 @@ is_string(const char *wanted, const char *seen, const char *format, ...)
     if (strcmp(wanted, seen) == 0)
         printf("ok %lu", testnum++);
     else {
-        printf("# wanted: %s\n#   seen: %s\n", wanted, seen);
+        diag("wanted: %s", wanted);
+        diag("  seen: %s", seen);
         printf("not ok %lu", testnum++);
         _failed++;
     }
@@ -406,8 +406,8 @@ is_hex(unsigned long wanted, unsigned long seen, const char *format, ...)
     if (wanted == seen)
         printf("ok %lu", testnum++);
     else {
-        printf("# wanted: %lx\n#   seen: %lx\n", (unsigned long) wanted,
-               (unsigned long) seen);
+        diag("wanted: %lx", (unsigned long) wanted);
+        diag("  seen: %lx", (unsigned long) seen);
         printf("not ok %lu", testnum++);
         _failed++;
     }

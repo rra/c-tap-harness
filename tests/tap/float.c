@@ -10,7 +10,7 @@
  * This file is part of C TAP Harness.  The current version plus supporting
  * documentation is at <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
- * Copyright 2008, 2010, 2012 Russ Allbery <rra@stanford.edu>
+ * Copyright 2008, 2010, 2012, 2013 Russ Allbery <rra@stanford.edu>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -61,7 +61,8 @@ is_double(double wanted, double seen, double epsilon, const char *format, ...)
         || fabs(wanted - seen) <= epsilon)
         okv(1, format, args);
     else {
-        printf("# wanted: %g\n#   seen: %g\n", wanted, seen);
+        diag("wanted: %g", wanted);
+        diag("  seen: %g", seen);
         okv(0, format, args);
     }
 }
