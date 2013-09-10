@@ -158,12 +158,12 @@ MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/depcomp		   \
 # Last checked against gcc 4.6.1 (2011-05-04).  -D_FORTIFY_SOURCE=2 enables
 # warn_unused_result attribute markings on glibc functions on Linux, which
 # catches a few more issues.
-WARNINGS = -ansi -pedantic -Wno-overlength-strings -g -O		 \
-	-D_FORTIFY_SOURCE=2 -Wall -Wextra -Wendif-labels -Wformat=2	 \
-	-Winit-self -Wswitch-enum -Wdeclaration-after-statement -Wshadow \
-	-Wpointer-arith	-Wbad-function-cast -Wwrite-strings		 \
-	-Wjump-misses-init -Wlogical-op -Wstrict-prototypes		 \
-	-Wmissing-prototypes -Wredundant-decls -Wnested-externs -Werror
+WARNINGS = -ansi -pedantic -g -O -D_FORTIFY_SOURCE=2 -Wall -Wextra	\
+	-Wendif-labels -Wformat=2 -Winit-self -Wswitch-enum		\
+	-Wdeclaration-after-statement -Wshadow -Wpointer-arith		\
+	-Wbad-function-cast -Wwrite-strings -Wjump-misses-init		\
+	-Wlogical-op -Wstrict-prototypes -Wmissing-prototypes		\
+	-Wredundant-decls -Wnested-externs -Werror
 
 warnings:
 	$(MAKE) V=0 CFLAGS='$(WARNINGS)'
