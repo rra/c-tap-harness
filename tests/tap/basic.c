@@ -174,7 +174,10 @@ plan(unsigned long count)
     testnum = 1;
     _planned = count;
     _process = getpid();
-    atexit(finish);
+    if (atexit(finish) != 0) {
+        sysdiag("cannot register exit handler");
+        diag("cleanups will not be run");
+    }
 }
 
 
@@ -191,7 +194,8 @@ plan_lazy(void)
     testnum = 1;
     _process = getpid();
     _lazy = 1;
-    atexit(finish);
+    if (atexit(finish) != 0)
+        sysbail("cannot register exit handler to display plan");
 }
 
 
