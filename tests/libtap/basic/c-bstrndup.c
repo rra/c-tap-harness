@@ -1,7 +1,7 @@
 /*
  * Test bstrndup to duplicate strings.
  *
- * Copyright 2012 Russ Allbery <rra@stanford.edu>
+ * Copyright 2012 Russ Allbery <eagle@eyrie.org>
  *
  * See LICENSE for licensing terms.
  */

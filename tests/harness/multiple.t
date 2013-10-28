@@ -2,7 +2,7 @@
 #
 # Test suite for running multiple tests listed on the command line.
 #
-# Copyright 2013 Russ Allbery <rra@stanford.edu>
+# Copyright 2013 Russ Allbery <eagle@eyrie.org>
 #
 # See LICENSE for licensing terms.
 

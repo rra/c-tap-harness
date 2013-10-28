@@ -1,7 +1,7 @@
 /*
  * Test of the libtap bail function.
  *
- * Copyright 2009 Russ Allbery <rra@stanford.edu>
+ * Copyright 2009 Russ Allbery <eagle@eyrie.org>
  *
  * See LICENSE for licensing terms.
  */

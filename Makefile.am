@@ -1,6 +1,6 @@
 # Automake makefile for C TAP Harness.
 #
-# Copyright 2008, 2009, 2010, 2011, 2012, 2013 Russ Allbery <rra@stanford.edu>
+# Copyright 2008, 2009, 2010, 2011, 2012, 2013 Russ Allbery <eagle@eyrie.org>
 #
 # See LICENSE for licensing terms.
 

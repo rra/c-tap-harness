@@ -1,7 +1,7 @@
 /*
  * Test of the libtap diag and sysdiag functions.
  *
- * Copyright 2010 Russ Allbery <rra@stanford.edu>
+ * Copyright 2010 Russ Allbery <eagle@eyrie.org>
  *
  * See LICENSE for licensing terms.
  */

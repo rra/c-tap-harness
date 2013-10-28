@@ -10,7 +10,7 @@
 # rra-c-util, but it creates weird circular code sharing, so duplicate some of
 # it here instead.
 #
-# Copyright 2008, 2009, 2013 Russ Allbery <rra@stanford.edu>
+# Copyright 2008, 2009, 2013 Russ Allbery <eagle@eyrie.org>
 #
 # See LICENSE for licensing terms.
 

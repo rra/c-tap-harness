@@ -2,7 +2,7 @@
 #
 # Test suite for runtests directory search support.
 #
-# Copyright 2009, 2012, 2013 Russ Allbery <rra@stanford.edu>
+# Copyright 2009, 2012, 2013 Russ Allbery <eagle@eyrie.org>
 #
 # See LICENSE for licensing terms.
 

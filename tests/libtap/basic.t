@@ -2,8 +2,8 @@
 #
 # Test suite for libtap functionality.
 #
-# Written by Russ Allbery <rra@stanford.edu>
-# Copyright 2009, 2012 Russ Allbery <rra@stanford.edu>
+# Written by Russ Allbery <eagle@eyrie.org>
+# Copyright 2009, 2012 Russ Allbery <eagle@eyrie.org>
 # Copyright 2008, 2013
 #     The Board of Trustees of the Leland Stanford Junior University
 #

@@ -41,11 +41,11 @@ A diagnostic message must be provided.
 
 =head1 AUTHOR
 
-Russ Allbery <rra@stanford.edu>
+Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2010, 2013 Russ Allbery <rra@stanford.edu>
+Copyright 2010, 2013 Russ Allbery <eagle@eyrie.org>
 
 Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and

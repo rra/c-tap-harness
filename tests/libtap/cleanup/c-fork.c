@@ -1,7 +1,7 @@
 /*
  * Test of the libtap test_cleanup_register function with forking.
  *
- * Copyright 2013 Russ Allbery <rra@stanford.edu>
+ * Copyright 2013 Russ Allbery <eagle@eyrie.org>
  *
  * See LICENSE for licensing terms.
  */

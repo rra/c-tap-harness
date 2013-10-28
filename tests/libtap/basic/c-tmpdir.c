@@ -1,7 +1,7 @@
 /*
  * Test creating a temporary directory with test_tmpdir().
  *
- * Copyright 2011, 2013 Russ Allbery <rra@stanford.edu>
+ * Copyright 2011, 2013 Russ Allbery <eagle@eyrie.org>
  *
  * See LICENSE for licensing terms.
  */

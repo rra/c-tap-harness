@@ -1,7 +1,7 @@
 /*
  * Test of the libtap sysbail function.
  *
- * Copyright 2009, 2013 Russ Allbery <rra@stanford.edu>
+ * Copyright 2009, 2013 Russ Allbery <eagle@eyrie.org>
  *
  * See LICENSE for licensing terms.
  */

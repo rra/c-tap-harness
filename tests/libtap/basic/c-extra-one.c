@@ -4,7 +4,7 @@
  * This test exists to test the atexit output from libtap in a case of more
  * tests than planned and a plan of only a single test.
  *
- * Copyright 2009 Russ Allbery <rra@stanford.edu>
+ * Copyright 2009 Russ Allbery <eagle@eyrie.org>
  *
  * See LICENSE for licensing terms.
  */

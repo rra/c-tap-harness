@@ -10,14 +10,14 @@ Copyright: 2000-2001, 2004, 2006-2013 Russ Allbery
 License: Expat
 
 Files: *
-Copyright: 2000-2001, 2004, 2006-2013 Russ Allbery <rra@stanford.edu>
+Copyright: 2000-2001, 2004, 2006-2013 Russ Allbery <eagle@eyrie.org>
   2001-2002, 2004-2013
     The Board of Trustees of the Leland Stanford Junior University
 License: Expat
 
 Files: Makefile.in
 Copyright: 1994-2013 Free Software Foundation, Inc.
-  2008-2013 Russ Allbery <rra@stanford.edu>
+  2008-2013 Russ Allbery <eagle@eyrie.org>
 License: FSF-unlimited and Expat
 
 Files: aclocal.m4
@@ -70,7 +70,7 @@ Files: docs/api/bail.3 docs/api/bail.pod docs/api/bmalloc.3
  docs/api/test_file_path.pod docs/api/test_tmpdir.3
  docs/api/test_tmpdir.pod docs/runtests.1 docs/runtests.pod
  docs/writing-tests
-Copyright: 2009-2013 Russ Allbery <rra@stanford.edu>
+Copyright: 2009-2013 Russ Allbery <eagle@eyrie.org>
 License: all-permissive
  Copying and distribution of this file, with or without modification, are
  permitted in any medium without royalty provided the copyright notice and

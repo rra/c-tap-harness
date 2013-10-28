@@ -2,8 +2,8 @@
 #
 # Test suite for libtap cleanup function functionality.
 #
-# Written by Russ Allbery <rra@stanford.edu>
-# Copyright 2009, 2012, 2013 Russ Allbery <rra@stanford.edu>
+# Written by Russ Allbery <eagle@eyrie.org>
+# Copyright 2009, 2012, 2013 Russ Allbery <eagle@eyrie.org>
 # Copyright 2008, 2013
 #     The Board of Trustees of the Leland Stanford Junior University
 #
