@@ -7,10 +7,10 @@
 EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
 	docs/api/bmalloc.pod docs/api/diag.pod docs/api/is_int.pod	    \
 	docs/api/ok.pod docs/api/plan.pod docs/api/skip.pod		    \
-	docs/api/skip_all.pod docs/api/test_file_path.pod		    \
-	docs/api/test_tmpdir.pod docs/runtests.pod docs/writing-tests	    \
-	tests/TESTS tests/docs/pod.t tests/docs/pod-spelling.t		    \
-	tests/harness/basic/abort-one.list				    \
+	docs/api/skip_all.pod docs/api/test_cleanup_register.pod	    \
+	docs/api/test_file_path.pod docs/api/test_tmpdir.pod		    \
+	docs/runtests.pod docs/writing-tests tests/TESTS tests/docs/pod.t   \
+	tests/docs/pod-spelling.t tests/harness/basic/abort-one.list	    \
 	tests/harness/basic/abort-one.output tests/harness/basic/abort.list \
 	tests/harness/basic/abort.output tests/harness/basic/abort.t	    \
 	tests/harness/basic/badnum-delay.t tests/harness/basic/badnum.t	    \
