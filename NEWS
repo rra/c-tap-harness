@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 2.3 (unreleased)
+C TAP Harness 2.3 (2013-11-13)
 
     Add new test_cleanup_register API to the basic C TAP library.  This
     registers a C callback function that's called during exit from the
