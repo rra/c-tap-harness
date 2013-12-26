@@ -12,6 +12,18 @@
 #include <unistd.h>
 
 #include <tests/tap/basic.h>
+#include <tests/tap/macros.h>
+
+/*
+ * A cleanup handler to remove our other stray log file.  This also tests that
+ * the cleanup handlers run after the last check of diag_files.
+ */
+static void
+cleanup_log(int success UNUSED)
+{
+    unlink("c-diag-file.log1");
+}
+
 
 int
 main(void)
@@ -25,6 +37,9 @@ main(void)
     out2 = fopen("c-diag-file.log2", "w");
     if (out2 == NULL)
         sysbail("cannot create c-diag-file.log2");
+
+    /* Register a cleanup function to remove c-diag-file.log1. */
+    test_cleanup_register(cleanup_log);
 
     /* Add one file before the plan. */
     diag_file_add("c-diag-file.log1");

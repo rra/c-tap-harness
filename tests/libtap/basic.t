@@ -69,9 +69,6 @@ ok_result sh-success     "$SOURCE" 0
 ok_result sh-success-one "$SOURCE" 0
 ok_result sh-tmpdir      "$SOURCE" 0
 
-# Remove the log file created by c-diag-file.
-rm -f c-diag-file.log1
-
 # Remove the output files created by c-diag, c-file, c-sysbail, c-tmpdir,
 # sh-file, and sh-tmpdir
 rm -f c-diag.output c-file.output c-sysbail.output c-tmpdir.output \
