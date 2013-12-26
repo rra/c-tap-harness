@@ -22,7 +22,7 @@ ok_runtests () {
     if [ $status -eq 0 ] ; then
         rm "$1".result
     fi
-    rm -f core
+    rm -f core core.*
 }
 
 # Total tests.
