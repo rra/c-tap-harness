@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 2.4 (unreleased)
+C TAP Harness 2.4 (2013-12-25)
 
     Add new diag_file_add and diag_file_remove APIs to the basic C TAP
     library.  These functions manage a list of registered file that
