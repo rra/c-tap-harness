@@ -619,7 +619,10 @@ diag_file_add(const char *name)
 
 
 /*
- * Remove a file from diag_file processing.
+ * Remove a file from diag_file processing.  If the file is not found, do
+ * nothing, since there are some situations where it can be removed twice
+ * (such as if it's removed from a cleanup function, since cleanup functions
+ * are called after freeing all the diag_files).
  */
 void
 diag_file_remove(const char *name)
@@ -638,7 +641,6 @@ diag_file_remove(const char *name)
         }
         prev = &file->next;
     }
-    bail("cannot find diag_file %s to remove", name);
 }
 
 
