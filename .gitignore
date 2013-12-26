@@ -17,6 +17,7 @@
 /tests/libtap/basic/c-basic
 /tests/libtap/basic/c-bstrndup
 /tests/libtap/basic/c-diag
+/tests/libtap/basic/c-diag-file
 /tests/libtap/basic/c-extra
 /tests/libtap/basic/c-extra-one
 /tests/libtap/basic/c-file

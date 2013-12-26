@@ -5,12 +5,13 @@
 # See LICENSE for licensing terms.
 
 EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
-	docs/api/bmalloc.pod docs/api/diag.pod docs/api/is_int.pod	    \
-	docs/api/ok.pod docs/api/plan.pod docs/api/skip.pod		    \
-	docs/api/skip_all.pod docs/api/test_cleanup_register.pod	    \
-	docs/api/test_file_path.pod docs/api/test_tmpdir.pod		    \
-	docs/runtests.pod docs/writing-tests tests/TESTS tests/docs/pod.t   \
-	tests/docs/pod-spelling.t tests/harness/basic/abort-one.list	    \
+	docs/api/bmalloc.pod docs/api/diag.pod docs/api/diag_file_add.pod   \
+	docs/api/is_int.pod docs/api/ok.pod docs/api/plan.pod		    \
+	docs/api/skip.pod docs/api/skip_all.pod				    \
+	docs/api/test_cleanup_register.pod docs/api/test_file_path.pod	    \
+	docs/api/test_tmpdir.pod docs/runtests.pod docs/writing-tests	    \
+	tests/TESTS tests/docs/pod.t tests/docs/pod-spelling.t		    \
+	tests/harness/basic/abort-one.list				    \
 	tests/harness/basic/abort-one.output tests/harness/basic/abort.list \
 	tests/harness/basic/abort.output tests/harness/basic/abort.t	    \
 	tests/harness/basic/badnum-delay.t tests/harness/basic/badnum.t	    \
@@ -44,6 +45,7 @@ EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
 	tests/harness/single/test.output tests/harness/single/test.t	    \
 	tests/harness/single.t tests/libtap/basic/c-basic.output	    \
 	tests/libtap/basic/c-bstrndup.output				    \
+	tests/libtap/basic/c-diag-file.output				    \
 	tests/libtap/basic/c-extra-one.output				    \
 	tests/libtap/basic/c-extra.output tests/libtap/basic/c-lazy.output  \
 	tests/libtap/basic/c-missing-one.output				    \
@@ -86,10 +88,11 @@ bin_PROGRAMS = tests/runtests
 noinst_LIBRARIES = tests/tap/libtap.a
 tests_tap_libtap_a_SOURCES = tests/tap/basic.c tests/tap/basic.h	\
 	tests/tap/float.c tests/tap/float.h tests/tap/macros.h
-dist_man_MANS = docs/api/bail.3 docs/api/bmalloc.3 docs/api/diag.3	 \
-	docs/api/is_int.3 docs/api/ok.3 docs/api/plan.3 docs/api/skip.3	 \
-	docs/api/skip_all.3 docs/api/test_cleanup_register.3		 \
-	docs/api/test_file_path.3 docs/api/test_tmpdir.3 docs/runtests.1
+dist_man_MANS = docs/api/bail.3 docs/api/bmalloc.3 docs/api/diag.3	\
+	docs/api/diag_file_add.3 docs/api/is_int.3 docs/api/ok.3	\
+	docs/api/plan.3 docs/api/skip.3 docs/api/skip_all.3		\
+	docs/api/test_cleanup_register.3 docs/api/test_file_path.3	\
+	docs/api/test_tmpdir.3 docs/runtests.1
 
 # Add symlinks for the man pages that document multiple functions.
 install-data-hook:
@@ -104,6 +107,8 @@ install-data-hook:
 	cd $(DESTDIR)$(man3dir) && $(LN_S) bmalloc.3 bstrndup.3
 	rm -f $(DESTDIR)$(man3dir)/sysdiag.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) diag.3 sysdiag.3
+	rm -f $(DESTDIR)$(man3dir)/diag_file_remove.3
+	cd $(DESTDIR)$(man3dir) && $(LN_S) diag_file_add.3 diag_file_remove.3
 	rm -f $(DESTDIR)$(man3dir)/is_double.3
 	rm -f $(DESTDIR)$(man3dir)/is_string.3
 	rm -f $(DESTDIR)$(man3dir)/is_hex.3
@@ -131,6 +136,7 @@ uninstall-hook:
 	rm -f $(DESTDIR)$(man3dir)/bstrdup.3
 	rm -f $(DESTDIR)$(man3dir)/bstrndup.3
 	rm -f $(DESTDIR)$(man3dir)/sysdiag.3
+	rm -f $(DESTDIR)$(man3dir)/diag_file_remove.3
 	rm -f $(DESTDIR)$(man3dir)/is_double.3
 	rm -f $(DESTDIR)$(man3dir)/is_string.3
 	rm -f $(DESTDIR)$(man3dir)/is_hex.3
@@ -144,11 +150,12 @@ uninstall-hook:
 # Work around the GNU Coding Standards, which leave all the Autoconf and
 # Automake stuff around after make maintainer-clean, thus making that command
 # mostly worthless.
-MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/depcomp		   \
-	build-aux/install-sh build-aux/missing configure docs/api/bail.3   \
-	docs/api/bmalloc.3 docs/api/diag.3 docs/api/is_int.3 docs/api/ok.3 \
-	docs/api/plan.3 docs/api/skip.3 docs/api/skip_all.3		   \
-	docs/api/test_file_path.3 docs/api/test_tmpdir.3 docs/runtests.1
+MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/depcomp		 \
+	build-aux/install-sh build-aux/missing configure docs/api/bail.3 \
+	docs/api/bmalloc.3 docs/api/diag.3 docs/api/diag_file_add.3	 \
+	docs/api/is_int.3 docs/api/ok.3 docs/api/plan.3 docs/api/skip.3	 \
+	docs/api/skip_all.3 docs/api/test_file_path.3			 \
+	docs/api/test_tmpdir.3 docs/runtests.1
 
 # A set of flags for warnings.  Add -O because gcc won't find some warnings
 # without optimization turned on.  Desirable warnings that can't be turned
@@ -173,20 +180,22 @@ warnings:
 # The bits below are for the test suite.
 check_PROGRAMS = tests/libtap/basic/c-bail tests/libtap/basic/c-basic	\
 	tests/libtap/basic/c-bstrndup tests/libtap/basic/c-diag		\
-	tests/libtap/basic/c-file tests/libtap/basic/c-extra		\
-	tests/libtap/basic/c-extra-one tests/libtap/basic/c-lazy	\
-	tests/libtap/basic/c-missing tests/libtap/basic/c-missing-one	\
-	tests/libtap/basic/c-skip tests/libtap/basic/c-skip-reason	\
-	tests/libtap/basic/c-success tests/libtap/basic/c-success-one	\
-	tests/libtap/basic/c-sysbail tests/libtap/basic/c-tmpdir	\
-	tests/libtap/cleanup/c-bail tests/libtap/cleanup/c-bail-lazy	\
-	tests/libtap/cleanup/c-fork tests/libtap/cleanup/c-lazy		\
-	tests/libtap/cleanup/c-many tests/libtap/cleanup/c-many-fail	\
-	tests/libtap/cleanup/c-one tests/libtap/cleanup/c-one-fail
+	tests/libtap/basic/c-diag-file tests/libtap/basic/c-file	\
+	tests/libtap/basic/c-extra tests/libtap/basic/c-extra-one	\
+	tests/libtap/basic/c-lazy tests/libtap/basic/c-missing		\
+	tests/libtap/basic/c-missing-one tests/libtap/basic/c-skip	\
+	tests/libtap/basic/c-skip-reason tests/libtap/basic/c-success	\
+	tests/libtap/basic/c-success-one tests/libtap/basic/c-sysbail	\
+	tests/libtap/basic/c-tmpdir tests/libtap/cleanup/c-bail		\
+	tests/libtap/cleanup/c-bail-lazy tests/libtap/cleanup/c-fork	\
+	tests/libtap/cleanup/c-lazy tests/libtap/cleanup/c-many		\
+	tests/libtap/cleanup/c-many-fail tests/libtap/cleanup/c-one	\
+	tests/libtap/cleanup/c-one-fail
 tests_libtap_basic_c_bail_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_basic_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_bstrndup_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_diag_LDADD = tests/tap/libtap.a -lm
+tests_libtap_basic_c_diag_file_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_extra_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_extra_one_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_file_LDADD = tests/tap/libtap.a -lm

@@ -3,7 +3,7 @@
 # Test suite for libtap functionality.
 #
 # Written by Russ Allbery <eagle@eyrie.org>
-# Copyright 2009, 2012 Russ Allbery <eagle@eyrie.org>
+# Copyright 2009, 2012, 2013 Russ Allbery <eagle@eyrie.org>
 # Copyright 2008, 2013
 #     The Board of Trustees of the Leland Stanford Junior University
 #
@@ -34,13 +34,14 @@ ok_result () {
 }
 
 # Total tests.
-plan 60
+plan 62
 
 # Run the individual tests.
 ok_result c-bail         "$BUILD"  255
 ok_result c-basic        "$BUILD"  0
 ok_result c-bstrndup     "$BUILD"  0
 ok_result c-diag         "$BUILD"  0
+ok_result c-diag-file    "$BUILD"  0
 ok_result c-extra        "$BUILD"  0
 ok_result c-extra-one    "$BUILD"  0
 ok_result c-file         "$BUILD"  0
@@ -67,6 +68,9 @@ ok_result sh-strip-colon "$SOURCE" 0
 ok_result sh-success     "$SOURCE" 0
 ok_result sh-success-one "$SOURCE" 0
 ok_result sh-tmpdir      "$SOURCE" 0
+
+# Remove the log file created by c-diag-file.
+rm -f c-diag-file.log1
 
 # Remove the output files created by c-diag, c-file, c-sysbail, c-tmpdir,
 # sh-file, and sh-tmpdir

@@ -1,5 +1,15 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 2.4 (unreleased)
+
+    Add new diag_file_add and diag_file_remove APIs to the basic C TAP
+    library.  These functions manage a list of registered file that
+    contains supplemental diagnostic information.  Each registered file is
+    checked before each output function for any new lines, and any lines
+    are displayed as if they'd been passed to diag().  This can be useful
+    if, for example, the test involves a background daemon whose output
+    can be logged to a disk file.
+
 C TAP Harness 2.3 (2013-11-13)
 
     Add new test_cleanup_register API to the basic C TAP library.  This

@@ -101,6 +101,18 @@ void diag(const char *format, ...)
 void sysdiag(const char *format, ...)
     __attribute__((__nonnull__, __format__(printf, 1, 2)));
 
+/*
+ * Register or unregister a file that contains supplementary diagnostics.
+ * Before any other output, all registered files will be read, line by line,
+ * and each line will be reported as a diagnostic as if it were passed to
+ * diag().  Nul characters are not supported in these files and will result in
+ * truncated output.
+ */
+void diag_file_add(const char *file)
+    __attribute__((__nonnull__));
+void diag_file_remove(const char *file)
+    __attribute__((__nonnull__));
+
 /* Allocate memory, reporting a fatal error with bail on failure. */
 void *bcalloc(size_t, size_t)
     __attribute__((__alloc_size__(1, 2), __malloc__, __warn_unused_result__));

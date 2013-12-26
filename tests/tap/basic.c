@@ -102,6 +102,21 @@ struct cleanup_func {
 static struct cleanup_func *cleanup_funcs = NULL;
 
 /*
+ * Registered diag files.  Any output found in these files will be printed out
+ * as if it were passed to diag() before any other output we do.  This allows
+ * background processes to log to a file and have that output interleved with
+ * the test output.
+ */
+struct diag_file {
+    char *name;
+    FILE *file;
+    char *buffer;
+    size_t bufsize;
+    struct diag_file *next;
+};
+static struct diag_file *diag_files = NULL;
+
+/*
  * Print a specified prefix and then the test description.  Handles turning
  * the argument list into a va_args structure suitable for passing to
  * print_desc, which has to be done in a macro.  Assumes that format is the
@@ -121,6 +136,76 @@ static struct cleanup_func *cleanup_funcs = NULL;
 
 
 /*
+ * Check all registered diag_files for any output.  We only print out the
+ * output if we see a complete line; otherwise, we wait for the next newline.
+ */
+static void
+check_diag_files(void)
+{
+    struct diag_file *file;
+    fpos_t where;
+    size_t length;
+    int incomplete;
+
+    /*
+     * Walk through each file and read each line of output available.  The
+     * general scheme here used is as follows: try to read a line of output at
+     * a time.  If we get NULL, check for EOF; on EOF, advance to the next
+     * file.
+     *
+     * If we get some data, see if it ends in a newline.  If it doesn't end in
+     * a newline, we have one of two cases: our buffer isn't large enough, in
+     * which case we resize it and try again, or we have incomplete data in
+     * the file, in which case we rewind the file and will try again next
+     * time.
+     */
+    for (file = diag_files; file != NULL; file = file->next) {
+        clearerr(file->file);
+
+        /* Store the current position in case we have to rewind. */
+        if (fgetpos(file->file, &where) < 0)
+            sysbail("cannot get position in %s", file->name);
+
+        /* Continue until we get EOF or an incomplete line of data. */
+        incomplete = 0;
+        while (!feof(file->file) && !incomplete) {
+            if (fgets(file->buffer, file->bufsize, file->file) == NULL) {
+                if (ferror(file->file))
+                    sysbail("cannot read from %s", file->name);
+                continue;
+            }
+
+            /*
+             * See if the line ends in a newline.  If not, see which error
+             * case we have.
+             */
+            length = strlen(file->buffer);
+            if (file->buffer[length - 1] != '\n') {
+                if (length < file->bufsize - 1)
+                    incomplete = 1;
+                else {
+                    file->bufsize += BUFSIZ;
+                    file->buffer = brealloc(file->buffer, file->bufsize);
+                }
+
+                /*
+                 * On either incomplete lines or too small of a buffer, rewind
+                 * and read the file again (on the next pass, if incomplete).
+                 * It's simpler than trying to double-buffer the file.
+                 */
+                if (fsetpos(file->file, &where) < 0)
+                    sysbail("cannot set position in %s", file->name);
+                continue;
+            }
+
+            /* We saw a complete line.  Print it out. */
+            printf("# %s", file->buffer);
+        }
+    }
+}
+
+
+/*
  * Our exit handler.  Called on completion of the test to report a summary of
  * results provided we're still in the original process.  This also handles
  * printing out the plan if we used plan_lazy(), although that's suppressed if
@@ -133,10 +218,27 @@ finish(void)
     int success;
     struct cleanup_func *current;
     unsigned long highest = testnum - 1;
+    struct diag_file *file, *tmp;
+
+    /* Check for pending diag_file output. */
+    check_diag_files();
+
+    /* Free the diag_files. */
+    file = diag_files;
+    while (file != NULL) {
+        tmp = file;
+        file = file->next;
+        fclose(tmp->file);
+        free(tmp->name);
+        free(tmp->buffer);
+        free(tmp);
+    }
+    diag_files = NULL;
 
     /*
-     * Don't do anything except free the cleanup functions if we aren't the
-     * primary process (the process in which plan or plan_lazy was called).
+     * Don't do anything except free the diag_files and cleanup functions if
+     * we aren't the primary process (the process in which plan or plan_lazy
+     * was called).
      */
     if (_process != 0 && getpid() != _process) {
         while (cleanup_funcs != NULL) {
@@ -198,7 +300,8 @@ finish(void)
 
 /*
  * Initialize things.  Turns on line buffering on stdout and then prints out
- * the number of tests in the test suite.
+ * the number of tests in the test suite.  We intentionally don't check for
+ * pending diag_file output here, since it should really come after the plan.
  */
 void
 plan(unsigned long count)
@@ -236,7 +339,8 @@ plan_lazy(void)
 
 /*
  * Skip the entire test suite and exits.  Should be called instead of plan(),
- * not after it, since it prints out a special plan line.
+ * not after it, since it prints out a special plan line.  Ignore diag_file
+ * output here, since it's not clear if it's allowed before the plan.
  */
 void
 skip_all(const char *format, ...)
@@ -257,6 +361,7 @@ void
 ok(int success, const char *format, ...)
 {
     fflush(stderr);
+    check_diag_files();
     printf("%sok %lu", success ? "" : "not ", testnum++);
     if (!success)
         _failed++;
@@ -272,6 +377,7 @@ void
 okv(int success, const char *format, va_list args)
 {
     fflush(stderr);
+    check_diag_files();
     printf("%sok %lu", success ? "" : "not ", testnum++);
     if (!success)
         _failed++;
@@ -290,6 +396,7 @@ void
 skip(const char *reason, ...)
 {
     fflush(stderr);
+    check_diag_files();
     printf("ok %lu # skip", testnum++);
     PRINT_DESC(" ", reason);
     putchar('\n');
@@ -305,6 +412,7 @@ ok_block(unsigned long count, int status, const char *format, ...)
     unsigned long i;
 
     fflush(stderr);
+    check_diag_files();
     for (i = 0; i < count; i++) {
         printf("%sok %lu", status ? "" : "not ", testnum++);
         if (!status)
@@ -324,6 +432,7 @@ skip_block(unsigned long count, const char *reason, ...)
     unsigned long i;
 
     fflush(stderr);
+    check_diag_files();
     for (i = 0; i < count; i++) {
         printf("ok %lu # skip", testnum++);
         PRINT_DESC(" ", reason);
@@ -340,6 +449,7 @@ void
 is_int(long wanted, long seen, const char *format, ...)
 {
     fflush(stderr);
+    check_diag_files();
     if (wanted == seen)
         printf("ok %lu", testnum++);
     else {
@@ -365,6 +475,7 @@ is_string(const char *wanted, const char *seen, const char *format, ...)
     if (seen == NULL)
         seen = "(null)";
     fflush(stderr);
+    check_diag_files();
     if (strcmp(wanted, seen) == 0)
         printf("ok %lu", testnum++);
     else {
@@ -386,6 +497,7 @@ void
 is_hex(unsigned long wanted, unsigned long seen, const char *format, ...)
 {
     fflush(stderr);
+    check_diag_files();
     if (wanted == seen)
         printf("ok %lu", testnum++);
     else {
@@ -409,6 +521,7 @@ bail(const char *format, ...)
 
     _aborted = 1;
     fflush(stderr);
+    check_diag_files();
     fflush(stdout);
     printf("Bail out! ");
     va_start(args, format);
@@ -430,6 +543,7 @@ sysbail(const char *format, ...)
 
     _aborted = 1;
     fflush(stderr);
+    check_diag_files();
     fflush(stdout);
     printf("Bail out! ");
     va_start(args, format);
@@ -449,6 +563,7 @@ diag(const char *format, ...)
     va_list args;
 
     fflush(stderr);
+    check_diag_files();
     fflush(stdout);
     printf("# ");
     va_start(args, format);
@@ -468,12 +583,62 @@ sysdiag(const char *format, ...)
     int oerrno = errno;
 
     fflush(stderr);
+    check_diag_files();
     fflush(stdout);
     printf("# ");
     va_start(args, format);
     vprintf(format, args);
     va_end(args);
     printf(": %s\n", strerror(oerrno));
+}
+
+
+/*
+ * Register a new file for diag_file processing.
+ */
+void
+diag_file_add(const char *name)
+{
+    struct diag_file *file, *prev;
+
+    file = bcalloc(1, sizeof(struct diag_file));
+    file->name = bstrdup(name);
+    file->file = fopen(file->name, "r");
+    if (file->file == NULL)
+        sysbail("cannot open %s", name);
+    file->buffer = bmalloc(BUFSIZ);
+    file->bufsize = BUFSIZ;
+    if (diag_files == NULL)
+        diag_files = file;
+    else {
+        for (prev = diag_files; prev->next != NULL; prev = prev->next)
+            ;
+        prev->next = file;
+    }
+}
+
+
+/*
+ * Remove a file from diag_file processing.
+ */
+void
+diag_file_remove(const char *name)
+{
+    struct diag_file *file;
+    struct diag_file **prev = &diag_files;
+
+    for (file = diag_files; file != NULL; file = file->next) {
+        if (strcmp(file->name, name) == 0) {
+            *prev = file->next;
+            fclose(file->file);
+            free(file->name);
+            free(file->buffer);
+            free(file);
+            return;
+        }
+        prev = &file->next;
+    }
+    bail("cannot find diag_file %s to remove", name);
 }
 
 
