@@ -54,8 +54,8 @@
  * should be sent to the e-mail address below.  This program is part of C TAP
  * Harness <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
- * Copyright 2000, 2001, 2004, 2006, 2007, 2008, 2009, 2010, 2011
- *     Russ Allbery <eagle@eyrie.org>
+ * Copyright 2000, 2001, 2004, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+ *     2014 Russ Allbery <eagle@eyrie.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -108,6 +108,17 @@
 #endif
 
 /*
+ * POSIX requires that these be defined in <unistd.h>, but they're not always
+ * available.  If one of them has been defined, all the rest almost certainly
+ * have.
+ */
+#ifndef STDIN_FILENO
+# define STDIN_FILENO  0
+# define STDOUT_FILENO 1
+# define STDERR_FILENO 2
+#endif
+
+/*
  * Used for iterating through arrays.  Returns the number of elements in the
  * array (useful for a < upper bound in a for loop).
  */
@@ -145,7 +156,8 @@ enum plan_status {
 /* Error exit statuses for test processes. */
 #define CHILDERR_DUP    100     /* Couldn't redirect stderr or stdout. */
 #define CHILDERR_EXEC   101     /* Couldn't exec child process. */
-#define CHILDERR_STDERR 102     /* Couldn't open stderr file. */
+#define CHILDERR_STDIN  102     /* Couldn't open stdin file. */
+#define CHILDERR_STDERR 103     /* Couldn't open stderr file. */
 
 /* Structure to hold data for a set of tests. */
 struct testset {
@@ -399,36 +411,62 @@ skip_whitespace(const char *p)
 static pid_t
 test_start(const char *path, int *fd)
 {
-    int fds[2], errfd;
+    int fds[2], infd, errfd;
     pid_t child;
 
+    /* Create a pipe used to capture the output from the test program. */
     if (pipe(fds) == -1) {
         puts("ABORTED");
         fflush(stdout);
         sysdie("can't create pipe");
     }
+
+    /* Fork a child process, massage the file descriptors, and exec. */
     child = fork();
-    if (child == (pid_t) -1) {
+    switch (child) {
+    case -1:
         puts("ABORTED");
         fflush(stdout);
         sysdie("can't fork");
-    } else if (child == 0) {
-        /* In child.  Set up our stdout and stderr. */
+
+    /* In the child.  Set up our standard output. */
+    case 0:
+        close(fds[0]);
+        close(STDOUT_FILENO);
+        if (dup2(fds[1], STDOUT_FILENO) < 0)
+            _exit(CHILDERR_DUP);
+        close(fds[1]);
+
+        /* Point standard input at /dev/null. */
+        close(STDIN_FILENO);
+        infd = open("/dev/null", O_RDONLY);
+        if (infd < 0)
+            _exit(CHILDERR_STDIN);
+        if (infd != STDIN_FILENO) {
+            if (dup2(infd, STDIN_FILENO) < 0)
+                _exit(CHILDERR_DUP);
+            close(infd);
+        }
+
+        /* Point standard error at /dev/null. */
+        close(STDERR_FILENO);
         errfd = open("/dev/null", O_WRONLY);
         if (errfd < 0)
             _exit(CHILDERR_STDERR);
-        if (dup2(errfd, 2) == -1)
-            _exit(CHILDERR_DUP);
-        close(fds[0]);
-        if (dup2(fds[1], 1) == -1)
-            _exit(CHILDERR_DUP);
+        if (errfd != STDERR_FILENO) {
+            if (dup2(errfd, STDERR_FILENO) < 0)
+                _exit(CHILDERR_DUP);
+            close(errfd);
+        }
 
         /* Now, exec our process. */
         if (execl(path, path, (char *) 0) == -1)
             _exit(CHILDERR_EXEC);
-    } else {
-        /* In parent.  Close the extra file descriptor. */
+
+    /* In parent.  Close the extra file descriptor. */
+    default:
         close(fds[1]);
+        break;
     }
     *fd = fds[0];
     return child;
@@ -835,6 +873,7 @@ test_analyze(struct testset *ts)
             if (!ts->reported)
                 puts("ABORTED (execution failed -- not found?)");
             break;
+        case CHILDERR_STDIN:
         case CHILDERR_STDERR:
             if (!ts->reported)
                 puts("ABORTED (can't open /dev/null)");
