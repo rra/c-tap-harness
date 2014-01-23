@@ -102,7 +102,7 @@
 /* sys/time.h must be included before sys/resource.h on some platforms. */
 #include <sys/resource.h>
 
-/* AIX doesn't have WCOREDUMP. */
+/* AIX 6.1 (and possibly later) doesn't have WCOREDUMP. */
 #ifndef WCOREDUMP
 # define WCOREDUMP(status) ((unsigned)(status) & 0x80)
 #endif
