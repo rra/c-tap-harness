@@ -1,7 +1,7 @@
 /*
  * Test of the libtap test_cleanup_register function on failure.
  *
- * Copyright 2013 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2013, 2014 Russ Allbery <eagle@eyrie.org>
  *
  * See LICENSE for licensing terms.
  */
@@ -15,9 +15,9 @@
  * The test function to call during cleanup.
  */
 static void
-test(int success)
+test(int success, int primary)
 {
-    printf("Called cleanup with %d\n", success);
+    printf("Called cleanup with %d %d\n", success, primary);
 }
 
 

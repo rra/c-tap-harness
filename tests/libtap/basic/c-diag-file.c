@@ -1,7 +1,7 @@
 /*
  * Test of the libtap diag_file function.
  *
- * Copyright 2013 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2013, 2014 Russ Allbery <eagle@eyrie.org>
  *
  * See LICENSE for licensing terms.
  */
@@ -19,9 +19,10 @@
  * the cleanup handlers run after the last check of diag_files.
  */
 static void
-cleanup_log(int success UNUSED)
+cleanup_log(int success UNUSED, int primary)
 {
-    unlink("c-diag-file.log1");
+    if (primary)
+        unlink("c-diag-file.log1");
 }
 
 

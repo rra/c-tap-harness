@@ -215,7 +215,7 @@ check_diag_files(void)
 static void
 finish(void)
 {
-    int success;
+    int success, primary;
     struct cleanup_func *current;
     unsigned long highest = testnum - 1;
     struct diag_file *file, *tmp;
@@ -236,20 +236,6 @@ finish(void)
     diag_files = NULL;
 
     /*
-     * Don't do anything except free the diag_files and cleanup functions if
-     * we aren't the primary process (the process in which plan or plan_lazy
-     * was called).
-     */
-    if (_process != 0 && getpid() != _process) {
-        while (cleanup_funcs != NULL) {
-            current = cleanup_funcs;
-            cleanup_funcs = cleanup_funcs->next;
-            free(current);
-        }
-        return;
-    }
-
-    /*
      * Determine whether all tests were successful, which is needed before
      * calling cleanup functions since we pass that fact to the functions.
      */
@@ -259,14 +245,20 @@ finish(void)
 
     /*
      * If there are any registered cleanup functions, we run those first.  We
-     * always run them, even if we didn't run a test.
+     * always run them, even if we didn't run a test.  Don't do anything
+     * except free the diag_files and call cleanup functions if we aren't the
+     * primary process (the process in which plan or plan_lazy was called),
+     * and tell the cleanup functions that fact.
      */
+    primary = (_process == 0 || getpid() == _process);
     while (cleanup_funcs != NULL) {
-        cleanup_funcs->func(success);
+        cleanup_funcs->func(success, primary);
         current = cleanup_funcs;
         cleanup_funcs = cleanup_funcs->next;
         free(current);
     }
+    if (!primary)
+        return;
 
     /* Don't do anything further if we never planned a test. */
     if (_planned == 0)

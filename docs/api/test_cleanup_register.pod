@@ -9,7 +9,7 @@ test_cleanup_register - Register a function to run at the end of a TAP test
 
 #include <tap/basic.h>
 
-typedef void (*B<test_cleanup_func>)(int);
+typedef void (*B<test_cleanup_func>)(int, int);
 
 void B<test_cleanup_register>(test_cleanup_func I<func>);
 
@@ -19,23 +19,23 @@ test_cleanup_register() registers a cleanup function that is called when
 testing ends.  All such registered functions will be run during atexit
 handling (and are therefore subject to all the same constraints and
 caveats as atexit functions).  The function must return void and will be
-passed one argument, an int that will be true if the test completed
-successfully and false otherwise.  Typical uses of cleanup functions
-include removing temporary files, cleaning up temporary resources, or
-deciding whether to preserve log files based on whether the test
-succeeded.
+passed two arguments, both ints.  The first will be true if the test
+completed successfully and false otherwise.  The second will be true if
+the cleanup function is being run in the primary process (the one in which
+plan() or plan_lazy() was called) and false otherwise.
+
+Typical uses of cleanup functions include removing temporary files,
+cleaning up temporary resources, or deciding whether to preserve log files
+based on whether the test succeeded.  Generally, cleanup that involves
+external resources, like files, should only be done in the primary process
+(when the second argument is true), but internal resources, like memory,
+can be freed unconditionally.
 
 test_cleanup_register() may be called at any point in the program before
 its exit, but either plan() or plan_lazy() must be called before the
 program exits or cleanup functions will not be run.  Provided that plan()
 or plan_lazy() has been called, the cleanup functions will be called even
 if the test aborts with bail().
-
-The registered cleanup functions check whether they are running in the
-same process (as checked with getpid()) as plan() or plan_lazy() was
-called in.  If not, cleanup functions will not be run.  In other words,
-the cleanup functions are per-test, not per-process, and will not be run
-in child processes.
 
 test_cleanup_register() may be called as many times as desired.  All
 registered functions will be called (provided that none of them terminate
@@ -44,12 +44,6 @@ the process prematurely) in the order in which they were registered.
 =head1 RETURN VALUE
 
 None.
-
-=head1 BUGS
-
-If all planned tests succeed, or if lazy planning is used and all tests
-have passed so far, the cleanup functions will be passed a true argument
-even if the test is aborting with bail().
 
 =head1 CAVEATS
 
@@ -63,7 +57,7 @@ Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2011, 2013 Russ Allbery <eagle@eyrie.org>
+Copyright 2011, 2013, 2014 Russ Allbery <eagle@eyrie.org>
 
 Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and

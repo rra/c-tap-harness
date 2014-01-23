@@ -5,7 +5,7 @@
  * documentation is at <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
  * Copyright 2009, 2010, 2011, 2012, 2013 Russ Allbery <eagle@eyrie.org>
- * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011, 2012
+ * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011, 2012, 2014
  *     The Board of Trustees of the Leland Stanford Junior University
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -144,11 +144,14 @@ void test_tmpdir_free(char *path);
 /*
  * Register a cleanup function that is called when testing ends.  All such
  * registered functions will be run during atexit handling (and are therefore
- * subject to all the same constraints and caveats as atexit functions).  The
- * function must return void and will be passed one argument, an int that will
- * be true if the test completed successfully and false otherwise.
+ * subject to all the same constraints and caveats as atexit functions).
+ *
+ * The function must return void and will be passed two argument, an int that
+ * will be true if the test completed successfully and false otherwise, and an
+ * int that will be true if the cleanup function is run in the primary process
+ * (the one that called plan or plan_lazy) and false otherwise.
  */
-typedef void (*test_cleanup_func)(int);
+typedef void (*test_cleanup_func)(int, int);
 void test_cleanup_register(test_cleanup_func)
     __attribute__((__nonnull__));
 

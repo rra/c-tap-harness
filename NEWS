@@ -2,6 +2,16 @@
 
 C TAP Harness 2.5 (unreleased)
 
+    The test_cleanup_register API has changed in this release.  Cleanup
+    functions must now take two parameters, not one, and are called from
+    all test processes, not just the primary one.  The new second argument
+    indicates whether the cleanup function was called in the primary
+    process (the one in which plan or plan_lazy was called).  External
+    resources, such as files, should generally only be freed when the
+    cleanup function is called in the primary process, but tests may want
+    to free internal resources, like memory, in all processes to ease
+    analysis with tools like valgrind.
+
     When running test programs from a list, reopen standard input for each
     program to /dev/null, and be more careful about closing all duplicates
     of file descriptors left behind after setting up standard output and
