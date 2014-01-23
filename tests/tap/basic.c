@@ -13,7 +13,7 @@
  * documentation is at <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
  * Copyright 2009, 2010, 2011, 2012, 2013 Russ Allbery <eagle@eyrie.org>
- * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011, 2012, 2013
+ * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011, 2012, 2013, 2014
  *     The Board of Trustees of the Leland Stanford Junior University
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -773,8 +773,7 @@ test_file_path(const char *file)
 void
 test_file_path_free(char *path)
 {
-    if (path != NULL)
-        free(path);
+    free(path);
 }
 
 
@@ -816,9 +815,9 @@ test_tmpdir(void)
 void
 test_tmpdir_free(char *path)
 {
-    rmdir(path);
     if (path != NULL)
-        free(path);
+        rmdir(path);
+    free(path);
 }
 
 

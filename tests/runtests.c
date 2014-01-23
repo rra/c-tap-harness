@@ -1132,8 +1132,7 @@ free_testset(struct testset *ts)
     free(ts->file);
     free(ts->path);
     free(ts->results);
-    if (ts->reason != NULL)
-        free(ts->reason);
+    free(ts->reason);
     free(ts);
 }
 
