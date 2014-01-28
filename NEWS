@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 2.5 (unreleased)
+C TAP Harness 3.0 (2014-01-28)
 
     The test_cleanup_register API has changed in this release.  Cleanup
     functions must now take two parameters, not one, and are called from
