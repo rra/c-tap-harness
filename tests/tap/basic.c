@@ -156,16 +156,8 @@ concat(const char *first, ...)
     size_t length = 0;
 
     /*
-     * Find the total memory required.  Ensure we don't overflow length.
-     *
-     * We should technically use SIZE_MAX here for the overflow check, but
-     * SIZE_MAX is C99 and we're only assuming C89 + SUSv3, which does not
-     * guarantee that it exists.  They do guarantee that UINT_MAX exists, and
-     * we can assume that UINT_MAX <= SIZE_MAX.
-     *
-     * (In theory, C89 and C99 permit size_t to be smaller than unsigned int,
-     * but I disbelieve in the existence of such systems and they will have to
-     * cope without overflow checks.)
+     * Find the total memory required.  Ensure we don't overflow length.  See
+     * the comment for bnrealloc for why we're using UINT_MAX here.
      */
     va_start(args, first);
     for (string = first; string != NULL; string = va_arg(args, const char *)) {
@@ -233,7 +225,7 @@ check_diag_files(void)
             /*
              * See if the line ends in a newline.  If not, see which error
              * case we have.  Use UINT_MAX as a substitute for SIZE_MAX (see
-             * the comments in concat).
+             * the comment for bnrealloc).
              */
             length = strlen(file->buffer);
             if (file->buffer[length - 1] != '\n') {
@@ -733,6 +725,32 @@ brealloc(void *p, size_t size)
     p = realloc(p, size);
     if (p == NULL)
         sysbail("failed to realloc %lu bytes", (unsigned long) size);
+    return p;
+}
+
+
+/*
+ * The same as brealloc, but determine the size by multiplying an element
+ * count by a size, similar to calloc.  The multiplication is checked for
+ * integer overflow.
+ *
+ * We should technically use SIZE_MAX here for the overflow check, but
+ * SIZE_MAX is C99 and we're only assuming C89 + SUSv3, which does not
+ * guarantee that it exists.  They do guarantee that UINT_MAX exists, and we
+ * can assume that UINT_MAX <= SIZE_MAX.
+ *
+ * (In theory, C89 and C99 permit size_t to be smaller than unsigned int, but
+ * I disbelieve in the existence of such systems and they will have to cope
+ * without overflow checks.)
+ */
+void *
+bnrealloc(void *p, size_t n, size_t size)
+{
+    if (size > 0 && n >= UINT_MAX / size)
+        bail("realloc too large");
+    p = realloc(p, n * size);
+    if (p == NULL)
+        sysbail("failed to realloc %lu bytes", (unsigned long) (n * size));
     return p;
 }
 

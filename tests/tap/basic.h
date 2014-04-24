@@ -118,6 +118,8 @@ void *bcalloc(size_t, size_t)
     __attribute__((__alloc_size__(1, 2), __malloc__, __warn_unused_result__));
 void *bmalloc(size_t)
     __attribute__((__alloc_size__(1), __malloc__, __warn_unused_result__));
+void *bnrealloc(void *, size_t, size_t)
+    __attribute__((__alloc_size__(2, 3), __malloc__, __warn_unused_result__));
 void *brealloc(void *, size_t)
     __attribute__((__alloc_size__(2), __malloc__, __warn_unused_result__));
 char *bstrdup(const char *)

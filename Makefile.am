@@ -1,13 +1,14 @@
 # Automake makefile for C TAP Harness.
 #
-# Copyright 2008, 2009, 2010, 2011, 2012, 2013 Russ Allbery <eagle@eyrie.org>
+# Copyright 2008, 2009, 2010, 2011, 2012, 2013, 2014
+#     Russ Allbery <eagle@eyrie.org>
 #
 # See LICENSE for licensing terms.
 
 EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
-	docs/api/bmalloc.pod docs/api/diag.pod docs/api/diag_file_add.pod   \
-	docs/api/is_int.pod docs/api/ok.pod docs/api/plan.pod		    \
-	docs/api/skip.pod docs/api/skip_all.pod				    \
+	docs/api/bmalloc.pod docs/api/bnrealloc.pod docs/api/diag.pod	    \
+	docs/api/diag_file_add.pod docs/api/is_int.pod docs/api/ok.pod	    \
+	docs/api/plan.pod docs/api/skip.pod docs/api/skip_all.pod	    \
 	docs/api/test_cleanup_register.pod docs/api/test_file_path.pod	    \
 	docs/api/test_tmpdir.pod docs/runtests.pod docs/writing-tests	    \
 	tests/TESTS tests/docs/pod.t tests/docs/pod-spelling.t		    \
@@ -88,10 +89,10 @@ bin_PROGRAMS = tests/runtests
 noinst_LIBRARIES = tests/tap/libtap.a
 tests_tap_libtap_a_SOURCES = tests/tap/basic.c tests/tap/basic.h	\
 	tests/tap/float.c tests/tap/float.h tests/tap/macros.h
-dist_man_MANS = docs/api/bail.3 docs/api/bmalloc.3 docs/api/diag.3	\
-	docs/api/diag_file_add.3 docs/api/is_int.3 docs/api/ok.3	\
-	docs/api/plan.3 docs/api/skip.3 docs/api/skip_all.3		\
-	docs/api/test_cleanup_register.3 docs/api/test_file_path.3	\
+dist_man_MANS = docs/api/bail.3 docs/api/bmalloc.3 docs/api/bnrealloc.3	  \
+	docs/api/diag.3 docs/api/diag_file_add.3 docs/api/is_int.3	  \
+	docs/api/ok.3 docs/api/plan.3 docs/api/skip.3 docs/api/skip_all.3 \
+	docs/api/test_cleanup_register.3 docs/api/test_file_path.3	  \
 	docs/api/test_tmpdir.3 docs/runtests.1
 
 # Add symlinks for the man pages that document multiple functions.
@@ -152,10 +153,10 @@ uninstall-hook:
 # mostly worthless.
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/depcomp		 \
 	build-aux/install-sh build-aux/missing configure docs/api/bail.3 \
-	docs/api/bmalloc.3 docs/api/diag.3 docs/api/diag_file_add.3	 \
-	docs/api/is_int.3 docs/api/ok.3 docs/api/plan.3 docs/api/skip.3	 \
-	docs/api/skip_all.3 docs/api/test_file_path.3			 \
-	docs/api/test_tmpdir.3 docs/runtests.1
+	docs/api/bmalloc.3 docs/api/bnrealloc.3 docs/api/diag.3		 \
+	docs/api/diag_file_add.3 docs/api/is_int.3 docs/api/ok.3	 \
+	docs/api/plan.3 docs/api/skip.3 docs/api/skip_all.3		 \
+	docs/api/test_file_path.3 docs/api/test_tmpdir.3 docs/runtests.1
 
 # A set of flags for warnings.  Add -O because gcc won't find some warnings
 # without optimization turned on.  Desirable warnings that can't be turned
