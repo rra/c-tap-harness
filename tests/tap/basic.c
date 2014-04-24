@@ -36,6 +36,7 @@
  */
 
 #include <errno.h>
+#include <limits.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -136,6 +137,60 @@ static struct diag_file *diag_files = NULL;
 
 
 /*
+ * Form a new string by concatenating multiple strings.  The arguments must be
+ * terminated by (const char *) 0.
+ *
+ * This function only exists because we can't assume asprintf.  We can't
+ * simulate asprintf with snprintf because we're only assuming SUSv3, which
+ * does not require that snprintf with a NULL buffer return the required
+ * length.  When those constraints are relaxed, this should be ripped out and
+ * replaced with asprintf or a more trivial replacement with snprintf.
+ */
+static char *
+concat(const char *first, ...)
+{
+    va_list args;
+    char *result;
+    const char *string;
+    size_t offset;
+    size_t length = 0;
+
+    /*
+     * Find the total memory required.  Ensure we don't overflow length.
+     *
+     * We should technically use SIZE_MAX here for the overflow check, but
+     * SIZE_MAX is C99 and we're only assuming C89 + SUSv3, which does not
+     * guarantee that it exists.  They do guarantee that UINT_MAX exists, and
+     * we can assume that UINT_MAX <= SIZE_MAX.
+     *
+     * (In theory, C89 and C99 permit size_t to be smaller than unsigned int,
+     * but I disbelieve in the existence of such systems and they will have to
+     * cope without overflow checks.)
+     */
+    va_start(args, first);
+    for (string = first; string != NULL; string = va_arg(args, const char *)) {
+        if (length >= UINT_MAX - strlen(string))
+            bail("strings too long in concat");
+        length += strlen(string);
+    }
+    va_end(args);
+    length++;
+
+    /* Create the string. */
+    result = bmalloc(length);
+    va_start(args, first);
+    offset = 0;
+    for (string = first; string != NULL; string = va_arg(args, const char *)) {
+        memcpy(result + offset, string, strlen(string));
+        offset += strlen(string);
+    }
+    va_end(args);
+    result[offset] = '\0';
+    return result;
+}
+
+
+/*
  * Check all registered diag_files for any output.  We only print out the
  * output if we see a complete line; otherwise, we wait for the next newline.
  */
@@ -177,13 +232,16 @@ check_diag_files(void)
 
             /*
              * See if the line ends in a newline.  If not, see which error
-             * case we have.
+             * case we have.  Use UINT_MAX as a substitute for SIZE_MAX (see
+             * the comments in concat).
              */
             length = strlen(file->buffer);
             if (file->buffer[length - 1] != '\n') {
                 if (length < file->bufsize - 1)
                     incomplete = 1;
                 else {
+                    if (file->bufsize >= UINT_MAX - BUFSIZ)
+                        sysbail("line too long in %s", file->name);
                     file->bufsize += BUFSIZ;
                     file->buffer = brealloc(file->buffer, file->bufsize);
                 }
@@ -727,17 +785,12 @@ bstrndup(const char *s, size_t n)
  * then SOURCE for the file and return the full path to the file.  Returns
  * NULL if the file doesn't exist.  A non-NULL return should be freed with
  * test_file_path_free().
- *
- * This function uses sprintf because it attempts to be independent of all
- * other portability layers.  The use immediately after a memory allocation
- * should be safe without using snprintf or strlcpy/strlcat.
  */
 char *
 test_file_path(const char *file)
 {
     char *base;
     char *path = NULL;
-    size_t length;
     const char *envs[] = { "BUILD", "SOURCE", NULL };
     int i;
 
@@ -745,9 +798,7 @@ test_file_path(const char *file)
         base = getenv(envs[i]);
         if (base == NULL)
             continue;
-        length = strlen(base) + 1 + strlen(file) + 1;
-        path = bmalloc(length);
-        sprintf(path, "%s/%s", base, file);
+        path = concat(base, "/", file, (const char *) 0);
         if (access(path, R_OK) == 0)
             break;
         free(path);
@@ -784,14 +835,11 @@ test_tmpdir(void)
 {
     const char *build;
     char *path = NULL;
-    size_t length;
 
     build = getenv("BUILD");
     if (build == NULL)
         build = ".";
-    length = strlen(build) + strlen("/tmp") + 1;
-    path = bmalloc(length);
-    sprintf(path, "%s/tmp", build);
+    path = concat(build, "/tmp", (const char *) 0);
     if (access(path, X_OK) < 0)
         if (mkdir(path, 0777) < 0)
             sysbail("error creating temporary directory %s", path);
