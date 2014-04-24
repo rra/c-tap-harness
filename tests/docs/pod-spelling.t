@@ -10,7 +10,7 @@
 # rra-c-util, but it creates weird circular code sharing, so duplicate some of
 # it here instead.
 #
-# Copyright 2008, 2009, 2013 Russ Allbery <eagle@eyrie.org>
+# Copyright 2008, 2009, 2013, 2014 Russ Allbery <eagle@eyrie.org>
 #
 # See LICENSE for licensing terms.
 
@@ -21,9 +21,9 @@ use warnings;
 use File::Spec;
 use Test::More;
 
-# Skip all spelling tests unless the maintainer environment variable is set.
-if (!$ENV{RRA_MAINTAINER_TESTS}) {
-    plan skip_all => 'Spelling tests only run for maintainer';
+# Skip all spelling tests unless the author environment variable is set.
+if (!$ENV{AUTHOR_TESTING}) {
+    plan skip_all => 'Spelling tests only run for author';
 }
 
 # Abort if SOURCE isn't set.

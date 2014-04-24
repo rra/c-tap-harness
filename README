@@ -63,7 +63,7 @@ REQUIREMENTS
   skipped without interfering with the rest of the tests if these modules
   are not installed.  Spelling tests are disabled by default since
   spelling dictionaries differ too much between systems.  To enable those
-  tests, set RRA_MAINTAINER_TESTS to a true value.
+  tests, set AUTHOR_TESTING to a true value.
 
   To bootstrap from a Git checkout, or if you change the Automake files
   and need to regenerate Makefile.in, you will need Automake 1.11 or
