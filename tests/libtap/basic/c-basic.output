@@ -1,55 +1,69 @@
-1..39
+1..52
 ok 1
-not ok 2
-ok 3
-ok 4 - an integer test
-ok 5 - comparing -1 and -1
+ok 2 - ok result is 1
+# a diagnostic
+not ok 3
+ok 4 - ok result is 0
+ok 5
+ok 6 - is_int result is 1
+ok 7 - an integer test
+ok 8 - comparing -1 and -1
 # wanted: -1
 #   seen: 1
-not ok 6
-ok 7
-ok 8 - a double test
+not ok 9
+ok 10 - is_int result is 0
+ok 11
+ok 12 - is_double result is 1
+ok 13 - a double test
 # wanted: 0.1
 #   seen: -0.1
-not ok 9 - a failing double test
-ok 10
-ok 11
-ok 12 - NaN
-ok 13 - inf
-ok 14 - -inf
+not ok 14 - a failing double test
+ok 15 - is_double result is 0
+ok 16
+ok 17
+ok 18 - NaN
+ok 19 - inf
+ok 20 - -inf
 # wanted: inf
 #   seen: -inf
-not ok 15 - inf and -inf
-ok 16
-ok 17 - a string test
+not ok 21 - inf and -inf
+ok 22
+ok 23 - a string test
+ok 24 - is_string result is 1
 # wanted: yes
 #   seen: yes no
-not ok 18 - 
-ok 19 - null null
+not ok 25 - 
+ok 26 - is_string result is 0
+ok 27 - null null
 # wanted: yes
 #   seen: (null)
-not ok 20
+not ok 28
 # wanted: (null)
 #   seen: yes
-not ok 21
-ok 22 # skip testing skip foo
-ok 23
-ok 24
-not ok 25 - some block
-not ok 26 - some block
-not ok 27 - some block
-not ok 28 - some block
-ok 29 # skip testing skip block
-ok 30 # skip testing skip block
-ok 31 # skip testing skip block
-ok 32 # skip testing skip block
-ok 33 # skip
-ok 34 # skip
-ok 35 # skip
-ok 36 - 2^31 + 1 correct
+not ok 29
+ok 30 # skip testing skip foo
+ok 31
+ok 32
+ok 33 - ok_block result is 1
+not ok 34 - some block
+not ok 35 - some block
+not ok 36 - some block
+not ok 37 - some block
+ok 38 - ok_block result is 0
+ok 39 # skip testing skip block
+ok 40 # skip testing skip block
+ok 41 # skip testing skip block
+ok 42 # skip testing skip block
+ok 43 # skip
+ok 44 # skip
+ok 45 # skip
+ok 46 - 2^31 + 1 correct
+ok 47 - is_hex result is 1
 # wanted: 80000001
 #   seen: 0
-not ok 37 - 2^31 + 1 incorrect
-ok 38
-ok 39 - testing okv
-# Looks like you failed 12 tests of 39
+not ok 48 - 2^31 + 1 incorrect
+ok 49 - is_hex result is 0
+ok 50
+ok 51 - testing okv
+ok 52 - okv result is 1
+# Looks like you failed 12 tests of 52

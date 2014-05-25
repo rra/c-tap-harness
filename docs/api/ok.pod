@@ -9,11 +9,12 @@ ok, okv, ok_block - Simple success or failure for a TAP test
 
 #include <tap/basic.h>
 
-void B<ok>(int I<success>, const char *I<format>, ...);
+int B<ok>(int I<success>, const char *I<format>, ...);
 
-void B<okv>(int I<success>, const char *I<format>, va_list I<args>);
+int B<okv>(int I<success>, const char *I<format>, va_list I<args>);
 
-void B<ok_block>(unsigned long I<count>, int I<success>, const char *I<format>, ...);
+int B<ok_block>(unsigned long I<count>, int I<success>,
+             const char *I<format>, ...);
 
 =head1 DESCRIPTION
 
@@ -45,7 +46,7 @@ environment, use skip_block() instead.
 
 =head1 RETURN VALUE
 
-None.
+All functions return the value of the I<success> parameter.
 
 =head1 CAVEATS
 
@@ -58,7 +59,7 @@ Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2010, 2013 Russ Allbery <eagle@eyrie.org>
+Copyright 2010, 2013, 2014 Russ Allbery <eagle@eyrie.org>
 
 Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and

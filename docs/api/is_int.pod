@@ -9,18 +9,18 @@ is_int, is_double, is_string, is_hex - Check values for a TAP test
 
 #include <tap/basic.h>
 
-void B<is_int>(long I<wanted>, long I<seen>, const char *I<format>, ...);
+int B<is_int>(long I<wanted>, long I<seen>, const char *I<format>, ...);
 
-void B<is_string>(const char *I<wanted>, const char *I<seen>,
-               const char *I<format>, ...);
+int B<is_string>(const char *I<wanted>, const char *I<seen>,
+              const char *I<format>, ...);
 
-void B<is_hex>(unsigned long I<wanted>, unsigned long I<seen>,
-            const char *I<format>, ...);
+int B<is_hex>(unsigned long I<wanted>, unsigned long I<seen>,
+           const char *I<format>, ...);
 
 #include <tap/float.h>
 
-void B<is_double>(double I<wanted>, double I<seen>, double I<epsilon>,
-               const char *I<format>, ...);
+int B<is_double>(double I<wanted>, double I<seen>, double I<epsilon>,
+              const char *I<format>, ...);
 
 =head1 DESCRIPTION
 
@@ -53,7 +53,7 @@ or similar values.
 
 =head1 RETURN VALUE
 
-None.
+All functions return true if the test passed and false if it failed.
 
 =head1 CAVEATS
 
@@ -66,7 +66,7 @@ Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2010, 2012, 2013 Russ Allbery <eagle@eyrie.org>
+Copyright 2010, 2012, 2013, 2014 Russ Allbery <eagle@eyrie.org>
 
 Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and

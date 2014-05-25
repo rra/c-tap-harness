@@ -399,7 +399,7 @@ skip_all(const char *format, ...)
  * Takes a boolean success value and assumes the test passes if that value
  * is true and fails if that value is false.
  */
-void
+int
 ok(int success, const char *format, ...)
 {
     fflush(stderr);
@@ -409,13 +409,14 @@ ok(int success, const char *format, ...)
         _failed++;
     PRINT_DESC(" - ", format);
     putchar('\n');
+    return success;
 }
 
 
 /*
  * Same as ok(), but takes the format arguments as a va_list.
  */
-void
+int
 okv(int success, const char *format, va_list args)
 {
     fflush(stderr);
@@ -428,6 +429,7 @@ okv(int success, const char *format, va_list args)
         vprintf(format, args);
     }
     putchar('\n');
+    return success;
 }
 
 
@@ -448,20 +450,21 @@ skip(const char *reason, ...)
 /*
  * Report the same status on the next count tests.
  */
-void
-ok_block(unsigned long count, int status, const char *format, ...)
+int
+ok_block(unsigned long count, int success, const char *format, ...)
 {
     unsigned long i;
 
     fflush(stderr);
     check_diag_files();
     for (i = 0; i < count; i++) {
-        printf("%sok %lu", status ? "" : "not ", testnum++);
-        if (!status)
+        printf("%sok %lu", success ? "" : "not ", testnum++);
+        if (!success)
             _failed++;
         PRINT_DESC(" - ", format);
         putchar('\n');
     }
+    return success;
 }
 
 
@@ -487,12 +490,15 @@ skip_block(unsigned long count, const char *reason, ...)
  * Takes an expected integer and a seen integer and assumes the test passes
  * if those two numbers match.
  */
-void
+int
 is_int(long wanted, long seen, const char *format, ...)
 {
+    int success;
+
     fflush(stderr);
     check_diag_files();
-    if (wanted == seen)
+    success = (wanted == seen);
+    if (success)
         printf("ok %lu", testnum++);
     else {
         diag("wanted: %ld", wanted);
@@ -502,6 +508,7 @@ is_int(long wanted, long seen, const char *format, ...)
     }
     PRINT_DESC(" - ", format);
     putchar('\n');
+    return success;
 }
 
 
@@ -509,16 +516,19 @@ is_int(long wanted, long seen, const char *format, ...)
  * Takes a string and what the string should be, and assumes the test passes
  * if those strings match (using strcmp).
  */
-void
+int
 is_string(const char *wanted, const char *seen, const char *format, ...)
 {
+    int success;
+
     if (wanted == NULL)
         wanted = "(null)";
     if (seen == NULL)
         seen = "(null)";
     fflush(stderr);
     check_diag_files();
-    if (strcmp(wanted, seen) == 0)
+    success = (strcmp(wanted, seen) == 0);
+    if (success)
         printf("ok %lu", testnum++);
     else {
         diag("wanted: %s", wanted);
@@ -528,6 +538,7 @@ is_string(const char *wanted, const char *seen, const char *format, ...)
     }
     PRINT_DESC(" - ", format);
     putchar('\n');
+    return success;
 }
 
 
@@ -535,12 +546,15 @@ is_string(const char *wanted, const char *seen, const char *format, ...)
  * Takes an expected unsigned long and a seen unsigned long and assumes the
  * test passes if the two numbers match.  Otherwise, reports them in hex.
  */
-void
+int
 is_hex(unsigned long wanted, unsigned long seen, const char *format, ...)
 {
+    int success;
+
     fflush(stderr);
     check_diag_files();
-    if (wanted == seen)
+    success = (wanted == seen);
+    if (success)
         printf("ok %lu", testnum++);
     else {
         diag("wanted: %lx", (unsigned long) wanted);
@@ -550,6 +564,7 @@ is_hex(unsigned long wanted, unsigned long seen, const char *format, ...)
     }
     PRINT_DESC(" - ", format);
     putchar('\n');
+    return success;
 }
 
 

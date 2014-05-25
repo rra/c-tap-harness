@@ -2,6 +2,12 @@
 
 C TAP Harness 3.1 (unreleased)
 
+    ok, okv, and all is_* functions now return true if the test succeeds
+    and false if it fails, matching the return status of the corresponding
+    Perl Test::More functions.  This allows more succinct code when the
+    actions of a test program should vary based on the success or failure
+    of previous tests.  Based on a patch by Peter Pöschl.
+
     Add new breallocarray API that does the same as realloc but takes
     calloc-style arguments to specify the size and checks internally for
     integer overflow.  Inspired by the OpenBSD reallocarray function.
