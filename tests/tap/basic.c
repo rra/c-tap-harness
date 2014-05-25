@@ -12,7 +12,7 @@
  * This file is part of C TAP Harness.  The current version plus supporting
  * documentation is at <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
- * Copyright 2009, 2010, 2011, 2012, 2013 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2009, 2010, 2011, 2012, 2013, 2014 Russ Allbery <eagle@eyrie.org>
  * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011, 2012, 2013, 2014
  *     The Board of Trustees of the Leland Stanford Junior University
  *
@@ -157,7 +157,7 @@ concat(const char *first, ...)
 
     /*
      * Find the total memory required.  Ensure we don't overflow length.  See
-     * the comment for bnrealloc for why we're using UINT_MAX here.
+     * the comment for breallocarray for why we're using UINT_MAX here.
      */
     va_start(args, first);
     for (string = first; string != NULL; string = va_arg(args, const char *)) {
@@ -225,7 +225,7 @@ check_diag_files(void)
             /*
              * See if the line ends in a newline.  If not, see which error
              * case we have.  Use UINT_MAX as a substitute for SIZE_MAX (see
-             * the comment for bnrealloc).
+             * the comment for breallocarray).
              */
             length = strlen(file->buffer);
             if (file->buffer[length - 1] != '\n') {
@@ -744,10 +744,10 @@ brealloc(void *p, size_t size)
  * without overflow checks.)
  */
 void *
-bnrealloc(void *p, size_t n, size_t size)
+breallocarray(void *p, size_t n, size_t size)
 {
     if (size > 0 && n >= UINT_MAX / size)
-        bail("realloc too large");
+        bail("reallocarray too large");
     p = realloc(p, n * size);
     if (p == NULL)
         sysbail("failed to realloc %lu bytes", (unsigned long) (n * size));

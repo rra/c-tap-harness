@@ -2,13 +2,14 @@
  * Calls libtap basic functions for testing.
  *
  * Written by Russ Allbery <eagle@eyrie.org>
- * Copyright 2008, 2009
+ * Copyright 2008, 2009, 2014
  *     The Board of Trustees of the Leland Stanford Junior University
  *
  * See LICENSE for licensing terms.
  */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include <tests/tap/basic.h>
 #include <tests/tap/float.h>
@@ -31,8 +32,36 @@ test_okv(const char *format, ...)
 int
 main(void)
 {
+    char *p;
+
     plan(39);
 
+    /*
+     * Call the memory allocation functions just to be sure the prototypes are
+     * present, they link properly, and nothing obviously segfaults.  Do this
+     * first so that, if we corrupt the heap, we increase the chances of a
+     * later segfault.
+     */
+    p = bmalloc(10);
+    memset(p, 1, 10);
+    free(p);
+    p = bcalloc(5, 10);
+    memset(p, 1, 5 * 10);
+    p = brealloc(p, 20);
+    memset(p, 2, 20);
+    p = breallocarray(p, 6, 10);
+    memset(p, 3, 6 * 10);
+    free(p);
+    p = bstrdup("testing");
+    free(p);
+    p = brealloc(NULL, 10);
+    memset(p, 4, 10);
+    free(p);
+    p = breallocarray(NULL, 7, 10);
+    memset(p, 5, 7 * 10);
+    free(p);
+
+    /* Test ok, is_*, and skip functions. */
     ok(1, NULL);
     ok(0, NULL);
     is_int(0, 0, NULL);

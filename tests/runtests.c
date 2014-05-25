@@ -223,8 +223,9 @@ Failed Set                 Fail/Total (%) Skip Stat  Failing Tests\n\
 /* Include the file name and line number in malloc failures. */
 #define xcalloc(n, size)      x_calloc((n), (size), __FILE__, __LINE__)
 #define xmalloc(size)         x_malloc((size), __FILE__, __LINE__)
-#define xnrealloc(p, n, size) x_nrealloc((p), (n), (size), __FILE__, __LINE__)
 #define xstrdup(p)            x_strdup((p), __FILE__, __LINE__)
+#define xreallocarray(p, n, size) \
+    x_reallocarray((p), (n), (size), __FILE__, __LINE__)
 
 /*
  * __attribute__ is available in gcc 2.5 and later, but only with gcc 2.7
@@ -267,7 +268,7 @@ static void *x_calloc(size_t, size_t, const char *, int)
     __attribute__((__alloc_size__(1, 2), __malloc__, __nonnull__));
 static void *x_malloc(size_t, const char *, int)
     __attribute__((__alloc_size__(1), __malloc__, __nonnull__));
-static void *x_nrealloc(void *, size_t, size_t, const char *, int)
+static void *x_reallocarray(void *, size_t, size_t, const char *, int)
     __attribute__((__alloc_size__(2, 3), __malloc__, __nonnull__(4)));
 static char *x_strdup(const char *, const char *, int)
     __attribute__((__malloc__, __nonnull__));
@@ -341,7 +342,7 @@ x_malloc(size_t size, const char *file, int line)
  * without overflow checks.)
  */
 static void *
-x_nrealloc(void *p, size_t n, size_t size, const char *file, int line)
+x_reallocarray(void *p, size_t n, size_t size, const char *file, int line)
 {
     if (size > 0 && n >= UINT_MAX / size)
         sysdie("realloc too large at %s line %d", file, line);
@@ -566,6 +567,7 @@ test_plan(const char *line, struct testset *ts)
 {
     unsigned long i;
     long n;
+    size_t size;
 
     /*
      * Accept a plan without the leading 1.. for compatibility with older
@@ -628,7 +630,8 @@ test_plan(const char *line, struct testset *ts)
         }
         ts->count = n;
         if ((unsigned long) n > ts->allocated) {
-            ts->results = xnrealloc(ts->results, n, sizeof(enum test_status));
+            size = sizeof(enum test_status);
+            ts->results = xreallocarray(ts->results, n, size);
             for (i = ts->allocated; i < ts->count; i++)
                 ts->results[i] = TEST_INVALID;
             ts->allocated = n;
@@ -729,11 +732,13 @@ test_checkline(const char *line, struct testset *ts)
             ts->count = current;
         if (current > ts->allocated) {
             unsigned long n;
+            size_t size;
 
             n = (ts->allocated == 0) ? 32 : ts->allocated * 2;
             if (n < current)
                 n = current;
-            ts->results = xnrealloc(ts->results, n, sizeof(enum test_status));
+            size = sizeof(enum test_status);
+            ts->results = xreallocarray(ts->results, n, size);
             for (i = ts->allocated; i < n; i++)
                 ts->results[i] = TEST_INVALID;
             ts->allocated = n;

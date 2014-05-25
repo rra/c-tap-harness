@@ -2,9 +2,9 @@
 
 C TAP Harness 3.1 (unreleased)
 
-    Add new bnrealloc API that does the same as realloc but takes
+    Add new breallocarray API that does the same as realloc but takes
     calloc-style arguments to specify the size and checks internally for
-    integer overflow.
+    integer overflow.  Inspired by the OpenBSD reallocarray function.
 
     Check for integer overflows on memory allocation.  All the possible
     issues for this code are rather theoretical, but one may as well
