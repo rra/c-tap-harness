@@ -557,6 +557,40 @@ test_backspace(struct testset *ts)
 
 
 /*
+ * Allocate or resize the array of test results to be large enough to contain
+ * the test number in.
+ */
+static void
+resize_results(struct testset *ts, unsigned long n)
+{
+    unsigned long i;
+    size_t s;
+
+    /* If there's already enough space, return quickly. */
+    if (n <= ts->allocated)
+        return;
+
+    /*
+     * If no space has been allocated, do the initial allocation.  Otherwise,
+     * resize.  Start with 32 test cases and then add 1024 with each resize to
+     * try to reduce the number of reallocations.
+     */
+    if (ts->allocated == 0) {
+        s = (n > 32) ? n : 32;
+        ts->results = xcalloc(s, sizeof(enum test_status));
+    } else {
+        s = (n > ts->allocated + 1024) ? n : ts->allocated + 1024;
+        ts->results = xreallocarray(ts->results, s, sizeof(enum test_status));
+    }
+
+    /* Set the results for the newly-allocated test array. */
+    for (i = ts->allocated; i < s; i++)
+        ts->results[i] = TEST_INVALID;
+    ts->allocated = s;
+}
+
+
+/*
  * Read the plan line of test output, which should contain the range of test
  * numbers.  We may initialize the testset structure here if we haven't yet
  * seen a test.  Return true if initialization succeeded and the test should
@@ -565,9 +599,7 @@ test_backspace(struct testset *ts)
 static int
 test_plan(const char *line, struct testset *ts)
 {
-    unsigned long i;
     long n;
-    size_t size;
 
     /*
      * Accept a plan without the leading 1.. for compatibility with older
@@ -579,12 +611,14 @@ test_plan(const char *line, struct testset *ts)
         line += 3;
 
     /*
-     * Get the count, check it for validity, and initialize the struct.  If we
-     * have something of the form "1..0 # skip foo", the whole file was
+     * Get the count and check it for validity.
+     *
+     * If we have something of the form "1..0 # skip foo", the whole file was
      * skipped; record that.  If we do skip the whole file, zero out all of
-     * our statistics, since they're no longer relevant.  strtol is called
-     * with a second argument to advance the line pointer past the count to
-     * make it simpler to detect the # skip case.
+     * our statistics, since they're no longer relevant.
+     *
+     * strtol is called with a second argument to advance the line pointer
+     * past the count to make it simpler to detect the # skip case.
      */
     n = strtol(line, (char **) &line, 10);
     if (n == 0) {
@@ -613,31 +647,30 @@ test_plan(const char *line, struct testset *ts)
         ts->reported = 1;
         return 0;
     }
-    if (ts->plan == PLAN_INIT && ts->allocated == 0) {
-        ts->count = n;
-        ts->allocated = n;
-        ts->plan = PLAN_FIRST;
-        ts->results = xcalloc(ts->count, sizeof(enum test_status));
-        for (i = 0; i < ts->count; i++)
-            ts->results[i] = TEST_INVALID;
-    } else if (ts->plan == PLAN_PENDING) {
-        if ((unsigned long) n < ts->count) {
-            test_backspace(ts);
-            printf("ABORTED (invalid test number %lu)\n", ts->count);
-            ts->aborted = 1;
-            ts->reported = 1;
-            return 0;
-        }
-        ts->count = n;
-        if ((unsigned long) n > ts->allocated) {
-            size = sizeof(enum test_status);
-            ts->results = xreallocarray(ts->results, n, size);
-            for (i = ts->allocated; i < ts->count; i++)
-                ts->results[i] = TEST_INVALID;
-            ts->allocated = n;
-        }
-        ts->plan = PLAN_FINAL;
+
+    /*
+     * If we are doing lazy planning, check the plan against the largest test
+     * number that we saw and fail now if we saw a check outside the plan
+     * range.
+     */
+    if (ts->plan == PLAN_PENDING && (unsigned long) n < ts->count) {
+        test_backspace(ts);
+        printf("ABORTED (invalid test number %lu)\n", ts->count);
+        ts->aborted = 1;
+        ts->reported = 1;
+        return 0;
     }
+
+    /*
+     * Otherwise, allocated or resize the results if needed and update count,
+     * and then record that we've seen a plan.
+     */
+    resize_results(ts, n);
+    ts->count = n;
+    if (ts->plan == PLAN_INIT)
+        ts->plan = PLAN_FIRST;
+    else if (ts->plan == PLAN_PENDING)
+        ts->plan = PLAN_FINAL;
     return 1;
 }
 
@@ -655,7 +688,7 @@ test_checkline(const char *line, struct testset *ts)
     const char *bail;
     char *end;
     long number;
-    unsigned long i, current;
+    unsigned long current;
     int outlen;
 
     /* Before anything, check for a test abort. */
@@ -728,21 +761,9 @@ test_checkline(const char *line, struct testset *ts)
     /* We have a valid test result.  Tweak the results array if needed. */
     if (ts->plan == PLAN_INIT || ts->plan == PLAN_PENDING) {
         ts->plan = PLAN_PENDING;
+        resize_results(ts, current);
         if (current > ts->count)
             ts->count = current;
-        if (current > ts->allocated) {
-            unsigned long n;
-            size_t size;
-
-            n = (ts->allocated == 0) ? 32 : ts->allocated * 2;
-            if (n < current)
-                n = current;
-            size = sizeof(enum test_status);
-            ts->results = xreallocarray(ts->results, n, size);
-            for (i = ts->allocated; i < n; i++)
-                ts->results[i] = TEST_INVALID;
-            ts->allocated = n;
-        }
     }
 
     /*
