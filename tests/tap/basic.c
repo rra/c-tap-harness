@@ -761,7 +761,7 @@ brealloc(void *p, size_t size)
 void *
 breallocarray(void *p, size_t n, size_t size)
 {
-    if (size > 0 && n >= UINT_MAX / size)
+    if (n > 0 && UINT_MAX / n <= size)
         bail("reallocarray too large");
     p = realloc(p, n * size);
     if (p == NULL)
