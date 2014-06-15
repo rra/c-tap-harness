@@ -37,7 +37,7 @@ main(void)
     int status;
     char *p;
 
-    plan(52);
+    plan(53);
 
     /*
      * Call the memory allocation functions just to be sure the prototypes are
@@ -109,6 +109,10 @@ main(void)
     is_int(0, status, "is_hex result is 0");
     is_hex(0, 0, NULL);
     test_okv("testing %s", "okv");
+
+    /* Test return status of diag. */
+    status = diag("testing diag");
+    is_int(1, status, "diag returns 1");
 
     return 0;
 }

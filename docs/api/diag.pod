@@ -9,9 +9,9 @@ diag, sysdiag - Report diagnostics in a TAP test case
 
 #include <tap/basic.h>
 
-void B<diag>(const char *I<format>, ...);
+int B<diag>(const char *I<format>, ...);
 
-void B<sysdiag>(const char *I<format>, ...);
+int B<sysdiag>(const char *I<format>, ...);
 
 =head1 DESCRIPTION
 
@@ -32,7 +32,10 @@ human analyzing what a test case is doing.
 
 =head1 RETURN VALUE
 
-None.
+diag() and sysdiag() always return 1.  The return value is not meaningful,
+and exists only to allow these functions to be dropped into the middle of
+compound statements, allowing debugging of tests without more intrusive
+changes.
 
 =head1 CAVEATS
 
@@ -45,7 +48,7 @@ Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2010, 2013 Russ Allbery <eagle@eyrie.org>
+Copyright 2010, 2013, 2014 Russ Allbery <eagle@eyrie.org>
 
 Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and

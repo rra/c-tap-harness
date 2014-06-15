@@ -8,6 +8,10 @@ C TAP Harness 3.1 (unreleased)
     actions of a test program should vary based on the success or failure
     of previous tests.  Based on a patch by Peter Pöschl.
 
+    diag and sysdiag now always return 1, making it easier to insert calls
+    into compound statements when debugging tests.  Based on a patch by
+    Peter Pöschl.
+
     Add new breallocarray API that does the same as realloc but takes
     calloc-style arguments to specify the size and checks internally for
     integer overflow.  Inspired by the OpenBSD reallocarray function.

@@ -1,7 +1,7 @@
 /*
- * Test of the libtap sysbail function.
+ * Test of the libtap sysbail and sysdiag functions.
  *
- * Copyright 2009, 2013 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2009, 2013, 2014 Russ Allbery <eagle@eyrie.org>
  *
  * See LICENSE for licensing terms.
  */
@@ -16,14 +16,18 @@ int
 main(void)
 {
     FILE *output;
+    int status;
 
     output = fopen("c-sysbail.output", "w");
     if (output == NULL)
         sysbail("cannot create c-sysbail.output");
-    fprintf(output, "1..2\nok 1\nBail out! error: %s\n", strerror(EPERM));
+    fprintf(output, "1..2\n# diag: %s\nok 1\nBail out! error: %s\n",
+            strerror(EPERM), strerror(EPERM));
     fclose(output);
     plan(2);
-    ok(1, NULL);
+    errno = EPERM;
+    status = sysdiag("diag");
+    is_int(1, status, NULL);
     errno = EPERM;
     sysbail("error");
     ok(1, "second test");

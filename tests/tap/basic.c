@@ -612,9 +612,10 @@ sysbail(const char *format, ...)
 
 
 /*
- * Report a diagnostic to stderr.
+ * Report a diagnostic to stderr.  Always returns 1 to allow embedding in
+ * compound statements.
  */
-void
+int
 diag(const char *format, ...)
 {
     va_list args;
@@ -627,13 +628,15 @@ diag(const char *format, ...)
     vprintf(format, args);
     va_end(args);
     printf("\n");
+    return 1;
 }
 
 
 /*
- * Report a diagnostic to stderr, appending strerror(errno).
+ * Report a diagnostic to stderr, appending strerror(errno).  Always returns 1
+ * to allow embedding in compound statements.
  */
-void
+int
 sysdiag(const char *format, ...)
 {
     va_list args;
@@ -647,6 +650,7 @@ sysdiag(const char *format, ...)
     vprintf(format, args);
     va_end(args);
     printf(": %s\n", strerror(oerrno));
+    return 1;
 }
 
 
