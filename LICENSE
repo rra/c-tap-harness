@@ -63,11 +63,11 @@ License: FSF-configure
  permission to copy, distribute and modify it.
 
 Files: docs/api/bail.3 docs/api/bail.pod docs/api/bmalloc.3
- docs/api/bmalloc.pod docs/api/diag.3 docs/api/diag.pod
- docs/api/diag_file_add.3 docs/api/diag_file_add.pod docs/api/is_int.3
- docs/api/is_int.pod docs/api/ok.3 docs/api/ok.pod docs/api/plan.3
- docs/api/plan.pod docs/api/skip.3 docs/api/skip.pod docs/api/skip_all.3
- docs/api/skip_all.pod docs/api/test_cleanup_register.3
+ docs/api/bmalloc.pod docs/api/breallocarray.pod docs/api/diag.3
+ docs/api/diag.pod docs/api/diag_file_add.3 docs/api/diag_file_add.pod
+ docs/api/is_int.3 docs/api/is_int.pod docs/api/ok.3 docs/api/ok.pod
+ docs/api/plan.3 docs/api/plan.pod docs/api/skip.3 docs/api/skip.pod
+ docs/api/skip_all.3 docs/api/skip_all.pod docs/api/test_cleanup_register.3
  docs/api/test_cleanup_register.pod docs/api/test_file_path.3
  docs/api/test_file_path.pod docs/api/test_tmpdir.3
  docs/api/test_tmpdir.pod docs/runtests.1 docs/runtests.pod

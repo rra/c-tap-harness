@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 3.1 (unreleased)
+C TAP Harness 3.1 (2014-07-02)
 
     ok, okv, and all is_* functions now return true if the test succeeds
     and false if it fails, matching the return status of the corresponding
