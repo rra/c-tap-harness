@@ -52,3 +52,5 @@ Documentation:
  * Move the integration documentation in README into a separate file in
    docs, probably docs/autotools-integration, and clarify in README what
    documentation to read first.
+
+ * Document the versions at which APIs and runtests features were added.
