@@ -105,7 +105,7 @@ static struct cleanup_func *cleanup_funcs = NULL;
 /*
  * Registered diag files.  Any output found in these files will be printed out
  * as if it were passed to diag() before any other output we do.  This allows
- * background processes to log to a file and have that output interleved with
+ * background processes to log to a file and have that output interleaved with
  * the test output.
  */
 struct diag_file {
