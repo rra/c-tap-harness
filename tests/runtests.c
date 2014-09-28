@@ -1418,19 +1418,21 @@ main(int argc, char *argv[])
     int single = 0;
     char *source_env = NULL;
     char *build_env = NULL;
+    const char *program;
     const char *shortlist;
     const char *list = NULL;
     const char *source = SOURCE;
     const char *build = BUILD;
     struct testlist *tests;
 
+    program = argv[0];
     while ((option = getopt(argc, argv, "b:hl:os:")) != EOF) {
         switch (option) {
         case 'b':
             build = optarg;
             break;
         case 'h':
-            printf(usage_message, argv[0], argv[0], argv[0], usage_extra);
+            printf(usage_message, program, program, program, usage_extra);
             exit(0);
             break;
         case 'l':
@@ -1449,7 +1451,7 @@ main(int argc, char *argv[])
     argv += optind;
     argc -= optind;
     if ((list == NULL && argc < 1) || (list != NULL && argc > 0)) {
-        fprintf(stderr, usage_message, argv[0], argv[0], argv[0], usage_extra);
+        fprintf(stderr, usage_message, program, program, program, usage_extra);
         exit(1);
     }
 
