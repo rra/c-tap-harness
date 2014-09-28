@@ -139,7 +139,7 @@ USING THE HARNESS
   * Add code to Makefile.am to run the test suite:
 
         check-local: $(check_PROGRAMS)
-              cd tests && ./runtests $(abs_top_srcdir)/tests/TESTS
+              cd tests && ./runtests -l $(abs_top_srcdir)/tests/TESTS
 
     See the Makefile.am in this package for an example (although note that
     it keeps runtests in an unusual location).
