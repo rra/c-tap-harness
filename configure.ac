@@ -4,7 +4,8 @@ dnl The C TAP harness is written in maximally portable C, so Autoconf is used
 dnl here mostly for consistency in build process and to handle Automake, not
 dnl for any portability of the code itself.
 dnl
-dnl Copyright 2008, 2009, 2010, 2011, 2013 Russ Allbery <eagle@eyrie.org>
+dnl Copyright 2008, 2009, 2010, 2011, 2013, 2014
+dnl     Russ Allbery <eagle@eyrie.org>
 dnl
 dnl See LICENSE for licensing terms.
 
@@ -25,5 +26,5 @@ AC_PROG_LN_S
 
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([tests/harness/env/env.t], [chmod +x tests/harness/env/env.t])
-AC_CONFIG_FILES([tests/harness/search.t],  [chmod +x tests/harness/search.t])
+AC_CONFIG_FILES([tests/harness/search-t],  [chmod +x tests/harness/search-t])
 AC_OUTPUT

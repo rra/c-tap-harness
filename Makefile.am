@@ -11,8 +11,8 @@ EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
 	docs/api/plan.pod docs/api/skip.pod docs/api/skip_all.pod	    \
 	docs/api/test_cleanup_register.pod docs/api/test_file_path.pod	    \
 	docs/api/test_tmpdir.pod docs/runtests.pod docs/writing-tests	    \
-	tests/TESTS tests/docs/pod.t tests/docs/pod-spelling.t		    \
-	tests/harness/basic/abort-one.list				    \
+	tests/TESTS tests/docs/pod-t tests/docs/pod-spelling-t		    \
+	tests/harness/basic-t tests/harness/basic/abort-one.list	    \
 	tests/harness/basic/abort-one.output tests/harness/basic/abort.list \
 	tests/harness/basic/abort.output tests/harness/basic/abort.t	    \
 	tests/harness/basic/badnum-delay.t tests/harness/basic/badnum.t	    \
@@ -32,19 +32,19 @@ EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
 	tests/harness/basic/skip.list tests/harness/basic/skip.output	    \
 	tests/harness/basic/skip.t tests/harness/basic/status.t		    \
 	tests/harness/basic/todo.t tests/harness/basic/too-many.t	    \
-	tests/harness/basic/zero.t tests/harness/basic.t		    \
+	tests/harness/basic/zero.t tests/harness/env-t			    \
 	tests/harness/env/env.list tests/harness/env/env.output		    \
-	tests/harness/env.t tests/libtap/basic/c-bail.output		    \
-	tests/harness/multiple/output tests/harness/multiple.t		    \
+	tests/libtap/basic/c-bail.output tests/harness/multiple-t	    \
+	tests/harness/multiple/output					    \
 	tests/harness/search/build/build-no-ext.tap			    \
 	tests/harness/search/build/build-t				    \
 	tests/harness/search/relative-no-ext				    \
 	tests/harness/search/relative.t tests/harness/search/search.list    \
 	tests/harness/search/search.output				    \
 	tests/harness/search/source/source-no-ext			    \
-	tests/harness/search/source/source.t				    \
+	tests/harness/search/source/source.t tests/harness/single-t	    \
 	tests/harness/single/test.output tests/harness/single/test.t	    \
-	tests/harness/single.t tests/libtap/basic/c-basic.output	    \
+	tests/libtap/basic-t tests/libtap/basic/c-basic.output		    \
 	tests/libtap/basic/c-bstrndup.output				    \
 	tests/libtap/basic/c-diag-file.output				    \
 	tests/libtap/basic/c-extra-one.output				    \
@@ -71,15 +71,14 @@ EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
 	tests/libtap/basic/sh-success-one.output			    \
 	tests/libtap/basic/sh-success.output tests/libtap/basic/sh-skip	    \
 	tests/libtap/basic/sh-skip.output tests/libtap/basic/sh-tmpdir	    \
-	tests/libtap/basic.t tests/libtap/cleanup/c-bail-lazy.output	    \
+	tests/libtap/cleanup-t tests/libtap/cleanup/c-bail-lazy.output	    \
 	tests/libtap/cleanup/c-bail.output				    \
 	tests/libtap/cleanup/c-fork.output				    \
 	tests/libtap/cleanup/c-lazy.output				    \
 	tests/libtap/cleanup/c-many-fail.output				    \
 	tests/libtap/cleanup/c-many.output				    \
 	tests/libtap/cleanup/c-one-fail.output				    \
-	tests/libtap/cleanup/c-one.output tests/libtap/cleanup.t	    \
-	tests/tap/libtap.sh
+	tests/libtap/cleanup/c-one.output tests/tap/libtap.sh
 
 # It's somewhat odd to have the TAP library and the runtests harness in the
 # tests directory, since they're the primary point of this package.  But
@@ -232,6 +231,6 @@ check-valgrind: $(bin_PROGRAMS) $(check_PROGRAMS)
 	env RRA_MAINTAINER_TESTS= valgrind --leak-check=full	\
 	    --show-reachable=yes --trace-children=yes		\
 	    --log-file=$(abs_top_builddir)/tmp-valgrind/log.%p	\
-	    --trace-children-skip="/bin/sh,*/cat,*/diff,*/expr,*/grep,*/mkdir,*/rm,*/rmdir,*/sed,*/sleep,*/true,*/wc,*/docs/pod*.t,*/harness/*/*.t,*/libtap/basic/sh-*" \
+	    --trace-children-skip="/bin/sh,*/cat,*/diff,*/expr,*/grep,*/mkdir,*/rm,*/rmdir,*/sed,*/sleep,*/true,*/wc,*/docs/pod*-t,*/harness/*/*.t,*/libtap/basic/sh-*" \
 	    tests/runtests -s '$(abs_top_srcdir)/tests'		\
 	    -b '$(abs_top_builddir)/tests' -l '$(abs_top_srcdir)/tests/TESTS'
