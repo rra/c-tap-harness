@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 3.2 (unreleased)
+C TAP Harness 3.2 (2014-12-25)
 
     The runtests harness now supports ignoring comments and blank lines in
     the test list specified with -l.  Leading whitespace before the test
