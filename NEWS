@@ -1,5 +1,11 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 3.2 (unreleased)
+
+    The runtests harness now supports ignoring comments and blank lines in
+    the test list specified with -l.  Leading whitespace before the test
+    name is also ignored.
+
 C TAP Harness 3.1 (2014-07-02)
 
     ok, okv, and all is_* functions now return true if the test succeeds

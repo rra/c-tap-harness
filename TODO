@@ -41,8 +41,6 @@ Extra Harness Features:
  * Support -D/--dry-run to list the tests that would be run.  (Mostly only
    useful after passing directories and recursion are implemented.)
 
- * Support comments in test lists.
-
  * Use C_TAP_SOURCE and C_TAP_BUILD instead of SOURCE and BUILD to avoid
    the generic environment variables that may conflict with other uses of
    the same variables.

@@ -25,11 +25,12 @@ Automake.
 
 By default, the arguments to B<runtests> are taken as tests to run.  The
 tests to run can instead be listed in a file, one per line, passed to
-B<runtests> with the B<-l> option.  Either way, each test name should be a
-path to an executable, possibly with a trailing C<-t> or C<.t> removed.
-The path should normally be given as relative to the source or build
-directory; see below for source and build directory handling.  B<runtests>
-will run each test program in the order listed and summarize the results.
+B<runtests> with the B<-l> option.  (Blank lines and lines starting with
+C<#> are ignored.)  Either way, each test name should be a path to an
+executable, possibly with a trailing C<-t> or C<.t> removed.  The path
+should normally be given as relative to the source or build directory; see
+below for source and build directory handling.  B<runtests> will run each
+test program in the order listed and summarize the results.
 
 If B<runtests> is given the B<-o> option, it instead runs a single test
 program given on the command line.  This is equivalent to running the
@@ -72,6 +73,10 @@ Display a usage message and exit, doing nothing else.
 Rather than taking the list of tests to run from the command line, read
 the list of tests from the provided I<test-list> file.  Each line of the
 file should be the name of the test, without any trailing C<-t> or C<.t>.
+Blank lines and lines starting with C<#> are ignored, as is leading
+whitespace before the name of the test.  Test names should not contain
+whitespace.  Whitespace-separated words after the test name are reserved
+for future use as test options.
 
 =item B<-o>
 
