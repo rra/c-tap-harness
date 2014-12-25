@@ -8,11 +8,31 @@
 #
 # This could be done more easily by using some of the test infrastructure from
 # rra-c-util, but it creates weird circular code sharing, so duplicate some of
-# it here instead.
+# it here instead.  This also makes it useful for packages that don't use the
+# Perl test framework from rra-c-util.
+#
+# This file is part of C TAP Harness.  The current version plus supporting
+# documentation is at <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
 #
 # Copyright 2008, 2009, 2013, 2014 Russ Allbery <eagle@eyrie.org>
 #
-# See LICENSE for licensing terms.
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
 
 use 5.006;
 use strict;
