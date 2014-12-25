@@ -59,5 +59,10 @@ if ($dirs[-1] eq File::Spec->updir) {
 my $root = File::Spec->catpath($vol, File::Spec->catdir(@dirs), q{});
 chdir($root) or BAIL_OUT("cannot chdir to $root: $!");
 
-# Test all the POD in the docs directory.
-all_pod_files_ok(all_pod_files('docs'));
+# Check spelling of everything in docs if present, and any *.pod files in the
+# current directory.
+my @pod_files = glob('*.pod');
+if (-d 'docs') {
+    push(@pod_files, all_pod_files('docs'));
+}
+all_pod_files_ok(@pod_files);
