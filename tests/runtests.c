@@ -695,6 +695,10 @@ test_checkline(const char *line, struct testset *ts)
     unsigned long current;
     int outlen;
 
+    if (getenv("VERBOSE")) {
+	printf("%s", line);
+    }
+
     /* Before anything, check for a test abort. */
     bail = strstr(line, "Bail out!");
     if (bail != NULL) {
@@ -803,7 +807,7 @@ test_checkline(const char *line, struct testset *ts)
     }
     ts->current = current;
     ts->results[current - 1] = status;
-    if (isatty(STDOUT_FILENO)) {
+    if (!getenv("VERBOSE") && isatty(STDOUT_FILENO)) {
         test_backspace(ts);
         if (ts->plan == PLAN_PENDING)
             outlen = printf("%lu/?", current);
@@ -1024,8 +1028,12 @@ test_run(struct testset *ts)
      * retrieve the exit status, and pass that information to test_analyze()
      * for eventual output.
      */
-    while (fgets(buffer, sizeof(buffer), output))
-        ;
+    while (fgets(buffer, sizeof(buffer), output)) {
+	if (getenv("VERBOSE")) {
+	    printf("%s", buffer);
+	}
+    }
+
     fclose(output);
     child = waitpid(testpid, &ts->status, 0);
     if (child == (pid_t) -1) {
