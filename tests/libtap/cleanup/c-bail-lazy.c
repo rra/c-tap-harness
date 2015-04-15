@@ -1,11 +1,12 @@
 /*
  * Test of the libtap test_cleanup_register function with lazy bail.
  *
- * Copyright 2013, 2014 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2013, 2014, 2015 Russ Allbery <eagle@eyrie.org>
  *
  * See LICENSE for licensing terms.
  */
 
+#include <assert.h>
 #include <stdio.h>
 
 #include <tests/tap/basic.h>
@@ -29,5 +30,6 @@ main(void)
     ok(1, "first test");
     ok(1, "second test");
     bail("aborting");
+    assert(0);
     return 0;
 }

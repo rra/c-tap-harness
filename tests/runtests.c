@@ -256,8 +256,10 @@ Failed Set                 Fail/Total (%) Skip Stat  Failing Tests\n\
  * variadic macro support.
  */
 #if !defined(__attribute__) && !defined(__alloc_size__)
-# if __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 3)
-#  define __alloc_size__(spec, args...) /* empty */
+# if defined(__GNUC__) && !defined(__clang__)
+#  if __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 3)
+#   define __alloc_size__(spec, args...) /* empty */
+#  endif
 # endif
 #endif
 
@@ -601,6 +603,21 @@ resize_results(struct testset *ts, unsigned long n)
 
 
 /*
+ * Report an invalid test number and set the appropriate flags.  Pulled into a
+ * separate function since we do this in several places.
+ */
+static void
+invalid_test_number(struct testset *ts, long n, enum test_verbose verbose)
+{
+    if (!verbose)
+        test_backspace(ts);
+    printf("ABORTED (invalid test number %ld)\n", n);
+    ts->aborted = 1;
+    ts->reported = 1;
+}
+
+
+/*
  * Read the plan line of test output, which should contain the range of test
  * numbers.  We may initialize the testset structure here if we haven't yet
  * seen a test.  Return true if initialization succeeded and the test should
@@ -664,11 +681,7 @@ test_plan(const char *line, struct testset *ts, enum test_verbose verbose)
      * range.
      */
     if (ts->plan == PLAN_PENDING && (unsigned long) n < ts->count) {
-        if (!verbose)
-            test_backspace(ts);
-        printf("ABORTED (invalid test number %lu)\n", ts->count);
-        ts->aborted = 1;
-        ts->reported = 1;
+        invalid_test_number(ts, (long) ts->count, verbose);
         return 0;
     }
 
@@ -676,8 +689,8 @@ test_plan(const char *line, struct testset *ts, enum test_verbose verbose)
      * Otherwise, allocated or resize the results if needed and update count,
      * and then record that we've seen a plan.
      */
-    resize_results(ts, n);
-    ts->count = n;
+    resize_results(ts, (unsigned long) n);
+    ts->count = (unsigned long) n;
     if (ts->plan == PLAN_INIT)
         ts->plan = PLAN_FIRST;
     else if (ts->plan == PLAN_PENDING)
@@ -762,14 +775,14 @@ test_checkline(const char *line, struct testset *ts,
     errno = 0;
     number = strtol(line, &end, 10);
     if (errno != 0 || end == line)
-        number = ts->current + 1;
-    current = number;
-    if (number <= 0 || (current > ts->count && ts->plan == PLAN_FIRST)) {
-        if (!verbose)
-            test_backspace(ts);
-        printf("ABORTED (invalid test number %lu)\n", current);
-        ts->aborted = 1;
-        ts->reported = 1;
+        current = ts->current + 1;
+    else if (number <= 0) {
+        invalid_test_number(ts, number, verbose);
+        return;
+    } else
+        current = (unsigned long) number;
+    if (current > ts->count && ts->plan == PLAN_FIRST) {
+        invalid_test_number(ts, (long) current, verbose);
         return;
     }
 
@@ -821,7 +834,7 @@ test_checkline(const char *line, struct testset *ts,
             outlen = printf("%lu/?", current);
         else
             outlen = printf("%lu/%lu", current, ts->count);
-        ts->length = (outlen >= 0) ? outlen : 0;
+        ts->length = (outlen >= 0) ? (unsigned int) outlen : 0;
         fflush(stdout);
     }
 }
@@ -837,7 +850,7 @@ test_checkline(const char *line, struct testset *ts,
  * disable this).
  */
 static unsigned int
-test_print_range(unsigned long first, unsigned long last, unsigned int chars,
+test_print_range(unsigned long first, unsigned long last, unsigned long chars,
                  unsigned int limit)
 {
     unsigned int needed = 0;
@@ -1153,7 +1166,7 @@ is_valid_test(const char *path)
 static char *
 find_test(const char *name, const char *source, const char *build)
 {
-    char *path;
+    char *path = NULL;
     const char *bases[3], *suffix, *base;
     unsigned int i, j;
     const char *suffixes[3] = { "-t", ".t", "" };
@@ -1300,9 +1313,8 @@ static int
 test_batch(struct testlist *tests, const char *source, const char *build,
            enum test_verbose verbose)
 {
-    size_t length;
-    unsigned int i;
-    unsigned int longest = 0;
+    size_t length, i;
+    size_t longest = 0;
     unsigned int count = 0;
     struct testset *ts;
     struct timeval start, end;
@@ -1475,7 +1487,6 @@ main(int argc, char *argv[])
         case 'h':
             printf(usage_message, program, program, program, usage_extra);
             exit(0);
-            break;
         case 'l':
             list = optarg;
             break;

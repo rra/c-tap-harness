@@ -18,7 +18,7 @@
  * Test okv(), which requires having a separate stdargs function that
  * generates the va_list.
  */
-static void
+static void __attribute__((__format__(printf, 1, 2)))
 test_okv(const char *format, ...)
 {
     va_list args;

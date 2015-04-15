@@ -4,7 +4,8 @@
  * This file is part of C TAP Harness.  The current version plus supporting
  * documentation is at <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
- * Copyright 2009, 2010, 2011, 2012, 2013, 2014 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2009, 2010, 2011, 2012, 2013, 2014, 2015
+ *     Russ Allbery <eagle@eyrie.org>
  * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011, 2012, 2014
  *     The Board of Trustees of the Leland Stanford Junior University
  *
@@ -72,7 +73,8 @@ void skip_all(const char *format, ...)
  */
 int ok(int success, const char *format, ...)
     __attribute__((__format__(printf, 2, 3)));
-int okv(int success, const char *format, va_list args);
+int okv(int success, const char *format, va_list args)
+    __attribute__((__format__(printf, 2, 0)));
 void skip(const char *reason, ...)
     __attribute__((__format__(printf, 1, 2)));
 

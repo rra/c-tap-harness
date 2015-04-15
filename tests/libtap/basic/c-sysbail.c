@@ -1,11 +1,12 @@
 /*
  * Test of the libtap sysbail and sysdiag functions.
  *
- * Copyright 2009, 2013, 2014 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2009, 2013, 2014, 2015 Russ Allbery <eagle@eyrie.org>
  *
  * See LICENSE for licensing terms.
  */
 
+#include <assert.h>
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
@@ -30,7 +31,7 @@ main(void)
     is_int(1, status, NULL);
     errno = EPERM;
     sysbail("error");
-    ok(1, "second test");
+    assert(0);
 
     return 0;
 }

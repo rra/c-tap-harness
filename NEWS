@@ -7,6 +7,10 @@ C TAP Harness 3.3 (unreleased)
     shown instead of the summary of total and failing tests.  Based on
     work by D. Brashear.
 
+    C TAP Harness now compiles cleanly with Clang with -Weverything
+    -Wno-padded -pedantic-errors, and automatically detects Clang and
+    switches warning flags for make warnings.
+
 C TAP Harness 3.2 (2014-12-25)
 
     The runtests harness now supports ignoring comments and blank lines in
