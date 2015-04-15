@@ -1,6 +1,6 @@
 language: c
 compiler: gcc
-script: ./autogen && ./configure && make warnings && make test
+script: ./autogen && ./configure && make warnings && make check
 branches:
   only:
     - master
