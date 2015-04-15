@@ -1,5 +1,7 @@
 language: c
-compiler: gcc
+compiler:
+  - gcc
+  - clang
 script: ./autogen && ./configure && make warnings && make check
 branches:
   only:
