@@ -1,6 +1,6 @@
 # Automake makefile for C TAP Harness.
 #
-# Copyright 2008, 2009, 2010, 2011, 2012, 2013, 2014
+# Copyright 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015
 #     Russ Allbery <eagle@eyrie.org>
 #
 # See LICENSE for licensing terms.
@@ -44,6 +44,8 @@ EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
 	tests/harness/search/source/source-no-ext			    \
 	tests/harness/search/source/source.t tests/harness/single-t	    \
 	tests/harness/single/test.output tests/harness/single/test.t	    \
+	tests/harness/verbose/list.output				    \
+	tests/harness/verbose/multiple.output tests/harness/verbose-t	    \
 	tests/libtap/basic-t tests/libtap/basic/c-basic.output		    \
 	tests/libtap/basic/c-bstrndup.output				    \
 	tests/libtap/basic/c-diag-file.output				    \

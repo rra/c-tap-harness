@@ -5,5 +5,6 @@ harness/env
 harness/multiple
 harness/search
 harness/single
+harness/verbose
 libtap/basic
 libtap/cleanup

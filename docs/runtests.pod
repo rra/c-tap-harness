@@ -1,6 +1,6 @@
 =for stopwords
 runtests builddir srcdir Automake preprocessor subdirectory todo Allbery
-reimplementation executables API
+reimplementation executables API -hv -bv
 
 =head1 NAME
 
@@ -8,9 +8,9 @@ runtests - Harness for running TAP-compliant test scripts
 
 =head1 SYNOPSIS
 
-B<runtests> [B<-h>] [B<-b> I<builddir>] [B<-s> I<srcdir>] I<test> ...
+B<runtests> [B<-hv>] [B<-b> I<builddir>] [B<-s> I<srcdir>] I<test> ...
 
-B<runtests> [B<-b> I<builddir>] [B<-s> I<srcdir>] B<-l> I<test-list>
+B<runtests> [B<-bv> I<builddir>] [B<-s> I<srcdir>] B<-l> I<test-list>
 
 B<runtests> B<-o> [B<-b> I<builddir>] [B<-s> I<srcdir>] I<test>
 
@@ -94,6 +94,12 @@ variable and test programs not found relative to the current working
 directory of B<runtests> or the BUILD directory will be searched for
 relative to this directory.
 
+=item B<-v>
+
+Rather than showing a summary of the results of each test, display the
+full output of each test as it runs.  This can also be requested by
+setting the C_TAP_VERBOSE environment variable.
+
 =back
 
 =head1 TEST PROTOCOL
@@ -143,6 +149,14 @@ sign.
 
 Set to the value of the C preprocessor symbol BUILD when B<runtests> was
 built or the B<-b> option, if either was set.
+
+=item C_TAP_VERBOSE
+
+If set, B<runtests> will act as if the B<-v> option was given and show the
+complete output of each test, instead of only the summary of total and
+failing tests.  This can be useful when debugging a test failure, since it
+can be set in the environment of the build without changing anything else
+about the build.
 
 =item SOURCE
 
@@ -198,7 +212,7 @@ Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2009, 2010, 2011, 2013 Russ Allbery <eagle@eyrie.org>
+Copyright 2009, 2010, 2011, 2013, 2015 Russ Allbery <eagle@eyrie.org>
 
 Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and
