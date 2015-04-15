@@ -1,0 +1,6 @@
+language: c
+compiler: gcc
+script: ./autogen && ./configure && make warnings && make test
+branches:
+  only:
+    - master
