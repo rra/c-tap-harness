@@ -5,6 +5,7 @@
 #
 # See LICENSE for licensing terms.
 
+ACLOCAL_AMFLAGS = -I m4
 EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
 	docs/api/bmalloc.pod docs/api/breallocarray.pod docs/api/diag.pod   \
 	docs/api/diag_file_add.pod docs/api/is_int.pod docs/api/ok.pod	    \
