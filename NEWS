@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 3.3 (unreleased)
+C TAP Harness 3.3 (2015-04-26)
 
     If runtests is given the -v option, or if the environment variable
     C_TAP_VERBOSE is set, the complete output of each test program will be

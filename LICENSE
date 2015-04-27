@@ -5,19 +5,19 @@ Comment: This file documents the copyright statements and licenses for
  .
  For any copyright year range specified as YYYY-ZZZZ in this file, the
  range specifies every single year in that closed interval.
-Copyright: 2000-2001, 2004, 2006-2014 Russ Allbery
+Copyright: 2000-2001, 2004, 2006-2015 Russ Allbery
   2006-2014 The Board of Trustees of the Leland Stanford Junior University
 License: Expat
 
 Files: *
-Copyright: 2000-2001, 2004, 2006-2014 Russ Allbery <eagle@eyrie.org>
+Copyright: 2000-2001, 2004, 2006-2015 Russ Allbery <eagle@eyrie.org>
   2001-2002, 2004-2014
     The Board of Trustees of the Leland Stanford Junior University
 License: Expat
 
 Files: Makefile.in
 Copyright: 1994-2013 Free Software Foundation, Inc.
-  2008-2014 Russ Allbery <eagle@eyrie.org>
+  2008-2015 Russ Allbery <eagle@eyrie.org>
 License: FSF-unlimited and Expat
 
 Files: aclocal.m4
@@ -73,12 +73,19 @@ Files: docs/api/bail.3 docs/api/bail.pod docs/api/bmalloc.3
  docs/api/test_file_path.pod docs/api/test_tmpdir.3
  docs/api/test_tmpdir.pod docs/runtests.1 docs/runtests.pod
  docs/writing-tests
-Copyright: 2009-2014 Russ Allbery <eagle@eyrie.org>
+Copyright: 2009-2015 Russ Allbery <eagle@eyrie.org>
 License: all-permissive
  Copying and distribution of this file, with or without modification, are
  permitted in any medium without royalty provided the copyright notice and
  this notice are preserved.  This file is offered as-is, without any
  warranty.
+
+Files: m4/clang.m4
+Copyright: 2015 Russ Allbery <eagle@eyrie.org>
+License: unlimited
+ This file is free software; the authors give unlimited permission to copy
+ and/or distribute it, with or without modifications, as long as this
+ notice is preserved.
 
 License: Expat
  Permission is hereby granted, free of charge, to any person obtaining a
