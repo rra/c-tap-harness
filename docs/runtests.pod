@@ -10,9 +10,9 @@ runtests - Harness for running TAP-compliant test scripts
 
 B<runtests> [B<-hv>] [B<-b> I<builddir>] [B<-s> I<srcdir>] I<test> ...
 
-B<runtests> [B<-bv> I<builddir>] [B<-s> I<srcdir>] B<-l> I<test-list>
+B<runtests> [B<-hv>] [B<-b> I<builddir>] [B<-s> I<srcdir>] B<-l> I<test-list>
 
-B<runtests> B<-o> [B<-b> I<builddir>] [B<-s> I<srcdir>] I<test>
+B<runtests> [B<-h>] B<-o> [B<-b> I<builddir>] [B<-s> I<srcdir>] I<test>
 
 =head1 DESCRIPTION
 
