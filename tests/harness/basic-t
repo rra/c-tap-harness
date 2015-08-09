@@ -26,7 +26,7 @@ ok_runtests () {
 }
 
 # Total tests.
-plan 7
+plan 8
 
 # Run the tests.
 ok_runtests pass
@@ -34,6 +34,7 @@ ok_runtests skip
 ok_runtests fail
 ok_runtests abort
 ok_runtests abort-one
+ok_runtests empty
 
 # Check that running runtests with a list and another argument fails and
 # produces the usage message.
