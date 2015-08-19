@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 3.4 (unreleased)
+C TAP Harness 3.4 (2015-08-18)
 
     Fix segfault in runtests when given a test list containing only
     comments and blank lines.  Thanks, aherbert.
