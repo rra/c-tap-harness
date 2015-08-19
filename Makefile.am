@@ -18,7 +18,8 @@ EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
 	tests/harness/basic/abort.output tests/harness/basic/abort.t	    \
 	tests/harness/basic/badnum-delay.t tests/harness/basic/badnum.t	    \
 	tests/harness/basic/bail-silent.t tests/harness/basic/bail.t	    \
-	tests/harness/basic/duplicate.t tests/harness/basic/fail-count.t    \
+	tests/harness/basic/duplicate.t tests/harness/basic/empty.list	    \
+	tests/harness/basic/empty.output tests/harness/basic/fail-count.t   \
 	tests/harness/basic/fail.list tests/harness/basic/fail.output	    \
 	tests/harness/basic/fail.t tests/harness/basic/hup.t		    \
 	tests/harness/basic/missing.t tests/harness/basic/nocount.t	    \
