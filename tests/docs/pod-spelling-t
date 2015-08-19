@@ -64,12 +64,12 @@ pop(@dirs);
 
 # Simplify relative paths at the end of the directory.
 my $ups = 0;
-my $i = $#dirs;
+my $i   = $#dirs;
 while ($i > 2 && $dirs[$i] eq File::Spec->updir) {
     $ups++;
     $i--;
 }
-for (1..$ups) {
+for (1 .. $ups) {
     pop(@dirs);
     pop(@dirs);
 }
