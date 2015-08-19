@@ -14,7 +14,7 @@
 # This file is part of C TAP Harness.  The current version plus supporting
 # documentation is at <http://www.eyrie.org/~eagle/software/c-tap-harness/>.
 #
-# Copyright 2008, 2009, 2013, 2014 Russ Allbery <eagle@eyrie.org>
+# Copyright 2008, 2009, 2013, 2014, 2015 Russ Allbery <eagle@eyrie.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -61,7 +61,15 @@ Test::Spelling->import;
 my ($vol, $dirs) = File::Spec->splitpath($ENV{SOURCE}, 1);
 my @dirs = File::Spec->splitdir($dirs);
 pop(@dirs);
-if ($dirs[-1] eq File::Spec->updir) {
+
+# Simplify relative paths at the end of the directory.
+my $ups = 0;
+my $i = $#dirs;
+while ($i > 2 && $dirs[$i] eq File::Spec->updir) {
+    $ups++;
+    $i--;
+}
+for (1..$ups) {
     pop(@dirs);
     pop(@dirs);
 }
