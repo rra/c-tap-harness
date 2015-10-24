@@ -74,6 +74,10 @@ REQUIREMENTS
 
 BUILDING AND TESTING
 
+  If starting from a Git clone instead of a release tarball, first run:
+
+      ./autogen
+
   You can build C TAP Harness and run its internal test suite with:
 
       ./configure
