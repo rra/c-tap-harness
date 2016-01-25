@@ -25,12 +25,6 @@ Extra Harness Features:
  * Save log files for the output of each test, either by default or via an
    option, similar to the new Automake TAP test support.
 
- * Support a verbose mode that shows the result of each test as it's
-   running instead of just the test counts.
-
- * Support displaying diagnostic lines (lines beginning with "#") in a
-   verbose mode.
-
  * Support running selected tests under fakeroot, probably by adding a
    parameter in the TESTS file after the test name.
 
@@ -41,9 +35,7 @@ Extra Harness Features:
  * Support -D/--dry-run to list the tests that would be run.  (Mostly only
    useful after passing directories and recursion are implemented.)
 
- * Use C_TAP_SOURCE and C_TAP_BUILD instead of SOURCE and BUILD to avoid
-   the generic environment variables that may conflict with other uses of
-   the same variables.
+ * Remove support for SOURCE and BUILD.
 
 Documentation:
 
