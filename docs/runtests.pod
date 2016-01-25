@@ -237,7 +237,7 @@ warranty.
 
 =head1 SEE ALSO
 
-prove(1), TAP::Parser::Grammar(3), Test::Harness(3), Test::Harness::TAP(3)
+prove(1), TAP::Parser(3), TAP::Parser::Grammar(3), Test::Harness(3)
 
 The current version of this program is available from its web page at
 L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.
