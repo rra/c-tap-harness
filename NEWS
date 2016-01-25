@@ -1,5 +1,10 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 3.5 (unreleased)
+
+    Rename the script to bootstrap from a Git checkout to bootstrap,
+    matching the emerging consensus in the Autoconf world.
+
 C TAP Harness 3.4 (2015-08-18)
 
     Fix segfault in runtests when given a test list containing only
