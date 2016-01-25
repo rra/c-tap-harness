@@ -3,13 +3,14 @@
 # Calls basic libtap functions for testing the shell library.
 #
 # Written by Russ Allbery <eagle@eyrie.org>
+# Copyright 2016 Russ Allbery <eagle@eyrie.org>
 # Copyright 2008, 2009
 #     The Board of Trustees of the Leland Stanford Junior University
 #
 # See LICENSE for licensing terms.
 
 # Load the test library.
-. "$SOURCE/tap/libtap.sh"
+. "$C_TAP_SOURCE/tap/libtap.sh"
 
 # Plan test.
 plan 25

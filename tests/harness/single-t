@@ -1,22 +1,23 @@
 #! /bin/sh
 #
-# Test suite for runtests directory search support.
+# Test suite for running a single test.
 #
-# Copyright 2009, 2012 Russ Allbery <eagle@eyrie.org>
+# Copyright 2009, 2012, 2016 Russ Allbery <eagle@eyrie.org>
 #
 # See LICENSE for licensing terms.
 
-. "$SOURCE/tap/libtap.sh"
-cd "$BUILD"
+. "$C_TAP_SOURCE/tap/libtap.sh"
+cd "$C_TAP_BUILD"
 
 # Total tests.
 plan 2
 
 # Run runtests, overriding the build and source directories.
-"${BUILD}/runtests" -s "${SOURCE}/harness/single" -o test > test.result
+"${C_TAP_BUILD}/runtests" -s "${C_TAP_SOURCE}/harness/single" -o test \
+    > test.result
 status=$?
 ok 'test result status' [ $status -eq 4 ]
-diff -u "${SOURCE}/harness/single/test.output" test.result 2>&1
+diff -u "${C_TAP_SOURCE}/harness/single/test.output" test.result 2>&1
 status=$?
 ok 'test output' [ $status -eq 0 ]
 if [ $status -eq 0 ] ; then

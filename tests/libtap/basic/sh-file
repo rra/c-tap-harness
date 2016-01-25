@@ -2,14 +2,14 @@
 #
 # Test of the test_file_path utility function in libtap.sh.
 #
-# Copyright 2010, 2012 Russ Allbery <eagle@eyrie.org>
+# Copyright 2010, 2012, 2016 Russ Allbery <eagle@eyrie.org>
 #
 # See LICENSE for licensing terms.
 
-. "${SOURCE}/tap/libtap.sh"
+. "${C_TAP_SOURCE}/tap/libtap.sh"
 
-echo "Path to c-file: ${BUILD}/libtap/basic/c-file" > sh-file.output
-echo "Path to c-basic.output: ${SOURCE}/libtap/basic/c-basic.output" \
+echo "Path to c-file: ${C_TAP_BUILD}/libtap/basic/c-file" > sh-file.output
+echo "Path to c-basic.output: ${C_TAP_SOURCE}/libtap/basic/c-basic.output" \
     >> sh-file.output
 echo "Path to c-file: " >> sh-file.output
 echo "Path to c-basic.output: " >> sh-file.output
@@ -17,8 +17,8 @@ path=`test_file_path 'libtap/basic/c-file'`
 echo "Path to c-file: $path"
 path=`test_file_path 'libtap/basic/c-basic.output'`
 echo "Path to c-basic.output: $path"
-BUILD=
-SOURCE=
+C_TAP_BUILD=
+C_TAP_SOURCE=
 path=`test_file_path 'libtap/basic/c-file'`
 echo "Path to c-file: $path"
 path=`test_file_path 'libtap/basic/c-basic.output'`

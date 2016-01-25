@@ -1,7 +1,7 @@
 /*
  * Test creating a temporary directory with test_tmpdir().
  *
- * Copyright 2011, 2013 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2011, 2013, 2016 Russ Allbery <eagle@eyrie.org>
  *
  * See LICENSE for licensing terms.
  */
@@ -28,9 +28,10 @@ main(void)
     output = fopen("c-tmpdir.output", "w");
     if (output == NULL)
         sysbail("cannot create c-tmpdir.output");
-    fprintf(output, "Path to temporary directory: %s/tmp\n", getenv("BUILD"));
+    fprintf(output, "Path to temporary directory: %s/tmp\n",
+            getenv("C_TAP_BUILD"));
     fclose(output);
-    build = getenv("BUILD");
+    build = getenv("C_TAP_BUILD");
     length = strlen(build) + strlen("/tmp") + 1;
     path = bmalloc(length);
     sprintf(path, "%s/tmp", build);

@@ -2,6 +2,7 @@
  * Test locating files with test_file_path().
  *
  * Written by Russ Allbery <eagle@eyrie.org>
+ * Copyright 2016 Russ Allbery <eagle@eyrie.org>
  * Copyright 2010, 2012
  *     The Board of Trustees of the Leland Stanford Junior University
  *
@@ -24,9 +25,9 @@ main(void)
     if (output == NULL)
         sysbail("cannot create c-file.output");
     fprintf(output, "Path to c-file: %s/libtap/basic/c-file\n",
-            getenv("BUILD"));
+            getenv("C_TAP_BUILD"));
     fprintf(output, "Path to c-basic.output: %s/libtap/basic/c-basic.output\n",
-            getenv("SOURCE"));
+            getenv("C_TAP_SOURCE"));
     fclose(output);
     path = test_file_path("libtap/basic/c-file");
     printf("Path to c-file: %s\n", path);

@@ -2,12 +2,12 @@
 #
 # Test of the libtap.sh diag function.
 #
-# Copyright 2010 Russ Allbery <eagle@eyrie.org>
+# Copyright 2010, 2016 Russ Allbery <eagle@eyrie.org>
 #
 # See LICENSE for licensing terms.
 
 # Load the test library.
-. "$SOURCE/tap/libtap.sh"
+. "$C_TAP_SOURCE/tap/libtap.sh"
 
 plan 1
 diag 'foo'

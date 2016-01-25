@@ -35,22 +35,25 @@ test program in the order listed and summarize the results.
 If B<runtests> is given the B<-o> option, it instead runs a single test
 program given on the command line.  This is equivalent to running the
 program directly except that the program will be searched for in the
-SOURCE and BUILD directories and the environment will be set up as
-described below.
+C_TAP_SOURCE and C_TAP_BUILD directories and the environment will be set
+up as described below.
 
-When B<runtests> is built, if the C preprocessor symbols SOURCE and BUILD
-are defined, they're taken to be paths to the source and build directory
-for the test suite (normally a subdirectory of the main source or build
-directory for the package).  These paths can also be set with the B<-s>
-and B<-b> options, respectively.  If these paths are set, via either
-means, they're exported in the SOURCE and BUILD environment variables to
-all test programs.
+When B<runtests> is built, if the C preprocessor symbols C_TAP_SOURCE and
+C_TAP_BUILD are defined, they're taken to be paths to the source and build
+directory for the test suite (normally a subdirectory of the main source
+or build directory for the package).  These paths can also be set with the
+B<-s> and B<-b> options, respectively.  If these paths are set, via either
+means, they're exported in the C_TAP_SOURCE and C_TAP_BUILD environment
+variables to all test programs.  SOURCE and BUILD are also set in the
+environment for backward compatibility, but please switch to C_TAP_SOURCE
+and C_TAP_BUILD.
 
-If set, the SOURCE and BUILD directories are also used to find test
-programs.  If a test program named in I<test-list> or given on the command
-line with B<-o> is not found relative to the current directory, it is
-looked for in the BUILD directory and then in the SOURCE directory (if
-either is set).  This only applies to tests that are not absolute paths.
+If set, the C_TAP_SOURCE and C_TAP_BUILD directories are also used to find
+test programs.  If a test program named in I<test-list> or given on the
+command line with B<-o> is not found relative to the current directory, it
+is looked for in the C_TAP_BUILD directory and then in the C_TAP_SOURCE
+directory (if either is set).  This only applies to tests that are not
+absolute paths.
 
 =head1 OPTIONS
 
@@ -58,11 +61,11 @@ either is set).  This only applies to tests that are not absolute paths.
 
 =item B<-b> I<builddir>
 
-Sets the build directory, overriding a BUILD preprocessor directive set
-at build time.  This directory will be put into the BUILD environment
-variable, and test programs not found relative to the current working
-directory of B<runtests> will be searched for relative to this directory
-next.
+Sets the build directory, overriding a C_TAP_BUILD preprocessor directive
+set at build time.  This directory will be put into the C_TAP_BUILD (and
+BUILD) environment variable, and test programs not found relative to the
+current working directory of B<runtests> will be searched for relative to
+this directory next.
 
 =item B<-h>
 
@@ -88,11 +91,11 @@ displayed and the exit status will match its exit status.
 
 =item B<-s> I<srcdir>
 
-Sets the source directory, overriding a SOURCE preprocessor directive set
-at build time.  This directory will be put into the SOURCE environment
-variable and test programs not found relative to the current working
-directory of B<runtests> or the BUILD directory will be searched for
-relative to this directory.
+Sets the source directory, overriding a C_TAP_SOURCE preprocessor
+directive set at build time.  This directory will be put into the
+C_TAP_SOURCE (and SOURCE) environment variable and test programs not found
+relative to the current working directory of B<runtests> or the
+C_TAP_BUILD directory will be searched for relative to this directory.
 
 =item B<-v>
 
@@ -147,8 +150,19 @@ sign.
 
 =item BUILD
 
-Set to the value of the C preprocessor symbol BUILD when B<runtests> was
-built or the B<-b> option, if either was set.
+Set to the value of the C preprocessor symbol C_TAP_BUILD when B<runtests>
+was built or the B<-b> option, if either was set.  Use C_TAP_BUILD instead
+of this environment variable.
+
+=item C_TAP_BUILD
+
+Set to the value of the C preprocessor symbol C_TAP_BUILD when B<runtests>
+was built or the B<-b> option, if either was set.
+
+=item C_TAP_SOURCE
+
+Set to the value of the C preprocessor symbol C_TAP_SOURCE when
+B<runtests> was built or the B<-s> option, if either was set.
 
 =item C_TAP_VERBOSE
 
@@ -160,8 +174,9 @@ about the build.
 
 =item SOURCE
 
-Set to the value of the C preprocessor symbol SOURCE when B<runtests> was
-built or the B<-s> option, if either was set.
+Set to the value of the C preprocessor symbol C_TAP_SOURCE when
+B<runtests> was built or the B<-s> option, if either was set.  Use
+C_TAP_SOURCE instead of this environment variable.
 
 =back
 
@@ -184,9 +199,9 @@ recursively searching a directory.
 
 Consider using prove(1) instead of this test suite harness if you're
 testing Perl packages.  It has more features for handling Perl test
-scripts.  It does not, however, have the BUILD and SOURCE search and
-environment handling, and it assumes all test cases are written in Perl
-unless run with special options.
+scripts.  It does not, however, have the C_TAP_BUILD and C_TAP_SOURCE
+search and environment handling, and it assumes all test cases are written
+in Perl unless run with special options.
 
 TAP version directives in the TAP output are currently just ignored.
 These are part of the official grammar for future compatibility, but the
@@ -212,7 +227,8 @@ Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2009, 2010, 2011, 2013, 2015 Russ Allbery <eagle@eyrie.org>
+Copyright 2009, 2010, 2011, 2013, 2015, 2016 Russ Allbery
+<eagle@eyrie.org>
 
 Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and

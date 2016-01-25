@@ -20,15 +20,15 @@ files and returns the path to that directory.  test_tmpdir_free() attempts
 to remove the directory and then frees the path string.
 
 The directory created will be named F<tmp> under the location named by the
-BUILD environment variable, or under the current directory if BUILD is not
-set.
+C_TAP_BUILD environment variable, or under the current directory if
+C_TAP_BUILD is not set.
 
 =head1 RETURN VALUE
 
 test_tmpdir() returns the path to the temporary directory.  It never
 returns NULL; if any problems occur in creating the directory, it calls
 bail() to exit the test instead.  Note that the path may be relative if
-the environment variable BUILD is not set or is relative itself.
+the environment variable C_TAP_BUILD is not set or is relative itself.
 
 =head1 AUTHOR
 
@@ -36,7 +36,7 @@ Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2011, 2013 Russ Allbery <eagle@eyrie.org>
+Copyright 2011, 2013, 2016 Russ Allbery <eagle@eyrie.org>
 
 Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and

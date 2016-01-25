@@ -2,21 +2,22 @@
 #
 # Test suite for basic runtests functionality.
 #
-# Copyright 2008, 2009, 2012, 2013 Russ Allbery <eagle@eyrie.org>
+# Copyright 2008, 2009, 2012, 2013, 2016 Russ Allbery <eagle@eyrie.org>
 #
 # See LICENSE for licensing terms.
 
-. "$SOURCE/tap/libtap.sh"
-cd "$BUILD"
+. "$C_TAP_SOURCE/tap/libtap.sh"
+cd "$C_TAP_BUILD"
 
 # Run runtests on a list and compare the output to the expected output,
 # printing ok if it matches.  Strip out the time information from the runtests
 # result since it changes for each run.
 ok_runtests () {
-    "$BUILD"/runtests -s "${SOURCE}/harness/basic" \
-        -b "${BUILD}/harness/basic" -l "${SOURCE}/harness/basic/$1".list \
+    "$C_TAP_BUILD"/runtests -s "${C_TAP_SOURCE}/harness/basic"  \
+                  -b "${C_TAP_BUILD}/harness/basic"             \
+                  -l "${C_TAP_SOURCE}/harness/basic/$1".list    \
         | sed 's/\(Tests=[0-9]*\),  .*/\1/' > "$1".result
-    diff -u "${SOURCE}/harness/basic/$1".output "$1".result 2>&1
+    diff -u "${C_TAP_SOURCE}/harness/basic/$1".output "$1".result 2>&1
     status=$?
     ok "$1 test set" [ $status -eq 0 ]
     if [ $status -eq 0 ] ; then
@@ -38,7 +39,8 @@ ok_runtests empty
 
 # Check that running runtests with a list and another argument fails and
 # produces the usage message.
-output=`"${BUILD}/runtests" -l "${SOURCE}/harness/basic/pass.list" pass 2>&1`
+runtests="${C_TAP_BUILD}/runtests"
+output=`"$runtests" -l "${C_TAP_SOURCE}/harness/basic/pass.list" pass 2>&1`
 status=$?
 ok 'runtests with list and argument fails' [ $status -eq 1 ]
 echo "$output" | grep Usage: >/dev/null 2>&1

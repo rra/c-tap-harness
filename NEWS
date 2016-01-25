@@ -1,6 +1,24 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 3.5 (unreleased)
+C TAP Harness 4.0 (unreleased)
+
+    When building runtests, one must now set the C_TAP_SOURCE and
+    C_TAP_BUILD C preprocessor symbols to the source and build
+    directories, instead of SOURCE and BUILD.  An updated Makefile.am
+    recipe is documented in README.
+
+    runtests now sets C_TAP_SOURCE and C_TAP_BUILD in the environment in
+    addition to SOURCE and BUILD.  All test programs using this harness
+    should switch to the new C_TAP_SOURCE and C_TAP_BUILD environment
+    variables.  SOURCE and BUILD are very generic and may conflict with
+    other programs and uses, and setting them will be removed in a later
+    version.
+
+    The TAP test libraries (C and shell) now use C_TAP_SOURCE and
+    C_TAP_BUILD environment variables instead of SOURCE and BUILD for the
+    test_file_path() and test_tmpdir() functions.  If you were using these
+    libraries with another test harness, you will need to set the new
+    environment variables.
 
     Rename the script to bootstrap from a Git checkout to bootstrap,
     matching the emerging consensus in the Autoconf world.

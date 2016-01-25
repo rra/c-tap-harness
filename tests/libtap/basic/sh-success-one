@@ -1,13 +1,13 @@
 #! /bin/sh
 #
-# Test of the libtap.sh end summary with all successful tests and a plan of 1
+# Test of the libtap.sh end summary with all successful tests and a plan of 1.
 #
-# Copyright 2009 Russ Allbery <eagle@eyrie.org>
+# Copyright 2009, 2016 Russ Allbery <eagle@eyrie.org>
 #
 # See LICENSE for licensing terms.
 
 # Load the test library.
-. "$SOURCE/tap/libtap.sh"
+. "$C_TAP_SOURCE/tap/libtap.sh"
 
 plan 1
 ok "first" true
