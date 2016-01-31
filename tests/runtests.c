@@ -135,7 +135,7 @@
 
 /*
  * The source and build versions of the tests directory.  This is used to set
- * the C_TAAP_SOURCE and C_TAP_BUILD environment variables (and the SOURCE and
+ * the C_TAP_SOURCE and C_TAP_BUILD environment variables (and the SOURCE and
  * BUILD environment variables set for backward compatibility) and find test
  * programs, if set.  Normally, this should be set as part of the build
  * process to the test subdirectories of $(abs_top_srcdir) and
