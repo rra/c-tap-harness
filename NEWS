@@ -20,6 +20,10 @@ C TAP Harness 4.0 (unreleased)
     libraries with another test harness, you will need to set the new
     environment variables.
 
+    Fix missing va_end() call in is_double(), which would have caused
+    compilation failures or other problems on some platforms.  Thanks,
+    Julien ÉLIE.
+
     Rename the script to bootstrap from a Git checkout to bootstrap,
     matching the emerging consensus in the Autoconf world.
 
