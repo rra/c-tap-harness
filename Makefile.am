@@ -1,12 +1,12 @@
 # Automake makefile for C TAP Harness.
 #
-# Copyright 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015
+# Copyright 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016
 #     Russ Allbery <eagle@eyrie.org>
 #
 # See LICENSE for licensing terms.
 
 ACLOCAL_AMFLAGS = -I m4
-EXTRA_DIST = .gitignore LICENSE autogen docs/api/bail.pod		    \
+EXTRA_DIST = .gitignore LICENSE bootstrap docs/api/bail.pod		    \
 	docs/api/bmalloc.pod docs/api/breallocarray.pod docs/api/diag.pod   \
 	docs/api/diag_file_add.pod docs/api/is_int.pod docs/api/ok.pod	    \
 	docs/api/plan.pod docs/api/skip.pod docs/api/skip_all.pod	    \
