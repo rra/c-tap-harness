@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 4.0 (unreleased)
+C TAP Harness 4.0 (2016-05-07)
 
     When building runtests, one must now set the C_TAP_SOURCE and
     C_TAP_BUILD C preprocessor symbols to the source and build
