@@ -199,7 +199,7 @@ USING THE HARNESS
   portability code not shipped in this package or with narrower uses, see
   the rra-c-util package:
 
-      http://www.eyrie.org/~eagle/software/rra-c-util/
+      https://www.eyrie.org/~eagle/software/rra-c-util/
 
   There are several additional TAP library add-ons in the tests/tap
   directory in that package.  It's also an example of how to use this test
@@ -209,7 +209,7 @@ SUPPORT
 
   The C TAP Harness web page at:
 
-      http://www.eyrie.org/~eagle/software/c-tap-harness/
+      https://www.eyrie.org/~eagle/software/c-tap-harness/
 
   will always have the current version of this package, the current
   documentation, and pointers to any additional resources.

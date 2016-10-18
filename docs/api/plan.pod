@@ -67,6 +67,6 @@ warranty.
 bail(3), diag(3), is_int(3), ok(3), skip(3), skip_all(3)
 
 The current version of the C TAP Harness library is available from its web
-page at L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.
+page at L<https://www.eyrie.org/~eagle/software/c-tap-harness/>.
 
 =cut

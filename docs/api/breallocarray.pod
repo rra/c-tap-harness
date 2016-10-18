@@ -59,6 +59,6 @@ warranty.
 brealloc(3), realloc(3), reallocarray(3), sysbail(3)
 
 The current version of the C TAP Harness library is available from its web
-page at L<http://www.eyrie.org/~eagle/software/c-tap-harness/>.
+page at L<https://www.eyrie.org/~eagle/software/c-tap-harness/>.
 
 =cut
