@@ -3,11 +3,13 @@ const printf-style Allbery
 
 =head1 NAME
 
-is_int, is_double, is_string, is_hex - Check values for a TAP test
+is_bool, is_int, is_double, is_string, is_hex - Check values for a TAP test
 
 =head1 SYNOPSIS
 
 #include <tap/basic.h>
+
+int B<is_bool>(int I<wanted>, int I<seen>, const char *I<format>, ...);
 
 int B<is_int>(long I<wanted>, long I<seen>, const char *I<format>, ...);
 
@@ -31,11 +33,14 @@ possible optional arguments giving the name or intention of this test.
 I<format> should be specified where possible to make it easier to track
 failures down to specific tests.
 
-is_int() compares two longs, is_double() compares two doubles, is_string()
-compares two strings, and is_hex() compares two unsigned longs.  The
-advantage of these functions over ok() is that, if the values don't match,
-the expected and seen values are reported as diagnostics to make it easier
-to understand the test failure.
+is_bool() compares two boolean values, is_int() compares two longs,
+is_double() compares two doubles, is_string() compares two strings, and
+is_hex() compares two unsigned longs.  The advantage of these functions
+over ok() is that, if the values don't match, the expected and seen values
+are reported as diagnostics to make it easier to understand the test
+failure.  Note that, although is_bool() takes parameters of type int, both
+values are evaluated for their truth value not for their numeric value.
+(In other words, C<is_bool(1, 4)> is a passing test.)
 
 is_double() takes an I<epsilon> value and considers the two values equal
 if their difference is less than I<epsilon>.  This avoids problems with

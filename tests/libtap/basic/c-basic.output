@@ -1,4 +1,4 @@
-1..53
+1..57
 ok 1
 ok 2 - ok result is 1
 # a diagnostic
@@ -66,6 +66,14 @@ ok 49 - is_hex result is 0
 ok 50
 ok 51 - testing okv
 ok 52 - okv result is 1
+ok 53 - is_bool on 0
+ok 54 - is_bool on 1 and 4
+# wanted: true
+#   seen: false
+not ok 55 - is_bool display output
+# wanted: false
+#   seen: true
+not ok 56 - is_bool more display output
 # testing diag
-ok 53 - diag returns 1
-# Looks like you failed 12 tests of 53
+ok 57 - diag returns 1
+# Looks like you failed 14 tests of 57

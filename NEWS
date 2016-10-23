@@ -1,5 +1,12 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 4.1 (unreleased)
+
+    Add is_bool function to the C test library.  This compares its two
+    arguments only for their truthfulness.  is_bool(true, arg) is the same
+    as ok(arg), but there are times (such as when testing for a false
+    value) where this allows for clearer code or clearer output.
+
 C TAP Harness 4.0 (2016-05-07)
 
     When building runtests, one must now set the C_TAP_SOURCE and

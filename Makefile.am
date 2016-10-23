@@ -113,9 +113,11 @@ install-data-hook:
 	cd $(DESTDIR)$(man3dir) && $(LN_S) diag.3 sysdiag.3
 	rm -f $(DESTDIR)$(man3dir)/diag_file_remove.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) diag_file_add.3 diag_file_remove.3
+	rm -f $(DESTDIR)$(man3dir)/is_bool.3
 	rm -f $(DESTDIR)$(man3dir)/is_double.3
 	rm -f $(DESTDIR)$(man3dir)/is_string.3
 	rm -f $(DESTDIR)$(man3dir)/is_hex.3
+	cd $(DESTDIR)$(man3dir) && $(LN_S) is_int.3 is_bool.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) is_int.3 is_double.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) is_int.3 is_string.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) is_int.3 is_hex.3
@@ -141,6 +143,7 @@ uninstall-hook:
 	rm -f $(DESTDIR)$(man3dir)/bstrndup.3
 	rm -f $(DESTDIR)$(man3dir)/sysdiag.3
 	rm -f $(DESTDIR)$(man3dir)/diag_file_remove.3
+	rm -f $(DESTDIR)$(man3dir)/is_bool.3
 	rm -f $(DESTDIR)$(man3dir)/is_double.3
 	rm -f $(DESTDIR)$(man3dir)/is_string.3
 	rm -f $(DESTDIR)$(man3dir)/is_hex.3
