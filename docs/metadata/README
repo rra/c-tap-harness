@@ -1,0 +1,6 @@
+This directory contains configuration for DocKnot used to generate
+documentation files (like README.md) and web pages.  Other documentation
+in this package is generated automatically from these files as part of the
+release process.  For more information, see DocKnot's documentation.
+
+DocKnot is available from <https://www.eyrie.org/~eagle/software/docknot/>.

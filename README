@@ -1,11 +1,12 @@
-                            C TAP Harness 4.0
+                        C TAP Harness version 4.0
                (C harness for running TAP-compliant tests)
-                Written by Russ Allbery <eagle@eyrie.org>
+               Maintained by Russ Allbery <eagle@eyrie.org>
 
-  Copyright 2000, 2001, 2004, 2006, 2007, 2008, 2009, 2010, 2011, 2012,
-  2013, 2014, 2015, 2016 Russ Allbery <eagle@eyrie.org>.  This software is
-  distributed under a BSD-style license.  Please see the LICENSE section
-  below for more information.
+  Copyright 2000-2001, 2004, 2006-2016 Russ Allbery <eagle@eyrie.org>.
+  Copyright 2006-2009, 2011-2013 The Board of Trustees of the Leland
+  Stanford Junior University.  This software is distributed under a
+  BSD-style license.  Please see the section LICENSE below for more
+  information.
 
 BLURB
 
@@ -27,7 +28,7 @@ DESCRIPTION
   merges all the various versions into a single code base that all my
   packages can pull from.
 
-  C TAP Harness provides a full TAP specification (apart from a few
+  C TAP Harness provides a full TAP specification driver (apart from a few
   possible edge cases) and has additional special features for supporting
   builds outside the source directory.  It's mostly useful for packages
   using Autoconf and Automake and because it doesn't assume or require
@@ -43,7 +44,11 @@ DESCRIPTION
 
   Also included in this package are C and shell libraries that provide
   utility functions for writing test scripts that use TAP to report
-  exists.
+  results.  The C library also provides a variety of utility functions
+  useful for test programs running as part of an Automake-built package:
+  finding test data files, creating temporary files, reporting output from
+  external programs running in the background, and similar common
+  problems.
 
 REQUIREMENTS
 
@@ -55,22 +60,28 @@ REQUIREMENTS
   no other prerequisites or requirements.
 
   To run the test suite, you will need Perl plus the Perl module
-  Test::More, which comes with Perl 5.8 or later.
+  Test::More, which comes with Perl 5.8 or later.  The following
+  additional Perl modules will be used by the test suite if present:
 
-  To test the documentation, you will additionally need Test::Pod and
-  Test::Spelling, along with a spelling checker supported by
-  Test::Spelling.  Both are available from CPAN.  The tests will be
-  skipped without interfering with the rest of the tests if these modules
-  are not installed.  Spelling tests are disabled by default since
-  spelling dictionaries differ too much between systems.  To enable those
-  tests, set AUTHOR_TESTING to a true value.
+  * Test::Pod
+  * Test::Spelling
+
+  All are available on CPAN.  Those tests will be skipped if the modules
+  are not available.
+
+  To enable tests that don't detect functionality problems but are used to
+  sanity-check the release, set the environment variable RELEASE_TESTING
+  to a true value.  To enable tests that may be sensitive to the local
+  environment or that produce a lot of false positives without uncovering
+  many problems, set the environment variable AUTHOR_TESTING to a true
+  value.
 
   To bootstrap from a Git checkout, or if you change the Automake files
   and need to regenerate Makefile.in, you will need Automake 1.11 or
   later.  For bootstrap or if you change configure.ac or any of the m4
   files it includes and need to regenerate configure or config.h.in, you
-  will need Autoconf 2.64 or later.  Perl is also required to generate the
-  manual page from a fresh Git checkout.
+  will need Autoconf 2.64 or later.  Perl is also required to generate
+  manual pages from a fresh Git checkout.
 
 BUILDING AND TESTING
 
@@ -85,9 +96,9 @@ BUILDING AND TESTING
       make check
 
   While there is a configure script, it exists just to drive the build
-  system and do some path substitution and isn't doing portability
-  probes.  Pass --enable-silent-rules to configure for a quieter build
-  (similar to the Linux kernel).
+  system and do some path substitution and isn't doing portability probes.
+  Pass --enable-silent-rules to configure for a quieter build (similar to
+  the Linux kernel).
 
   Use make warnings instead of make to build with full GCC compiler
   warnings (requires a relatively current version of GCC).
@@ -98,8 +109,8 @@ BUILDING AND TESTING
 
   Do this instead of running the test program directly since it will
   ensure that necessary environment variables are set up.  You may need to
-  change the -s option if you build with a separate build directory from
-  the source directory.
+  change the -s option argument if you build with a separate build
+  directory from the source directory.
 
 USING THE HARNESS
 
@@ -133,8 +144,8 @@ USING THE HARNESS
 
     Omit float.c and float.h from the last line if your package doesn't
     need the is_double function.  Building the build and source
-    directories into runtests will let tests/runtests -o <test> to work
-    for users without requiring that they set any other variables, even if
+    directories into runtests will let tests/runtests -o <test> work for
+    users without requiring that they set any other variables, even if
     they're doing an out-of-source build.
 
     Add additional source files and headers that should go into the TAP
@@ -145,12 +156,11 @@ USING THE HARNESS
         check-local: $(check_PROGRAMS)
               cd tests && ./runtests -l $(abs_top_srcdir)/tests/TESTS
 
-    See the Makefile.am in this package for an example (although note that
-    it keeps runtests in an unusual location).
+    See the Makefile.am in this package for an example.
 
-  * List the test programs in the TESTS file.  This should have the name
-    of the test executable with the trailing "-t" or ".t" (you can use
-    either extension as you prefer) omitted.
+  * List the test programs in the tests/TESTS file.  This should have the
+    name of the test executable with the trailing "-t" or ".t" (you can
+    use either extension as you prefer) omitted.
 
     Test programs must be executable.
 
@@ -197,13 +207,11 @@ USING THE HARNESS
 
   For more TAP library add-ons, generally ones that rely on additional
   portability code not shipped in this package or with narrower uses, see
-  the rra-c-util package:
+  the rra-c-util package [1].  There are several additional TAP library
+  add-ons in the tests/tap directory in that package.  It's also an
+  example of how to use this test harness in another package.
 
-      https://www.eyrie.org/~eagle/software/rra-c-util/
-
-  There are several additional TAP library add-ons in the tests/tap
-  directory in that package.  It's also an example of how to use this test
-  harness in another package.
+  [1] https://www.eyrie.org/~eagle/software/rra-c-util/
 
 SUPPORT
 
@@ -214,40 +222,40 @@ SUPPORT
   will always have the current version of this package, the current
   documentation, and pointers to any additional resources.
 
-  For commentary and bug tracking, I am using the github wiki and issue
-  tracker at:
+  For bug tracking, use the issue tracker on GitHub:
 
-      http://github.com/rra/c-tap-harness
+      https://github.com/rra/c-tap-harness/issues
 
-  on an experimental basis.  If you like using the github facilities, try
-  filing issues or adding supplemental documentation there.
+  However, please be aware that I tend to be extremely busy and work
+  projects often take priority.  I'll save your report and get to it as
+  soon as I can, but it may take me a couple of months.
 
 SOURCE REPOSITORY
 
   C TAP Harness is maintained using Git.  You can access the current
-  source by cloning the repository at:
+  source on GitHub at:
 
-      git://git.eyrie.org/devel/c-tap-harness.git
+      https://github.com/rra/c-tap-harness
+
+  or by cloning the repository at:
+
+      https://git.eyrie.org/git/devel/c-tap-harness.git
 
   or view the repository via the web at:
 
-      http://git.eyrie.org/?p=devel/c-tap-harness.git
+      https://git.eyrie.org/?p=devel/c-tap-harness.git
 
-  You can also access it via github at:
-
-      http://github.com/rra/c-tap-harness
-
-  When contributing modifications, either patches (possibly generated by
-  git-format-patch) or Git pull requests are welcome.
+  The eyrie.org repository is the canonical one, maintained by the author,
+  but using GitHub is probably more convenient for most purposes.  Pull
+  requests are gratefully reviewed and normally accepted.
 
 LICENSE
 
   The C TAP Harness package as a whole is covered by the following
   copyright statement and license:
 
-    Copyright 2000, 2001, 2004, 2006, 2007, 2008, 2009, 2010, 2011, 2012,
-        2013, 2014, 2015, 2016 Russ Allbery <eagle@eyrie.org>
-    Copyright 2006, 2007, 2008, 2009, 2011, 2012, 2013
+    Copyright 2000-2001, 2004, 2006-2016 Russ Allbery <eagle@eyrie.org>
+    Copyright 2006-2009, 2011-2013
         The Board of Trustees of the Leland Stanford Junior University
 
     Permission is hereby granted, free of charge, to any person obtaining
@@ -269,12 +277,11 @@ LICENSE
     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-  All individual files without an explicit exception below are released
-  under this license.  Some files may have additional copyright holders as
-  noted in those files.  There is detailed information about the licensing
-  of each file in the LICENSE file in this distribution.
-
   Some files in this distribution are individually released under
   different licenses, all of which are compatible with the above general
   package license but which may require preservation of additional
-  notices.  All required notices are preserved in the LICENSE file.
+  notices.  All required notices, and detailed information about the
+  licensing of each file, are recorded in the LICENSE file.
+
+  For any copyright range specified by files in this package as YYYY-ZZZZ,
+  the range specifies every single year in that closed interval.

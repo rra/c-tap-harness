@@ -1,0 +1,6 @@
+C TAP Harness is a pure-C implementation of TAP, the Test Anything
+Protocol.  TAP is the text-based protocol used by Perl's test suite.  This
+package provides a harness similar to Perl's Test::Harness for running
+tests, with some additional features useful for test suites in packages
+that use Autoconf and Automake, and C and shell libraries to make writing
+TAP-compliant test programs easier.

@@ -1,0 +1,32 @@
+If starting from a Git clone instead of a release tarball, first run:
+
+```
+    ./autogen
+```
+
+You can build C TAP Harness and run its internal test suite with:
+
+```
+    ./configure
+    make
+    make check
+```
+
+While there is a configure script, it exists just to drive the build
+system and do some path substitution and isn't doing portability probes.
+Pass `--enable-silent-rules` to configure for a quieter build (similar to
+the Linux kernel).
+
+Use make warnings instead of make to build with full GCC compiler warnings
+(requires a relatively current version of GCC).
+
+If a test fails, you can run a single test with verbose output via:
+
+```
+    ./runtests -b `pwd`/tests -s `pwd`/tests -o <name-of-test>
+```
+
+Do this instead of running the test program directly since it will ensure
+that necessary environment variables are set up.  You may need to change
+the `-s` option argument if you build with a separate build directory from
+the source directory.

@@ -1,0 +1,28 @@
+This package started as the runtests program I wrote for INN in 2000 to
+serve as the basis for a new test suite using a test protocol similar to
+that used for Perl modules.  When I started maintaining additional C
+packages, I adopted runtests for the test suite driver of those as well,
+resulting in further improvements but also separate copies of the same
+program in different distributions.  The C TAP Harness distribution merges
+all the various versions into a single code base that all my packages can
+pull from.
+
+C TAP Harness provides a full TAP specification driver (apart from a few
+possible edge cases) and has additional special features for supporting
+builds outside the source directory.  It's mostly useful for packages
+using Autoconf and Automake and because it doesn't assume or require Perl.
+
+The runtests program can be built with knowledge of the source and build
+directory and pass that knowledge on to test scripts, and will search for
+test scripts in both the source and build directory.  This makes it easier
+for packages using Autoconf and Automake and supporting out-of-tree builds
+to build some test programs, ship others, and run them all regardless of
+what tree they're in.  It also makes it easier for test cases to find
+their supporting files when they run.
+
+Also included in this package are C and shell libraries that provide
+utility functions for writing test scripts that use TAP to report results.
+The C library also provides a variety of utility functions useful for test
+programs running as part of an Automake-built package: finding test data
+files, creating temporary files, reporting output from external programs
+running in the background, and similar common problems.

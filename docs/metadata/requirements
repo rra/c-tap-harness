@@ -1,0 +1,16 @@
+C TAP Harness requires a C compiler to build.  Any ISO C89 or later C
+compiler on a system supporting the Single UNIX Specification, version 3
+(SUSv3) should be sufficient.  This should not be a problem on any modern
+system.  The test suite and shell library require a Bourne-compatible
+shell.  Outside of the test suite, C TAP Harness has no other
+prerequisites or requirements.
+
+To run the test suite, you will need Perl plus the Perl module Test::More,
+which comes with Perl 5.8 or later.  The following additional Perl modules
+will be used by the test suite if present:
+
+* Test::Pod
+* Test::Spelling
+
+All are available on CPAN.  Those tests will be skipped if the modules are
+not available.
