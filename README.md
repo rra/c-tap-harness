@@ -79,7 +79,7 @@ and need to regenerate configure or config.h.in, you will need Autoconf
 2.64 or later.  Perl is also required to generate manual pages from a
 fresh Git checkout.
 
-## Building and Installation
+## Building
 
 You can build C TAP Harness with the standard commands:
 

@@ -15,11 +15,13 @@
     ],
     "license": "Expat",
     "build": {
-        "lancaster": true,
         "autotools": true,
         "automake": "1.11",
         "autoconf": "2.64",
+        "install": false,
+        "lancaster": true,
         "manpages": true,
+        "type": "Autoconf",
     },
     "support": {
         "email": "eagle@eyrie.org",
@@ -35,7 +37,6 @@
     },
     "readme": {
         "sections": [
-            { "title": "Building and Installation" },
             { "title": "Testing" },
             { "title": "Using the Harness" },
         ],
