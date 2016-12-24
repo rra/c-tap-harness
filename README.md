@@ -79,29 +79,35 @@ and need to regenerate configure or config.h.in, you will need Autoconf
 2.64 or later.  Perl is also required to generate manual pages from a
 fresh Git checkout.
 
-## Building and Testing
+## Building and Installation
 
-If starting from a Git clone instead of a release tarball, first run:
-
-```
-    ./autogen
-```
-
-You can build C TAP Harness and run its internal test suite with:
+You can build C TAP Harness with the standard commands:
 
 ```
     ./configure
     make
-    make check
 ```
 
-While there is a configure script, it exists just to drive the build
-system and do some path substitution and isn't doing portability probes.
-Pass `--enable-silent-rules` to configure for a quieter build (similar to
-the Linux kernel).
+If you are building from a Git clone, first run `./bootstrap` in the
+source directory to generate the build files.  Building outside of the
+source directory is also supported, if you wish, by creating an empty
+directory and then running configure with the correct relative path.
 
-Use make warnings instead of make to build with full GCC compiler warnings
-(requires a relatively current version of GCC).
+Pass `--enable-silent-rules` to configure for a quieter build (similar to
+the Linux kernel).  Use `make warnings` instead of `make` to build with
+full GCC compiler warnings (requires a relatively current version of GCC).
+
+Installing C TAP Harness is not normally done.  Instead, see the section
+on using the harness below.
+
+## Testing
+
+C TAP Harness comes with a comprehensive test suite, which you can run
+after building with:
+
+```
+    make check
+```
 
 If a test fails, you can run a single test with verbose output via:
 
@@ -235,8 +241,8 @@ pointers to any additional resources.
 For bug tracking, use the [issue tracker on
 GitHub](https://github.com/rra/c-tap-harness/issues).  However, please be
 aware that I tend to be extremely busy and work projects often take
-priority.  I'll save your mail and get to it as soon as I can, but it may
-take me a couple of months.
+priority.  I'll save your report and get to it as soon as I can, but it
+may take me a couple of months.
 
 ## Source Repository
 

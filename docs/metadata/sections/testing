@@ -1,0 +1,17 @@
+C TAP Harness comes with a comprehensive test suite, which you can run
+after building with:
+
+```
+    make check
+```
+
+If a test fails, you can run a single test with verbose output via:
+
+```
+    ./runtests -b `pwd`/tests -s `pwd`/tests -o <name-of-test>
+```
+
+Do this instead of running the test program directly since it will ensure
+that necessary environment variables are set up.  You may need to change
+the `-s` option argument if you build with a separate build directory from
+the source directory.

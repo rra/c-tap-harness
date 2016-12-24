@@ -35,7 +35,8 @@
     },
     "readme": {
         "sections": [
-            { "title": "Building and Testing" },
+            { "title": "Building and Installation" },
+            { "title": "Testing" },
             { "title": "Using the Harness" },
         ],
     },
