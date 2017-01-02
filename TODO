@@ -22,11 +22,14 @@ Reporting:
 
 Extra Harness Features:
 
+ * Record lines starting with # prior to a test and report the output if
+   the test reported a failure.
+
+ * Support automatically re-running failed tests at the end of the run
+   and showing their complete output.
+
  * Save log files for the output of each test, either by default or via an
    option, similar to the new Automake TAP test support.
-
- * Support running selected tests under fakeroot, probably by adding a
-   parameter in the TESTS file after the test name.
 
  * Support automatically finding test cases under a particular directory
    similar to how prove finds tests, without needing a TESTS file.  Allow
