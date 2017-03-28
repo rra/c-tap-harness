@@ -37,7 +37,11 @@ main(void)
     int status;
     char *p;
 
-    plan(57);
+    const unsigned char d1[] = { 0x00, 0x10, 0x20, 0xFF, 0xFE };
+    const unsigned char d2[] = { 0x00, 0x10, 0x20, 0xFF, 0xFE };
+    const unsigned char d3[] = { 0x01, 0x10, 0x20, 0xFA, 0xEF };
+
+    plan(61);
 
     /*
      * Call the memory allocation functions just to be sure the prototypes are
@@ -113,6 +117,10 @@ main(void)
     is_bool(1, 4, "is_bool on 1 and 4");
     is_bool(4, 0, "is_bool display output");
     is_bool(0, -5, "is_bool more display output");
+    status = is_blob(d1, d2, 5, "is_blob %d", 1);
+    is_int(1, status, "is_blob returned 1");
+    status = is_blob(d1, d3, 5, "is_blob %d", 2);
+    is_int(0, status, "is_blob returned 0");
 
     /* Test return status of diag. */
     status = diag("testing diag");
