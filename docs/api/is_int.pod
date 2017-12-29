@@ -3,7 +3,8 @@ const printf-style Allbery
 
 =head1 NAME
 
-is_bool, is_int, is_double, is_string, is_hex - Check values for a TAP test
+is_bool, is_int, is_double, is_string, is_hex, is_blob - Check values for a TAP
+test
 
 =head1 SYNOPSIS
 
@@ -18,6 +19,9 @@ int B<is_string>(const char *I<wanted>, const char *I<seen>,
 
 int B<is_hex>(unsigned long I<wanted>, unsigned long I<seen>,
            const char *I<format>, ...);
+
+int B<is_blob>(const void *I<wanted>, const void *I<seen>, size_t I<len>,
+	   const char *I<format>, ...);
 
 #include <tap/float.h>
 
@@ -41,6 +45,9 @@ are reported as diagnostics to make it easier to understand the test
 failure.  Note that, although is_bool() takes parameters of type int, both
 values are evaluated for their truth value not for their numeric value.
 (In other words, C<is_bool(1, 4)> is a passing test.)
+
+is_blob() takes two pointers and compares I<len> bytes of data from them, any
+bytes which do not match will be reported and fail the test.
 
 is_double() takes an I<epsilon> value and considers the two values equal
 if their difference is less than I<epsilon>.  This avoids problems with

@@ -1,4 +1,4 @@
-1..57
+1..61
 ok 1
 ok 2 - ok result is 1
 # a diagnostic
@@ -74,6 +74,13 @@ not ok 55 - is_bool display output
 # wanted: false
 #   seen: true
 not ok 56 - is_bool more display output
+ok 57 - is_blob 1
+ok 58 - is_blob returned 1
+# offset 0: wanted 00, seen 01
+# offset 3: wanted ff, seen fa
+# offset 4: wanted fe, seen ef
+not ok 59 - is_blob 2
+ok 60 - is_blob returned 0
 # testing diag
-ok 57 - diag returns 1
-# Looks like you failed 14 tests of 57
+ok 61 - diag returns 1
+# Looks like you failed 15 tests of 61
