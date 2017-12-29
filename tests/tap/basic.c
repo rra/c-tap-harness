@@ -12,7 +12,7 @@
  * This file is part of C TAP Harness.  The current version plus supporting
  * documentation is at <https://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
- * Copyright 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016
+ * Copyright 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017
  *     Russ Allbery <eagle@eyrie.org>
  * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011, 2012, 2013, 2014
  *     The Board of Trustees of the Leland Stanford Junior University
@@ -602,7 +602,8 @@ is_hex(unsigned long wanted, unsigned long seen, const char *format, ...)
  * Otherwise reports any bytes which didn't match.
  */
 int
-is_blob(const void *wanted, const void *seen, size_t len, const char *format, ...)
+is_blob(const void *wanted, const void *seen, size_t len, const char *format,
+        ...)
 {
     int success;
     size_t i;
@@ -613,13 +614,13 @@ is_blob(const void *wanted, const void *seen, size_t len, const char *format, ..
     if (success)
         printf("ok %lu", testnum++);
     else {
-        for(i = 0; i < len; ++i) {
-            unsigned char wanted_b = ((unsigned char*)(wanted))[i];
-            unsigned char seen_b   = ((unsigned char*)(seen))[i];
+        const unsigned char *wanted_c = wanted;
+        const unsigned char *seen_c = seen;
 
-            if(wanted_b != seen_b)
-                diag("offset %x: wanted %02x, seen %02x",
-                    (unsigned)(i), (unsigned)(wanted_b), (unsigned)(seen_b));
+        for (i = 0; i < len; i++) {
+            if (wanted_c[i] != seen_c[i])
+                diag("offset %lu: wanted %02x, seen %02x", (unsigned long) i,
+                     wanted_c[i], seen_c[i]);
         }
         printf("not ok %lu", testnum++);
         _failed++;

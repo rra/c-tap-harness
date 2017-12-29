@@ -2,6 +2,7 @@
  * Calls libtap basic functions for testing.
  *
  * Written by Russ Allbery <eagle@eyrie.org>
+ * Copyright 2015, 2016, 2017 Russ Allbery <eagle@eyrie.org>
  * Copyright 2008, 2009, 2014
  *     The Board of Trustees of the Leland Stanford Junior University
  *
@@ -36,10 +37,9 @@ main(void)
 {
     int status;
     char *p;
-
-    const unsigned char d1[] = { 0x00, 0x10, 0x20, 0xFF, 0xFE };
-    const unsigned char d2[] = { 0x00, 0x10, 0x20, 0xFF, 0xFE };
-    const unsigned char d3[] = { 0x01, 0x10, 0x20, 0xFA, 0xEF };
+    const unsigned char d1[] = { 0x00, 0x10, 0x20, 0xff, 0xfe };
+    const unsigned char d2[] = { 0x00, 0x10, 0x20, 0xff, 0xfe };
+    const unsigned char d3[] = { 0x01, 0x10, 0x20, 0xfa, 0xef };
 
     plan(61);
 

@@ -2,6 +2,10 @@
 
 C TAP Harness 4.2 (unreleased)
 
+    Add is_blob function to the C test library.  This tests whether two
+    regions of memory are identical, similar to ok(memcmp(...)) but
+    reporting where the regions differ.  Patch from Daniel Collins.
+
     Fix new fall-through warning in GCC 7.
 
     Switch to the compiler warning Autoconf macros and warning set from
