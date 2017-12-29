@@ -3,6 +3,3 @@ compiler:
   - gcc
   - clang
 script: ./bootstrap && ./configure && make warnings && make check
-branches:
-  only:
-    - master
