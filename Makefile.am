@@ -1,6 +1,6 @@
 # Automake makefile for C TAP Harness.
 #
-# Copyright 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016
+# Copyright 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017
 #     Russ Allbery <eagle@eyrie.org>
 #
 # See LICENSE for licensing terms.
@@ -165,30 +165,11 @@ MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/depcomp		 \
 	docs/api/plan.3 docs/api/skip.3 docs/api/skip_all.3		 \
 	docs/api/test_file_path.3 docs/api/test_tmpdir.3 docs/runtests.1
 
-# A set of flags for warnings.  Add -O because gcc won't find some warnings
-# without optimization turned on.  Desirable warnings that can't be turned
-# on due to other problems:
-#
-#     -Wconversion     http://bugs.debian.org/488884 (htons warnings)
-#
-# Last checked against gcc 4.6.1 (2011-05-04).  -D_FORTIFY_SOURCE=2 enables
-# warn_unused_result attribute markings on glibc functions on Linux, which
-# catches a few more issues.
-if WARNINGS_GCC
-    WARNINGS = -ansi -pedantic -g -O -D_FORTIFY_SOURCE=2 -Wall -Wextra	\
-	-Wendif-labels -Wformat=2 -Winit-self -Wswitch-enum		\
-	-Wdeclaration-after-statement -Wshadow -Wpointer-arith		\
-	-Wbad-function-cast -Wwrite-strings -Wjump-misses-init		\
-	-Wlogical-op -Wstrict-prototypes -Wmissing-prototypes		\
-	-Wredundant-decls -Wnested-externs -Werror
-endif
-if WARNINGS_CLANG
-    WARNINGS = -Weverything -Wno-padded -Werror -pedantic-errors
-endif
-
+# Separate target for a human to request building everything with as many
+# compiler warnings enabled as possible.
 warnings:
-	$(MAKE) V=0 CFLAGS='$(WARNINGS)'
-	$(MAKE) V=0 CFLAGS='$(WARNINGS)' $(check_PROGRAMS)
+	$(MAKE) V=0 CFLAGS='$(WARNINGS_CFLAGS) $(AM_CFLAGS)'
+	$(MAKE) V=0 CFLAGS='$(WARNINGS_CFLAGS) $(AM_CFLAGS)' $(check_PROGRAMS)
 
 # The bits below are for the test suite.
 check_PROGRAMS = tests/libtap/basic/c-bail tests/libtap/basic/c-basic	\

@@ -4,6 +4,12 @@ C TAP Harness 4.2 (unreleased)
 
     Fix new fall-through warning in GCC 7.
 
+    Switch to the compiler warning Autoconf macros and warning set from
+    rra-c-util with the addition of -ansi -pedantic for GCC and
+    -pedantic-errors for Clang.  Add some casts to fix warnings from
+    -Wconversion, and suppress some spurious warnings from Clang about
+    tests/tap/float.c.
+
 C TAP Harness 4.1 (2016-12-23)
 
     Add is_bool function to the C test library.  This compares its two

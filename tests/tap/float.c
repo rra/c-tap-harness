@@ -10,7 +10,7 @@
  * This file is part of C TAP Harness.  The current version plus supporting
  * documentation is at <https://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
- * Copyright 2008, 2010, 2012, 2013, 2014, 2015, 2016
+ * Copyright 2008, 2010, 2012, 2013, 2014, 2015, 2016, 2017
  *     Russ Allbery <eagle@eyrie.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -45,6 +45,13 @@
 
 #include <tests/tap/basic.h>
 #include <tests/tap/float.h>
+
+/*
+ * Clang 4.0.1 gets very confused by this file and produces warnings about
+ * floating point implicit conversion from the isnan() and isinf() macros.
+ */
+#pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wdouble-promotion"
 
 /*
  * Takes an expected double and a seen double and assumes the test passes if
