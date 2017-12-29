@@ -58,6 +58,7 @@ dnl problems:
 dnl
 dnl   -Wsign-conversion  Too many fiddly chnages for the benefit
 dnl   -Wstack-protector  Too many false positives from small buffers
+dnl   -Wunknown-pragmas  Use #pragma clang in some places to suppress warnings
 dnl
 dnl Last checked against gcc 7.2.0 (2017-12-28).  -D_FORTIFY_SOURCE=2 enables
 dnl warn_unused_result attribute markings on glibc functions on Linux, which
@@ -92,18 +93,17 @@ AC_DEFUN([RRA_PROG_CC_WARNINGS_FLAGS],
             [WARNINGS_CFLAGS="${WARNINGS_CFLAGS} flag"])])],
     [WARNINGS_CFLAGS="-g -O2 -D_FORTIFY_SOURCE=2 -Werror"
      m4_foreach_w([flag],
-        [-fstrict-overflow -fstrict-aliasing -fstack-protector-strong
-         -Wall -Wextra -Wformat=2 -Wformat-overflow=2 -Wformat-signedness
-         -Wformat-truncation=2 -Wnull-dereference -Winit-self -Wswitch-enum
+        [-fstrict-overflow -fstrict-aliasing -Wall -Wextra -Wformat=2
+         -Wformat-overflow=2 -Wformat-signedness -Wformat-truncation=2
+         -Wnull-dereference -Winit-self -Wswitch-enum -Wno-unknown-pragmas
          -Wstrict-overflow=5 -Wmissing-format-attribute -Walloc-zero
          -Wduplicated-branches -Wduplicated-cond -Wtrampolines -Wfloat-equal
          -Wdeclaration-after-statement -Wshadow -Wpointer-arith
-         -Wbad-function-cast -Wcast-align -Wwrite-strings
-         -Wconversion -Wno-sign-conversion -Wdate-time -Wjump-misses-init
-         -Wlogical-op -Wstrict-prototypes -Wold-style-definition
-         -Wmissing-prototypes -Wmissing-declarations -Wnormalized=nfc
-         -Wpacked -Wredundant-decls -Wrestrict -Wnested-externs -Winline
-         -Wvla -Wstack-protector],
+         -Wbad-function-cast -Wcast-align -Wwrite-strings -Wconversion
+         -Wno-sign-conversion -Wdate-time -Wjump-misses-init -Wlogical-op
+         -Wstrict-prototypes -Wold-style-definition -Wmissing-prototypes
+         -Wmissing-declarations -Wnormalized=nfc -Wpacked -Wredundant-decls
+         -Wrestrict -Wnested-externs -Winline -Wvla],
         [RRA_PROG_CC_FLAG(flag,
             [WARNINGS_CFLAGS="${WARNINGS_CFLAGS} flag"])])])
  AC_SUBST([WARNINGS_CFLAGS])])
