@@ -50,8 +50,10 @@
  * Clang 4.0.1 gets very confused by this file and produces warnings about
  * floating point implicit conversion from the isnan() and isinf() macros.
  */
-#pragma clang diagnostic ignored "-Wconversion"
-#pragma clang diagnostic ignored "-Wdouble-promotion"
+#if defined(__llvm__) || defined(__clang__)
+# pragma clang diagnostic ignored "-Wconversion"
+# pragma clang diagnostic ignored "-Wdouble-promotion"
+#endif
 
 /*
  * Takes an expected double and a seen double and assumes the test passes if

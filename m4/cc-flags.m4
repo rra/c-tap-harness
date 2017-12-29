@@ -56,9 +56,8 @@ dnl This is based partly on personal preference and is a fairly aggressive set
 dnl of warnings.  Desirable CC warnings that can't be turned on due to other
 dnl problems:
 dnl
-dnl   -Wsign-conversion  Too many fiddly chnages for the benefit
+dnl   -Wsign-conversion  Too many fiddly changes for the benefit
 dnl   -Wstack-protector  Too many false positives from small buffers
-dnl   -Wunknown-pragmas  Use #pragma clang in some places to suppress warnings
 dnl
 dnl Last checked against gcc 7.2.0 (2017-12-28).  -D_FORTIFY_SOURCE=2 enables
 dnl warn_unused_result attribute markings on glibc functions on Linux, which
@@ -95,9 +94,9 @@ AC_DEFUN([RRA_PROG_CC_WARNINGS_FLAGS],
      m4_foreach_w([flag],
         [-fstrict-overflow -fstrict-aliasing -Wall -Wextra -Wformat=2
          -Wformat-overflow=2 -Wformat-signedness -Wformat-truncation=2
-         -Wnull-dereference -Winit-self -Wswitch-enum -Wno-unknown-pragmas
-         -Wstrict-overflow=5 -Wmissing-format-attribute -Walloc-zero
-         -Wduplicated-branches -Wduplicated-cond -Wtrampolines -Wfloat-equal
+         -Wnull-dereference -Winit-self -Wswitch-enum -Wstrict-overflow=5
+         -Wmissing-format-attribute -Walloc-zero -Wduplicated-branches
+         -Wduplicated-cond -Wtrampolines -Wfloat-equal
          -Wdeclaration-after-statement -Wshadow -Wpointer-arith
          -Wbad-function-cast -Wcast-align -Wwrite-strings -Wconversion
          -Wno-sign-conversion -Wdate-time -Wjump-misses-init -Wlogical-op
