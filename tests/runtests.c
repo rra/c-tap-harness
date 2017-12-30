@@ -63,7 +63,7 @@
  * Harness <https://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
  * Copyright 2000, 2001, 2004, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013,
- *     2014, 2015, 2016 Russ Allbery <eagle@eyrie.org>
+ *     2014, 2015, 2016, 2017 Russ Allbery <eagle@eyrie.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
