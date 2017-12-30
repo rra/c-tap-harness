@@ -118,10 +118,12 @@ install-data-hook:
 	rm -f $(DESTDIR)$(man3dir)/is_double.3
 	rm -f $(DESTDIR)$(man3dir)/is_string.3
 	rm -f $(DESTDIR)$(man3dir)/is_hex.3
+	rm -f $(DESTDIR)$(man3dir)/is_blob.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) is_int.3 is_bool.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) is_int.3 is_double.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) is_int.3 is_string.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) is_int.3 is_hex.3
+	cd $(DESTDIR)$(man3dir) && $(LN_S) is_int.3 is_blob.3
 	rm -f $(DESTDIR)$(man3dir)/ok_block.3
 	rm -f $(DESTDIR)$(man3dir)/okv.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) ok.3 ok_block.3
@@ -148,6 +150,7 @@ uninstall-hook:
 	rm -f $(DESTDIR)$(man3dir)/is_double.3
 	rm -f $(DESTDIR)$(man3dir)/is_string.3
 	rm -f $(DESTDIR)$(man3dir)/is_hex.3
+	rm -f $(DESTDIR)$(man3dir)/is_blob.3
 	rm -f $(DESTDIR)$(man3dir)/ok_block.3
 	rm -f $(DESTDIR)$(man3dir)/okv.3
 	rm -f $(DESTDIR)$(man3dir)/plan_lazy.3
