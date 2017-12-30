@@ -6,6 +6,8 @@ C TAP Harness 4.2 (unreleased)
     regions of memory are identical, similar to ok(memcmp(...)) but
     reporting where the regions differ.  Patch from Daniel Collins.
 
+    Avoid zero-length realloc allocations in breallocarray.
+
     Fix new fall-through warning in GCC 7.
 
     Switch to the compiler warning Autoconf macros and warning set from

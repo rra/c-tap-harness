@@ -830,6 +830,8 @@ breallocarray(void *p, size_t n, size_t size)
 {
     if (n > 0 && UINT_MAX / n <= size)
         bail("reallocarray too large");
+    if (n == 0)
+        n = 1;
     p = realloc(p, n * size);
     if (p == NULL)
         sysbail("failed to realloc %lu bytes", (unsigned long) (n * size));
