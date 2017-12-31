@@ -80,7 +80,7 @@
             },
             {
                 "name": "is_int",
-                "title": "is_bool, is_int, is_double, is_string, and is_hex",
+                "title": "is_bool, is_int, is_double, is_string, is_hex, and is_blob",
             },
             {
                 "name": "ok",
