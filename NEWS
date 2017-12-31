@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 4.2 (unreleased)
+C TAP Harness 4.2 (2017-12-30)
 
     Add is_blob function to the C test library.  This tests whether two
     regions of memory are identical, similar to ok(memcmp(...)) but
