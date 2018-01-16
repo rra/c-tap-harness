@@ -1,6 +1,6 @@
 # C TAP Harness 4.2
 
-Copyright 2000-2001, 2004, 2006-2017 Russ Allbery <eagle@eyrie.org>.
+Copyright 2000-2001, 2004, 2006-2018 Russ Allbery <eagle@eyrie.org>.
 Copyright 2006-2009, 2011-2013 The Board of Trustees of the Leland
 Stanford Junior University.  This software is distributed under a
 BSD-style license.  Please see the section [License](#license) below for
@@ -112,7 +112,7 @@ after building with:
 If a test fails, you can run a single test with verbose output via:
 
 ```
-    ./runtests -b `pwd`/tests -s `pwd`/tests -o <name-of-test>
+    tests/runtests -b $(pwd)/tests -s $(pwd)/tests -o <name-of-test>
 ```
 
 Do this instead of running the test program directly since it will ensure
@@ -264,7 +264,7 @@ requests are gratefully reviewed and normally accepted.
 The C TAP Harness package as a whole is covered by the following copyright
 statement and license:
 
-> Copyright 2000-2001, 2004, 2006-2017
+> Copyright 2000-2001, 2004, 2006-2018
 >     Russ Allbery <eagle@eyrie.org>
 >
 > Copyright 2006-2009, 2011-2013

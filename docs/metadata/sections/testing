@@ -8,7 +8,7 @@ after building with:
 If a test fails, you can run a single test with verbose output via:
 
 ```
-    ./runtests -b `pwd`/tests -s `pwd`/tests -o <name-of-test>
+    tests/runtests -b $(pwd)/tests -s $(pwd)/tests -o <name-of-test>
 ```
 
 Do this instead of running the test program directly since it will ensure
