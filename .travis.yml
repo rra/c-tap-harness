@@ -2,4 +2,5 @@ language: c
 compiler:
   - gcc
   - clang
+env: AUTHOR_TESTING=1
 script: ./bootstrap && ./configure && make warnings && make check
