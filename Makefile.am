@@ -11,9 +11,10 @@ EXTRA_DIST = .gitignore LICENSE README.md bootstrap docs/api/bail.pod	    \
 	docs/api/plan.pod docs/api/skip.pod docs/api/skip_all.pod	    \
 	docs/api/test_cleanup_register.pod docs/api/test_file_path.pod	    \
 	docs/api/test_tmpdir.pod docs/metadata docs/runtests.pod	    \
-	docs/writing-tests tests/TESTS tests/docs/pod-t			    \
-	tests/docs/pod-spelling-t tests/docs/spdx-license-t		    \
-	tests/harness/basic-t tests/harness/basic/abort-one.list	    \
+	docs/writing-tests tests/TESTS tests/data/perl.conf		    \
+	tests/docs/pod-t tests/docs/pod-spelling-t			    \
+	tests/docs/spdx-license-t tests/docs/urls-t tests/harness/basic-t   \
+	tests/harness/basic/abort-one.list				    \
 	tests/harness/basic/abort-one.output tests/harness/basic/abort.list \
 	tests/harness/basic/abort.output tests/harness/basic/abort.t	    \
 	tests/harness/basic/badnum-delay.t tests/harness/basic/badnum.t	    \
@@ -82,7 +83,9 @@ EXTRA_DIST = .gitignore LICENSE README.md bootstrap docs/api/bail.pod	    \
 	tests/libtap/cleanup/c-many-fail.output				    \
 	tests/libtap/cleanup/c-many.output				    \
 	tests/libtap/cleanup/c-one-fail.output				    \
-	tests/libtap/cleanup/c-one.output tests/tap/libtap.sh
+	tests/libtap/cleanup/c-one.output tests/tap/libtap.sh		    \
+	tests/tap/perl/Test/RRA.pm tests/tap/perl/Test/RRA/Automake.pm	    \
+	tests/tap/perl/Test/RRA/Config.pm
 
 # It's somewhat odd to have the TAP library and the runtests harness in the
 # tests directory, since they're the primary point of this package.  But
