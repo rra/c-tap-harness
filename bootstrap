@@ -1,6 +1,10 @@
 #!/bin/sh
 #
 # Run this shell script to bootstrap as necessary after a fresh checkout.
+#
+# Copyright 2008-2011, 2013-2014, 2018 Russ Allbery <eagle@eyrie.org>
+#
+# SPDX-License-Identifier: MIT
 
 set -e
 
@@ -8,12 +12,12 @@ set -e
 autoreconf -i --force
 
 # Generate manual pages.
-version=`grep '^C TAP Harness' NEWS | head -1 | cut -d' ' -f4`
+version=$(grep '^C TAP Harness' NEWS | head -1 | cut -d' ' -f4)
 pod2man --release="$version" --center="C TAP Harness" docs/runtests.pod \
     > docs/runtests.1
 for doc in bail bmalloc breallocarray diag diag_file_add is_int ok plan skip \
            skip_all test_cleanup_register test_file_path test_tmpdir ; do
     pod2man --release="$version" --center="C TAP Harness Library"         \
-        --section=3 --name=`echo "$doc" | tr a-z A-Z` docs/api/"$doc".pod \
+        --section=3 --name=$(echo "$doc" | tr a-z A-Z) docs/api/"$doc".pod \
         > docs/api/"$doc".3
 done

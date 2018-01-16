@@ -1,5 +1,13 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 4.3 (unreleased)
+
+    Add SPDX-License-Identifier headers to all substantial source files,
+    and add a test to check for them.  This imports more supporting test
+    machinery whose canonical home is in rra-c-util.  If you want to use
+    files in tests/tap/perl, copy them from rra-c-util instead of this
+    package.
+
 C TAP Harness 4.2 (2017-12-30)
 
     Add is_blob function to the C test library.  This tests whether two

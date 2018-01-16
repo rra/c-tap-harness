@@ -4,10 +4,9 @@ dnl The C TAP harness is written in maximally portable C, so Autoconf is used
 dnl here mostly for consistency in build process and to handle Automake, not
 dnl for any portability of the code itself.
 dnl
-dnl Copyright 2008, 2009, 2010, 2011, 2013, 2014, 2015, 2017
-dnl     Russ Allbery <eagle@eyrie.org>
+dnl Copyright 2008-2011, 2013-2015, 2017 Russ Allbery <eagle@eyrie.org>
 dnl
-dnl See LICENSE for licensing terms.
+dnl SPDX-License-Identifier: MIT
 
 AC_PREREQ([2.64])
 AC_INIT([C TAP Harness], [4.2], [eagle@eyrie.org], [c-tap-harness])

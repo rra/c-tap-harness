@@ -6,7 +6,7 @@
  * Copyright 2010, 2012
  *     The Board of Trustees of the Leland Stanford Junior University
  *
- * See LICENSE for licensing terms.
+ * SPDX-License-Identifier: MIT
  */
 
 #include <stdio.h>

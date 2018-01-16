@@ -1,6 +1,6 @@
 =for stopwords
 runtests builddir srcdir Automake preprocessor subdirectory todo Allbery
-reimplementation executables API -hv -bv
+reimplementation executables API -hv -bv FSFAP SPDX-License-Identifier
 
 =head1 NAME
 
@@ -227,13 +227,14 @@ Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2009, 2010, 2011, 2013, 2015, 2016 Russ Allbery
-<eagle@eyrie.org>
+Copyright 2009-2011, 2013, 2015-2016 Russ Allbery <eagle@eyrie.org>
 
 Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and
 this notice are preserved.  This file is offered as-is, without any
 warranty.
+
+SPDX-License-Identifier: FSFAP
 
 =head1 SEE ALSO
 

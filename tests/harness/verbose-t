@@ -4,7 +4,7 @@
 #
 # Copyright 2015, 2016 Russ Allbery <eagle@eyrie.org>
 #
-# See LICENSE for licensing terms.
+# SPDX-License-Identifier: MIT
 
 . "$C_TAP_SOURCE/tap/libtap.sh"
 cd "$C_TAP_BUILD"

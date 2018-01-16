@@ -1,9 +1,8 @@
 # Automake makefile for C TAP Harness.
 #
-# Copyright 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017
-#     Russ Allbery <eagle@eyrie.org>
+# Copyright 2008-2018 Russ Allbery <eagle@eyrie.org>
 #
-# See LICENSE for licensing terms.
+# SPDX-License-Identifier: MIT
 
 ACLOCAL_AMFLAGS = -I m4
 EXTRA_DIST = .gitignore LICENSE README.md bootstrap docs/api/bail.pod	    \
@@ -13,8 +12,8 @@ EXTRA_DIST = .gitignore LICENSE README.md bootstrap docs/api/bail.pod	    \
 	docs/api/test_cleanup_register.pod docs/api/test_file_path.pod	    \
 	docs/api/test_tmpdir.pod docs/metadata docs/runtests.pod	    \
 	docs/writing-tests tests/TESTS tests/docs/pod-t			    \
-	tests/docs/pod-spelling-t tests/harness/basic-t			    \
-	tests/harness/basic/abort-one.list				    \
+	tests/docs/pod-spelling-t tests/docs/spdx-license-t		    \
+	tests/harness/basic-t tests/harness/basic/abort-one.list	    \
 	tests/harness/basic/abort-one.output tests/harness/basic/abort.list \
 	tests/harness/basic/abort.output tests/harness/basic/abort.t	    \
 	tests/harness/basic/badnum-delay.t tests/harness/basic/badnum.t	    \

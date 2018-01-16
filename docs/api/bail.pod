@@ -1,5 +1,5 @@
 =for stopwords
-sysbail printf-style Allbery
+sysbail printf-style Allbery FSFAP SPDX-License-Identifier
 
 =head1 NAME
 
@@ -50,6 +50,8 @@ Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and
 this notice are preserved.  This file is offered as-is, without any
 warranty.
+
+SPDX-License-Identifier: FSFAP
 
 =head1 SEE ALSO
 

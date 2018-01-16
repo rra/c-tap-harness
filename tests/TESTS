@@ -1,5 +1,7 @@
 docs/pod
 docs/pod-spelling
+docs/spdx-license
+docs/urls
 harness/basic
 harness/env
 harness/multiple
