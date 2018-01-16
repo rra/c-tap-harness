@@ -2,6 +2,9 @@
 
 C TAP Harness 4.3 (unreleased)
 
+    Add new check-cppcheck target that runs cppcheck on all source code,
+    and fix one unnecessary check for NULL that it uncovered.
+
     Add SPDX-License-Identifier headers to all substantial source files,
     and add a test to check for them.  This imports more supporting test
     machinery whose canonical home is in rra-c-util.  If you want to use

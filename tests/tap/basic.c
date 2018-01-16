@@ -12,9 +12,9 @@
  * This file is part of C TAP Harness.  The current version plus supporting
  * documentation is at <https://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
- * Copyright 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017
- *     Russ Allbery <eagle@eyrie.org>
- * Copyright 2001, 2002, 2004, 2005, 2006, 2007, 2008, 2011, 2012, 2013, 2014
+ * Written by Russ Allbery <eagle@eyrie.org>
+ * Copyright 2009-2018 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2001-2002, 2004-2008, 2011-2014
  *     The Board of Trustees of the Leland Stanford Junior University
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -130,8 +130,7 @@ static struct diag_file *diag_files = NULL;
     do {                                        \
         if (format != NULL) {                   \
             va_list args;                       \
-            if (prefix != NULL)                 \
-                printf("%s", prefix);           \
+            printf("%s", prefix);               \
             va_start(args, format);             \
             vprintf(format, args);              \
             va_end(args);                       \
