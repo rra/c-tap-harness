@@ -2,5 +2,9 @@ language: c
 compiler:
   - gcc
   - clang
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install cppcheck libtest-pod-perl
 env: AUTHOR_TESTING=1
-script: ./bootstrap && ./configure && make warnings && make check
+script: ./bootstrap && ./configure && make warnings && make check && make check-cppcheck
