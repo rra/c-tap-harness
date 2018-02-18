@@ -9,32 +9,32 @@ is_bool, is_int, is_double, is_string, is_hex, is_blob - Check values for TAP
 
 #include <tap/basic.h>
 
-int B<is_bool>(int I<wanted>, int I<seen>, const char *I<format>, ...);
+int B<is_bool>(int, int, const char *I<format>, ...);
 
-int B<is_int>(long I<wanted>, long I<seen>, const char *I<format>, ...);
+int B<is_int>(long, long, const char *I<format>, ...);
 
-int B<is_string>(const char *I<wanted>, const char *I<seen>,
-    const char *I<format>, ...);
+int B<is_string>(const char *, const char *, const char *I<format>, ...);
 
-int B<is_hex>(unsigned long I<wanted>, unsigned long I<seen>,
-    const char *I<format>, ...);
+int B<is_hex>(unsigned long, unsigned long, const char *I<format>, ...);
 
-int B<is_blob>(const void *I<wanted>, const void *I<seen>, size_t I<length>,
+int B<is_blob>(const void *, const void *, size_t I<length>,
     const char *I<format>, ...);
 
 #include <tap/float.h>
 
-int B<is_double>(double I<wanted>, double I<seen>, double I<epsilon>,
+int B<is_double>(double, double, double I<epsilon>,
     const char *I<format>, ...);
 
 =head1 DESCRIPTION
 
 These functions compare two values and report success to a TAP harness if
-the values match and failure otherwise.  In each case, I<format> may be
-NULL; if not NULL, I<format> should be a printf-style format string with
-possible optional arguments giving the name or intention of this test.
-I<format> should be specified where possible to make it easier to track
-failures down to specific tests.
+the values match and failure otherwise.  If the values do not match, the
+mismatched values are reported as a TAP diagnostic (named "left" and
+"right").  For each function, I<format> may be NULL; if not NULL,
+I<format> should be a printf-style format string with possible optional
+arguments giving the name or intention of this test.  I<format> should be
+specified where possible to make it easier to track failures down to
+specific tests.
 
 is_bool() compares two boolean values, is_int() compares two longs,
 is_double() compares two doubles, is_string() compares two strings,
@@ -49,14 +49,13 @@ C<is_bool(1, 4)> is a passing test.)
 
 is_double() takes an I<epsilon> value and considers the two values equal
 if their difference is less than I<epsilon>.  This avoids problems with
-rounding errors in representation of floating point numbers.  I<wanted>
-and I<seen> may be positive or negative infinity or NaN as well as a
-regular number.  If the expected value is NaN (not a number), any I<seen>
-NaN value is considered equal to it, contrary to the normal NaN behavior.
-Callers of is_double() need to also include C<tap/float.h> and link the
-test program with C<-lm>.
+rounding errors in representation of floating point numbers.  The two
+values may be positive or negative infinity or NaN as well as a regular
+number.  Any two NaNs are considered equal, contrary to the normal NaN
+behavior.  Callers of is_double() need to also include C<tap/float.h> and
+link the test program with C<-lm>.
 
-is_string() correctly handles NULL values for both I<wanted> and I<seen>.
+is_string() correctly handles NULL values (two NULL values compare equal).
 
 is_hex() reports its values as hex strings and is useful for testing flags
 or similar values.
@@ -79,7 +78,7 @@ Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2010, 2012-2014, 2017 Russ Allbery <eagle@eyrie.org>
+Copyright 2010, 2012-2014, 2017-2018 Russ Allbery <eagle@eyrie.org>
 
 Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and

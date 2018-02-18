@@ -2,6 +2,11 @@
 
 C TAP Harness 4.3 (unreleased)
 
+    On test failures, report the values as left and right instead of
+    wanted and seen.  This idea is stolen from the Rust assert framework.
+    It avoids having to care about the order in which values are passed
+    into the test functions.
+
     Add new check-cppcheck target that runs cppcheck on all source code,
     and fix one unnecessary check for NULL that it uncovered.
 
