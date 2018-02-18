@@ -1,4 +1,4 @@
-1..61
+1..62
 ok 1
 ok 2 - ok result is 1
 # a diagnostic
@@ -83,4 +83,7 @@ not ok 59 - is_blob 2
 ok 60 - is_blob returned 0
 # testing diag
 ok 61 - diag returns 1
-# Looks like you failed 15 tests of 61
+#  left: (null)
+# right: (null)
+not ok 62 - (null) and NULL
+# Looks like you failed 16 tests of 62

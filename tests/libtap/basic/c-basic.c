@@ -2,7 +2,7 @@
  * Calls libtap basic functions for testing.
  *
  * Written by Russ Allbery <eagle@eyrie.org>
- * Copyright 2015-2017 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2015-2018 Russ Allbery <eagle@eyrie.org>
  * Copyright 2008-2009, 2014
  *     The Board of Trustees of the Leland Stanford Junior University
  *
@@ -41,7 +41,7 @@ main(void)
     const unsigned char d2[] = { 0x00, 0x10, 0x20, 0xff, 0xfe };
     const unsigned char d3[] = { 0x01, 0x10, 0x20, 0xfa, 0xef };
 
-    plan(61);
+    plan(62);
 
     /*
      * Call the memory allocation functions just to be sure the prototypes are
@@ -125,6 +125,9 @@ main(void)
     /* Test return status of diag. */
     status = diag("testing diag");
     is_int(1, status, "diag returns 1");
+
+    /* Test that (null) does not compare equal to NULL. */
+    is_string("(null)", NULL, "(null) and NULL");
 
     return 0;
 }

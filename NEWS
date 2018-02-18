@@ -7,6 +7,10 @@ C TAP Harness 4.3 (unreleased)
     It avoids having to care about the order in which values are passed
     into the test functions.
 
+    Fix is_string comparisons involving NULL pointers so that the string
+    "(null)" will no longer compare equal to NULL (although the diagnostic
+    output on test failure is still mildly confusing).
+
     Add new check-cppcheck target that runs cppcheck on all source code,
     and fix one unnecessary check for NULL that it uncovered.
 
