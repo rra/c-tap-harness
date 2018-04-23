@@ -2,6 +2,15 @@
 
 C TAP Harness 4.3 (unreleased)
 
+    Add support for valgrind and libtool test options in test lists.  Test
+    lists now take a space-separated set of options after the test name.
+    If the valgrind option is present and C_TAP_VALGRIND is set in the
+    environment, the test will be run by passing it as an option to the
+    command given in C_TAP_VALGRIND.  If the libtool option is also set,
+    valgrind will be run via the libtool script set in C_TAP_LIBTOOL,
+    using --mode=execute, so that valgrind will run on the underlying
+    binary and not the libtool shell wrapper.
+
     On test failures, report the values as left and right instead of
     wanted and seen.  This idea is stolen from the Rust assert framework.
     It avoids having to care about the order in which values are passed

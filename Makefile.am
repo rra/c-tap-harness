@@ -37,8 +37,16 @@ EXTRA_DIST = .gitignore LICENSE README.md bootstrap docs/api/bail.pod	    \
 	tests/harness/basic/todo.t tests/harness/basic/too-many.t	    \
 	tests/harness/basic/zero.t tests/harness/env-t			    \
 	tests/harness/env/env.list tests/harness/env/env.output		    \
-	tests/libtap/basic/c-bail.output tests/harness/multiple-t	    \
-	tests/harness/multiple/output					    \
+	tests/harness/multiple-t tests/harness/multiple/output		    \
+	tests/harness/options-t tests/harness/options/bad-option.list	    \
+	tests/harness/options/bad-option.output				    \
+	tests/harness/options/executable.t tests/harness/options/libtool    \
+	tests/harness/options/lt-executable.t				    \
+	tests/harness/options/no-valgrind.output			    \
+	tests/harness/options/simple.t tests/harness/options/valgrind	    \
+	tests/harness/options/valgrind-fail.output			    \
+	tests/harness/options/valgrind.list				    \
+	tests/harness/options/valgrind.output				    \
 	tests/harness/search/build/build-no-ext.tap			    \
 	tests/harness/search/build/build-t				    \
 	tests/harness/search/relative-no-ext				    \
@@ -49,7 +57,8 @@ EXTRA_DIST = .gitignore LICENSE README.md bootstrap docs/api/bail.pod	    \
 	tests/harness/single/test.output tests/harness/single/test.t	    \
 	tests/harness/verbose/list.output				    \
 	tests/harness/verbose/multiple.output tests/harness/verbose-t	    \
-	tests/libtap/basic-t tests/libtap/basic/c-basic.output		    \
+	tests/libtap/basic-t tests/libtap/basic/c-bail.output		    \
+	tests/libtap/basic/c-basic.output				    \
 	tests/libtap/basic/c-bstrndup.output				    \
 	tests/libtap/basic/c-diag-file.output				    \
 	tests/libtap/basic/c-extra-one.output				    \
