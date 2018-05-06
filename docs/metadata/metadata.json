@@ -34,6 +34,7 @@
         "browse": "https://git.eyrie.org/?p=devel/c-tap-harness.git",
         "github": "rra/c-tap-harness",
         "openhub": "https://www.openhub.net/p/c-tap-harness",
+        "travis": "rra/c-tap-harness",
     },
     "readme": {
         "sections": [
