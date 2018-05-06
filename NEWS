@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 4.3 (unreleased)
+C TAP Harness 4.3 (2018-05-06)
 
     Add support for valgrind and libtool test options in test lists.  Test
     lists now take a space-separated set of options after the test name.
