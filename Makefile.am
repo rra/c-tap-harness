@@ -11,8 +11,8 @@ EXTRA_DIST = .gitignore LICENSE README.md bootstrap docs/api/bail.pod	    \
 	docs/api/plan.pod docs/api/skip.pod docs/api/skip_all.pod	    \
 	docs/api/test_cleanup_register.pod docs/api/test_file_path.pod	    \
 	docs/api/test_tmpdir.pod docs/metadata docs/runtests.pod	    \
-	docs/writing-tests tests/TESTS tests/data/perl.conf		    \
-	tests/docs/pod-t tests/docs/pod-spelling-t			    \
+	docs/writing-tests tests/TESTS tests/data/cppcheck.supp		    \
+	tests/data/perl.conf tests/docs/pod-t tests/docs/pod-spelling-t	    \
 	tests/docs/spdx-license-t tests/docs/urls-t tests/harness/basic-t   \
 	tests/harness/basic/abort-one.list				    \
 	tests/harness/basic/abort-one.output tests/harness/basic/abort.list \
