@@ -10,6 +10,8 @@ dnl
 dnl This file is free software; the authors give unlimited permission to copy
 dnl and/or distribute it, with or without modifications, as long as this
 dnl notice is preserved.
+dnl
+dnl SPDX-License-Identifier: FSFULLR
 
 dnl Source used by RRA_PROG_CC_CLANG.
 AC_DEFUN([_RRA_PROG_CC_CLANG_SOURCE], [[

@@ -1,12 +1,30 @@
 // Suppressions file for cppcheck.  -*- conf -*-
 //
+// This includes suppressions for all of my projects, including files that
+// aren't in rra-c-util, for ease of sharing between projects.  The ones that
+// don't apply to a particular project should hopefully be harmless.
+//
 // Copyright 2018 Russ Allbery <eagle@eyrie.org>
 //
 // Copying and distribution of this file, with or without modification, are
 // permitted in any medium without royalty provided the copyright notice and
 // this notice are preserved.  This file is offered as-is, without any
 // warranty.
+//
+// SPDX-License-Identifier: FSFAP
 
 // I like declaring variables at the top of a function rather than cluttering
 // every if and loop body with declarations.
 variableScope
+
+// False positive due to recursive function.
+knownConditionTrueFalse:portable/getopt.c:146
+
+// False positive since the string comes from a command-line define.
+knownConditionTrueFalse:tests/tap/remctl.c:79
+
+// Setting the variable to NULL explicitly after deallocation.
+redundantAssignment:tests/pam-util/options-t.c
+
+// (remctl) Nested assignments in this test confuse cppcheck.
+redundantAssignment:tests/server/acl-t.c

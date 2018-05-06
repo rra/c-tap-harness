@@ -29,6 +29,13 @@ C TAP Harness 4.3 (unreleased)
     files in tests/tap/perl, copy them from rra-c-util instead of this
     package.
 
+    C TAP Harness now imports the Perl test modules from rra-c-util to
+    support some checks, so tests/docs/pod-spelling-t and tests/docs/pod-t
+    have been updated to the versions from rra-c-util.  Projects that were
+    previously copying those tests should be able to continue to use them,
+    but will now need the modules in tests/tap/perl (the canonical version
+    of which are maintained in rra-c-util).
+
 C TAP Harness 4.2 (2017-12-30)
 
     Add is_blob function to the C test library.  This tests whether two

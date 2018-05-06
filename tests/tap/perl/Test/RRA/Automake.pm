@@ -79,8 +79,8 @@ my @GLOBAL_SKIP = qw(.git _build autom4te.cache build-aux);
 # distribution.  This primarily skips build artifacts that aren't interesting
 # to any of the tests.  These match any path component.
 my @FILES_SKIP = qw(
-  .deps .dirstamp .libs aclocal.m4 config.h.in~ config.log config.status
-  configure
+  .deps .dirstamp .libs aclocal.m4 config.h config.h.in config.h.in~ config.log
+  config.status configure
 );
 
 # The temporary directory created by test_tmpdir, if any.  If this is set,

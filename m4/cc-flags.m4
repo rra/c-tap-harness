@@ -70,6 +70,7 @@ dnl For Clang, we try to use -Weverything, but we have to disable some of the
 dnl warnings:
 dnl
 dnl   -Wcast-qual                     Some structs require casting away const
+dnl   -Wdisabled-macro-expansion      Triggers on libc (sigaction.sa_handler)
 dnl   -Wpadded                        Not an actual problem
 dnl   -Wreserved-id-macros            Autoconf sets several of these normally
 dnl   -Wsign-conversion               Too many fiddly changes for the benefit
@@ -86,9 +87,10 @@ AC_DEFUN([RRA_PROG_CC_WARNINGS_FLAGS],
  AS_IF([test x"$CLANG" = xyes],
     [WARNINGS_CFLAGS="-Werror"
      m4_foreach_w([flag],
-        [-Weverything -Wno-cast-qual -Wno-padded -Wno-sign-conversion
-         -Wno-reserved-id-macro -Wno-tautological-pointer-compare -Wno-undef
-         -Wno-unreachable-code -Wno-unreachable-code-return -Wno-unused-macros
+        [-Weverything -Wno-cast-qual -Wno-disabled-macro-expansion -Wno-padded
+         -Wno-sign-conversion -Wno-reserved-id-macro
+         -Wno-tautological-pointer-compare -Wno-undef -Wno-unreachable-code
+         -Wno-unreachable-code-return -Wno-unused-macros
          -Wno-used-but-marked-unused],
         [RRA_PROG_CC_FLAG(flag,
             [WARNINGS_CFLAGS="${WARNINGS_CFLAGS} flag"])])],

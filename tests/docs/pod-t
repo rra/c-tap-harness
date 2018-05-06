@@ -1,16 +1,15 @@
 #!/usr/bin/perl
 #
-# Test POD formatting.
+# Check all POD documents in the tree, except for any embedded Perl module
+# distribution, for POD formatting errors.
 #
-# This could be done more easily by using some of the test infrastructure from
-# rra-c-util, but it creates weird circular code sharing, so duplicate some of
-# it here instead.  This also makes it useful for packages that don't use the
-# Perl test framework from rra-c-util.
+# The canonical version of this file is maintained in the rra-c-util package,
+# which can be found at <https://www.eyrie.org/~eagle/software/rra-c-util/>.
 #
-# This file is part of C TAP Harness.  The current version plus supporting
-# documentation is at <https://www.eyrie.org/~eagle/software/c-tap-harness/>.
-#
-# Copyright 2009-2010, 2013-2016 Russ Allbery <eagle@eyrie.org>
+# Written by Russ Allbery <eagle@eyrie.org>
+# Copyright 2016 Russ Allbery <eagle@eyrie.org>
+# Copyright 2012-2014
+#     The Board of Trustees of the Leland Stanford Junior University
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -36,40 +35,21 @@ use 5.006;
 use strict;
 use warnings;
 
-use File::Spec;
+use lib "$ENV{C_TAP_SOURCE}/tap/perl";
+
 use Test::More;
+use Test::RRA qw(skip_unless_automated use_prereq);
+use Test::RRA::Automake qw(automake_setup perl_dirs);
 
-# Abort if C_TAP_SOURCE isn't set.
-if (!$ENV{C_TAP_SOURCE}) {
-    BAIL_OUT('C_TAP_SOURCE environment variable not set');
-}
+# Skip this test for normal user installs, since we normally pre-generate all
+# of the documentation and the end user doesn't care.
+skip_unless_automated('POD syntax tests');
 
-# Load the Test::Pod module.
-if (!eval { require Test::Pod }) {
-    plan skip_all => 'Test::Pod required for testing POD';
-}
-Test::Pod->import;
+# Load prerequisite modules.
+use_prereq('Test::Pod');
 
-# C_TAP_SOURCE will be the test directory.  Change to the parent.
-my ($vol, $dirs) = File::Spec->splitpath($ENV{C_TAP_SOURCE}, 1);
-my @dirs = File::Spec->splitdir($dirs);
-pop(@dirs);
-if ($dirs[-1] eq File::Spec->updir) {
-    pop(@dirs);
-    pop(@dirs);
-}
-my $root = File::Spec->catpath($vol, File::Spec->catdir(@dirs), q{});
-chdir($root) or BAIL_OUT("cannot chdir to $root: $!");
+# Set up Automake testing.
+automake_setup();
 
-# Add some additional exclusions, useful mostly for other programs that copy
-# this test.
-## no critic (TestingAndDebugging::ProhibitNoWarnings)
-## no critic (Variables::ProhibitPackageVars)
-{
-    no warnings 'once';
-    $Test::Pod::ignore_dirs{'.libs'} = 'libraries';
-}
-## use critic
-
-# Check syntax of every POD file we can find.
-all_pod_files_ok(q{.});
+# Run the tests.
+all_pod_files_ok(perl_dirs());
