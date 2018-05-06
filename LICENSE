@@ -5,19 +5,19 @@ Comment: This file documents the copyright statements and licenses for
  .
  For any copyright year range specified as YYYY-ZZZZ in this file, the
  range specifies every single year in that closed interval.
-Copyright: 2000-2001, 2004, 2006-2017 Russ Allbery
+Copyright: 2000-2001, 2004, 2006-2018 Russ Allbery
   2006-2014 The Board of Trustees of the Leland Stanford Junior University
 License: Expat
 
 Files: *
-Copyright: 2000-2001, 2004, 2006-2017 Russ Allbery <eagle@eyrie.org>
+Copyright: 2000-2001, 2004, 2006-2018 Russ Allbery <eagle@eyrie.org>
   2001-2002, 2004-2014
     The Board of Trustees of the Leland Stanford Junior University
 License: Expat
 
 Files: Makefile.in
 Copyright: 1994-2017 Free Software Foundation, Inc.
-  2008-2017 Russ Allbery <eagle@eyrie.org>
+  2008-2018 Russ Allbery <eagle@eyrie.org>
 License: FSF-unlimited and Expat
 
 Files: aclocal.m4
@@ -72,8 +72,8 @@ Files: docs/api/bail.3 docs/api/bail.pod docs/api/bmalloc.3
  docs/api/test_cleanup_register.pod docs/api/test_file_path.3
  docs/api/test_file_path.pod docs/api/test_tmpdir.3
  docs/api/test_tmpdir.pod docs/runtests.1 docs/runtests.pod
- docs/writing-tests
-Copyright: 2009-2017 Russ Allbery <eagle@eyrie.org>
+ docs/writing-tests tests/data/cppcheck.supp
+Copyright: 2009-2018 Russ Allbery <eagle@eyrie.org>
 License: all-permissive
  Copying and distribution of this file, with or without modification, are
  permitted in any medium without royalty provided the copyright notice and
@@ -82,7 +82,7 @@ License: all-permissive
 
 Files: m4/cc-flags.m4
 Copyright: 2006, 2009, 2016 Internet Systems Consortium, Inc.
-  2016-2017 Russ Allbery <eagle@eyrie.org>
+  2016-2018 Russ Allbery <eagle@eyrie.org>
 License: ISC
  Permission to use, copy, modify, and distribute this software for any
  purpose with or without fee is hereby granted, provided that the above
