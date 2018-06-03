@@ -68,7 +68,7 @@ BEGIN {
     # This version should match the corresponding rra-c-util release, but with
     # two digits for the minor version, including a leading zero if necessary,
     # so that it will sort properly.
-    $VERSION = '7.01';
+    $VERSION = '7.02';
 }
 
 # Directories to skip globally when looking for all files, or for directories
@@ -449,7 +449,7 @@ Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2014, 2015, 2018 Russ Allbery <eagle@eyrie.org>
+Copyright 2014-2015, 2018 Russ Allbery <eagle@eyrie.org>
 
 Copyright 2013 The Board of Trustees of the Leland Stanford Junior University
 

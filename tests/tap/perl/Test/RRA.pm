@@ -36,7 +36,7 @@ BEGIN {
     # This version should match the corresponding rra-c-util release, but with
     # two digits for the minor version, including a leading zero if necessary,
     # so that it will sort properly.
-    $VERSION = '7.01';
+    $VERSION = '7.02';
 }
 
 # Compare a string to the contents of a file, similar to the standard is()
@@ -246,7 +246,9 @@ Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2013, 2014 The Board of Trustees of the Leland Stanford Junior
+Copyright 2016 Russ Allbery <eagle@eyrie.org>
+
+Copyright 2013-2014 The Board of Trustees of the Leland Stanford Junior
 University
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
