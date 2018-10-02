@@ -174,6 +174,14 @@ typedef void (*test_cleanup_func)(int, int);
 void test_cleanup_register(test_cleanup_func)
     __attribute__((__nonnull__));
 
+/*
+ * Same as above, but also allows an opaque pointer to be passed to the cleanup
+ * function.
+ */
+typedef void (*test_cleanup_func_with_data)(int, int, void *);
+void test_cleanup_register_with_data(test_cleanup_func_with_data, void *)
+    __attribute__((__nonnull__));
+
 END_DECLS
 
 #endif /* TAP_BASIC_H */
