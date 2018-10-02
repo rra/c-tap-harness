@@ -49,6 +49,7 @@
 /tests/libtap/cleanup/c-many-fail
 /tests/libtap/cleanup/c-one
 /tests/libtap/cleanup/c-one-fail
+/tests/libtap/cleanup/c-one-with-data
 /tests/runtests
 /tmp-valgrind/
 .deps/

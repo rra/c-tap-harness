@@ -91,6 +91,7 @@ EXTRA_DIST = .gitignore LICENSE README.md bootstrap docs/api/bail.pod	    \
 	tests/libtap/cleanup/c-lazy.output				    \
 	tests/libtap/cleanup/c-many-fail.output				    \
 	tests/libtap/cleanup/c-many.output				    \
+	tests/libtap/cleanup/c-one-with-data.output			    \
 	tests/libtap/cleanup/c-one-fail.output				    \
 	tests/libtap/cleanup/c-one.output tests/tap/libtap.sh		    \
 	tests/tap/perl/Test/RRA.pm tests/tap/perl/Test/RRA/Automake.pm	    \
@@ -198,7 +199,7 @@ check_PROGRAMS = tests/libtap/basic/c-bail tests/libtap/basic/c-basic	\
 	tests/libtap/cleanup/c-bail-lazy tests/libtap/cleanup/c-fork	\
 	tests/libtap/cleanup/c-lazy tests/libtap/cleanup/c-many		\
 	tests/libtap/cleanup/c-many-fail tests/libtap/cleanup/c-one	\
-	tests/libtap/cleanup/c-one-fail
+	tests/libtap/cleanup/c-one-fail tests/libtap/cleanup/c-one-with-data
 tests_libtap_basic_c_bail_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_basic_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_bstrndup_LDADD = tests/tap/libtap.a -lm
@@ -224,6 +225,7 @@ tests_libtap_cleanup_c_many_LDADD = tests/tap/libtap.a -lm
 tests_libtap_cleanup_c_many_fail_LDADD = tests/tap/libtap.a -lm
 tests_libtap_cleanup_c_one_LDADD = tests/tap/libtap.a -lm
 tests_libtap_cleanup_c_one_fail_LDADD = tests/tap/libtap.a -lm
+tests_libtap_cleanup_c_one_with_data_LDADD = tests/tap/libtap.a -lm
 
 check-local: $(bin_PROGRAMS) $(check_PROGRAMS)
 	cd tests && ./runtests -s '$(abs_top_srcdir)/tests' \
