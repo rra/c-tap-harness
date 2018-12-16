@@ -199,7 +199,8 @@ check_PROGRAMS = tests/libtap/basic/c-bail tests/libtap/basic/c-basic	\
 	tests/libtap/cleanup/c-bail-lazy tests/libtap/cleanup/c-fork	\
 	tests/libtap/cleanup/c-lazy tests/libtap/cleanup/c-many		\
 	tests/libtap/cleanup/c-many-fail tests/libtap/cleanup/c-one	\
-	tests/libtap/cleanup/c-one-fail tests/libtap/cleanup/c-one-with-data
+	tests/libtap/cleanup/c-one-fail					\
+	tests/libtap/cleanup/c-one-with-data
 tests_libtap_basic_c_bail_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_basic_LDADD = tests/tap/libtap.a -lm
 tests_libtap_basic_c_bstrndup_LDADD = tests/tap/libtap.a -lm

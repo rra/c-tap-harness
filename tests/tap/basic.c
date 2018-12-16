@@ -307,10 +307,13 @@ finish(void)
      */
     primary = (_process == 0 || getpid() == _process);
     while (cleanup_funcs != NULL) {
-	if (cleanup_funcs->func_with_data)
-	    cleanup_funcs->func_with_data(success, primary, cleanup_funcs->data);
-	else
-	    cleanup_funcs->func(success, primary);
+        if (cleanup_funcs->func_with_data) {
+            void *data = cleanup_funcs->data;
+
+            cleanup_funcs->func_with_data(success, primary, data);
+        } else {
+            cleanup_funcs->func(success, primary);
+        }
         current = cleanup_funcs;
         cleanup_funcs = cleanup_funcs->next;
         free(current);
@@ -972,15 +975,15 @@ test_tmpdir_free(char *path)
 
 static void
 register_cleanup(test_cleanup_func func,
-		 test_cleanup_func_with_data func_with_data, void *data)
+                 test_cleanup_func_with_data func_with_data, void *data)
 {
     struct cleanup_func *cleanup, **last;
 
     cleanup = bmalloc(sizeof(struct cleanup_func));
-    cleanup->func_with_data = func_with_data;
     cleanup->func = func;
-    cleanup->next = NULL;
+    cleanup->func_with_data = func_with_data;
     cleanup->data = data;
+    cleanup->next = NULL;
     last = &cleanup_funcs;
     while (*last != NULL)
         last = &(*last)->next;

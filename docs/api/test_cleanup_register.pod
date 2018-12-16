@@ -15,7 +15,8 @@ typedef void (*B<test_cleanup_func_with_data>)(int, int, void *);
 
 void B<test_cleanup_register>(test_cleanup_func I<func>);
 
-void B<test_cleanup_register_with_data>(test_cleanup_func_with_data I<func>, void *I<data>);
+void B<test_cleanup_register_with_data>(test_cleanup_func_with_data I<func>,
+    void *I<data>);
 
 =head1 DESCRIPTION
 
@@ -45,20 +46,28 @@ test_cleanup_register() may be called as many times as desired.  All
 registered functions will be called (provided that none of them terminate
 the process prematurely) in the order in which they were registered.
 
-test_cleanup_register_with_data() functions as described above, except that
-the additional opaque pointer is passed on to the registered function.  This
-can be useful to pass data such as directory or file names to the cleanup
-function, rather than relying on global variables.
+test_cleanup_register_with_data() functions as described above, except
+that the additional opaque pointer is passed on to the registered
+function.  This can be useful to pass data such as directory or file names
+to the cleanup function, rather than relying on global variables.
 
 =head1 RETURN VALUE
 
 None.
 
+=head1 BUGS
+
+test_cleanup_register_with_data() should have been the only variant of
+this function; not including a data pointer in test_cleanup_register() was
+an API design error.  test_cleanup_register() has been kept for backward
+compatibility, but test_cleanup_register_with_data() should be preferred.
+
 =head1 CAVEATS
 
-Cleanup functions registered with test_cleanup_register() cannot be used
-to clean up after actions taken before a call to skip_all(), since calling
-skip_all() means that plan() and plan_lazy() were never called.
+Cleanup functions registered with test_cleanup_register() or with
+test_cleanup_register_with_data() cannot be used to clean up after actions
+taken before a call to skip_all(), since calling skip_all() means that
+plan() and plan_lazy() were never called.
 
 =head1 AUTHOR
 
@@ -66,7 +75,7 @@ Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2011, 2013-2014 Russ Allbery <eagle@eyrie.org>
+Copyright 2011, 2013-2014, 2018 Russ Allbery <eagle@eyrie.org>
 
 Copying and distribution of this file, with or without modification, are
 permitted in any medium without royalty provided the copyright notice and

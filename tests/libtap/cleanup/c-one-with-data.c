@@ -1,11 +1,13 @@
 /*
- * Test of the libtap test_cleanup_register_with_data function with one cleanup.
+ * Test of the libtap test_cleanup_register_with_data function.
+ *
+ * Copyright 2018 Russ Allbery <eagle@eyrie.org>
  *
  * See LICENSE for licensing terms.
  */
 
 #include <stdio.h>
-#include <stdint.h>
+#include <stdlib.h>
 
 #include <tests/tap/basic.h>
 
@@ -16,14 +18,20 @@
 static void
 test(int success, int primary, void *data)
 {
-    printf("Called cleanup with %d %d %d\n", success, primary, (int)(intptr_t)data);
+    int *value = data;
+
+    printf("Called cleanup with %d %d %d\n", success, primary, *value);
+    free(value);
 }
 
 
 int
 main(void)
 {
-    test_cleanup_register_with_data(test, (void *)99);
+    int *data = malloc(sizeof(int));
+
+    *data = 99;
+    test_cleanup_register_with_data(test, data);
     plan(1);
     ok(1, "some test");
     return 0;
