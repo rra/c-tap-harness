@@ -1,10 +1,10 @@
 #!/usr/bin/perl
 #
-# Check URLs in source files.
+# Check for obsolete strings in source files.
 #
-# Examine all source files in a distribution for bad URL patterns and report
-# on files that fail this check.  Currently, this just checks for my old email
-# address and that all the links to www.eyrie.org are https.
+# Examine all source files in a distribution for obsolete strings and report
+# on files that fail this check.  This catches various transitions I want to
+# do globally in all my packages, like changing my personal URLs to https.
 #
 # The canonical version of this file is maintained in the rra-c-util package,
 # which can be found at <https://www.eyrie.org/~eagle/software/rra-c-util/>.
@@ -37,18 +37,22 @@ use warnings;
 
 use lib "$ENV{C_TAP_SOURCE}/tap/perl";
 
-use File::Basename qw(basename);
-use Test::More;
 use Test::RRA qw(skip_unless_author);
 use Test::RRA::Automake qw(all_files automake_setup);
 
+use File::Basename qw(basename);
+use Test::More;
+
 # Bad patterns to search for.
 my @BAD_REGEXES = (qr{ http:// \S+ [.]eyrie[.]org }xms);
-my @BAD_STRINGS = qw(rra@stanford.edu);
+my @BAD_STRINGS = qw(rra@stanford.edu RRA_MAINTAINER_TESTS);
+
+# File names to exclude from this check.
+my %EXCLUDE = map { $_ => 1 } qw(NEWS obsolete-strings.t obsolete-strings-t);
 
 # Only run this test for the package author, since it doesn't indicate any
 # user-noticable flaw in the package itself.
-skip_unless_author('Documentation URL tests');
+skip_unless_author('Obsolete strings tests');
 
 # Set up Automake testing.
 automake_setup();
@@ -62,8 +66,8 @@ sub check_file {
     my ($path) = @_;
     my $filename = basename($path);
 
-    # Ignore this check itself (or the Perl version of it) and binary files.
-    return if ($filename eq 'urls.t' || $filename eq 'urls-t');
+    # Ignore excluded and binary files.
+    return if $EXCLUDE{$filename};
     return if !-T $path;
 
     # Scan the file.

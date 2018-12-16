@@ -61,7 +61,7 @@ dnl
 dnl   -Wsign-conversion  Too many fiddly changes for the benefit
 dnl   -Wstack-protector  Too many false positives from small buffers
 dnl
-dnl Last checked against gcc 7.2.0 (2017-12-28).  -D_FORTIFY_SOURCE=2 enables
+dnl Last checked against gcc 8.1.0 (2018-07-14).  -D_FORTIFY_SOURCE=2 enables
 dnl warn_unused_result attribute markings on glibc functions on Linux, which
 dnl catches a few more issues.  Add -O2 because gcc won't find some warnings
 dnl without optimization turned on.

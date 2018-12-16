@@ -8,6 +8,12 @@ C TAP Harness 4.4 (unreleased)
     have been the only API from the beginning, but test_cleanup_register
     is preserved for backward compatibility.  Patch from Marc Dionne.
 
+    Update to rra-c-util 8.0:
+
+    * Skip tests requiring Test::More if it isn't available.
+    * Check for pre-SPDX license grant strings.
+    * Improved test for obsolete strings in package source files.
+
 C TAP Harness 4.3 (2018-05-06)
 
     Add support for valgrind and libtool test options in test lists.  Test

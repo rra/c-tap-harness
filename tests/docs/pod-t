@@ -37,9 +37,10 @@ use warnings;
 
 use lib "$ENV{C_TAP_SOURCE}/tap/perl";
 
-use Test::More;
 use Test::RRA qw(skip_unless_automated use_prereq);
 use Test::RRA::Automake qw(automake_setup perl_dirs);
+
+use Test::More;
 
 # Skip this test for normal user installs, since we normally pre-generate all
 # of the documentation and the end user doesn't care.

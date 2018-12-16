@@ -14,9 +14,29 @@ use 5.006;
 use strict;
 use warnings;
 
+use Carp qw(croak);
 use Exporter;
 use File::Temp;
-use Test::More;
+
+# Abort if Test::More was loaded before Test::RRA to be sure that we get the
+# benefits of the Test::More probing below.
+if ($INC{'Test/More.pm'}) {
+    croak('Test::More loaded before Test::RRA');
+}
+
+# Red Hat's base perl package doesn't include Test::More (one has to install
+# the perl-core package in addition).  Try to detect this and skip any Perl
+# tests if Test::More is not present.  This relies on Test::RRA being included
+# before Test::More.
+eval {
+    require Test::More;
+    Test::More->import();
+};
+if ($@) {
+    print "1..0 # SKIP Test::More required for test\n"
+      or croak('Cannot write to stdout');
+    exit 0;
+}
 
 # For Perl 5.006 compatibility.
 ## no critic (ClassHierarchies::ProhibitExplicitISA)
@@ -36,7 +56,7 @@ BEGIN {
     # This version should match the corresponding rra-c-util release, but with
     # two digits for the minor version, including a leading zero if necessary,
     # so that it will sort properly.
-    $VERSION = '7.02';
+    $VERSION = '8.00';
 }
 
 # Compare a string to the contents of a file, similar to the standard is()
@@ -91,7 +111,7 @@ sub is_file_contents {
 sub skip_unless_author {
     my ($description) = @_;
     if (!$ENV{AUTHOR_TESTING}) {
-        plan skip_all => "$description only run for author";
+        plan(skip_all => "$description only run for author");
     }
     return;
 }
@@ -110,7 +130,7 @@ sub skip_unless_automated {
     for my $env (qw(AUTOMATED_TESTING RELEASE_TESTING AUTHOR_TESTING)) {
         return if $ENV{$env};
     }
-    plan skip_all => "$description normally skipped";
+    plan(skip_all => "$description normally skipped");
     return;
 }
 
@@ -159,7 +179,7 @@ sub use_prereq {
     # If the use failed for any reason, skip the test.
     if (!$result || $error) {
         my $name = length($version) > 0 ? "$module $version" : $module;
-        plan skip_all => "$name required for test";
+        plan(skip_all => "$name required for test");
     }
 
     # If the module set $SIG{__DIE__}, we cleared that via local.  Restore it.
@@ -201,6 +221,14 @@ Test::RRA - Support functions for Perl tests
 This module collects utility functions that are useful for Perl test scripts.
 It assumes Russ Allbery's Perl module layout and test conventions and will
 only be useful for other people if they use the same conventions.
+
+This module B<must> be loaded before Test::More or it will abort during
+import.  It will skip the test (by printing a skip message to standard output
+and exiting with status 0, equivalent to C<plan skip_all>) during import if
+Test::More is not available.  This allows tests written in Perl using this
+module to be skipped if run on a system with Perl but not Test::More, such as
+Red Hat systems with the C<perl> package but not the C<perl-core> package
+installed.
 
 =head1 FUNCTIONS
 
@@ -246,7 +274,7 @@ Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2016 Russ Allbery <eagle@eyrie.org>
+Copyright 2016, 2018 Russ Allbery <eagle@eyrie.org>
 
 Copyright 2013-2014 The Board of Trustees of the Leland Stanford Junior
 University

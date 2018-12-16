@@ -1,7 +1,6 @@
 docs/pod
 docs/pod-spelling
 docs/spdx-license
-docs/urls
 harness/basic
 harness/env
 harness/multiple
@@ -11,3 +10,4 @@ harness/single
 harness/verbose
 libtap/basic
 libtap/cleanup
+style/obsolete-strings

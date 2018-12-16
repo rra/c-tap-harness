@@ -68,12 +68,14 @@ BEGIN {
     # This version should match the corresponding rra-c-util release, but with
     # two digits for the minor version, including a leading zero if necessary,
     # so that it will sort properly.
-    $VERSION = '7.02';
+    $VERSION = '8.00';
 }
 
 # Directories to skip globally when looking for all files, or for directories
 # that could contain Perl files.
-my @GLOBAL_SKIP = qw(.git _build autom4te.cache build-aux);
+my @GLOBAL_SKIP = qw(
+  .git _build autom4te.cache build-aux perl/_build perl/blib
+);
 
 # Additional paths to skip when building a list of all files in the
 # distribution.  This primarily skips build artifacts that aren't interesting
@@ -104,7 +106,7 @@ sub all_files {
         my $file = $_;
         my $path = $File::Find::name;
         $path =~ s{ \A [.]/ }{}xms;
-        if ($skip{$path} or $files_skip{$file} or $file =~ m{ [.] lo \z }xms) {
+        if ($skip{$path} || $files_skip{$file} || $file =~ m{ [.] lo \z }xms) {
             $File::Find::prune = 1;
             return;
         }

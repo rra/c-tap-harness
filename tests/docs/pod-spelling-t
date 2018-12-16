@@ -36,9 +36,10 @@ use warnings;
 
 use lib "$ENV{C_TAP_SOURCE}/tap/perl";
 
-use Test::More;
 use Test::RRA qw(skip_unless_author use_prereq);
 use Test::RRA::Automake qw(automake_setup perl_dirs);
+
+use Test::More;
 
 # Only run this test for the module author since the required stopwords are
 # too sensitive to the exact spell-checking program and dictionary.
