@@ -6,7 +6,7 @@
  *
  * Copyright 2010 Russ Allbery <eagle@eyrie.org>
  *
- * See LICENSE for licensing terms.
+ * SPDX-License-Identifier: MIT
  */
 
 #include <tests/tap/basic.h>

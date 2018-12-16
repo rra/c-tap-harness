@@ -3,7 +3,7 @@
  *
  * Copyright 2013, 2014, 2015 Russ Allbery <eagle@eyrie.org>
  *
- * See LICENSE for licensing terms.
+ * SPDX-License-Identifier: MIT
  */
 
 #include <assert.h>
