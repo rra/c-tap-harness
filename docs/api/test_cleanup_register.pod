@@ -3,7 +3,7 @@ Allbery typedef FSFAP SPDX-License-Identifier
 
 =head1 NAME
 
-test_cleanup_register - Register a function to run at the end of a TAP test
+test_cleanup_register, test_cleanup_register_with_data - Register a function to run at the end of a TAP test
 
 =head1 SYNOPSIS
 
@@ -11,7 +11,11 @@ test_cleanup_register - Register a function to run at the end of a TAP test
 
 typedef void (*B<test_cleanup_func>)(int, int);
 
+typedef void (*B<test_cleanup_func_with_data>)(int, int, void *);
+
 void B<test_cleanup_register>(test_cleanup_func I<func>);
+
+void B<test_cleanup_register_with_data>(test_cleanup_func_with_data I<func>, void *I<data>);
 
 =head1 DESCRIPTION
 
@@ -40,6 +44,11 @@ if the test aborts with bail().
 test_cleanup_register() may be called as many times as desired.  All
 registered functions will be called (provided that none of them terminate
 the process prematurely) in the order in which they were registered.
+
+test_cleanup_register_with_data() functions as described above, except that
+the additional opaque pointer is passed on to the registered function.  This
+can be useful to pass data such as directory or file names to the cleanup
+function, rather than relying on global variables.
 
 =head1 RETURN VALUE
 

@@ -27,7 +27,7 @@ ok_test_program () {
 }
 
 # Total tests.
-plan `expr 8 \* 2`
+plan `expr 9 \* 2`
 
 # Run the individual tests.
 ok_test_program c-bail      255
@@ -38,3 +38,4 @@ ok_test_program c-many      0
 ok_test_program c-many-fail 0
 ok_test_program c-one       0
 ok_test_program c-one-fail  0
+ok_test_program c-one-with-data       0
