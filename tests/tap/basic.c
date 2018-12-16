@@ -885,7 +885,7 @@ bstrndup(const char *s, size_t n)
         ;
     length = (size_t) (p - s);
     copy = malloc(length + 1);
-    if (p == NULL)
+    if (copy == NULL)
         sysbail("failed to strndup %lu bytes", (unsigned long) length);
     memcpy(copy, s, length);
     copy[length] = '\0';

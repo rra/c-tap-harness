@@ -8,6 +8,9 @@ C TAP Harness 4.4 (unreleased)
     have been the only API from the beginning, but test_cleanup_register
     is preserved for backward compatibility.  Patch from Marc Dionne.
 
+    Fix error checking for malloc failure in bstrndup function (caught by
+    cppcheck).
+
     Update to rra-c-util 8.0:
 
     * Skip tests requiring Test::More if it isn't available.
