@@ -1,6 +1,6 @@
 {
     "name": "C TAP Harness",
-    "version": "4.3",
+    "version": "4.4",
     "synopsis": "C harness for running TAP-compliant tests",
     "maintainer": "Russ Allbery <eagle@eyrie.org>",
     "copyrights": [

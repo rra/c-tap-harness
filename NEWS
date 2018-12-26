@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 4.4 (unreleased)
+C TAP Harness 4.4 (2018-12-25)
 
     Add test_cleanup_register_with_data to the C TAP library.  This is the
     same as test_cleanup_register except takes a generic pointer, which is

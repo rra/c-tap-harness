@@ -13,7 +13,7 @@ EXTRA_DIST = .gitignore LICENSE README.md bootstrap docs/api/bail.pod	    \
 	docs/api/test_tmpdir.pod docs/metadata docs/runtests.pod	    \
 	docs/writing-tests tests/TESTS tests/data/cppcheck.supp		    \
 	tests/data/perl.conf tests/docs/pod-t tests/docs/pod-spelling-t	    \
-	tests/docs/spdx-license-t tests/docs/urls-t tests/harness/basic-t   \
+	tests/docs/spdx-license-t tests/harness/basic-t			    \
 	tests/harness/basic/abort-one.list				    \
 	tests/harness/basic/abort-one.output tests/harness/basic/abort.list \
 	tests/harness/basic/abort.output tests/harness/basic/abort.t	    \
@@ -93,8 +93,9 @@ EXTRA_DIST = .gitignore LICENSE README.md bootstrap docs/api/bail.pod	    \
 	tests/libtap/cleanup/c-many.output				    \
 	tests/libtap/cleanup/c-one-with-data.output			    \
 	tests/libtap/cleanup/c-one-fail.output				    \
-	tests/libtap/cleanup/c-one.output tests/tap/libtap.sh		    \
-	tests/tap/perl/Test/RRA.pm tests/tap/perl/Test/RRA/Automake.pm	    \
+	tests/libtap/cleanup/c-one.output tests/style/obsolete-strings-t    \
+	tests/tap/libtap.sh tests/tap/perl/Test/RRA.pm			    \
+	tests/tap/perl/Test/RRA/Automake.pm				    \
 	tests/tap/perl/Test/RRA/Config.pm
 
 # It's somewhat odd to have the TAP library and the runtests harness in the

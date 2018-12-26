@@ -1,4 +1,4 @@
-# C TAP Harness 4.3
+# C TAP Harness 4.4
 
 [![Build
 status](https://travis-ci.org/rra/c-tap-harness.svg?branch=master)](https://travis-ci.org/rra/c-tap-harness)
@@ -81,7 +81,8 @@ directory and then running configure with the correct relative path.
 
 Pass `--enable-silent-rules` to configure for a quieter build (similar to
 the Linux kernel).  Use `make warnings` instead of `make` to build with
-full GCC compiler warnings (requires a relatively current version of GCC).
+full GCC compiler warnings (requires either GCC or Clang and may require a
+relatively current version of the compiler).
 
 Installing C TAP Harness is not normally done.  Instead, see the section
 on using the harness below.
