@@ -59,6 +59,10 @@ REQUIREMENTS
   Bourne-compatible shell.  Outside of the test suite, C TAP Harness has
   no other prerequisites or requirements.
 
+  C TAP Harness can also be built with a C++ compiler and should be
+  similarly portable to any recent C++ compiler, although it is only
+  tested with g++.
+
   To bootstrap from a Git checkout, or if you change the Automake files
   and need to regenerate Makefile.in, you will need Automake 1.11 or
   later.  For bootstrap or if you change configure.ac or any of the m4
