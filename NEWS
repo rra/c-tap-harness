@@ -1,5 +1,16 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 4.5 (unreleased)
+
+    Add new bcalloc_type and breallocarray_type macros that take a type
+    instead of a size as their third argument and cast the return value to
+    a pointer to that type.  These are more friendly to C++ code than
+    C-style allocation functions returning void *.
+
+    The test harness and libtap C library can now alternatively be
+    compiled with a C++ compiler, making it easier to incorporate them
+    into a C++ project.  Thanks to Peter Paris for the initial report.
+
 C TAP Harness 4.4 (2018-12-25)
 
     Add test_cleanup_register_with_data to the C TAP library.  This is the

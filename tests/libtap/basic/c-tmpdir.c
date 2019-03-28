@@ -1,7 +1,7 @@
 /*
  * Test creating a temporary directory with test_tmpdir().
  *
- * Copyright 2011, 2013, 2016 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2011, 2013, 2016, 2019 Russ Allbery <eagle@eyrie.org>
  *
  * SPDX-License-Identifier: MIT
  */
@@ -33,7 +33,7 @@ main(void)
     fclose(output);
     build = getenv("C_TAP_BUILD");
     length = strlen(build) + strlen("/tmp") + 1;
-    path = bmalloc(length);
+    path = bcalloc_type(length, char);
     sprintf(path, "%s/tmp", build);
     if (access(path, F_OK) == 0)
         bail("%s already exists", path);

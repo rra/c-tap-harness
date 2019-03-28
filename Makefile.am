@@ -1,6 +1,6 @@
 # Automake makefile for C TAP Harness.
 #
-# Copyright 2008-2018 Russ Allbery <eagle@eyrie.org>
+# Copyright 2008-2019 Russ Allbery <eagle@eyrie.org>
 #
 # SPDX-License-Identifier: MIT
 
@@ -106,11 +106,11 @@ bin_PROGRAMS = tests/runtests
 noinst_LIBRARIES = tests/tap/libtap.a
 tests_tap_libtap_a_SOURCES = tests/tap/basic.c tests/tap/basic.h	\
 	tests/tap/float.c tests/tap/float.h tests/tap/macros.h
-dist_man_MANS = docs/api/bail.3 docs/api/bmalloc.3 docs/api/breallocarray.3 \
-	docs/api/diag.3 docs/api/diag_file_add.3 docs/api/is_int.3	    \
-	docs/api/ok.3 docs/api/plan.3 docs/api/skip.3 docs/api/skip_all.3   \
-	docs/api/test_cleanup_register.3 docs/api/test_file_path.3	    \
-	docs/api/test_tmpdir.3 docs/runtests.1
+dist_man_MANS = docs/api/bail.3 docs/api/bcalloc_type.3 docs/api/bmalloc.3 \
+	docs/api/breallocarray.3 docs/api/diag.3 docs/api/diag_file_add.3  \
+	docs/api/is_int.3 docs/api/ok.3 docs/api/plan.3 docs/api/skip.3	   \
+	docs/api/skip_all.3 docs/api/test_cleanup_register.3		   \
+	docs/api/test_file_path.3 docs/api/test_tmpdir.3 docs/runtests.1
 
 # Add symlinks for the man pages that document multiple functions.
 install-data-hook:
@@ -174,11 +174,11 @@ uninstall-hook:
 # Work around the GNU Coding Standards, which leave all the Autoconf and
 # Automake stuff around after make maintainer-clean, thus making that command
 # mostly worthless.
-MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/depcomp		 \
-	build-aux/install-sh build-aux/missing configure docs/api/bail.3 \
-	docs/api/bmalloc.3 docs/api/breallocarray.3 docs/api/diag.3	 \
-	docs/api/diag_file_add.3 docs/api/is_int.3 docs/api/ok.3	 \
-	docs/api/plan.3 docs/api/skip.3 docs/api/skip_all.3		 \
+MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/depcomp		    \
+	build-aux/install-sh build-aux/missing configure docs/api/bail.3    \
+	docs/api/bcalloc_type.3 docs/api/bmalloc.3 docs/api/breallocarray.3 \
+	docs/api/diag.3 docs/api/diag_file_add.3 docs/api/is_int.3	    \
+	docs/api/ok.3 docs/api/plan.3 docs/api/skip.3 docs/api/skip_all.3   \
 	docs/api/test_file_path.3 docs/api/test_tmpdir.3 docs/runtests.1
 
 # Separate target for a human to request building everything with as many

@@ -1,7 +1,7 @@
 /*
  * Test of the libtap test_cleanup_register_with_data function.
  *
- * Copyright 2018 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2018-2019 Russ Allbery <eagle@eyrie.org>
  *
  * SPDX-License-Identifier: MIT
  */
@@ -18,7 +18,7 @@
 static void
 test(int success, int primary, void *data)
 {
-    int *value = data;
+    int *value = (int *) data;
 
     printf("Called cleanup with %d %d %d\n", success, primary, *value);
     free(value);
@@ -28,7 +28,7 @@ test(int success, int primary, void *data)
 int
 main(void)
 {
-    int *data = malloc(sizeof(int));
+    int *data = bcalloc_type(1, int);
 
     *data = 99;
     test_cleanup_register_with_data(test, data);

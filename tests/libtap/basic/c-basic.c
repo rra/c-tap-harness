@@ -2,7 +2,7 @@
  * Calls libtap basic functions for testing.
  *
  * Written by Russ Allbery <eagle@eyrie.org>
- * Copyright 2015-2018 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2015-2019 Russ Allbery <eagle@eyrie.org>
  * Copyright 2008-2009, 2014
  *     The Board of Trustees of the Leland Stanford Junior University
  *
@@ -36,7 +36,8 @@ int
 main(void)
 {
     int status;
-    char *p;
+    void *p;
+    char *s;
     const unsigned char d1[] = { 0x00, 0x10, 0x20, 0xff, 0xfe };
     const unsigned char d2[] = { 0x00, 0x10, 0x20, 0xff, 0xfe };
     const unsigned char d3[] = { 0x01, 0x10, 0x20, 0xfa, 0xef };
@@ -59,14 +60,19 @@ main(void)
     p = breallocarray(p, 6, 10);
     memset(p, 3, 6 * 10);
     free(p);
-    p = bstrdup("testing");
-    free(p);
+    s = bstrdup("testing");
+    free(s);
     p = brealloc(NULL, 10);
     memset(p, 4, 10);
     free(p);
     p = breallocarray(NULL, 7, 10);
     memset(p, 5, 7 * 10);
     free(p);
+
+    /* Likewise with the macros. */
+    s = bcalloc_type(10, char);
+    s = breallocarray_type(s, 20, char);
+    free(s);
 
     /* Test ok, is_*, and skip functions. */
     status = ok(1, NULL);

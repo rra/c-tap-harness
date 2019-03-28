@@ -1,7 +1,7 @@
 /*
  * Test bstrndup to duplicate strings.
  *
- * Copyright 2012 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2012, 2019 Russ Allbery <eagle@eyrie.org>
  *
  * SPDX-License-Identifier: MIT
  */
@@ -16,7 +16,7 @@
 int
 main(void)
 {
-    char *data, *copy;
+    char *copy, *data;
     const char string[] = "Test string";
 
     copy = bstrndup(string, 100);
@@ -28,7 +28,7 @@ main(void)
     copy = bstrndup(string, 4);
     printf("%s\n", copy);
     free(copy);
-    data = bmalloc(5);
+    data = bcalloc_type(5, char);
     memset(data, 'a', 5);
     copy = bstrndup(data, 5);
     printf("%s\n", copy);

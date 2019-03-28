@@ -68,8 +68,12 @@
                 "title": "bmalloc, bcalloc, brealloc, bstrdup, and bstrndup",
             },
             {
+                "name": "bcalloc_type",
+                "title": "bcalloc_type",
+            },
+            {
                 "name": "breallocarray",
-                "title": "breallocarray",
+                "title": "breallocarray and breallocarray_type",
             },
             {
                 "name": "diag",
