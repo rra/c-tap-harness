@@ -6,7 +6,7 @@
     "copyrights": [
         {
             "holder": "Russ Allbery <eagle@eyrie.org>",
-            "years": "2000-2001, 2004, 2006-2018",
+            "years": "2000-2001, 2004, 2006-2019",
         },
         {
             "holder": "The Board of Trustees of the Leland Stanford Junior University",
@@ -18,6 +18,7 @@
         "autotools": true,
         "automake": "1.11",
         "autoconf": "2.64",
+        "cplusplus": true,
         "install": false,
         "lancaster": true,
         "manpages": true,
