@@ -1,4 +1,4 @@
-# C TAP Harness 4.4
+# C TAP Harness 4.5
 
 [![Build
 status](https://travis-ci.org/rra/c-tap-harness.svg?branch=master)](https://travis-ci.org/rra/c-tap-harness)
