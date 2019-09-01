@@ -3,7 +3,7 @@
 [![Build
 status](https://travis-ci.org/rra/c-tap-harness.svg?branch=master)](https://travis-ci.org/rra/c-tap-harness)
 
-Copyright 2000-2001, 2004, 2006-2018 Russ Allbery <eagle@eyrie.org>.
+Copyright 2000-2001, 2004, 2006-2019 Russ Allbery <eagle@eyrie.org>.
 Copyright 2006-2009, 2011-2013 The Board of Trustees of the Leland
 Stanford Junior University.  This software is distributed under a
 BSD-style license.  Please see the section [License](#license) below for
@@ -272,7 +272,7 @@ requests are gratefully reviewed and normally accepted.
 The C TAP Harness package as a whole is covered by the following copyright
 statement and license:
 
-> Copyright 2000-2001, 2004, 2006-2018
+> Copyright 2000-2001, 2004, 2006-2019
 >     Russ Allbery <eagle@eyrie.org>
 >
 > Copyright 2006-2009, 2011-2013
