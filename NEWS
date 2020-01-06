@@ -1,5 +1,10 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 4.6 (unreleased)
+
+    Reformat all C source using clang-format 10 and the formatting rules
+    specified in .clang-format.
+
 C TAP Harness 4.5 (2019-08-31)
 
     Add new bcalloc_type and breallocarray_type macros that take a type

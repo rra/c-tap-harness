@@ -1,12 +1,13 @@
 # Automake makefile for C TAP Harness.
 #
-# Copyright 2008-2019 Russ Allbery <eagle@eyrie.org>
+# Copyright 2008-2020 Russ Allbery <eagle@eyrie.org>
 #
 # SPDX-License-Identifier: MIT
 
 ACLOCAL_AMFLAGS = -I m4
-EXTRA_DIST = .gitignore LICENSE README.md bootstrap docs/api/bail.pod	    \
-	docs/api/bmalloc.pod docs/api/breallocarray.pod docs/api/diag.pod   \
+EXTRA_DIST = .clang-format .gitignore .travis.yml LICENSE README.md	    \
+	bootstrap docs/api/bail.pod docs/api/bmalloc.pod		    \
+	docs/api/breallocarray.pod docs/api/diag.pod			    \
 	docs/api/diag_file_add.pod docs/api/is_int.pod docs/api/ok.pod	    \
 	docs/api/plan.pod docs/api/skip.pod docs/api/skip_all.pod	    \
 	docs/api/test_cleanup_register.pod docs/api/test_file_path.pod	    \
@@ -252,3 +253,8 @@ check-valgrind: $(bin_PROGRAMS) $(check_PROGRAMS)
 	    --trace-children-skip="/bin/sh,*/cat,*/diff,*/expr,*/grep,*/mkdir,*/rm,*/rmdir,*/sed,*/sleep,*/true,*/wc,*/docs/pod*-t,*/harness/*/*.t,*/libtap/basic/sh-*" \
 	    tests/runtests -s '$(abs_top_srcdir)/tests'		\
 	    -b '$(abs_top_builddir)/tests' -l '$(abs_top_srcdir)/tests/TESTS'
+
+# Used by maintainers to reformat all source code using clang-format and
+# excluding some files.
+reformat:
+	find . -name '*.[ch]' -print | xargs clang-format-10 -style=file -i
