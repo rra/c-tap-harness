@@ -16,9 +16,8 @@ that necessary environment variables are set up.  You may need to change
 the `-s` option argument if you build with a separate build directory from
 the source directory.
 
-To run the test suite, you will need Perl plus the Perl module Test::More,
-which comes with Perl 5.8 or later.  The following additional Perl modules
-will be used by the test suite if present:
+To run the test suite, you will need Perl 5.8 or later.  The following
+additional Perl modules will be used by the test suite if present:
 
 * Test::Pod
 * Test::Spelling

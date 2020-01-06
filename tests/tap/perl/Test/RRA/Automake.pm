@@ -15,12 +15,10 @@
 
 package Test::RRA::Automake;
 
-use 5.006;
+use 5.008;
+use base qw(Exporter);
 use strict;
 use warnings;
-
-# For Perl 5.006 compatibility.
-## no critic (ClassHierarchies::ProhibitExplicitISA)
 
 use Exporter;
 use File::Find qw(find);
@@ -54,13 +52,12 @@ use lib $PERL_BLIB_ARCH;
 use lib $PERL_BLIB_LIB;
 
 # Declare variables that should be set in BEGIN for robustness.
-our (@EXPORT_OK, @ISA, $VERSION);
+our (@EXPORT_OK, $VERSION);
 
 # Set $VERSION and everything export-related in a BEGIN block for robustness
 # against circular module loading (not that we load any modules, but
 # consistency is good).
 BEGIN {
-    @ISA       = qw(Exporter);
     @EXPORT_OK = qw(
       all_files automake_setup perl_dirs test_file_path test_tmpdir
     );
@@ -68,7 +65,7 @@ BEGIN {
     # This version should match the corresponding rra-c-util release, but with
     # two digits for the minor version, including a leading zero if necessary,
     # so that it will sort properly.
-    $VERSION = '8.00';
+    $VERSION = '8.01';
 }
 
 # Directories to skip globally when looking for all files, or for directories
@@ -189,7 +186,7 @@ sub automake_setup {
         @builddirs = File::Spec->splitdir($builddirs);
         pop(@builddirs);
         my $libdir = File::Spec->catdir(@builddirs, $LIBRARY_PATH);
-        my $path = File::Spec->catpath($buildvol, $libdir, q{});
+        my $path   = File::Spec->catpath($buildvol, $libdir, q{});
         if (-d "$path/.libs") {
             $path .= '/.libs';
         }
@@ -229,7 +226,7 @@ sub perl_dirs {
     }
 
     # Convert the skip lists into hashes for convenience.
-    my %skip = map { $_ => 1 } @skip, 'tests';
+    my %skip       = map { $_ => 1 } @skip, 'tests';
     my %skip_tests = map { $_ => 1 } @skip_tests;
 
     # Build the list of top-level directories to test.
@@ -451,7 +448,7 @@ Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2014-2015, 2018 Russ Allbery <eagle@eyrie.org>
+Copyright 2014-2015, 2018-2019 Russ Allbery <eagle@eyrie.org>
 
 Copyright 2013 The Board of Trustees of the Leland Stanford Junior University
 

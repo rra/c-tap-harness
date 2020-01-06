@@ -5,6 +5,10 @@ C TAP Harness 4.6 (unreleased)
     Reformat all C source using clang-format 10 and the formatting rules
     specified in .clang-format.
 
+    Update to rra-c-util 8.1:
+
+    * Drop support for Perl versions prior to Perl 5.8.
+
 C TAP Harness 4.5 (2019-08-31)
 
     Add new bcalloc_type and breallocarray_type macros that take a type
