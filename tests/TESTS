@@ -11,3 +11,4 @@ harness/verbose
 libtap/basic
 libtap/cleanup
 style/obsolete-strings
+valgrind/logs

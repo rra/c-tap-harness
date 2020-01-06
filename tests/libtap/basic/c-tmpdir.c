@@ -1,7 +1,7 @@
 /*
  * Test creating a temporary directory with test_tmpdir().
  *
- * Copyright 2011, 2013, 2016, 2019 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2011, 2013, 2016, 2019-2020 Russ Allbery <eagle@eyrie.org>
  *
  * SPDX-License-Identifier: MIT
  */
@@ -24,20 +24,30 @@ main(void)
     const char *build;
     struct stat st;
     size_t length;
+    int exists;
 
+    /* Create the expected output file. */
     output = fopen("c-tmpdir.output", "w");
     if (output == NULL)
         sysbail("cannot create c-tmpdir.output");
     fprintf(output, "Path to temporary directory: %s/tmp\n",
             getenv("C_TAP_BUILD"));
     fclose(output);
+
+    /* Check if the path already exists. */
     build = getenv("C_TAP_BUILD");
     length = strlen(build) + strlen("/tmp") + 1;
     path = bcalloc_type(length, char);
     sprintf(path, "%s/tmp", build);
-    if (access(path, F_OK) == 0)
-        bail("%s already exists", path);
+    exists = (access(path, F_OK) == 0);
     free(path);
+
+    /*
+     * Check that the directory is created correctly.  This isn't always a
+     * good test; if the directory already exists (which will happen with
+     * valgrind tests), we only check that the path is correct.  But normally
+     * it shouldn't already exist and fixing this is hard, so live with it.
+     */
     path = test_tmpdir();
     printf("Path to temporary directory: %s\n", path);
     if (stat(path, &st) < 0)
@@ -46,7 +56,9 @@ main(void)
         sysbail("%s is not a directory", path);
     tmp = bstrdup(path);
     test_tmpdir_free(path);
-    if (stat(tmp, &st) == 0)
+
+    /* If the directory already existed, we may not be able to remove it. */
+    if (!exists && stat(tmp, &st) == 0)
         bail("temporary directory not removed");
     free(tmp);
 

@@ -2,15 +2,12 @@
 #
 # Test suite for runtests in verbose mode.
 #
-# Copyright 2015, 2016 Russ Allbery <eagle@eyrie.org>
+# Copyright 2015, 2016, 2020 Russ Allbery <eagle@eyrie.org>
 #
 # SPDX-License-Identifier: MIT
 
 . "$C_TAP_SOURCE/tap/libtap.sh"
 cd "$C_TAP_BUILD"
-
-# Total tests.
-plan 8
 
 # Run runtests with the name of the test (and hence the desired output file)
 # in the first argument, and the arguments to runtests in the subsequent
@@ -19,7 +16,8 @@ plan 8
 ok_runtests () {
     name="$1"
     shift
-    "$C_TAP_BUILD"/runtests -s "${C_TAP_SOURCE}/harness/basic" \
+    $C_TAP_VALGRIND "$C_TAP_BUILD"/runtests                     \
+        -s "${C_TAP_SOURCE}/harness/basic"                      \
         -b "${C_TAP_BUILD}/harness/basic" "$@" > "$name".raw
     status=$?
     ok "test result status for $name" [ $status -eq 0 ]
@@ -30,6 +28,13 @@ ok_runtests () {
     ok "test output for $name" [ $status -eq 0 ]
     rm "$name".result
 }
+
+# Total tests.
+plan 8
+
+# Remove any valgrind flags to trace children, since we only want to check the
+# harness itself.
+C_TAP_VALGRIND=`echo "$C_TAP_VALGRIND" | sed 's/--trace-children[^ ]* //'`
 
 # Run runtests in verbose mode, overriding the source directory, and passing a
 # few tests from the basic directory to run.

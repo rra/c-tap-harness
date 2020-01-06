@@ -23,6 +23,7 @@
         "lancaster": true,
         "manpages": true,
         "type": "Autoconf",
+        "valgrind": true,
     },
     "support": {
         "email": "eagle@eyrie.org",

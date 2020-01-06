@@ -2,7 +2,7 @@
 #
 # Test suite for runtests support of test list options.
 #
-# Copyright 2018 Russ Allbery <eagle@eyrie.org>
+# Copyright 2018, 2020 Russ Allbery <eagle@eyrie.org>
 #
 # SPDX-License-Identifier: MIT
 
@@ -13,7 +13,7 @@ cd "$C_TAP_BUILD"
 # printing ok if it matches.  Strip out the time information from the runtests
 # result since it changes for each run.
 ok_runtests () {
-    "$C_TAP_BUILD"/runtests -s "${C_TAP_SOURCE}/harness/options" \
+    $VALGRIND "$C_TAP_BUILD"/runtests -s "${C_TAP_SOURCE}/harness/options" \
         -l "${C_TAP_SOURCE}/harness/options/$1.list" > "$2".raw 2>&1
     status=$?
     ok "$1 test set status ($status)" [ $status -eq "$3" ]
@@ -29,6 +29,11 @@ ok_runtests () {
 
 # Total tests.
 plan 10
+
+# Stash the value of C_TAP_VALGRIND and then clear it.  Remove the flags to
+# trace children, since we only want to check the harness itself.
+VALGRIND=`echo "$C_TAP_VALGRIND" | sed 's/--trace-children[^ ]* //'`
+unset C_TAP_VALGRIND
 
 # A test list with a bad option should immediately fail.
 ok_runtests bad-option bad-option 1

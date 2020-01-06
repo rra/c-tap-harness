@@ -3,7 +3,7 @@
 # Test suite for libtap cleanup function functionality.
 #
 # Written by Russ Allbery <eagle@eyrie.org>
-# Copyright 2009, 2012-2013, 2016, 2018 Russ Allbery <eagle@eyrie.org>
+# Copyright 2009, 2012-2013, 2016, 2018, 2020 Russ Allbery <eagle@eyrie.org>
 # Copyright 2008, 2013
 #     The Board of Trustees of the Leland Stanford Junior University
 #
@@ -15,7 +15,7 @@ cd "${C_TAP_BUILD}/libtap/cleanup"
 # Run a binary, saving its output, and then compare that output to the
 # corresponding *.output file.
 ok_test_program () {
-    "$C_TAP_BUILD"/libtap/cleanup/"$1" > "$1".result 2>&1
+    $C_TAP_VALGRIND "$C_TAP_BUILD"/libtap/cleanup/"$1" > "$1".result 2>&1
     status=$?
     ok "$1 exit status" [ $status -eq "$2" ]
     diff -u "${C_TAP_SOURCE}/libtap/cleanup/$1".output "$1".result 2>&1

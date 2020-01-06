@@ -4,7 +4,7 @@ dnl The C TAP harness is written in maximally portable C, so Autoconf is used
 dnl here mostly for consistency in build process and to handle Automake, not
 dnl for any portability of the code itself.
 dnl
-dnl Copyright 2008-2011, 2013-2015, 2017 Russ Allbery <eagle@eyrie.org>
+dnl Copyright 2008-2011, 2013-2015, 2017, 2020 Russ Allbery <eagle@eyrie.org>
 dnl
 dnl SPDX-License-Identifier: MIT
 
@@ -28,6 +28,10 @@ m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 AC_PROG_INSTALL
 AC_PROG_RANLIB
 AC_PROG_LN_S
+
+dnl Only used for the test suite.
+AC_ARG_VAR([PATH_VALGRIND], [Path to valgrind for the test suite])
+AC_PATH_PROG([PATH_VALGRIND], [valgrind])
 
 dnl Add some additional warnings since this package is incredibly strict.
 AS_IF([test x"$CLANG" = xyes],

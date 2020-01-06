@@ -3,7 +3,7 @@
 # Test suite for libtap functionality.
 #
 # Written by Russ Allbery <eagle@eyrie.org>
-# Copyright 2009, 2012-2013, 2016 Russ Allbery <eagle@eyrie.org>
+# Copyright 2009, 2012-2013, 2016, 2020 Russ Allbery <eagle@eyrie.org>
 # Copyright 2008, 2013
 #     The Board of Trustees of the Leland Stanford Junior University
 #
@@ -15,7 +15,10 @@ cd "${C_TAP_BUILD}/libtap/basic"
 # Run a binary, saving its output, and then compare that output to the
 # corresponding *.output file.
 ok_result () {
-    "$2"/libtap/basic/"$1" > "$1".result 2>&1
+    case "$1" in
+        c-*) $C_TAP_VALGRIND "$2"/libtap/basic/"$1" > "$1".result 2>&1 ;;
+        *)   "$2"/libtap/basic/"$1" > "$1".result 2>&1 ;;
+    esac
     status=$?
     ok "$1 exit status" [ $status -eq "$3" ]
     case "$1" in

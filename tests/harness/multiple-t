@@ -2,7 +2,7 @@
 #
 # Test suite for running multiple tests listed on the command line.
 #
-# Copyright 2013, 2016 Russ Allbery <eagle@eyrie.org>
+# Copyright 2013, 2016, 2020 Russ Allbery <eagle@eyrie.org>
 #
 # SPDX-License-Identifier: MIT
 
@@ -12,9 +12,13 @@ cd "$C_TAP_BUILD"
 # Total tests.
 plan 4
 
+# Remove any valgrind flags to trace children, since we only want to check the
+# harness itself.
+C_TAP_VALGRIND=`echo "$C_TAP_VALGRIND" | sed 's/--trace-children[^ ]* //'`
+
 # Run runtests, overriding the build and source directories, and passing a
 # few tests from the basic directory to run.
-"${C_TAP_BUILD}/runtests" -s "${C_TAP_SOURCE}/harness/basic" \
+$C_TAP_VALGRIND "${C_TAP_BUILD}/runtests" -s "${C_TAP_SOURCE}/harness/basic" \
     pass fail skip todo > multiple.raw
 status=$?
 ok 'test result status' [ $status -eq 1 ]
@@ -29,7 +33,7 @@ fi
 
 # Verify that running runtests without any tests fails and prints a usage
 # message.
-output=`"${C_TAP_BUILD}/runtests" 2>&1`
+output=`$C_TAP_VALGRIND "${C_TAP_BUILD}/runtests" 2>&1`
 status=$?
 ok 'runtests with no arguments fails' [ $status -eq 1 ]
 echo "$output" | grep Usage: >/dev/null 2>&1
