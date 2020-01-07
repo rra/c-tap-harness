@@ -1,12 +1,12 @@
 {
     "name": "C TAP Harness",
-    "version": "4.5",
+    "version": "4.6",
     "synopsis": "C harness for running TAP-compliant tests",
     "maintainer": "Russ Allbery <eagle@eyrie.org>",
     "copyrights": [
         {
             "holder": "Russ Allbery <eagle@eyrie.org>",
-            "years": "2000-2001, 2004, 2006-2019",
+            "years": "2000-2001, 2004, 2006-2020",
         },
         {
             "holder": "The Board of Trustees of the Leland Stanford Junior University",

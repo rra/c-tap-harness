@@ -1,9 +1,9 @@
-# C TAP Harness 4.5
+# C TAP Harness 4.6
 
 [![Build
 status](https://travis-ci.org/rra/c-tap-harness.svg?branch=master)](https://travis-ci.org/rra/c-tap-harness)
 
-Copyright 2000-2001, 2004, 2006-2019 Russ Allbery <eagle@eyrie.org>.
+Copyright 2000-2001, 2004, 2006-2020 Russ Allbery <eagle@eyrie.org>.
 Copyright 2006-2009, 2011-2013 The Board of Trustees of the Leland
 Stanford Junior University.  This software is distributed under a
 BSD-style license.  Please see the section [License](#license) below for
@@ -111,9 +111,8 @@ that necessary environment variables are set up.  You may need to change
 the `-s` option argument if you build with a separate build directory from
 the source directory.
 
-To run the test suite, you will need Perl plus the Perl module Test::More,
-which comes with Perl 5.8 or later.  The following additional Perl modules
-will be used by the test suite if present:
+To run the test suite, you will need Perl 5.8 or later.  The following
+additional Perl modules will be used by the test suite if present:
 
 * Test::Pod
 * Test::Spelling
@@ -272,7 +271,7 @@ requests are gratefully reviewed and normally accepted.
 The C TAP Harness package as a whole is covered by the following copyright
 statement and license:
 
-> Copyright 2000-2001, 2004, 2006-2019
+> Copyright 2000-2001, 2004, 2006-2020
 >     Russ Allbery <eagle@eyrie.org>
 >
 > Copyright 2006-2009, 2011-2013

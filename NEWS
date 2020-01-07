@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 4.6 (unreleased)
+C TAP Harness 4.6 (2020-01-07)
 
     Reformat all C source using clang-format 10 and the formatting rules
     specified in .clang-format.
