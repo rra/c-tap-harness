@@ -6,8 +6,8 @@
 
 ACLOCAL_AMFLAGS = -I m4
 EXTRA_DIST = .clang-format .gitignore .travis.yml LICENSE README.md	    \
-	bootstrap docs/api/bail.pod docs/api/bmalloc.pod		    \
-	docs/api/breallocarray.pod docs/api/diag.pod			    \
+	bootstrap docs/api/bail.pod docs/api/bcalloc_type.pod		    \
+	docs/api/bmalloc.pod docs/api/breallocarray.pod docs/api/diag.pod   \
 	docs/api/diag_file_add.pod docs/api/is_int.pod docs/api/ok.pod	    \
 	docs/api/plan.pod docs/api/skip.pod docs/api/skip_all.pod	    \
 	docs/api/test_cleanup_register.pod docs/api/test_file_path.pod	    \
@@ -97,7 +97,7 @@ EXTRA_DIST = .clang-format .gitignore .travis.yml LICENSE README.md	    \
 	tests/libtap/cleanup/c-one.output tests/style/obsolete-strings-t    \
 	tests/tap/libtap.sh tests/tap/perl/Test/RRA.pm			    \
 	tests/tap/perl/Test/RRA/Automake.pm				    \
-	tests/tap/perl/Test/RRA/Config.pm
+	tests/tap/perl/Test/RRA/Config.pm tests/valgrind/logs-t
 
 # It's somewhat odd to have the TAP library and the runtests harness in the
 # tests directory, since they're the primary point of this package.  But
