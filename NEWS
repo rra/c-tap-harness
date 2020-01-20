@@ -317,7 +317,7 @@ C TAP Harness 1.11 (2012-04-25)
 
     Move the is_double C TAP test function into a separate source file.
     Including this function may require linking with libm on some
-    platforms, which is undesireable if the package otherwise doesn't use
+    platforms, which is undesirable if the package otherwise doesn't use
     math functions.  The new tests/tap/float.c and tests/tap/float.h files
     need only be included in a package that wants to do floating point
     tests.  Users of is_double will now need to include tests/tap/float.h
