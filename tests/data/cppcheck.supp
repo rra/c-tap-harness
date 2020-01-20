@@ -8,7 +8,7 @@
 // with the --xml flag and then add a suppression for the error id, file
 // location, and line.
 //
-// Copyright 2018-2019 Russ Allbery <eagle@eyrie.org>
+// Copyright 2018-2020 Russ Allbery <eagle@eyrie.org>
 //
 // Copying and distribution of this file, with or without modification, are
 // permitted in any medium without royalty provided the copyright notice and
@@ -37,7 +37,7 @@ memleak:portable/getaddrinfo.c:236
 
 // Bug in cppcheck 1.89.  The address of this variable is passed to a Windows
 // function (albeit through a cast).
-nullPointer:portable/winsock.c:62
+nullPointer:portable/winsock.c:61
 
 // Setting the variable to NULL explicitly after deallocation.
 redundantAssignment:tests/pam-util/options-t.c
@@ -50,3 +50,6 @@ uninitvar:php/php_remctl.c:315
 uninitvar:php/php5_remctl.c:125
 uninitvar:php/php5_remctl.c:129
 uninitvar:php/php5_remctl.c:321
+
+// (pam-krb5) cppcheck doesn't recognize the unused attribute on labels.
+unusedLabel:auth.c:872
