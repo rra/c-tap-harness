@@ -30,6 +30,9 @@ ok_runtests () {
 # Total tests.
 plan 10
 
+# Do not inherit test verbosity.
+unset C_TAP_VERBOSE
+
 # Stash the value of C_TAP_VALGRIND and then clear it.  Remove the flags to
 # trace children, since we only want to check the harness itself.
 VALGRIND=`echo "$C_TAP_VALGRIND" | sed 's/--trace-children[^ ]* //'`

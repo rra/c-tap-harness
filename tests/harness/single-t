@@ -12,6 +12,9 @@ cd "$C_TAP_BUILD"
 # Total tests.
 plan 2
 
+# Do not inherit test verbosity.
+unset C_TAP_VERBOSE
+
 # Remove any valgrind flags to trace children, since we only want to check the
 # harness itself.
 C_TAP_VALGRIND=`echo "$C_TAP_VALGRIND" | sed 's/--trace-children[^ ]* //'`
