@@ -1,7 +1,7 @@
 # C TAP Harness 4.6
 
 [![Build
-status](https://travis-ci.org/rra/c-tap-harness.svg?branch=master)](https://travis-ci.org/rra/c-tap-harness)
+status](https://github.com/rra/c-tap-harness/workflows/build/badge.svg)](https://github.com/rra/c-tap-harness/actions)
 
 Copyright 2000-2001, 2004, 2006-2020 Russ Allbery <eagle@eyrie.org>.
 Copyright 2006-2009, 2011-2013 The Board of Trustees of the Leland
@@ -184,7 +184,7 @@ an example:
   Test programs must be executable.
 
   For any test programs that need to be compiled, add build rules for them
-  in `Makefile.am`, simliar to:
+  in `Makefile.am`, similar to:
 
   ```make
       tests_libtap_c_basic_LDADD = tests/tap/libtap.a

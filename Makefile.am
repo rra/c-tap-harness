@@ -5,9 +5,9 @@
 # SPDX-License-Identifier: MIT
 
 ACLOCAL_AMFLAGS = -I m4
-EXTRA_DIST = .clang-format .gitignore .travis.yml LICENSE README.md	    \
-	bootstrap docs/api/bail.pod docs/api/bcalloc_type.pod		    \
-	docs/api/bmalloc.pod docs/api/breallocarray.pod docs/api/diag.pod   \
+EXTRA_DIST = .clang-format .github .gitignore LICENSE README.md bootstrap   \
+	docs/api/bail.pod docs/api/bcalloc_type.pod docs/api/bmalloc.pod    \
+	docs/api/breallocarray.pod docs/api/diag.pod			    \
 	docs/api/diag_file_add.pod docs/api/is_int.pod docs/api/ok.pod	    \
 	docs/api/plan.pod docs/api/skip.pod docs/api/skip_all.pod	    \
 	docs/api/test_cleanup_register.pod docs/api/test_file_path.pod	    \
