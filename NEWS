@@ -5,6 +5,8 @@ C TAP Harness 4.7 (unreleased)
     Allow the package test suite to be run with C_TAP_VERBOSE without
     breaking test results via inheritance of that setting.
 
+    Fix warnings with GCC 10.
+
 C TAP Harness 4.6 (2020-01-07)
 
     Reformat all C source using clang-format 10 and the formatting rules
