@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 4.7 (unreleased)
+C TAP Harness 4.7 (2020-05-16)
 
     Allow the package test suite to be run with C_TAP_VERBOSE without
     breaking test results via inheritance of that setting.

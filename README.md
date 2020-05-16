@@ -1,4 +1,4 @@
-# C TAP Harness 4.6
+# C TAP Harness 4.7
 
 [![Build
 status](https://github.com/rra/c-tap-harness/workflows/build/badge.svg)](https://github.com/rra/c-tap-harness/actions)
