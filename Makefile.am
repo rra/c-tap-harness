@@ -1,6 +1,6 @@
 # Automake makefile for C TAP Harness.
 #
-# Copyright 2008-2020 Russ Allbery <eagle@eyrie.org>
+# Copyright 2008-2021 Russ Allbery <eagle@eyrie.org>
 #
 # SPDX-License-Identifier: MIT
 
@@ -259,4 +259,4 @@ check-valgrind: $(check_PROGRAMS)
 # Used by maintainers to reformat all source code using clang-format and
 # excluding some files.
 reformat:
-	find . -name '*.[ch]' -print | xargs clang-format-10 -style=file -i
+	find . -name '*.[ch]' -print | xargs clang-format -style=file -i
