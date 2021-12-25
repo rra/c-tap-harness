@@ -1,4 +1,4 @@
-# C TAP Harness 4.7
+# C TAP Harness
 
 [![Build
 status](https://github.com/rra/c-tap-harness/workflows/build/badge.svg)](https://github.com/rra/c-tap-harness/actions)
@@ -151,7 +151,8 @@ an example:
 
   ```make
       check_PROGRAMS = tests/runtests
-      tests_runtests_CPPFLAGS = -DC_TAP_SOURCE='"$(abs_top_srcdir)/tests"' \
+      tests_runtests_CPPFLAGS = \
+              -DC_TAP_SOURCE='"$(abs_top_srcdir)/tests"' \
               -DC_TAP_BUILD='"$(abs_top_builddir)/tests"'
       check_LIBRARIES = tests/tap/libtap.a
       tests_tap_libtap_a_CPPFLAGS = -I$(abs_top_srcdir)/tests
