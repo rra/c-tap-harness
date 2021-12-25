@@ -1,8 +1,9 @@
 dnl Check whether the compiler supports particular flags.
 dnl
-dnl Provides RRA_PROG_CC_FLAG, which checks whether a compiler supports a
-dnl given flag.  If it does, the commands in the second argument are run.  If
-dnl not, the commands in the third argument are run.
+dnl Provides RRA_PROG_CC_FLAG and RRA_PROG_LD_FLAG, which checks whether a
+dnl compiler supports a given flag for either compilation or linking,
+dnl respectively.  If it does, the commands in the second argument are run.
+dnl If not, the commands in the third argument are run.
 dnl
 dnl Provides RRA_PROG_CC_WARNINGS_FLAGS, which checks whether a compiler
 dnl supports a large set of warning flags and sets the WARNINGS_CFLAGS
@@ -14,7 +15,7 @@ dnl
 dnl The canonical version of this file is maintained in the rra-c-util
 dnl package, available at <https://www.eyrie.org/~eagle/software/rra-c-util/>.
 dnl
-dnl Copyright 2016-2020 Russ Allbery <eagle@eyrie.org>
+dnl Copyright 2016-2021 Russ Allbery <eagle@eyrie.org>
 dnl Copyright 2006, 2009, 2016
 dnl     by Internet Systems Consortium, Inc. ("ISC")
 dnl
@@ -34,16 +35,21 @@ dnl SPDX-License-Identifier: ISC
 
 dnl Used to build the result cache name.
 AC_DEFUN([_RRA_PROG_CC_FLAG_CACHE],
-[translit([rra_cv_compiler_c_$1], [-=+], [___])])
+[translit([rra_cv_compiler_c_$1], [-=+,], [____])])
+AC_DEFUN([_RRA_PROG_LD_FLAG_CACHE],
+[translit([rra_cv_linker_c_$1], [-=+,], [____])])
 
-dnl Check whether a given flag is supported by the compiler.
+dnl Check whether a given flag is supported by the compiler when compiling a C
+dnl source file.
 AC_DEFUN([RRA_PROG_CC_FLAG],
 [AC_REQUIRE([AC_PROG_CC])
  AC_MSG_CHECKING([if $CC supports $1])
  AC_CACHE_VAL([_RRA_PROG_CC_FLAG_CACHE([$1])],
     [save_CFLAGS=$CFLAGS
+     AS_IF([test x"$CLANG" = xyes],
+        [CFLAGS="$CFLAGS -Werror=unknown-warning-option"])
      AS_CASE([$1],
-        [-Wno-*], [CFLAGS="$CFLAGS `echo "$1" | sed 's/-Wno-/-W/'`"],
+        [-Wno-*], [CFLAGS="$CFLAGS `AS_ECHO(["$1"]) | sed 's/-Wno-/-W/'`"],
         [*],      [CFLAGS="$CFLAGS $1"])
      AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [int foo = 0;])],
         [_RRA_PROG_CC_FLAG_CACHE([$1])=yes],
@@ -51,6 +57,23 @@ AC_DEFUN([RRA_PROG_CC_FLAG],
      CFLAGS=$save_CFLAGS])
  AC_MSG_RESULT([$_RRA_PROG_CC_FLAG_CACHE([$1])])
  AS_IF([test x"$_RRA_PROG_CC_FLAG_CACHE([$1])" = xyes], [$2], [$3])])
+
+dnl Check whether a given flag is supported by the compiler when linking an
+dnl executable.
+AC_DEFUN([RRA_PROG_LD_FLAG],
+[AC_REQUIRE([AC_PROG_CC])
+ AC_MSG_CHECKING([if $CC supports $1 for linking])
+ AC_CACHE_VAL([_RRA_PROG_LD_FLAG_CACHE([$1])],
+    [save_LDFLAGS=$LDFLAGS
+     AS_IF([test x"$CLANG" = xyes],
+        [LDFLAGS="$LDFLAGS -Werror=unknown-warning-option"])
+     LDFLAGS="$LDFLAGS $1"
+     AC_LINK_IFELSE([AC_LANG_PROGRAM([], [int foo = 0;])],
+        [_RRA_PROG_LD_FLAG_CACHE([$1])=yes],
+        [_RRA_PROG_LD_FLAG_CACHE([$1])=no])
+     LDFLAGS=$save_LDFLAGS])
+ AC_MSG_RESULT([$_RRA_PROG_LD_FLAG_CACHE([$1])])
+ AS_IF([test x"$_RRA_PROG_LD_FLAG_CACHE([$1])" = xyes], [$2], [$3])])
 
 dnl Determine the full set of viable warning flags for the current compiler.
 dnl

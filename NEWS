@@ -1,5 +1,11 @@
                     User-Visible C TAP Harness Changes
 
+C TAP Harness 4.8 (unreleased)
+
+    Update to rra-c-util 10.1:
+
+    * Drop support for Perl versions prior to Perl 5.10.
+
 C TAP Harness 4.7 (2020-05-16)
 
     Allow the package test suite to be run with C_TAP_VERBOSE without

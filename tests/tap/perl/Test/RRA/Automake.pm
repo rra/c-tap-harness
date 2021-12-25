@@ -15,7 +15,7 @@
 
 package Test::RRA::Automake;
 
-use 5.008;
+use 5.010;
 use base qw(Exporter);
 use strict;
 use warnings;
@@ -34,7 +34,7 @@ my ($PERL_BLIB_ARCH, $PERL_BLIB_LIB);
 # the results in a use lib command below.
 BEGIN {
     $PERL_BLIB_ARCH = File::Spec->catdir(qw(perl blib arch));
-    $PERL_BLIB_LIB  = File::Spec->catdir(qw(perl blib lib));
+    $PERL_BLIB_LIB = File::Spec->catdir(qw(perl blib lib));
 
     # If C_TAP_BUILD is set, we can come up with better values.
     if (defined($ENV{C_TAP_BUILD})) {
@@ -42,7 +42,7 @@ BEGIN {
         my @dirs = File::Spec->splitdir($dirs);
         pop(@dirs);
         $PERL_BLIB_ARCH = File::Spec->catdir(@dirs, qw(perl blib arch));
-        $PERL_BLIB_LIB  = File::Spec->catdir(@dirs, qw(perl blib lib));
+        $PERL_BLIB_LIB = File::Spec->catdir(@dirs, qw(perl blib lib));
     }
 }
 
@@ -59,27 +59,27 @@ our (@EXPORT_OK, $VERSION);
 # consistency is good).
 BEGIN {
     @EXPORT_OK = qw(
-      all_files automake_setup perl_dirs test_file_path test_tmpdir
+        all_files automake_setup perl_dirs test_file_path test_tmpdir
     );
 
     # This version should match the corresponding rra-c-util release, but with
     # two digits for the minor version, including a leading zero if necessary,
     # so that it will sort properly.
-    $VERSION = '8.01';
+    $VERSION = '10.01';
 }
 
 # Directories to skip globally when looking for all files, or for directories
 # that could contain Perl files.
 my @GLOBAL_SKIP = qw(
-  .git _build autom4te.cache build-aux perl/_build perl/blib
+    .git .pc _build autom4te.cache build-aux perl/_build perl/blib
 );
 
 # Additional paths to skip when building a list of all files in the
 # distribution.  This primarily skips build artifacts that aren't interesting
 # to any of the tests.  These match any path component.
 my @FILES_SKIP = qw(
-  .deps .dirstamp .libs aclocal.m4 config.h config.h.in config.h.in~ config.log
-  config.status configure
+    .deps .dirstamp .libs aclocal.m4 config.h config.h.in config.h.in~
+    config.log config.status configure configure~
 );
 
 # The temporary directory created by test_tmpdir, if any.  If this is set,
@@ -94,7 +94,7 @@ sub all_files {
     my @files;
 
     # Turn the skip lists into hashes for ease of querying.
-    my %skip       = map { $_ => 1 } @GLOBAL_SKIP;
+    my %skip = map { $_ => 1 } @GLOBAL_SKIP;
     my %files_skip = map { $_ => 1 } @FILES_SKIP;
 
     # Wanted function for find.  Prune anything matching either of the skip
@@ -103,11 +103,11 @@ sub all_files {
         my $file = $_;
         my $path = $File::Find::name;
         $path =~ s{ \A [.]/ }{}xms;
-        if ($skip{$path} || $files_skip{$file} || $file =~ m{ [.] lo \z }xms) {
+        if ($skip{$path} || $files_skip{$file} || $file =~ m{ [.]lo\z }xms) {
             $File::Find::prune = 1;
             return;
         }
-        if (-f $file) {
+        if (!-d $file) {
             push(@files, $path);
         }
     };
@@ -153,7 +153,7 @@ sub automake_setup {
 
     # Simplify relative paths at the end of the directory.
     my $ups = 0;
-    my $i   = $#dirs;
+    my $i = $#dirs;
     while ($i > 2 && $dirs[$i] eq File::Spec->updir) {
         $ups++;
         $i--;
@@ -186,7 +186,7 @@ sub automake_setup {
         @builddirs = File::Spec->splitdir($builddirs);
         pop(@builddirs);
         my $libdir = File::Spec->catdir(@builddirs, $LIBRARY_PATH);
-        my $path   = File::Spec->catpath($buildvol, $libdir, q{});
+        my $path = File::Spec->catpath($buildvol, $libdir, q{});
         if (-d "$path/.libs") {
             $path .= '/.libs';
         }
@@ -226,7 +226,7 @@ sub perl_dirs {
     }
 
     # Convert the skip lists into hashes for convenience.
-    my %skip       = map { $_ => 1 } @skip, 'tests';
+    my %skip = map { $_ => 1 } @skip, 'tests';
     my %skip_tests = map { $_ => 1 } @skip_tests;
 
     # Build the list of top-level directories to test.
@@ -270,7 +270,7 @@ sub test_file_path {
   BASE:
     for my $base ($ENV{C_TAP_BUILD}, $ENV{C_TAP_SOURCE}) {
         next if !defined($base);
-        if (-f "$base/$file") {
+        if (-e "$base/$file") {
             return "$base/$file";
         }
     }
@@ -448,7 +448,7 @@ Russ Allbery <eagle@eyrie.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2014-2015, 2018-2019 Russ Allbery <eagle@eyrie.org>
+Copyright 2014-2015, 2018-2021 Russ Allbery <eagle@eyrie.org>
 
 Copyright 2013 The Board of Trustees of the Leland Stanford Junior University
 
