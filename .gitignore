@@ -1,6 +1,6 @@
 # Ignore list for Git.  -*- conf -*-
 #
-# Copyright 2008-2014, 2018 Russ Allbery <eagle@eyrie.org>
+# Copyright 2008-2014, 2018, 2021 Russ Allbery <eagle@eyrie.org>
 #
 # Copying and distribution of this file, with or without modification, are
 # permitted in any medium without royalty provided the copyright notice and
@@ -20,6 +20,7 @@
 /config.status
 /config.status.lineno
 /configure
+/configure~
 /configure.lineno
 /docs/runtests.1
 /tests/harness/env/env.t
