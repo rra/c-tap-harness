@@ -2,6 +2,10 @@
 
 C TAP Harness 4.8 (unreleased)
 
+    Add missing rm for an old bstrndup symlink, which would cause make
+    install to fail if C TAP Harness had previously been installed.
+    Thanks, Horst H. von Brand.  (Fixes #9)
+
     Update to rra-c-util 10.1:
 
     * Drop support for Perl versions prior to Perl 5.10.

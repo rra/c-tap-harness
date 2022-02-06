@@ -1,6 +1,6 @@
 # Automake makefile for C TAP Harness.
 #
-# Copyright 2008-2021 Russ Allbery <eagle@eyrie.org>
+# Copyright 2008-2022 Russ Allbery <eagle@eyrie.org>
 #
 # SPDX-License-Identifier: MIT
 
@@ -121,6 +121,7 @@ install-data-hook:
 	rm -f $(DESTDIR)$(man3dir)/bcalloc.3
 	rm -f $(DESTDIR)$(man3dir)/brealloc.3
 	rm -f $(DESTDIR)$(man3dir)/bstrdup.3
+	rm -f $(DESTDIR)$(man3dir)/bstrndup.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) bmalloc.3 bcalloc.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) bmalloc.3 brealloc.3
 	cd $(DESTDIR)$(man3dir) && $(LN_S) bmalloc.3 bstrdup.3
