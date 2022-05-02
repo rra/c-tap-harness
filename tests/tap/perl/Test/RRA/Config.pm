@@ -32,7 +32,7 @@ BEGIN {
     # This version should match the corresponding rra-c-util release, but with
     # two digits for the minor version, including a leading zero if necessary,
     # so that it will sort properly.
-    $VERSION = '10.01';
+    $VERSION = '10.02';
 }
 
 # If C_TAP_BUILD or C_TAP_SOURCE are set in the environment, look for

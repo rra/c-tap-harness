@@ -9,7 +9,7 @@
 # The canonical version of this file is maintained in the rra-c-util package,
 # which can be found at <https://www.eyrie.org/~eagle/software/rra-c-util/>.
 #
-# Copyright 2018-2021 Russ Allbery <eagle@eyrie.org>
+# Copyright 2018-2022 Russ Allbery <eagle@eyrie.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -75,9 +75,11 @@ my @IGNORE_PATHS = (
     qr{ \A php/configure [.] (ac|in) \z }xms,  # Created by phpize
     qr{ \A php/ltmain [.] sh \z }xms,          # Created by phpize
     qr{ \A php/run-tests [.] php \z }xms,      # Created by phpize
+    qr{ \A php/ .* [.] dep \z }xms,            # Created by phpize
     qr{ \A python/ .* [.] egg-info/ }xms,      # Python build files
     qr{ \A tests/config/ (?!README) }xms,      # Test configuration
     qr{ \A tests/tmp/ }xms,                    # Temporary test files
+    qr{ [.] mypy_cache/ }xms,                  # mypy caches
 );
 ## use critic
 

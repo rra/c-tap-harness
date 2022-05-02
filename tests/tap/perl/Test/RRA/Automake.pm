@@ -65,7 +65,7 @@ BEGIN {
     # This version should match the corresponding rra-c-util release, but with
     # two digits for the minor version, including a leading zero if necessary,
     # so that it will sort properly.
-    $VERSION = '10.01';
+    $VERSION = '10.02';
 }
 
 # Directories to skip globally when looking for all files, or for directories
