@@ -6,6 +6,10 @@ C TAP Harness 4.8 (unreleased)
     install to fail if C TAP Harness had previously been installed.
     Thanks, Horst H. von Brand.  (Fixes #9)
 
+    Mark allocation functions in C support libraries with their
+    corresponding deallocation functions so that GCC 11 and later can
+    diagnose memory deallocation bugs.
+
     Update to rra-c-util 10.2:
 
     * Drop support for Perl versions prior to Perl 5.10.
