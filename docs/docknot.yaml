@@ -90,6 +90,9 @@ docs:
       title: Writing TAP tests
     - name: runtests
       title: runtests manual page
+  developer:
+    - name: todo
+      title: To-do list
 
 blurb: |
   C TAP Harness is a pure-C implementation of TAP, the Test Anything Protocol.
