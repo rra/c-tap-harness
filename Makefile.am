@@ -12,7 +12,7 @@ EXTRA_DIST = .clang-format .github .gitignore LICENSE README.md bootstrap   \
 	docs/api/diag_file_add.pod docs/api/is_int.pod docs/api/ok.pod	    \
 	docs/api/plan.pod docs/api/skip.pod docs/api/skip_all.pod	    \
 	docs/api/test_cleanup_register.pod docs/api/test_file_path.pod	    \
-	docs/api/test_tmpdir.pod docs/metadata docs/runtests.pod	    \
+	docs/api/test_tmpdir.pod docs/docknot.yaml docs/runtests.pod	    \
 	docs/writing-tests tests/TESTS tests/data/cppcheck.supp		    \
 	tests/data/perl.conf tests/docs/pod-t tests/docs/pod-spelling-t	    \
 	tests/docs/spdx-license-t tests/harness/basic-t			    \

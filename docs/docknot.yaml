@@ -15,14 +15,14 @@ format: v1
 
 name: C TAP Harness
 maintainer: Russ Allbery <eagle@eyrie.org>
-version: '4.7'
+version: '4.8'
 synopsis: C harness for running TAP-compliant tests
 
 license:
   name: Expat
 copyrights:
   - holder: Russ Allbery <eagle@eyrie.org>
-    years: 2000-2001, 2004, 2006-2020
+    years: 2000-2001, 2004, 2006-2022
   - holder: The Board of Trustees of the Leland Stanford Junior University
     years: 2006-2009, 2011-2013
 

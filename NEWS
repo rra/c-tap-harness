@@ -1,6 +1,6 @@
                     User-Visible C TAP Harness Changes
 
-C TAP Harness 4.8 (unreleased)
+C TAP Harness 4.8 (2022-05-08)
 
     Add missing rm for an old bstrndup symlink, which would cause make
     install to fail if C TAP Harness had previously been installed.
