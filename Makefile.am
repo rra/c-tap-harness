@@ -177,6 +177,7 @@ uninstall-hook:
 # Work around the GNU Coding Standards, which leave all the Autoconf and
 # Automake stuff around after make maintainer-clean, thus making that command
 # mostly worthless.
+DISTCLEANFILES = config.h.in~ configure~
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/depcomp		    \
 	build-aux/install-sh build-aux/missing configure docs/api/bail.3    \
 	docs/api/bcalloc_type.3 docs/api/bmalloc.3 docs/api/breallocarray.3 \
