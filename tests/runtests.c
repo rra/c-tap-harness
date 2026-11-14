@@ -192,7 +192,7 @@ struct testset {
     unsigned long current;     /* The last seen test number. */
     unsigned int length;       /* The length of the last status message. */
     unsigned long passed;      /* Count of passing tests. */
-    unsigned long failed;      /* Count of failing lists. */
+    unsigned long failed;      /* Count of failing tests. */
     unsigned long skipped;     /* Count of skipped tests (passed). */
     unsigned long allocated;   /* The size of the results table. */
     enum test_status *results; /* Table of results by test number. */
@@ -439,7 +439,7 @@ x_strdup(const char *s, const char *file, int line)
 
 /*
  * Copy the first n characters of a string, reporting a fatal error and
- * existing on failure.
+ * exiting on failure.
  *
  * Avoid using the system strndup function since it may not exist (on Mac OS
  * X, for example), and there's no need to introduce another portability
