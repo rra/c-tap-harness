@@ -5,7 +5,7 @@
  * documentation is at <https://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
  * Written by Russ Allbery <eagle@eyrie.org>
- * Copyright 2009-2019, 2022 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2009-2019, 2022, 2026 Russ Allbery <eagle@eyrie.org>
  * Copyright 2001-2002, 2004-2008, 2011-2012, 2014
  *     The Board of Trustees of the Leland Stanford Junior University
  *
@@ -184,7 +184,7 @@ char *test_tmpdir(void)
  *
  * test_cleanup_register_with_data is the better API and should have been the
  * only API.  test_cleanup_register was an API error preserved for backward
- * cmpatibility.
+ * compatibility.
  */
 typedef void (*test_cleanup_func)(int, int);
 typedef void (*test_cleanup_func_with_data)(int, int, void *);
