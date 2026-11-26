@@ -13,7 +13,7 @@
  * documentation is at <https://www.eyrie.org/~eagle/software/c-tap-harness/>.
  *
  * Written by Russ Allbery <eagle@eyrie.org>
- * Copyright 2009-2019, 2021 Russ Allbery <eagle@eyrie.org>
+ * Copyright 2009-2019, 2021, 2026 Russ Allbery <eagle@eyrie.org>
  * Copyright 2001-2002, 2004-2008, 2011-2014
  *     The Board of Trustees of the Leland Stanford Junior University
  *
@@ -920,7 +920,7 @@ bstrndup(const char *s, size_t n)
 char *
 test_file_path(const char *file)
 {
-    char *base;
+    const char *base;
     char *path = NULL;
     const char *envs[] = {"C_TAP_BUILD", "C_TAP_SOURCE", NULL};
     int i;

@@ -995,7 +995,7 @@ test_print_range(unsigned long first, unsigned long last, unsigned long chars,
  * that terminated it if it was killed by a signal.
  */
 static void
-test_summarize(struct testset *ts, int status)
+test_summarize(const struct testset *ts, int status)
 {
     unsigned long i;
     unsigned long missing = 0;
